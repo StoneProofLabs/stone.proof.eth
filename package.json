@@ -8,6 +8,8 @@
     ]
   },
   "scripts": {
+    "start": "yarn workspace @se-2/nextjs dev",
+    "test": "yarn hardhat:test",
     "account": "yarn hardhat:account",
     "account:generate": "yarn workspace @se-2/hardhat account:generate",
     "account:import": "yarn workspace @se-2/hardhat account:import",
@@ -32,7 +34,6 @@
     "hardhat:lint-staged": "yarn workspace @se-2/hardhat lint-staged",
     "hardhat:test": "yarn workspace @se-2/hardhat test",
     "hardhat:verify": "yarn workspace @se-2/hardhat verify",
-    "postinstall": "husky install",
     "ipfs": "yarn workspace @se-2/nextjs ipfs",
     "lint": "yarn next:lint && yarn hardhat:lint",
     "next:build": "yarn workspace @se-2/nextjs build",
@@ -40,20 +41,37 @@
     "next:format": "yarn workspace @se-2/nextjs format",
     "next:lint": "yarn workspace @se-2/nextjs lint",
     "next:serve": "yarn workspace @se-2/nextjs serve",
-    "precommit": "lint-staged",
-    "start": "yarn workspace @se-2/nextjs dev",
-    "test": "yarn hardhat:test",
     "vercel": "yarn workspace @se-2/nextjs vercel",
     "vercel:login": "yarn workspace @se-2/nextjs vercel:login",
     "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
-    "verify": "yarn hardhat:verify"
+    "verify": "yarn hardhat:verify",
+    "precommit": "lint-staged",
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.sol": [
+      "prettier --write"
+    ],
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   },
   "devDependencies": {
+    "eslint": "^9.22.0",
     "husky": "~9.1.6",
-    "lint-staged": "~13.2.2"
+    "lint-staged": "~13.2.2",
+    "prettier": "^3.5.3"
   },
-  "packageManager": "yarn@3.2.3",
+  "packageManager": "yarn@1.22.22",
   "engines": {
-    "node": ">=20.18.3"
+    "node": ">=18.18.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.2.0"
   }
 }
