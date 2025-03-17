@@ -68,7 +68,6 @@
     "prettier": "^3.5.3"
   },
   "packageManager": "yarn@1.22.22",
-  // "packageManager": "yarn@3.2.3",
   "engines": {
     "node": ">=18.18.3"
   },
