@@ -65,7 +65,7 @@ contract MineralRegistry is RolesManager {
     */
     modifier onlyAuthorized(bytes32 role) {
         if (!hasRoleAssigned(msg.sender, role)) {
-            revert InsufficientPermissionsToPerfomAction(msg.sender);
+            revert InsufficientPermissionsToPerformAction(msg.sender);
         }
         _;
     }
@@ -78,14 +78,14 @@ contract MineralRegistry is RolesManager {
     * @dev Register a new mineral - only by miner
     * @notice Emits MineralRegistered event on successful registration
     */
-    function registerMineral(
+    function _registerMineral(
         string memory _name, 
         string memory _origin, 
         string memory _mineralType, 
         string memory _weight, 
         uint256 _purityPercentage, 
         string memory _storageConditions
-        ) external  override onlyAuthorized(MINER_ROLE) {
+        ) external onlyAuthorized(MINER_ROLE) {
 
             // custom error handling
 
@@ -171,7 +171,7 @@ contract MineralRegistry is RolesManager {
             !hasRoleAssigned(msg.sender, AUDITOR_ROLE) ||
             !hasRoleAssigned(msg.sender, INSPECTOR_ROLE)
         ) {
-            revert InsufficientPermissionsToPerfomAction(msg.sender);
+            revert InsufficientPermissionsToPerformAction(msg.sender);
         }
 
         mineralDetails[mineralId].currentStatus = newStatus;
@@ -223,7 +223,7 @@ contract MineralRegistry is RolesManager {
     * @dev Transfers ownership - only by the transporter
     * @notice Emits MineralTransported on successful transfer 
     */
-    function transferMineral(uint256 mineralId, address _receivingParty, string memory _origin, string memory _destination) public override onlyAuthorized(TRANSPORTER_ROLE) {
+    function _transferMineral(uint256 mineralId, address _receivingParty, string memory _origin, string memory _destination) public onlyAuthorized(TRANSPORTER_ROLE) {
 
         // custom error handling
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
@@ -285,7 +285,7 @@ contract MineralRegistry is RolesManager {
     * @dev retrieves fll history of a mineral (for audit retail)
     * @return history of specified mineral sing its mineralId
     */
-    function getMineralHistory(uint256 mineralId) public override view returns(MineralHistory[] memory) {
+    function getMineralHistory(uint256 mineralId) public view returns(MineralHistory[] memory) {
 
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
@@ -338,7 +338,7 @@ contract MineralRegistry is RolesManager {
     * @dev enables an auditor to audit a mineral 
     * @notice Emits MineralAudited event on successful auditing of a mineral
     */
-    function auditMineral(uint256 mineralId) public override onlyAuthorized(AUDITOR_ROLE) {
+    function _auditMineral(uint256 mineralId) public onlyAuthorized(AUDITOR_ROLE) {
 
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
@@ -361,7 +361,7 @@ contract MineralRegistry is RolesManager {
     * @dev enables only the inspector to audit a mineralDetails
     * @notice Emits MineralInspected even
     */
-    function inspectMineral(uint256 mineralId) public onlyAuthorized(INSPECTOR_ROLE) {
+    function _inspectMineral(uint256 mineralId) public onlyAuthorized(INSPECTOR_ROLE) {
 
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
@@ -380,7 +380,7 @@ contract MineralRegistry is RolesManager {
     * @dev checks audit and inspection status
     * Returns the status of both audit and inspection of mineral according to mineralId
     */
-    function checkAuditAndInspectionStatus(uint256 mineralId) public override onlyAuthorized(DEFAULT_ADMIN_ROLE) returns(bool isAudited, bool isInspected) {
+    function _checkAuditAndInspectionStatus(uint256 mineralId) public onlyAuthorized(DEFAULT_ADMIN_ROLE) returns(bool isAudited, bool isInspected) {
 
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
@@ -423,4 +423,4 @@ contract MineralRegistry is RolesManager {
         return string(str);
     }
     
-}   
+}
