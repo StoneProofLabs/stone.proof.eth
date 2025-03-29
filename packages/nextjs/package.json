@@ -24,6 +24,8 @@
     "blo": "~1.2.0",
     "burner-connector": "0.0.9",
     "daisyui": "4.12.10",
+    "embla-carousel-autoplay": "^8.0.0",
+    "embla-carousel-react": "^8.0.0",
     "kubo-rpc-client": "~5.0.2",
     "next": "~14.2.11",
     "next-nprogress-bar": "~2.3.13",

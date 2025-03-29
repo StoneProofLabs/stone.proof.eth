@@ -1,114 +1,181 @@
 "use client";
 
-import React, { useCallback, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { hardhat } from "viem/chains";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
-import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
-import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
+import { StatsSection } from "./landing/StatsSection";
+import { GithubIcon, MessageCircleIcon, TwitterIcon } from "lucide-react";
 
-type HeaderMenuLink = {
-  label: string;
-  href: string;
-  icon?: React.ReactNode;
-};
-
-export const menuLinks: HeaderMenuLink[] = [
+const navLinks = [
   {
-    label: "Home",
+    label: "Smart Contracts",
     href: "/",
   },
-
   {
-    label: "Debug Contracts",
-    href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
+    label: "Services",
+    href: "/",
+  },
+  {
+    label: "Solutions",
+    href: "/",
+  },
+  {
+    label: "Roadmap",
+    href: "/",
+  },
+  {
+    label: "Whitepaper",
+    href: "/",
   },
 ];
 
-export const HeaderMenuLinks = () => {
+export const Header = () => {
   const pathname = usePathname();
 
-  return (
-    <>
-      {menuLinks.map(({ label, href, icon }) => {
-        const isActive = pathname === href;
-        return (
-          <li key={href}>
-            <Link
-              href={href}
-              passHref
-              className={`${
-                isActive ? "bg-secondary shadow-md" : ""
-              } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
-            >
-              {icon}
-              <span>{label}</span>
-            </Link>
-          </li>
-        );
-      })}
-    </>
-  );
-};
-
-/**
- * Site header
- */
-export const Header = () => {
-  const { targetNetwork } = useTargetNetwork();
-  const isLocalNetwork = targetNetwork.id === hardhat.id;
-
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const burgerMenuRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(
-    burgerMenuRef,
-    useCallback(() => setIsDrawerOpen(false), []),
-  );
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [pathname]); // Add pathname as dependency to trigger on route changes
 
   return (
-    <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
-      <div className="navbar-start w-auto lg:w-1/2">
-        <div className="lg:hidden dropdown" ref={burgerMenuRef}>
-          <label
-            tabIndex={0}
-            className={`ml-1 btn btn-ghost ${isDrawerOpen ? "hover:bg-secondary" : "hover:bg-transparent"}`}
-            onClick={() => {
-              setIsDrawerOpen(prevIsOpenState => !prevIsOpenState);
-            }}
-          >
-            <Bars3Icon className="h-1/2" />
-          </label>
-          {isDrawerOpen && (
-            <ul
-              tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-              onClick={() => {
-                setIsDrawerOpen(false);
-              }}
-            >
-              <HeaderMenuLinks />
-            </ul>
-          )}
-        </div>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH</span>
-            <span className="text-xs">Ethereum dev stack</span>
-          </div>
-        </Link>
-        <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
-          <HeaderMenuLinks />
-        </ul>
+    <div className="relative min-h-screen font-montserrat">
+      {/* Background Video */}
+      <div className="absolute inset-0 w-full h-full">
+        <video autoPlay loop muted playsInline className="object-cover w-full h-full">
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+        {/* Gradient Overlay */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-[#000000] 
+            via-[#1E1E1E] to-[#484848] opacity-70"
+        ></div>
       </div>
-      <div className="navbar-end flex-grow mr-4">
-        <RainbowKitCustomConnectButton />
-        {isLocalNetwork && <FaucetButton />}
+
+      {/* Navbar */}
+      <div className="relative z-10">
+        <div className="container mx-auto px-6 py-6">
+          <div className="flex items-center justify-between">
+            {/* Logo - Left */}
+            <div className="flex items-center">
+              <Link href="/" className="flex items-center gap-2">
+                <Image src="/logo.png" alt="Stone.Proof" width={48} height={48} className="" />
+                <span className="text-2xl font-medium text-white font-montserrat">Stone.Proof</span>
+              </Link>
+            </div>
+
+            {/* Navigation - Center */}
+            <div className="hidden lg:flex items-center justify-center gap-8 font-montserrat">
+              {navLinks.map(({ label, href }) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`text-white hover:text-primary transition-colors ${
+                    pathname === href ? "text-primary" : ""
+                  }`}
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Social Links - Right */}
+            <div className="flex items-center gap-4">
+              <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <GithubIcon className="w-5 h-5 text-white hover:text-primary transition-colors" />
+              </Link>
+              <Link href="https://discord.com" target="_blank" rel="noopener noreferrer">
+                <MessageCircleIcon className="w-5 h-5 text-white hover:text-primary transition-colors" />
+              </Link>
+              <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <TwitterIcon className="w-5 h-5 text-white hover:text-primary transition-colors" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Hero Section */}
+      <div className="relative z-10 container mx-auto px-6 pt-32 pb-32 overflow-hidden">
+        {/* Decorative Stones */}
+        <div className="absolute left-0 top-[70%] -translate-y-1/2 pointer-events-none hidden lg:block">
+          <div className="relative">
+            <Image
+              src="/st2.png"
+              alt="Decorative stone"
+              width={600}
+              height={600}
+              className="opacity-90 rotate-12 -translate-x-[40%] relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] 
+              hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] transition-all duration-1000 filter brightness-110"
+            />
+          </div>
+        </div>
+        <div className="absolute right-0 top-[30%] -translate-y-1/2 pointer-events-none hidden lg:block">
+          <div className="relative">
+            <Image
+              src="/st1.png"
+              alt="Decorative stone"
+              width={600}
+              height={600}
+              className="opacity-90 -rotate-12 translate-x-[40%] relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]
+              hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] transition-all duration-1000 filter brightness-110"
+            />
+          </div>
+        </div>
+
+        <div className="max-w-5xl mx-auto text-center relative z-20">
+          <h1 className="text-6xl md:text-7xl font-bold mb-6 text-white font-montserrat">
+            Trade Premium Minerals <br />
+            on the <span className="text-yellow-400">Blockchain</span>
+          </h1>
+          <p className="text-lg md:text-xl mb-12 text-gray-200 max-w-2xl mx-auto font-montserrat">
+            Our technology performing fast blockchain (120K TPS) and it has guaranteed AI based data security. Proof of
+            Stake, its consensus algorithm enables unlimited speeds.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <button
+              className="px-8 py-4 bg-[#1D4ED8] text-white text-xl rounded-xl 
+              hover:bg-blue-700 transition-all font-montserrat"
+            >
+              Get started
+            </button>
+            <button
+              className="px-8 py-4 border-2 border-white text-white text-xl rounded-xl 
+              hover:bg-white/10 transition-all flex items-center gap-3 font-montserrat relative group"
+            >
+              {/* Top-right corner */}
+              <div className="absolute -top-3 -right-3">
+                <div className="w-6 h-0.5 bg-white rounded-r-lg"></div>
+                <div className="h-6 w-0.5 bg-white absolute right-0 top-0 rounded-full"></div>
+              </div>
+              {/* Bottom-left corner */}
+              Connect to Wallet
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-arrow-right"
+              >
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="relative z-10 -mb-36 mt-auto">
+        <StatsSection />
       </div>
     </div>
   );
