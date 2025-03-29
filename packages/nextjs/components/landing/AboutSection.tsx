@@ -75,14 +75,14 @@ export const AboutSection = () => {
   ];
 
   return (
-    <section id="about" className="w-full py-16 relative overflow-hidden">
+    <section id="about" className="w-full pt-28 pb-16 relative overflow-hidden">
       {/* Wave pattern background - moved higher */}
-      <div className="absolute inset-x-0 -top-48 h-[1000px] -mx-48 z-0">
+      <div className="absolute inset-x-0 -top-[150px] h-[1000px] -mx-48 z-0">
         <Image src="/wave.png" alt="Wave pattern background" fill className="object-cover opacity-70" />
       </div>
 
       {/* Header with wave background behind it */}
-      <div className="text-center mb-12 text-white relative z-20">
+      <div className="text-center mb-12 text-white relative z-100">
         <h2 className="text-5xl md:text-6xl font-bold mb-2 font-montserrat">Meet Stoneproof</h2>
         <p className="text-lg text-white/80 font-montserrat">Supply chain management for minerals.</p>
       </div>

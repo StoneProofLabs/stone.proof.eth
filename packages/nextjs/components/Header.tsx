@@ -10,23 +10,23 @@ import { GithubIcon, MessageCircleIcon, TwitterIcon } from "lucide-react";
 const navLinks = [
   {
     label: "Smart Contracts",
-    href: "/smart-contracts",
+    href: "/",
   },
   {
     label: "Services",
-    href: "/services",
+    href: "/",
   },
   {
     label: "Solutions",
-    href: "/solutions",
+    href: "/",
   },
   {
     label: "Roadmap",
-    href: "/roadmap",
+    href: "/",
   },
   {
     label: "Whitepaper",
-    href: "/whitepaper",
+    href: "/",
   },
 ];
 
@@ -35,15 +35,16 @@ export const Header = () => {
 
   return (
     <div className="relative min-h-screen font-montserrat">
-      {/* Background Image */}
+      {/* Background Video */}
       <div className="absolute inset-0 w-full h-full">
-        {/* <Image 
-          src="/" 
-          alt="Minerals Background" 
-          fill 
-          className="object-cover"
-          priority
-        /> */}
+        <video autoPlay loop muted playsInline className="object-cover w-full h-full">
+          <source src="/hero.mp4" type="video/mp4" />
+        </video>
+        {/* Gradient Overlay */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-[#000000] 
+            via-[#1E1E1E] to-[#484848] opacity-70"
+        ></div>
       </div>
 
       {/* Navbar */}
@@ -90,8 +91,48 @@ export const Header = () => {
       </div>
 
       {/* Hero Section */}
-      <div className="relative z-10 container mx-auto px-6 pt-32">
-        <div className="max-w-5xl mx-auto text-center">
+      <div className="relative z-10 container mx-auto px-6 pt-32 pb-32 overflow-hidden">
+        {/* Decorative Stones */}
+        <div
+          className="absolute left-0 top-[70%] -translate-y-1/2 
+          pointer-events-none hidden lg:block mix-blend-lighten"
+        >
+          <div className="relative">
+            <div
+              className="absolute inset-0 blur-xl bg-yellow-500/10 
+              animate-pulse rounded-full"
+            ></div>
+            <Image
+              src="/st2.png"
+              alt="Decorative stone"
+              width={600}
+              height={600}
+              className="opacity-90 rotate-12 -translate-x-[40%] 
+                relative z-10 drop-shadow-[0_0_15px_rgba(234,179,8,0.3)]"
+            />
+          </div>
+        </div>
+        <div
+          className="absolute right-0 top-[30%] -translate-y-1/2 
+          pointer-events-none hidden lg:block mix-blend-lighten"
+        >
+          <div className="relative">
+            <div
+              className="absolute inset-0 blur-xl bg-amber-500/10 
+              animate-pulse rounded-full"
+            ></div>
+            <Image
+              src="/st1.png"
+              alt="Decorative stone"
+              width={600}
+              height={600}
+              className="opacity-90 -rotate-12 translate-x-[40%] 
+                relative z-10 drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+            />
+          </div>
+        </div>
+
+        <div className="max-w-5xl mx-auto text-center relative z-20">
           <h1 className="text-6xl md:text-7xl font-bold mb-6 text-white font-montserrat">
             Trade Premium Minerals <br />
             on the <span className="text-yellow-400">Blockchain</span>
@@ -101,10 +142,16 @@ export const Header = () => {
             Stake, its consensus algorithm enables unlimited speeds.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <button className="px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors font-montserrat">
+            <button
+              className="px-8 py-3 bg-blue-600 text-white rounded-md 
+              hover:bg-blue-700 transition-colors font-montserrat"
+            >
               Get started
             </button>
-            <button className="px-8 py-3 border border-white text-white rounded-md  transition-colors flex items-center gap-2 font-montserrat">
+            <button
+              className="px-8 py-3 border border-white text-white rounded-md 
+              transition-colors flex items-center gap-2 font-montserrat"
+            >
               Connect to Wallet
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +174,7 @@ export const Header = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="relative z-10 mt-20">
+      <div className="relative z-10 -mb-36 mt-auto">
         <StatsSection />
       </div>
     </div>
