@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 export const CommunitySection = () => {
   return (
@@ -42,7 +42,7 @@ export const CommunitySection = () => {
             <span className="text-sm uppercase tracking-wider text-gray-400 mb-2 block">
               COMMUNITY-OWNED AND OPERATED
             </span>
-            <h2 className="text-5xl md:text-6xl font-bold leading-tight mb-6 bg-gradient-to-r from-white via-white/100 to-white/40 inline-block text-transparent bg-clip-text">
+            <h2 className="text-5xl md:text-6xl font-bold leading-tight mb-6 bg-gradient-to-r from-white via-white/100 to-white/40 inline-block text-transparent bg-clip-text flex items-center">
               Enter a Universe <br />
               of Connected <br />
               Services.
@@ -55,14 +55,14 @@ export const CommunitySection = () => {
               <button className="w-40 bg-gradient-to-r from-white via-white/100 to-white/40 hover:bg-white text-gray-800 font-medium px-8 py-3 rounded-lg transition-colors">
                 Learn
               </button>
-              <button className="text-white hover:text-gray-300 bg-transparent font-medium py-3 rounded-full group flex items-center transition-all">
-                Community
-                <ArrowUpRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+              <button className="text-white  hover:border-white bg-transparent font-medium px-8 py-3 rounded-full group flex items-center transition-all">
+                Connect To Wallet
+                <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </motion.div>
 
-          {/* Right content - Links */}
+          {/* Right content - Stats */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -70,36 +70,20 @@ export const CommunitySection = () => {
             viewport={{ once: true }}
             className="text-white font-montserrat"
           >
-            <div>
-              <h3 className="text-xl font-bold mb-1 flex items-center justify-between">
-                Community Chat
-                <ArrowUpRight className="h-4 w-4" />
-              </h3>
-              <p className="text-lg text-gray-300">Join our community chat for the latest updates and discussions.</p>
-            </div>
+            <div className="space-y-12">
+              <div className="text-right">
+                <h3 className="text-6xl md:text-7xl font-bold mb-1 bg-gradient-to-r from-white via-white/100 to-white/40 inline-block text-transparent bg-clip-text">
+                  265<span>+</span>
+                </h3>
+                <p className="text-lg text-gray-300">Apps & services</p>
+              </div>
 
-            <div>
-              <h3 className="text-xl font-bold mb-1 flex items-center justify-between">
-                Twitter
-                <ArrowUpRight className="h-4 w-4" />
-              </h3>
-              <p className="text-lg text-gray-300">Follow us on Twitter for news and announcements.</p>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-bold mb-1 flex items-center justify-between">
-                Developer Chat
-                <ArrowUpRight className="h-4 w-4" />
-              </h3>
-              <p className="text-lg text-gray-300">Join our developer chat for technical discussions and support.</p>
-            </div>
-
-            <div>
-              <h3 className="text-xl font-bold mb-1 flex items-center justify-between">
-                Stone.proof Forum
-                <ArrowUpRight className="h-4 w-4" />
-              </h3>
-              <p className="text-lg text-gray-300">Visit our forum for community discussions and support.</p>
+              <div className="text-right">
+                <h3 className="text-6xl md:text-7xl font-bold mb-1 bg-gradient-to-r from-white via-white/100 to-white/40 inline-block text-transparent bg-clip-text">
+                  $63B<span>+</span>
+                </h3>
+                <p className="text-lg text-gray-300">Digital assets</p>
+              </div>
             </div>
           </motion.div>
         </div>

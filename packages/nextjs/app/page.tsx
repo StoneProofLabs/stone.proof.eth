@@ -2,7 +2,7 @@
 
 import type { NextPage } from "next";
 import { AboutSection } from "~~/components/landing/AboutSection";
-import { CommunitySection } from "~~/components/landing/CommunitySection";
+// import { CommunitySection } from "~~/components/landing/CommunitySection";
 import { FeaturesSection } from "~~/components/landing/FeaturesSection";
 // import { HeroSection } from "~~/components/landing/HeroSection";
 import { SecuritySection } from "~~/components/landing/SecuritySection";
@@ -17,7 +17,7 @@ const Home: NextPage = () => {
         {/* <StatsSection />  */}
         {/* <HeroSection /> */}
         <AboutSection></AboutSection>
-        <CommunitySection />
+        {/* <CommunitySection /> */}
         <ServicesSection />
         <SecuritySection />
         <FeaturesSection />

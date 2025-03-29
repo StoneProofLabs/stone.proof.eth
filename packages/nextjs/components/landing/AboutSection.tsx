@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { CommunitySection } from "./CommunitySection";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion } from "framer-motion";
@@ -75,18 +76,18 @@ export const AboutSection = () => {
 
   return (
     <section id="about" className="w-full py-16 relative overflow-hidden">
-      {/* Wave pattern background */}
-      <div className="absolute inset-0 z-0">
-        <Image src="/wave-pattern.png" alt="Wave pattern background" fill className="object-cover opacity-70" />
+      {/* Wave pattern background - moved higher */}
+      <div className="absolute inset-x-0 -top-48 h-[1000px] -mx-48 z-0">
+        <Image src="/wave.png" alt="Wave pattern background" fill className="object-cover opacity-70" />
+      </div>
+
+      {/* Header with wave background behind it */}
+      <div className="text-center mb-12 text-white relative z-20">
+        <h2 className="text-5xl md:text-6xl font-bold mb-2 font-montserrat">Meet Stoneproof</h2>
+        <p className="text-lg text-white/80 font-montserrat">Supply chain management for minerals.</p>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 relative z-10">
-        {/* Header */}
-        <div className="text-center mb-12 text-white">
-          <h2 className="text-5xl md:text-6xl font-bold mb-2 font-montserrat">Meet Stoneproof</h2>
-          <p className="text-lg text-white/80 font-montserrat">Supply chain management for minerals.</p>
-        </div>
-
         {/* Carousel container */}
         <div className="relative">
           {/* Carousel */}
@@ -152,6 +153,11 @@ export const AboutSection = () => {
             ))}
           </div>
         </div>
+      </div>
+
+      {/* Community Section with its own background */}
+      <div className="relative">
+        <CommunitySection />
       </div>
     </section>
   );
