@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import { Loader } from "~~/components/Loader/Loader";
+// import { Loader } from "~~/components/Loader/Loader";
 import { AboutSection } from "~~/components/landing/AboutSection";
 import { FeaturesSection } from "~~/components/landing/FeaturesSection";
 import { SecuritySection } from "~~/components/landing/SecuritySection";
@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   //   return () => clearTimeout(timer);
   // }, []);
 
-  // if (isLoading) {
+  // if (isLoading) {@
   //   return <Loader />;
   // }
 
