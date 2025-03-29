@@ -18,7 +18,7 @@ const Subscribe = () => {
           </h2>
           <p className="text-center mb-8 text-white/70">
             Unsubscribe at any time.{" "}
-            <a href="/privacy-policy" className="hover:opacity-80 transition-opacity">
+            <a href="/" className="hover:opacity-80 transition-opacity">
               Privacy policy
             </a>{" "}
             ↗
