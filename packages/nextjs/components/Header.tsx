@@ -54,8 +54,8 @@ export const Header = () => {
             {/* Logo - Left */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center gap-2">
-                <Image src="/logo.svg" alt="Stone.Proof" width={32} height={32} />
-                <span className="text-xl font-medium text-white font-montserrat">Stone.Proof</span>
+                <Image src="/logo.png" alt="Stone.Proof" width={48} height={48} className="" />
+                <span className="text-2xl font-medium text-white font-montserrat">Stone.Proof</span>
               </Link>
             </div>
 
@@ -93,41 +93,27 @@ export const Header = () => {
       {/* Hero Section */}
       <div className="relative z-10 container mx-auto px-6 pt-32 pb-32 overflow-hidden">
         {/* Decorative Stones */}
-        <div
-          className="absolute left-0 top-[70%] -translate-y-1/2 
-          pointer-events-none hidden lg:block mix-blend-lighten"
-        >
+        <div className="absolute left-0 top-[70%] -translate-y-1/2 pointer-events-none hidden lg:block">
           <div className="relative">
-            <div
-              className="absolute inset-0 blur-xl bg-yellow-500/10 
-              animate-pulse rounded-full"
-            ></div>
             <Image
               src="/st2.png"
               alt="Decorative stone"
               width={600}
               height={600}
-              className="opacity-90 rotate-12 -translate-x-[40%] 
-                relative z-10 drop-shadow-[0_0_15px_rgba(234,179,8,0.3)]"
+              className="opacity-90 rotate-12 -translate-x-[40%] relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] 
+              hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] transition-all duration-1000 filter brightness-110"
             />
           </div>
         </div>
-        <div
-          className="absolute right-0 top-[30%] -translate-y-1/2 
-          pointer-events-none hidden lg:block mix-blend-lighten"
-        >
+        <div className="absolute right-0 top-[30%] -translate-y-1/2 pointer-events-none hidden lg:block">
           <div className="relative">
-            <div
-              className="absolute inset-0 blur-xl bg-amber-500/10 
-              animate-pulse rounded-full"
-            ></div>
             <Image
               src="/st1.png"
               alt="Decorative stone"
               width={600}
               height={600}
-              className="opacity-90 -rotate-12 translate-x-[40%] 
-                relative z-10 drop-shadow-[0_0_15px_rgba(245,158,11,0.3)]"
+              className="opacity-90 -rotate-12 translate-x-[40%] relative z-10 drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]
+              hover:drop-shadow-[0_0_25px_rgba(255,255,255,0.5)] transition-all duration-1000 filter brightness-110"
             />
           </div>
         </div>
@@ -143,20 +129,26 @@ export const Header = () => {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <button
-              className="px-8 py-3 bg-blue-600 text-white rounded-md 
-              hover:bg-blue-700 transition-colors font-montserrat"
+              className="px-8 py-4 bg-[#1D4ED8] text-white text-xl rounded-xl 
+              hover:bg-blue-700 transition-all font-montserrat"
             >
               Get started
             </button>
             <button
-              className="px-8 py-3 border border-white text-white rounded-md 
-              transition-colors flex items-center gap-2 font-montserrat"
+              className="px-8 py-4 border-2 border-white text-white text-xl rounded-xl 
+              hover:bg-white/10 transition-all flex items-center gap-3 font-montserrat relative group"
             >
+              {/* Top-right corner */}
+              <div className="absolute -top-3 -right-3">
+                <div className="w-6 h-0.5 bg-white rounded-r-lg"></div>
+                <div className="h-6 w-0.5 bg-white absolute right-0 top-0 rounded-full"></div>
+              </div>
+              {/* Bottom-left corner */}
               Connect to Wallet
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
+                width="24"
+                height="24"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
