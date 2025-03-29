@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -32,6 +32,14 @@ const navLinks = [
 
 export const Header = () => {
   const pathname = usePathname();
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [pathname]); // Add pathname as dependency to trigger on route changes
 
   return (
     <div className="relative min-h-screen font-montserrat">

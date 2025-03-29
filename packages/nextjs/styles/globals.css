@@ -4,7 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
 :root,
 [data-theme] {
-  background: linear-gradient(to bottom right, #111B2B, #2C3C54, #111B2B);
+  background: linear-gradient(to bottom right, #111b2b, #2c3c54, #111b2b);
   min-height: 100vh;
 }
 

@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Hash, Transaction, TransactionReceipt, formatEther, formatUnits } from "viem";
-import { Address as AddressType } from "viem";
 import { hardhat } from "viem/chains";
 import { usePublicClient } from "wagmi";
 import { Address } from "~~/components/scaffold-eth";

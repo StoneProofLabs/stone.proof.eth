@@ -7,18 +7,6 @@ import { ChevronRight } from "lucide-react";
 export const CommunitySection = () => {
   return (
     <section className="w-full py-20 px-4 md:px-8 relative overflow-hidden">
-      {/* Mesh pattern in top right */}
-      {/* <div className="absolute top-0 right-0 w-full md:w-2/3 h-full opacity-30 pointer-events-none z-0">
-        <Image
-          src="/mesh-pattern.png"
-          alt="Mesh pattern"
-          width={800}
-          height={600}
-          className="object-contain object-right-top"
-        />
-      </div> */}
-
-      {/* Blue blob on left (original position) */}
       <div className="absolute -left-[160px] bottom-0 w-2/3 h-full opacity-60 pointer-events-none z-0">
         <Image
           src="/blue_blob.png"

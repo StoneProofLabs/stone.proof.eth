@@ -1,34 +1,37 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
+import { Loader } from "~~/components/Loader/Loader";
 import { AboutSection } from "~~/components/landing/AboutSection";
-// import { CommunitySection } from "~~/components/landing/CommunitySection";
 import { FeaturesSection } from "~~/components/landing/FeaturesSection";
-// import { HeroSection } from "~~/components/landing/HeroSection";
 import { SecuritySection } from "~~/components/landing/SecuritySection";
 import { ServicesSection } from "~~/components/landing/ServicesSection";
-// import { StatsSection } from "~~/components/landing/StatsSection";
 import Subscribe from "~~/components/landing/Subscribe";
 
 const Home: NextPage = () => {
+  // const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 2000); // 2 seconds delay
+
+  //   return () => clearTimeout(timer);
+  // }, []);
+
+  // if (isLoading) {
+  //   return <Loader />;
+  // }
+
   return (
     <>
       <div className="flex items-center flex-col flex-grow">
-        {/* <StatsSection />  */}
-        {/* <HeroSection /> */}
-        <AboutSection></AboutSection>
-        {/* <CommunitySection /> */}
+        <AboutSection />
         <ServicesSection />
         <SecuritySection />
         <FeaturesSection />
         <Subscribe />
-
-        {/* <AboutSection />
-        
-        
-       
-        
-         */}
       </div>
     </>
   );
