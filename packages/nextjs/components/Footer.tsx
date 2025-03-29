@@ -1,80 +1,100 @@
-import React from "react";
-import Link from "next/link";
-import { hardhat } from "viem/chains";
-import { CurrencyDollarIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { HeartIcon } from "@heroicons/react/24/outline";
-import { SwitchTheme } from "~~/components/SwitchTheme";
-import { BuidlGuidlLogo } from "~~/components/assets/BuidlGuidlLogo";
-import { Faucet } from "~~/components/scaffold-eth";
-import { useTargetNetwork } from "~~/hooks/scaffold-eth/useTargetNetwork";
-import { useGlobalState } from "~~/services/store/store";
+"use client";
 
-/**
- * Site footer
- */
+import Link from "next/link";
+import { Github, Twitter } from "lucide-react";
+
 export const Footer = () => {
-  const nativeCurrencyPrice = useGlobalState(state => state.nativeCurrency.price);
-  const { targetNetwork } = useTargetNetwork();
-  const isLocalNetwork = targetNetwork.id === hardhat.id;
+  const footerLinks = {
+    Learn: [
+      { label: "About", href: "/#about" },
+      { label: "Features", href: "/#features" },
+      { label: "Services", href: "/#services" },
+      { label: "FAQ", href: "/#faq" },
+    ],
+    Build: [
+      { label: "Documentation", href: "https://docs.scaffoldeth.io" },
+      { label: "API Reference", href: "#" },
+      { label: "Developer Tools", href: "#" },
+      { label: "Tutorials", href: "#" },
+    ],
+    Explore: [
+      { label: "Marketplace", href: "#" },
+      { label: "Minerals", href: "#" },
+      { label: "Partners", href: "#" },
+      { label: "Use Cases", href: "#" },
+    ],
+    Participate: [
+      { label: "Community", href: "#" },
+      { label: "Contribute", href: "#" },
+      { label: "Events", href: "#" },
+      { label: "Governance", href: "#" },
+    ],
+  };
 
   return (
-    <div className="min-h-0 py-5 px-1 mb-11 lg:mb-0">
-      <div>
-        <div className="fixed flex justify-between items-center w-full z-10 p-4 bottom-0 left-0 pointer-events-none">
-          <div className="flex flex-col md:flex-row gap-2 pointer-events-auto">
-            {nativeCurrencyPrice > 0 && (
-              <div>
-                <div className="btn btn-primary btn-sm font-normal gap-1 cursor-auto">
-                  <CurrencyDollarIcon className="h-4 w-4" />
-                  <span>{nativeCurrencyPrice.toFixed(2)}</span>
-                </div>
+    <footer className="py-12 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+          <div className="col-span-2">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="flex relative w-10 h-10">
+                <div className="w-10 h-10 bg-primary rounded-full"></div>
+                <span className="absolute inset-0 flex items-center justify-center font-bold text-primary-content">
+                  SP
+                </span>
               </div>
-            )}
-            {isLocalNetwork && (
-              <>
-                <Faucet />
-                <Link href="/blockexplorer" passHref className="btn btn-primary btn-sm font-normal gap-1">
-                  <MagnifyingGlassIcon className="h-4 w-4" />
-                  <span>Block Explorer</span>
-                </Link>
-              </>
-            )}
+              <div className="flex flex-col">
+                <span className="font-bold leading-tight">Stoneproof</span>
+                <span className="text-xs">Mineral Trading Platform</span>
+              </div>
+            </div>
+            <p className="text-base-content/70 mb-4 max-w-xs">
+              Revolutionizing the mineral industry with blockchain technology. Secure, transparent, and efficient.
+            </p>
+            <div className="flex gap-3">
+              <Link href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+                <Twitter className="w-5 h-5 text-base-content/70 hover:text-primary transition-colors" />
+              </Link>
+              <Link href="https://github.com" target="_blank" rel="noopener noreferrer">
+                <Github className="w-5 h-5 text-base-content/70 hover:text-primary transition-colors" />
+              </Link>
+            </div>
           </div>
-          <SwitchTheme className={`pointer-events-auto ${isLocalNetwork ? "self-end md:self-auto" : ""}`} />
+
+          {Object.entries(footerLinks).map(([category, links]) => (
+            <div key={category}>
+              <h3 className="font-bold mb-4">{category}</h3>
+              <ul className="space-y-2">
+                {links.map(link => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-base-content/70 hover:text-primary hover:underline transition-colors"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 pt-6 border-t border-base-content/10 flex flex-col md:flex-row justify-between items-center">
+          <p className="text-sm text-base-content/50">© {new Date().getFullYear()} Stoneproof. All rights reserved.</p>
+          <div className="flex gap-6 mt-4 md:mt-0">
+            <Link href="#" className="text-sm text-base-content/50 hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="#" className="text-sm text-base-content/50 hover:text-primary transition-colors">
+              Terms of Service
+            </Link>
+            <Link href="#" className="text-sm text-base-content/50 hover:text-primary transition-colors">
+              Cookie Policy
+            </Link>
+          </div>
         </div>
       </div>
-      <div className="w-full">
-        <ul className="menu menu-horizontal w-full">
-          <div className="flex justify-center items-center gap-2 text-sm w-full">
-            <div className="text-center">
-              <a href="https://github.com/scaffold-eth/se-2" target="_blank" rel="noreferrer" className="link">
-                Fork me
-              </a>
-            </div>
-            <span>·</span>
-            <div className="flex justify-center items-center gap-2">
-              <p className="m-0 text-center">
-                Built with <HeartIcon className="inline-block h-4 w-4" /> at
-              </p>
-              <a
-                className="flex justify-center items-center gap-1"
-                href="https://buidlguidl.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <BuidlGuidlLogo className="w-3 h-5 pb-1" />
-                <span className="link">BuidlGuidl</span>
-              </a>
-            </div>
-            <span>·</span>
-            <div className="text-center">
-              <a href="https://t.me/joinchat/KByvmRe5wkR-8F_zz6AjpA" target="_blank" rel="noreferrer" className="link">
-                Support
-              </a>
-            </div>
-          </div>
-        </ul>
-      </div>
-    </div>
+    </footer>
   );
 };
