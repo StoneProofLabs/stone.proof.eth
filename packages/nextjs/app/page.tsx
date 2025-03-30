@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   //   return () => clearTimeout(timer);
   // }, []);
 
-  // if (isLoading) {
+  // if (isLoading) {@
   //   return <Loader />;
   // }
 
