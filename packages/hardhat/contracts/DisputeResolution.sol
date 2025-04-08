@@ -4,36 +4,20 @@ pragma solidity ^0.8.20;
 /** 
 * @title DisputeResolution contract 
 * @author @0xJonaseb11
-* It handles and resolves disputes raised by supplychain members
-* It incorporates weighted voting to make sure that disputes are resolved in transparency 
-* Hard-to-resolve disputes are later on decided by the super admins for resolution
+* @dev It handles and resolves disputes raised by supplychain members
+* @dev It incorporates weighted voting to make sure that disputes are resolved in transparency 
+* @notice Hard-to-resolve disputes are later on decided by the super admins for resolution
 */
 
 import { MineralRegistry } from "./MineralRegistry.sol";
 import { TransactionLog } from "./TransactionLog.sol";
 import { RolesManager } from "./RolesManager.sol";
+import { Errors } from "./Errors/Errors.sol";
 
-contract DisputeResolution is RolesManager {
+contract DisputeResolution is Errors, RolesManager {
 
     RolesManager private rolesManager;
 
-    /*//////////////////////////////////////////////////////////////
-                             CUSTOM ERRORS
-    //////////////////////////////////////////////////////////////*/
-    error DisputeResolution__InvalidMineralIdOrNotFound();
-    error DisputeResolution__InvalidDisputeDefendantAddress();
-    error DisputeResolution__InvalidDisputeDetails();
-    error DisputeResolution__InvalidDisputeEvidence();
-    error DisputeResolution__InvalidDisputeIdOrNotFound(uint256 disputeId);
-    error DisputeResolution__InvalidResolutionDetails();
-    error DisputeResolution__DisputeStatusNotPendingOrEscalated();
-    error DisputeResolution__DisputeStatusNotPending(uint256 disputeId);
-    error DisputeResolution__NotEligibleToVote(address caller);
-    error DisputeResolution__AlreadyVoted(address caller);
-    error DisputeResolution__DisputeEscalated_UnableToVote(uint256 disputeId);
-    error DisputeResolution__VotingPeriodStillActive();
-    error DisputeResolution__DisputeNotEscalated(uint256 disputeId);
-    
     /*//////////////////////////////////////////////////////////////
                                  EVENTS
     //////////////////////////////////////////////////////////////*/
@@ -78,7 +62,7 @@ contract DisputeResolution is RolesManager {
 
     modifier onlyValidDisputeId(uint256 disputeId) {
         if (disputeId == 0 || disputes[disputeId].disputeId != disputeId)
-        revert DisputeResolution__InvalidDisputeIdOrNotFound(disputeId);
+        revert DisputeResolution__InvalidDisputeIdOrNotFound();
         _;
     }
 
@@ -174,7 +158,7 @@ contract DisputeResolution is RolesManager {
     function resolveDispute(uint256 disputeId, string calldata resolutionDetails) external restrictedToRole(DEFAULT_ADMIN_ROLE) {
         Dispute storage dispute = disputes[disputeId];
 
-        if (dispute.disputeId != disputeId) revert DisputeResolution__InvalidDisputeIdOrNotFound(disputeId);
+        if (dispute.disputeId != disputeId) revert DisputeResolution__InvalidDisputeIdOrNotFound();
         if (bytes(resolutionDetails).length == 0) revert DisputeResolution__InvalidResolutionDetails();
         if (dispute.status != DisputeStatus.Pending || dispute.status != DisputeStatus.Escalated) 
         revert DisputeResolution__DisputeStatusNotPendingOrEscalated();

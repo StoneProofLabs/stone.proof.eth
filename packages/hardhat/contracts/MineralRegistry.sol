@@ -4,53 +4,24 @@ pragma solidity ^0.8.20;
 /**
 * @title MineralRegistry contract
 * @author @0xJonaseb11 
-* It is a mineral factory contract. It is where new minerals are registered, updated and gotten till next step
-* Minerals are gotten from mineral registry contract and all other operations proceed right from there!!
-* It is the base contract of the supplychain
+* @dev It is a mineral factory contract. It is where new minerals are registered, updated and gotten till next step
+* @dev Minerals are gotten from mineral registry contract and all other operations proceed right from there!!
+* @notice It is the base contract of the supplychain
 */
 
+import { Errors } from "./Errors/Errors.sol";
 import { RolesManager } from "./RolesManager.sol";
 
-contract MineralRegistry is RolesManager {
 
-    /*//////////////////////////////////////////////////////////////
-                              CUSTOM ERRORS
-    //////////////////////////////////////////////////////////////*/
-
-    error MineralRegistry__InvalidMineralDetails();
-    error MineralRegistry__InvalidMineralIdOrNotFound(uint256 mineralId); // InvalidMineralIdLength
-
-    error MineralRegistry__MineralNotRegistered(uint256 mineralId);
-    error MineralRegistry__MineralAlreadyPurchased();
-    error MineralRegistry__MineralAlreadyAudited();
-    error MineralRegistry__MineralAlreadyInspected();
-    error MineralRegistry__MineralNotAudited();
-    error MineralRegistry__MineralNotInspected();
-
-    error MineralRegistry__InvalidMineralStatus();
-    error MineralRegistry__InvalidMineralName();
-    error MineralRegistry__InvalidMineralOrigin();
-    error MineralRegistry__InvalidMineralType();
-    error MineralRegistry__InvalidMineralWeight();
-    error MineralRegistry__InvalidMineralPurityPercentage();
-    error MineralRegistry__InvalidMineralStorageConditions();
-    error MineralRegistry__InvalidMineralLocation();
-    error MineralRegistry__InvalidReceivingPartyAddress();
-    error MineralRegistry__InvalidMineralDestination();
-    
-
-    error MineralNotReadyToTrade();
-
-
+contract MineralRegistry is Errors, RolesManager {
 
     RolesManager private rolesManager;
+    uint256 private nextMineralId = 1;
 
     // Events for transparency
     event MineralUpdated(uint256 indexed mineralId, string updatedField, string newValue, address indexed updatedBy, uint256 updatedAt);
     event MineralLocationUpdated(uint256 mineralId, string previousLocation, string newLocation, address indexed tranporter);
 
-
-    uint256 private nextMineralId = 1;
 
     /**
     * @dev connects RolesManager contract
@@ -70,12 +41,19 @@ contract MineralRegistry is RolesManager {
         _;
     }
 
-        /*//////////////////////////////////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
                           MINER ROLE FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
     /**
-    * @dev Register a new mineral - only by miner
+    * @dev Registers a new mineral - only by miner
+    * @dev Every mineral is assigned a unique mineralId
+    * @param _name Mineral name
+    * @param _mineralType The type of a mineral under registry
+    * @param _weight Mineral weight in string
+    * @param _origin Mineral Origin
+    * @param _purityPercentage Mineral purity in percentage
+    * @param _storageConditions Mineral Storage conditions
     * @notice Emits MineralRegistered event on successful registration
     */
     function _registerMineral(
@@ -87,30 +65,22 @@ contract MineralRegistry is RolesManager {
         string memory _storageConditions
         ) external onlyAuthorized(MINER_ROLE) {
 
-            // custom error handling
-
-            if (bytes(_name).length == 0) {
+            if (bytes(_name).length == 0) 
                 revert MineralRegistry__InvalidMineralName();
-            }
-            if (bytes(_origin).length == 0) {
+            if (bytes(_origin).length == 0) 
                 revert MineralRegistry__InvalidMineralOrigin();
-            }
 
-            if (bytes(_mineralType).length == 0) {
+            if (bytes(_mineralType).length == 0) 
                 revert MineralRegistry__InvalidMineralType();
-            }
             
-            if (bytes(_weight).length == 0) {
+            if (bytes(_weight).length == 0) 
                 revert MineralRegistry__InvalidMineralWeight();
-            }
 
-            if (_purityPercentage == 0) {
+            if (_purityPercentage == 0) 
                 revert MineralRegistry__InvalidMineralPurityPercentage();
-            }
 
-            if (bytes(_storageConditions).length == 0) {
+            if (bytes(_storageConditions).length == 0)
                 revert MineralRegistry__InvalidMineralStorageConditions();
-            }
 
         uint256 mineralId = nextMineralId++;
         mineralDetails[mineralId] = MineralDetails({
@@ -151,19 +121,17 @@ contract MineralRegistry is RolesManager {
 
     /**
     * @dev Updates mineral details - only by authorized roles
+    * @param mineralId The ID of the mineral under update
+    * @param newStatus New status of the mineral
     * @notice Emits MineralUpdated event on successful updation
     */
     function updateMineralStatus(uint256 mineralId, string memory newStatus) public {
 
-        // custom error handling
-
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
+        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) 
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
 
-        if (bytes(newStatus).length == 0) {
+        if (bytes(newStatus).length == 0)
             revert MineralRegistry__InvalidMineralStatus();
-        }
 
         if (
             !hasRoleAssigned(msg.sender, REFINER_ROLE) ||
@@ -191,9 +159,11 @@ contract MineralRegistry is RolesManager {
         emit MineralUpdated(mineralId, "Status", newStatus, msg.sender, block.timestamp);
     }
 
-        /*//////////////////////////////////////////////////////////////
+        /*////////////////////////////////////////////////////////////
+        =============================================================
                        TRANSPORTATION ENTERPRISE
-    //////////////////////////////////////////////////////////////*/
+        =============================================================               
+        ////////////////////////////////////////////////////////////*/
 
     /**
     * @dev updates the location of the mineral
@@ -219,54 +189,11 @@ contract MineralRegistry is RolesManager {
         emit MineralLocationUpdated(mineralId, previousLocation, newLocation, msg.sender);
     }
 
-    /**
-    * @dev Transfers ownership - only by the transporter
-    * @notice Emits MineralTransported on successful transfer 
-    */
-    function _transferMineral(uint256 mineralId, address _receivingParty, string memory _origin, string memory _destination) public onlyAuthorized(TRANSPORTER_ROLE) {
-
-        // custom error handling
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        } 
-
-        if (_receivingParty == address(0)) {
-            revert MineralRegistry__InvalidReceivingPartyAddress();
-        }
-
-        if (bytes(_origin).length == 0) {
-            revert MineralRegistry__InvalidMineralOrigin();
-        }
-
-        if (bytes(_destination).length == 0) {
-            revert MineralRegistry__InvalidMineralDestination();
-        }
-
-        address previousOwner = mineralDetails[mineralId].currentHandler;
-        previousOwner == msg.sender;
-        mineralDetails[mineralId].currentHandler = _receivingParty;
-        mineralDetails[mineralId].timestamp = block.timestamp;
-
-        // record mineral history
-        mineralHistories[mineralId].push(
-            MineralHistory({
-                id: mineralId,
-                fieldChanged: "Ownership",
-                newValue: string(abi.encodePacked("New Owner:", addressToString(_receivingParty))),
-                updatedBy: msg.sender,
-                timestamp: block.timestamp
-            })
-        );
-
-        emit MineralTransported(mineralId, previousOwner, _receivingParty, _origin, _destination , block.timestamp);
-    }
-
-
         /*//////////////////////////////////////////////////////////////
-        ///////////////////////////////////////////////////////////////
-        ////////   SUPPLYCHAIN VALIDATION ENTERPRISE  ////////////////
-        //////  //////////////////////////////////////////////////////
-      //////////////////////////////////////////////////////////////*/
+        ===============================================================
+                     SUPPLYCHAIN VALIDATION PORTAL
+        ===============================================================
+        //////////////////////////////////////////////////////////////*/
 
     /**
     * @dev retrieves mineral details of specified mineralId
@@ -285,7 +212,7 @@ contract MineralRegistry is RolesManager {
     * @dev retrieves fll history of a mineral (for audit retail)
     * @return history of specified mineral sing its mineralId
     */
-    function getMineralHistory(uint256 mineralId) public view returns(MineralHistory[] memory) {
+    function _getMineralHistory(uint256 mineralId) public /*override*/ view returns(MineralHistory[] memory) {
 
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
@@ -330,15 +257,15 @@ contract MineralRegistry is RolesManager {
 
 
 
-    /*//////////////////////////////////////////////////////////////
-                         AUDITOR FUNCTIONS
-    //////////////////////////////////////////////////////////////*/
+        /*///////////////////////////////////////////////
+                         AUDITOR
+        ///////////////////////////////////////////////*/
 
     /**
     * @dev enables an auditor to audit a mineral 
     * @notice Emits MineralAudited event on successful auditing of a mineral
     */
-    function _auditMineral(uint256 mineralId) public onlyAuthorized(AUDITOR_ROLE) {
+    function auditMineral(uint256 mineralId, bytes32 status) public /*override*/ onlyAuthorized(AUDITOR_ROLE) {
 
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
@@ -350,18 +277,18 @@ contract MineralRegistry is RolesManager {
 
         mineralDetails[mineralId].isAudited = true;
 
-        emit MineralAudited(mineralId, msg.sender, block.timestamp);
+        emit MineralAudited(mineralId, status, msg.sender, block.timestamp);
     }
 
-        /*//////////////////////////////////////////////////////////////
-                          INSPECTOR FUNCTIONS
-    //////////////////////////////////////////////////////////////*/
+        /*///////////////////////////////////////////////////////
+                          INSPECTOR
+        ///////////////////////////////////////////////////////*/
 
     /**
     * @dev enables only the inspector to audit a mineralDetails
     * @notice Emits MineralInspected even
     */
-    function _inspectMineral(uint256 mineralId) public onlyAuthorized(INSPECTOR_ROLE) {
+    function inspectMineral(uint256 mineralId) public onlyAuthorized(INSPECTOR_ROLE) {
 
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
@@ -373,14 +300,14 @@ contract MineralRegistry is RolesManager {
 
         mineralDetails[mineralId].isInspected = true;
 
-        emit MineralInspected(mineralId, msg.sender, "status", block.timestamp);
+        emit MineralInspected(mineralId,"status", msg.sender, block.timestamp);
     }
 
     /**
     * @dev checks audit and inspection status
     * Returns the status of both audit and inspection of mineral according to mineralId
     */
-    function _checkAuditAndInspectionStatus(uint256 mineralId) public onlyAuthorized(DEFAULT_ADMIN_ROLE) returns(bool isAudited, bool isInspected) {
+    function _checkAuditAndInspectionStatus(uint256 mineralId) public /*override*/ onlyAuthorized(DEFAULT_ADMIN_ROLE) returns(bool isAudited, bool isInspected) {
 
         if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
@@ -390,7 +317,7 @@ contract MineralRegistry is RolesManager {
             emit MineralReadyToTrade(mineralId, msg.sender, "TradingReady", block.timestamp);
 
         } else {
-            revert MineralNotReadyToTrade();
+            revert MineralNotReadyToTrade(mineralId);
         }
 
     // explicitly return audit and inspection results
@@ -401,7 +328,7 @@ contract MineralRegistry is RolesManager {
 
         /*//////////////////////////////////////////////////////////////
                             HELPER FUNCTIONS
-    //////////////////////////////////////////////////////////////*/
+        //////////////////////////////////////////////////////////////*/
 
     /**
     * @dev helper function to convert address to string
@@ -423,4 +350,4 @@ contract MineralRegistry is RolesManager {
         return string(str);
     }
     
-}
+}   

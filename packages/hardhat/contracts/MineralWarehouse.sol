@@ -11,29 +11,10 @@ import { RolesManager } from "./RolesManager.sol";
 import { MineralRegistry } from "./MineralRegistry.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
+import { Errors } from "./Errors/Errors.sol";
 
-contract MineralWarehouse is RolesManager, MineralRegistry {
+contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
 
-    /*//////////////////////////////////////////////////////////////
-                             CUSTOM ERRORS
-    //////////////////////////////////////////////////////////////*/
-
-    error MineralWarehouse__InvalidTokenAddress(address tokenAddress);
-    error MineralWarehouse__MineralNotRefined(uint256 mineralId);
-    error MineralWarehouse__InvalidNumberOfPrices();
-    error MineralWarehouse__UnacceptedToken(address tokenAddress);
-    error MineralWarehouse__UnacceptedTokens(address[] tokenAddresses);
-    error MineralWarehouse__MineralNotMarketReady(uint256 mineralId);
-    error MineralWarehouse__InvalidMineralPrice();
-    error MineralWarehouse__MineralAlreadySold(uint256 mineralId);
-    error MineralWarehouse__UnauthorizedSeller(address seller);
-    error MineralNotMarketReady(uint256 mineralId);
-    error MineralWarehouse__IncorrectETHAmount();
-    error MineralWarehouse__ETHTransferFailed();
-    error MineralWarehouse__InvalidTokenPrice();
-    error InvalidPaymentMethods();
-    error MineralWarehouse__MineralNotFoundInWarehouse(uint256 mineralId);
-    error ERC20TokenTransferFailed(address token, uint256 tokenAmount);
 
     RolesManager private rolesManager;
     MineralRegistry private mineralRegistry;
@@ -152,10 +133,17 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
         if (seller != mineral.refiner) revert MineralWarehouse__UnauthorizedSeller(seller);
 
         mineral.price = _price;
+        seller = mineral.refiner; // checks needed here ASAP
         mineral.isForSale = true;
 
         emit MineralListedForSale(_mineralId, _price, seller);
     }
+
+        /*//////////////////////////////////////////////////////////////
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        !!!!     ATTENTION HERE - FUNCTION NEEDS AUDITING         !!!!!
+        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!        
+        //////////////////////////////////////////////////////////////*/
 
       /**
     * @dev Allows buyers to purchase minerals with ETH or an accepted ERC-20 token
@@ -163,7 +151,7 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
     function purhase_mineral(uint256 _mineralId, PaymentMethod method, address token) public payable  restrictedToRole(BUYER_ROLE) {
         StoredMineral storage mineral = warehouse[_mineralId];
         address seller = mineral.refiner;
-        address buyer = mineral.buyer;
+        // address buyer = mineral.buyer;
 
         if(mineral.isStored == false) revert MineralWarehouse__MineralNotFoundInWarehouse(_mineralId);
         if (mineral.isSold == true) revert MineralWarehouse__MineralAlreadySold(_mineralId);
@@ -186,13 +174,12 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
         } else {
             revert InvalidPaymentMethods();
         }
+
         // mineral.price = _price;
         mineral.isSold = true;
         mineral.isForSale = false;
         mineral.soldAt = block.timestamp;
         mineral.buyer = msg.sender;
-
-        // mineral.isForSale = true;
 
         // emit MineralListedForSale(_mineralId, _price, msg.sender);
         emit MineralSold__Purchase(_mineralId, msg.sender, seller, block.timestamp);

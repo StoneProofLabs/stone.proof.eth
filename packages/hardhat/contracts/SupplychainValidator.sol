@@ -16,14 +16,10 @@ import { PrivacyGuard } from "./PrivacyGuard.sol";
 import { Tokenization } from "./Tokenization.sol";
 import { TransactionLog } from "./TransactionLog.sol";
 import { MineralTransporter } from "./MineralTransporter.sol";
+import { Errors } from "./Errors/Errors.sol";
 
-contract SupplychainValidator is RolesManager, MineralRegistry {
+contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
 
-    /*//////////////////////////////////////////////////////////////
-                             CUSTOM ERRORS
-    //////////////////////////////////////////////////////////////*/
-    
-    error SupplychainValidator__InvalidMineralIdOrNotFound(uint256 mineralId);
 
     RolesManager private rolesManager;
     MineralRegistry private mineralRegistry;
@@ -71,6 +67,17 @@ contract SupplychainValidator is RolesManager, MineralRegistry {
         mineralTransporter = MineralTransporter(_mineralTransporter);
     }
 
+        /*//////////////////////////////////////////////////////////////
+        ===============================================================
+                              SUPPLYCHAIN VALIDATION PORTAL
+        ===============================================================
+        //////////////////////////////////////////////////////////////*/
+
+
+            /*/////////////////////////////////////////
+                              MINER
+            /////////////////////////////////////////*/
+
     /**
     * @dev validates mining operation
     * @notice Emits OperationValidated event fon successful operation validation
@@ -80,6 +87,11 @@ contract SupplychainValidator is RolesManager, MineralRegistry {
 
         emit OperationValidated(msg.sender, "Mining", block.timestamp);
     }
+
+
+            /*/////////////////////////////////////////
+                              REFINER
+            /////////////////////////////////////////*/
 
     /**
     * @dev validates refining operation
@@ -92,20 +104,28 @@ contract SupplychainValidator is RolesManager, MineralRegistry {
          OperationValidated(msg.sender, "Refining", block.timestamp);
     }
 
+
+
+            /*/////////////////////////////////////////
+                              TRASPORTER
+            /////////////////////////////////////////*/
+
     /**
     * @dev validates transportation operation
     * @notice Emits OperationValidated even on successful validation
     */
-
-    /////////////////////////////////////////////////////////
-    //////// Handle Mineral Transportation validation //////
-    ///////////////////////////////////////////////////////
     function validateTransportationOperation(uint256 mineralId, address to) external onlyAuthorizedActor(TRANSPORTER_ROLE) onlyValidMineral(mineralId) {
         tokenization.safeTransferFrom(msg.sender, to, mineralId);
         transactionLog.recordOperation(msg.sender, "Transportation", mineralId);
 
         emit OperationValidated(msg.sender, "Transportation", block.timestamp);
     }
+
+
+
+            /*/////////////////////////////////////////
+                              BUYER
+            /////////////////////////////////////////*/
 
     /**
     * @dev validate purchase operation
@@ -117,6 +137,12 @@ contract SupplychainValidator is RolesManager, MineralRegistry {
 
         emit OperationValidated(msg.sender, "Purchase", block.timestamp);
     }
+
+
+
+            /*/////////////////////////////////////////
+                              INSPECTOR
+            /////////////////////////////////////////*/
 
     /**
     * @dev validates Inspection operation
@@ -150,7 +176,8 @@ contract SupplychainValidator is RolesManager, MineralRegistry {
         // check for mineral transaction history
         TransactionLog.Transaction[] memory transactions = transactionLog.getTransactionsByMineral(mineralId);
         if (transactions.length == 0) {
-            return (false, "No transaction history foung for specified mineral");
+            // revert SupplychainValidator__InvalidMineralTransactionHistory();
+            return (false, "No transaction history found for specified mineral");
         }
 
         // validate ownership chain in transactions
@@ -158,12 +185,15 @@ contract SupplychainValidator is RolesManager, MineralRegistry {
         for (uint256 i = transactions.length; i > 0; i--) {
             TransactionLog.Transaction memory transaction = transactions[i - 1];
             if (transaction.receiver != currentOwner) {
+                // revert SupplychainValidator__InvalidMineralOwnershipChain();
                 return (false, "Invalid ownership chain in transactions!!");
+
             }
             currentOwner = transaction.sender;
         }
 
         if (currentOwner != details.registeredBy) {
+            // revert SupplychainValidator__InvalidMineralOwnershipChain();
             return(false, "Ownership chain does not lead back to the original registrant!!");
         }
 

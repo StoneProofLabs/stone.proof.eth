@@ -9,15 +9,10 @@ pragma solidity ^0.8.20;
 * Helps to keep track of actities in the chain to enforce traceability
 */
 import { RolesManager } from "./RolesManager.sol";
+import { Errors } from "./Errors/Errors.sol";
 
-contract TransactionLog is RolesManager {
+contract TransactionLog is Errors, RolesManager {
 
-    /*//////////////////////////////////////////////////////////////
-                             CUSTOM ERRORS
-    //////////////////////////////////////////////////////////////*/
-    error TransactionLog__InvalidOperationType();
-    error TransactionLog__InvalidOperationIndex(uint256 index);
-    error TransactionLog__InvalidTransactionIdOrNotFound(uint256 transactionId);
 
     RolesManager private rolesManager;
 
