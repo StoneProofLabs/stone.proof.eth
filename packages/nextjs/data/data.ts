@@ -245,3 +245,38 @@ export const reports = [
     date: "20/4/2025",
   },
 ];
+
+export const notifications = [
+  {
+    id: 1,
+    type: "error" as "error" | "success" | "warning" | "info",
+    title: "Security Alert",
+    message:
+      "An unauthorized user attempted to access Storage Unit #3 on April 2, 2025, at 14:37 UTC. The system has automatically blocked the request.",
+    visible: true,
+  },
+  {
+    id: 2,
+    type: "success" as "error" | "success" | "warning" | "info",
+    title: "Mineral Registration Success",
+    message:
+      "Your mineral batch (#MB-2025-0478) has been successfully recorded on the blockchain. The unique transaction ID ensures full traceability and security.",
+    visible: true,
+  },
+  {
+    id: 3,
+    type: "warning" as "error" | "success" | "warning" | "info",
+    title: "Impure Mineral Supplied",
+    message:
+      "A recently supplied mineral batch (#MB-2025-0521) has been flagged for impurity based on system analysis and quality checks. Immediate review is required to ensure compliance with industry standards.",
+    visible: true,
+  },
+  {
+    id: 4,
+    type: "info" as "error" | "success" | "warning" | "info",
+    title: "System Maintenance",
+    message:
+      "Routine maintenance for blockchain nodes is scheduled to occur on April 5, 2025, from 02:00 - 04:00 UTC. During this period, transaction processing may be temporarily delayed, but data integrity will remain unaffected.",
+    visible: true,
+  },
+];
