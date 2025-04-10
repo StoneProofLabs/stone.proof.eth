@@ -3,17 +3,17 @@
 import Logo from "~~/components/Logo";
 import { useDynamicPathText } from "~~/utils/dashboard/getWorkspace";
 
-// Updated import
-
 export default function Page() {
   const { dynamicWorkspace } = useDynamicPathText();
 
   return (
-    <div>
-      <Logo />
-      <div className="flex flex-col gap-1">
-        <h1>Stone.Proof</h1>
-        <p>{dynamicWorkspace}</p>
+    <div className="flex gap-[12px] items-center text-white">
+      <div>
+        <Logo />
+      </div>
+      <div className="leading-none">
+        <h1 className="font-bold text-lg">Stone.Proof</h1>
+        <h1 className="text-[#979AA0] mt-0">{dynamicWorkspace}</h1>
       </div>
     </div>
   );
