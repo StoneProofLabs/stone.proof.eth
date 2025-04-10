@@ -4,163 +4,19 @@ import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralListTable from "~~/components/dashboard/minerals/mineralListTable/mineralList";
+import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
+import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
+import { demands, mineralsList, reports, shipments } from "~~/data/data";
 
-type Shipment = {
+export type Shipment = {
   id: string;
   mineralName: string;
   mineralImage: string;
   timeAgo: string;
   status: "in-transit" | "completed";
 };
-
-const mineralsList = [
-  {
-    id: 1,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 3000,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Sri Lanka",
-    status: "Raw",
-    purity: 75,
-    image: "/dashboard/gold.jpeg",
-  },
-  {
-    id: 2,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 200,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Mauritania",
-    status: "In-factory",
-    purity: 50,
-    image: "/dashboard/cobalt.jpeg",
-  },
-  {
-    id: 3,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 2500,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Faroe Islands",
-    status: "Refined",
-    purity: 75,
-    image: "/dashboard/copper.jpeg",
-  },
-  {
-    id: 4,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 305.5,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Kuwait",
-    status: "In-transit",
-    purity: 25,
-    image: "/dashboard/gold.jpeg",
-  },
-  {
-    id: 5,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 4000,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Italy",
-    status: "Refined",
-    purity: 75,
-    image: "/dashboard/cobalt.jpeg",
-  },
-  {
-    id: 6,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 4000,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Kuwait",
-    status: "In-factory",
-    purity: 50,
-    image: "/dashboard/copper.jpeg",
-  },
-  {
-    id: 7,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 4000,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Singapore",
-    status: "In-transit",
-    purity: 75,
-    image: "/dashboard/gold.jpeg",
-  },
-  {
-    id: 8,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 1500,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Brazil",
-    status: "Raw",
-    purity: 90,
-    image: "/dashboard/cobalt.jpeg",
-  },
-  {
-    id: 9,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 750,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Australia",
-    status: "Refined",
-    purity: 85,
-    image: "/dashboard/copper.jpeg",
-  },
-  {
-    id: 10,
-    name: "mineral-name",
-    code: "#ffff-eeee-dddd-3333",
-    weight: 2200,
-    weightUnit: "KG",
-    lbsWeight: 34,
-    origin: "Canada",
-    status: "In-transit",
-    purity: 60,
-    image: "/dashboard/gold.jpeg",
-  },
-];
-
-const shipments: Shipment[] = [
-  {
-    id: "1",
-    mineralName: "Gold",
-    mineralImage: "/dashboard/gold.jpeg",
-    timeAgo: "16 hrs ago",
-    status: "in-transit",
-  },
-  {
-    id: "2",
-    mineralName: "Cobalt",
-    mineralImage: "/dashboard/cobalt.jpeg",
-    timeAgo: "3 days ago",
-    status: "completed",
-  },
-  {
-    id: "3",
-    mineralName: "Copper",
-    mineralImage: "/dashboard/copper.jpeg",
-    timeAgo: "2 weeks ago",
-    status: "completed",
-  },
-];
 
 export default function Page() {
   return (
@@ -238,6 +94,23 @@ export default function Page() {
 
         {/* the table */}
         <MineralListTable minerals={mineralsList} />
+      </div>
+
+      {/* the other metric cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
+
+        <TopDemands
+          demands={demands}
+          onRefresh={() => console.log("Refresh demands")}
+          onAddDemand={id => console.log("Add demand", id)}
+        />
+
+        <MineralReports
+          reports={reports}
+          onRefresh={() => console.log("Refresh reports")}
+          onViewDetails={id => console.log("View report details", id)}
+        />
       </div>
     </div>
   );
