@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
-import MineralListTable from "~~/components/dashboard/minerals/mineralList";
+import MineralListTable from "~~/components/dashboard/minerals/mineralListTable/mineralList";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import Search from "~~/components/dashboard/search";
 
@@ -14,6 +14,129 @@ type Shipment = {
   timeAgo: string;
   status: "in-transit" | "completed";
 };
+
+const mineralsList = [
+  {
+    id: 1,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 3000,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Sri Lanka",
+    status: "Raw",
+    purity: 75,
+    image: "/dashboard/gold.jpeg",
+  },
+  {
+    id: 2,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 200,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Mauritania",
+    status: "In-factory",
+    purity: 50,
+    image: "/dashboard/cobalt.jpeg",
+  },
+  {
+    id: 3,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 2500,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Faroe Islands",
+    status: "Refined",
+    purity: 75,
+    image: "/dashboard/copper.jpeg",
+  },
+  {
+    id: 4,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 305.5,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Kuwait",
+    status: "In-transit",
+    purity: 25,
+    image: "/dashboard/gold.jpeg",
+  },
+  {
+    id: 5,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 4000,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Italy",
+    status: "Refined",
+    purity: 75,
+    image: "/dashboard/cobalt.jpeg",
+  },
+  {
+    id: 6,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 4000,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Kuwait",
+    status: "In-factory",
+    purity: 50,
+    image: "/dashboard/copper.jpeg",
+  },
+  {
+    id: 7,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 4000,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Singapore",
+    status: "In-transit",
+    purity: 75,
+    image: "/dashboard/gold.jpeg",
+  },
+  {
+    id: 8,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 1500,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Brazil",
+    status: "Raw",
+    purity: 90,
+    image: "/dashboard/cobalt.jpeg",
+  },
+  {
+    id: 9,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 750,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Australia",
+    status: "Refined",
+    purity: 85,
+    image: "/dashboard/copper.jpeg",
+  },
+  {
+    id: 10,
+    name: "mineral-name",
+    code: "#ffff-eeee-dddd-3333",
+    weight: 2200,
+    weightUnit: "KG",
+    lbsWeight: 34,
+    origin: "Canada",
+    status: "In-transit",
+    purity: 60,
+    image: "/dashboard/gold.jpeg",
+  },
+];
 
 const shipments: Shipment[] = [
   {
@@ -114,7 +237,7 @@ export default function Page() {
         </div>
 
         {/* the table */}
-        <MineralListTable />
+        <MineralListTable minerals={mineralsList} />
       </div>
     </div>
   );
