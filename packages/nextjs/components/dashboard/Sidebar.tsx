@@ -25,7 +25,7 @@ export default function Sidebar({ basePath }: SidebarProps) {
   const sidebarItems: SidebarItem[] = [
     {
       name: "Overview",
-      path: `${basePath}`,
+      path: `${basePath}/overview`,
       icon: "/dashboard/icon_set/overview.svg",
       iconAlt: "Overview icon",
     },
@@ -57,7 +57,7 @@ export default function Sidebar({ basePath }: SidebarProps) {
 
   // Check if item is active
   const isActive = (itemPath: string) => {
-    return pathname === itemPath || pathname?.startsWith(`${itemPath}/`);
+    return pathname === itemPath;
   };
 
   return (
