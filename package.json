@@ -67,7 +67,6 @@
     "lint-staged": "~13.2.2",
     "prettier": "^3.5.3"
   },
-
   "engines": {
     "node": ">=18.18.3"
   },
@@ -82,5 +81,6 @@
     "chalk@4.1.2": {
       "unplugged": true
     }
-  }
+  },
+  "packageManager": "yarn@4.8.1+sha512.bc946f2a022d7a1a38adfc15b36a66a3807a67629789496c3714dd1703d2e6c6b1c69ff9ec3b43141ac7a1dd853b7685638eb0074300386a59c18df351ef8ff6"
 }
