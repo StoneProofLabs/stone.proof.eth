@@ -1,4 +1,5 @@
 import { Inter } from "next/font/google";
+import Sidebar from "~~/components/dashboard/Sidebar";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -7,5 +8,10 @@ const inter = Inter({
 });
 
 export default function MinerLayout({ children }: { children: React.ReactNode }) {
-  return <div className={`${inter.variable} font-sans bg-lightBlack min-h-screen`}>{children}</div>;
+  return (
+    <div className={`${inter.variable} font-sans bg-lightBlack flex gap-2 text-white`}>
+      <Sidebar />
+      {children}
+    </div>
+  );
 }
