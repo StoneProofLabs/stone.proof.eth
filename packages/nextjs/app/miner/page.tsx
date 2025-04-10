@@ -1,4 +1,5 @@
 import Icon from "~~/components/dashboard/Icon";
+import StatsCard from "~~/components/dashboard/overview/statsCard";
 
 // dummy user
 interface User {
@@ -9,9 +10,51 @@ interface User {
 const user: User = {
   name: "Brian Ford",
 };
+
+// some dummy chart data
+const mineralsData = [
+  { value: 20 },
+  { value: 30 },
+  { value: 40 },
+  { value: 80 },
+  { value: 100 },
+  { value: 90 },
+  { value: 70 },
+  { value: 60 },
+  { value: 80 },
+  { value: 70 },
+];
+
+const transfersData = [
+  { value: 30 },
+  { value: 40 },
+  { value: 60 },
+  { value: 90 },
+  { value: 100 },
+  { value: 90 },
+  { value: 80 },
+  { value: 60 },
+  { value: 70 },
+  { value: 60 },
+];
+
+const shipmentsData = [
+  { value: 40 },
+  { value: 50 },
+  { value: 70 },
+  { value: 90 },
+  { value: 100 },
+  { value: 80 },
+  { value: 60 },
+  { value: 70 },
+  { value: 80 },
+  { value: 70 },
+];
+
 export default function Page() {
   return (
-    <div className="px-10">
+    <div className="px-10 flex flex-col gap-10">
+      {/* the welcome message */}
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <p className="text-[28px] font-bold m-0 leading-tight">Hey there, {user.name}!</p>
@@ -35,6 +78,23 @@ export default function Page() {
           <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
           </button>
+        </div>
+      </div>
+
+      {/* the stats cards */}
+      <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StatsCard
+            title="Total Minerals Supplied"
+            value="30"
+            tagName="Coltan"
+            chartData={mineralsData}
+            color="blue"
+          />
+
+          <StatsCard title="Completed Transfers" value="27" tagName="Gold" chartData={transfersData} color="green" />
+
+          <StatsCard title="Active Shipments" value="27" tagName="Copper" chartData={shipmentsData} color="red" />
         </div>
       </div>
     </div>
