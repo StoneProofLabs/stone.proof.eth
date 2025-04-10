@@ -1,4 +1,5 @@
 import Icon from "~~/components/dashboard/Icon";
+import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
 import StatsCard from "~~/components/dashboard/overview/statsCard";
 
 // dummy user
@@ -50,6 +51,21 @@ const shipmentsData = [
   { value: 80 },
   { value: 70 },
 ];
+// dummy graphdata
+const supplyData = [
+  { month: "Apr", completed: 18000, inTransit: 0 },
+  { month: "May", completed: 14000, inTransit: 0 },
+  { month: "Jun", completed: 22000, inTransit: 0 },
+  { month: "Jul", completed: 25000, inTransit: 0 },
+  { month: "Aug", completed: 11000, inTransit: 0 },
+  { month: "Sep", completed: 30000, inTransit: 0 },
+  { month: "Oct", completed: 25000, inTransit: 0 },
+  { month: "Nov", completed: 17000, inTransit: 0 },
+  { month: "Dec", completed: 22000, inTransit: 0 },
+  { month: "Jan", completed: 20000, inTransit: 0 },
+  { month: "Feb", completed: 15000, inTransit: 0 },
+  { month: "Mar", completed: 30000, inTransit: 0 },
+];
 
 export default function Page() {
   return (
@@ -97,6 +113,9 @@ export default function Page() {
           <StatsCard title="Active Shipments" value="27" tagName="Copper" chartData={shipmentsData} color="red" />
         </div>
       </div>
+
+      {/* the mineral supply graph */}
+      <MineralSupplyGraph data={supplyData} />
     </div>
   );
 }
