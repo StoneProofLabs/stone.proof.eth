@@ -280,3 +280,200 @@ export const notifications = [
     visible: true,
   },
 ];
+
+export interface Notification {
+  id: number;
+  type: "success" | "warning" | "info" | "shipment";
+  title: string;
+  date: string;
+  content: string;
+  actions?: {
+    label: string;
+    primary: boolean;
+    onClick: () => void;
+  }[];
+}
+
+export const myNotifications: Notification[] = [
+  {
+    id: 1,
+    type: "success",
+    title: "Payment Processed",
+    date: "Today, 09:42 AM",
+    content: "Your payment of $29.99 was processed successfully",
+    actions: [
+      { label: "View Receipt", primary: true, onClick: () => {} },
+      { label: "Dismiss", primary: false, onClick: () => {} },
+    ],
+  },
+  {
+    id: 2,
+    type: "warning",
+    title: "Login Failed",
+    date: "Today, 08:15 AM",
+    content: "Unusual login attempt detected from new device",
+    actions: [{ label: "Secure Account", primary: true, onClick: () => {} }],
+  },
+  {
+    id: 3,
+    type: "warning",
+    title: "Storage Almost Full",
+    date: "Yesterday, 03:22 PM",
+    content: "You've used 90% of your storage quota",
+    actions: [
+      { label: "Upgrade", primary: true, onClick: () => {} },
+      { label: "Manage Files", primary: false, onClick: () => {} },
+    ],
+  },
+  {
+    id: 4,
+    type: "info",
+    title: "New Message",
+    date: "Yesterday, 11:05 AM",
+    content: "You have 3 unread messages from your team",
+    actions: [{ label: "View Messages", primary: true, onClick: () => {} }],
+  },
+  {
+    id: 5,
+    type: "shipment",
+    title: "Order Shipped",
+    date: "Mar 15, 02:30 PM",
+    content: "Your order #45892 has left our warehouse",
+    actions: [{ label: "Track Package", primary: true, onClick: () => {} }],
+  },
+  {
+    id: 6,
+    type: "warning",
+    title: "Connection Lost",
+    date: "Mar 14, 09:18 AM",
+    content: "Your device lost connection to the server",
+    actions: [
+      { label: "Reconnect", primary: true, onClick: () => {} },
+      { label: "Report Issue", primary: false, onClick: () => {} },
+    ],
+  },
+  {
+    id: 7,
+    type: "success",
+    title: "Account Verified",
+    date: "Mar 13, 04:45 PM",
+    content: "Your email verification was successful",
+    actions: [],
+  },
+  {
+    id: 8,
+    type: "info",
+    title: "Maintenance Scheduled",
+    date: "Mar 12, 10:00 AM",
+    content: "System maintenance scheduled for tomorrow 2-4 AM",
+    actions: [{ label: "View Details", primary: false, onClick: () => {} }],
+  },
+  {
+    id: 9,
+    type: "warning",
+    title: "Password Expiring",
+    date: "Mar 11, 01:15 PM",
+    content: "Your password will expire in 7 days",
+    actions: [{ label: "Change Password", primary: true, onClick: () => {} }],
+  },
+  {
+    id: 10,
+    type: "success",
+    title: "New Connection",
+    date: "Mar 10, 11:30 AM",
+    content: "John Doe accepted your connection request",
+    actions: [{ label: "View Profile", primary: false, onClick: () => {} }],
+  },
+  {
+    id: 11,
+    type: "warning",
+    title: "Payment Declined",
+    date: "Mar 9, 03:42 PM",
+    content: "Your card ending in 4242 was declined",
+    actions: [
+      { label: "Update Payment", primary: true, onClick: () => {} },
+      { label: "Try Again", primary: false, onClick: () => {} },
+    ],
+  },
+  {
+    id: 12,
+    type: "info",
+    title: "New Feature Available",
+    date: "Mar 8, 09:15 AM",
+    content: "Try our new dashboard analytics feature",
+    actions: [{ label: "Learn More", primary: true, onClick: () => {} }],
+  },
+  {
+    id: 13,
+    type: "success",
+    title: "Subscription Renewed",
+    date: "Mar 7, 07:22 PM",
+    content: "Your premium subscription was renewed automatically",
+    actions: [],
+  },
+  {
+    id: 14,
+    type: "warning",
+    title: "Unusual Activity",
+    date: "Mar 6, 02:05 AM",
+    content: "We detected unusual activity in your account",
+    actions: [
+      { label: "Secure Account", primary: true, onClick: () => {} },
+      { label: "Ignore", primary: false, onClick: () => {} },
+    ],
+  },
+  {
+    id: 15,
+    type: "info",
+    title: "New Update Available",
+    date: "Mar 5, 05:30 PM",
+    content: "Version 2.5.0 is ready to install",
+    actions: [
+      { label: "Update Now", primary: true, onClick: () => {} },
+      { label: "Remind Later", primary: false, onClick: () => {} },
+    ],
+  },
+  {
+    id: 16,
+    type: "shipment",
+    title: "Shipment Delayed",
+    date: "Mar 4, 11:45 AM",
+    content: "Your shipment #SH-4892 will arrive 2 days late",
+    actions: [{ label: "Check Status", primary: true, onClick: () => {} }],
+  },
+  {
+    id: 17,
+    type: "success",
+    title: "Document Signed",
+    date: "Mar 3, 10:18 AM",
+    content: "Your contract #CT-5892 was signed successfully",
+    actions: [{ label: "View Document", primary: true, onClick: () => {} }],
+  },
+  {
+    id: 18,
+    type: "info",
+    title: "Team Invitation",
+    date: "Mar 2, 04:30 PM",
+    content: "You've been invited to join Project Aurora team",
+    actions: [
+      { label: "Accept", primary: true, onClick: () => {} },
+      { label: "Decline", primary: false, onClick: () => {} },
+    ],
+  },
+  {
+    id: 19,
+    type: "warning",
+    title: "Billing Information",
+    date: "Mar 1, 01:05 PM",
+    content: "Your credit card will expire next month",
+    actions: [{ label: "Update Card", primary: true, onClick: () => {} }],
+  },
+  {
+    id: 20,
+    type: "shipment",
+    title: "Shipment Arrived",
+    date: "Feb 28, 08:15 AM",
+    content: "Your package #PKG-7821 has been delivered",
+    actions: [{ label: "View Details", primary: true, onClick: () => {} }],
+  },
+];
