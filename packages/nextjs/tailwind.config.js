@@ -102,6 +102,7 @@ module.exports = {
         blockchain: "#FFD700",
         darkBlack: "#060910", // the dark black for the sidebar
         lightBlack: "#0C0F14", // the light black for the children
+        accentBlue: "#0A77FF", // that blue always poppin up
 
         crystal: {
           100: "#E0F2FE", // Light crystal blue

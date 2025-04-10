@@ -10,7 +10,7 @@ const inter = Inter({
 export default function MinerLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className={`${inter.variable} font-sans bg-lightBlack flex gap-2 text-white`}>
-      <Sidebar />
+      <Sidebar basePath="/miner" />
       {children}
     </div>
   );

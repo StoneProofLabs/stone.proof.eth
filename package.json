@@ -75,7 +75,8 @@
     "chalk": "4.1.2",
     "framer-motion": "^12.6.2",
     "lucide-react": "^0.484.0",
-    "postcss": "^8.5.3"
+    "postcss": "^8.5.3",
+    "recharts": "^2.15.2"
   },
   "dependenciesMeta": {
     "chalk@4.1.2": {
