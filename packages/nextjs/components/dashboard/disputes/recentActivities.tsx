@@ -24,7 +24,7 @@ interface NotificationItemProps {
   toggleExpanded: (id: number) => void;
 }
 
-// StatusIcon component for different notification types
+// the status icons
 const StatusIcon = ({ type }: StatusIconProps) => {
   switch (type) {
     case "success":
@@ -83,7 +83,7 @@ const StatusIcon = ({ type }: StatusIconProps) => {
   }
 };
 
-// NotificationItem component
+// notificationItem component
 const NotificationItem = ({ notification, expanded, toggleExpanded }: NotificationItemProps) => {
   return (
     <div className="bg-[#252525] border border-[#323539] rounded-lg mb-3">
@@ -129,7 +129,7 @@ const NotificationItem = ({ notification, expanded, toggleExpanded }: Notificati
   );
 };
 
-// Main NotificationList component
+// main notificationList card
 export default function NotificationList({
   notifications: initialNotifications = [],
 }: {

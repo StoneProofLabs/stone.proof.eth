@@ -75,7 +75,7 @@ export default function Page() {
           />
 
           <StatsCard
-            title="Succeeded contrats"
+            title="Succeeded contracts"
             value="27"
             tagName="Refining"
             chartData={transfersData}
