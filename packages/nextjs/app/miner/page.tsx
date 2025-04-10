@@ -1,6 +1,11 @@
+"use client";
+
 import Icon from "~~/components/dashboard/Icon";
+import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
+import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import StatsCard from "~~/components/dashboard/overview/statsCard";
+import TopDemands from "~~/components/dashboard/overview/topDemands";
 
 // dummy user
 interface User {
@@ -67,6 +72,82 @@ const supplyData = [
   { month: "Mar", completed: 30000, inTransit: 0 },
 ];
 
+type Shipment = {
+  id: string;
+  mineralName: string;
+  mineralImage: string;
+  timeAgo: string;
+  status: "in-transit" | "completed";
+};
+
+const shipments: Shipment[] = [
+  {
+    id: "1",
+    mineralName: "Gold",
+    mineralImage: "/dashboard/gold.jpeg",
+    timeAgo: "16 hrs ago",
+    status: "in-transit",
+  },
+  {
+    id: "2",
+    mineralName: "Cobalt",
+    mineralImage: "/dashboard/cobalt.jpeg",
+    timeAgo: "3 days ago",
+    status: "completed",
+  },
+  {
+    id: "3",
+    mineralName: "Copper",
+    mineralImage: "/dashboard/copper.jpeg",
+    timeAgo: "2 weeks ago",
+    status: "completed",
+  },
+];
+
+// Sample data for top demands
+const demands = [
+  {
+    id: "1",
+    mineralName: "Cobalt",
+    date: "Jan 23 2023",
+    icon: "/dashboard/cobalt.jpeg",
+  },
+  {
+    id: "2",
+    mineralName: "Coltan",
+    date: "Jun 15 2023",
+    icon: "/dashboard/copper.jpeg",
+  },
+  {
+    id: "3",
+    mineralName: "Gold",
+    date: "Jan 15 2023",
+    icon: "/dashboard/gold.jpeg",
+  },
+];
+
+// Sample data for mineral reports
+const reports = [
+  {
+    id: "1",
+    title: "Impurity Conflict",
+    mineral: "Gold",
+    date: "20/4/2025",
+  },
+  {
+    id: "2",
+    title: "Incomplete Quantity",
+    mineral: "Iron",
+    date: "20/4/2025",
+  },
+  {
+    id: "3",
+    title: "Impurity Conflict",
+    mineral: "Coltan",
+    date: "20/4/2025",
+  },
+];
+
 export default function Page() {
   return (
     <div className="px-10 flex flex-col gap-10">
@@ -116,6 +197,23 @@ export default function Page() {
 
       {/* the mineral supply graph */}
       <MineralSupplyGraph data={supplyData} />
+
+      {/* the other metric cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
+
+        <TopDemands
+          demands={demands}
+          onRefresh={() => console.log("Refresh demands")}
+          onAddDemand={id => console.log("Add demand", id)}
+        />
+
+        <MineralReports
+          reports={reports}
+          onRefresh={() => console.log("Refresh reports")}
+          onViewDetails={id => console.log("View report details", id)}
+        />
+      </div>
     </div>
   );
 }
