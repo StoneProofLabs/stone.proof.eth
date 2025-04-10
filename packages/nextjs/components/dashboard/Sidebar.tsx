@@ -61,7 +61,7 @@ export default function Sidebar({ basePath }: SidebarProps) {
   };
 
   return (
-    <div className="bg-darkBlack min-h-screen w-[280px] flex flex-col gap-10">
+    <div className="bg-darkBlack min-h-screen w-[20vw] flex flex-col gap-10">
       {/* Logo */}
       <div className="flex justify-between px-5 py-[16px]">
         <StoneProof />
