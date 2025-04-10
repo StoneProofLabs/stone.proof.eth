@@ -35,7 +35,7 @@ export const metadata: Metadata = {
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <html suppressHydrationWarning className={`${montserrat.variable} min-h-screen`}>
-      <body className="min-h-screen bg-gradient-to-br from-[#111B2B] via-[#2C3C54] to-[#111B2B]">
+      <body>
         <ThemeProvider enableSystem>
           <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
         </ThemeProvider>

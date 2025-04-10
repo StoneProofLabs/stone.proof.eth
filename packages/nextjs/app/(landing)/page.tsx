@@ -2,8 +2,6 @@
 
 // import { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import { Footer } from "~~/components/Footer";
-import { Header } from "~~/components/Header";
 // import { Loader } from "~~/components/Loader/Loader";
 import { AboutSection } from "~~/components/landing/AboutSection";
 import { FeaturesSection } from "~~/components/landing/FeaturesSection";
@@ -28,19 +26,14 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <div className="flex flex-col min-h-screen bg-transparent">
-        <Header />
-        <main className="relative flex flex-col flex-1">
-          <div className="flex items-center flex-col flex-grow">
-            <AboutSection />
-            <ServicesSection />
-            <SecuritySection />
-            <FeaturesSection />
-            <Subscribe />
-          </div>
-        </main>
-        <Footer />
+      <div className="flex items-center flex-col flex-grow">
+        <AboutSection />
+        <ServicesSection />
+        <SecuritySection />
+        <FeaturesSection />
+        <Subscribe />
       </div>
+      ;
     </>
   );
 };
