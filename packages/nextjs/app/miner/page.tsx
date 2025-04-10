@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
@@ -168,9 +169,12 @@ export default function Page() {
             </span>
           </button>
 
-          <button className="bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center">
+          <Link
+            href={"/miner/registerMineral"}
+            className="bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center"
+          >
             <h1 className="translate-y-[4px]">Register Mineral</h1>
-          </button>
+          </Link>
 
           <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />

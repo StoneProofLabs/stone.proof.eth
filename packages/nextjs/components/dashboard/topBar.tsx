@@ -26,6 +26,13 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
   const breadcrumbItems = useMemo(() => {
     if (!pathname) return [];
 
+    if (pathname.includes("registerMineral")) {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Register Mineral", path: pathname },
+      ];
+    }
+
     const activeItem = sidebarItems.find(
       item => pathname === item.path || (pathname.startsWith(item.path) && item.path !== basePath),
     );
