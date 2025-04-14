@@ -7,6 +7,7 @@ import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import StatsCard from "~~/components/dashboard/overview/statsCard";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
+import MineralRefineryGraph from "~~/components/dashboard/refiner/mineralRefinery";
 import { demands, mineralsData, reports, shipments, shipmentsData, supplyData, transfersData } from "~~/data/data";
 
 // dummy user
@@ -71,7 +72,7 @@ export default function Page() {
 
       {/* the mineral supply graph */}
       <div className="w-full overflow-x-auto">
-        <MineralSupplyGraph data={supplyData} />
+        <MineralRefineryGraph />
       </div>
 
       {/* the other metric cards */}
