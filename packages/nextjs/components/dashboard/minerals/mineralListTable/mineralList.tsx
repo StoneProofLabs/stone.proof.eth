@@ -67,25 +67,31 @@ export default function MineralListTable({ minerals }: MineralListTableProps) {
 
   return (
     <div className="rounded-xl bg-[#252525] border border-[#323539] text-white shadow-md overflow-hidden">
-      <table className="min-w-full text-sm text-left">
-        <TableHeader
-          sortConfig={sortConfig}
-          onSort={handleSort}
-          allSelected={paginatedMinerals.every(m => selected.includes(m.id))}
-          onSelectAll={handleSelectAll}
-        />
-        <tbody>
-          {paginatedMinerals.map(mineral => (
-            <MineralRow
-              key={mineral.id}
-              mineral={mineral}
-              isSelected={selected.includes(mineral.id)}
-              onSelect={handleSelect}
+      <div className="overflow-x-auto w-full">
+        <div className="min-w-[800px] lg:min-w-full">
+          <table className="w-full text-sm text-left">
+            <TableHeader
+              sortConfig={sortConfig}
+              onSort={handleSort}
+              allSelected={paginatedMinerals.every(m => selected.includes(m.id))}
+              onSelectAll={handleSelectAll}
             />
-          ))}
-        </tbody>
-      </table>
-      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+            <tbody>
+              {paginatedMinerals.map(mineral => (
+                <MineralRow
+                  key={mineral.id}
+                  mineral={mineral}
+                  isSelected={selected.includes(mineral.id)}
+                  onSelect={handleSelect}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="px-4 py-3">
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      </div>
     </div>
   );
 }
