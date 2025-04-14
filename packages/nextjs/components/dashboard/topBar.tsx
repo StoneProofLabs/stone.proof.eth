@@ -52,22 +52,29 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
 
   return (
     <div
-      className={`flex h-16 sticky top-0 z-30 items-center justify-between px-[50px] transition-all duration-300 ease-in-out ${isCollapsed ? "w-[100vw]" : "w-[80vw]"}`}
+      className={`flex h-16 sticky top-0 z-30 items-center justify-between px-3 sm:px-6 md:px-[50px] transition-all duration-300 ease-in-out ${isCollapsed ? "w-[100vw]" : "w-[80vw]"}`}
     >
-      <div className="flex gap-1">
-        <button className="mx-2" onClick={toggleSidebar}>
+      <div className="flex gap-1 items-center min-w-0">
+        <button className="shrink-0 mx-1 sm:mx-2" onClick={toggleSidebar}>
           <Icon path="/dashboard/icon_set/book.svg" alt="Menu" />
         </button>
 
-        <Link href="#" className="mx-2">
+        <Link href="#" className="shrink-0 mx-1 sm:mx-2 hidden sm:block">
           <Icon path="/dashboard/icon_set/star.svg" alt="Favorite" />
         </Link>
 
-        <div className="flex items-center ml-2">
+        <div className="flex items-center ml-1 sm:ml-2 overflow-hidden">
           {breadcrumbItems.map((item, index) => (
-            <div key={item.path} className="flex items-center text-[#cdcdce] text-[14px]">
-              {index > 0 && <span className="mx-2 text-gray-500">/</span>}
-              <Link href={item.path} className="text-white hover:text-gray-300 transition-colors">
+            <div
+              key={item.path}
+              className="flex items-center text-[#cdcdce] text-[12px] sm:text-[14px] whitespace-nowrap"
+            >
+              {index > 0 && <span className="mx-1 sm:mx-2 text-gray-500 shrink-0">/</span>}
+              <Link
+                href={item.path}
+                className="text-white hover:text-gray-300 transition-colors truncate max-w-[120px] sm:max-w-[160px] md:max-w-none"
+                title={item.name}
+              >
                 {item.name}
               </Link>
             </div>
