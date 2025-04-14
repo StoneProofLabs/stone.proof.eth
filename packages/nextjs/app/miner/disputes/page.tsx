@@ -12,18 +12,18 @@ import { demands, myNotifications, reports, shipments } from "~~/data/data";
 
 export default function Page() {
   return (
-    <div className="px-10 flex flex-col gap-10">
+    <div className="px-4 sm:px-10 flex flex-col gap-10">
       {/* the welcome message */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0">
         <div className="flex flex-col">
-          <p className="text-[28px] font-bold m-0 leading-tight">Activity</p>
-          <p className="text-[16px] text-[#979AA0] m-0 leading-tight">
+          <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Activity</p>
+          <p className="text-[14px] sm:text-[16px] text-[#979AA0] m-0 leading-tight">
             View Your Activities & Blockchain Activities here
           </p>
         </div>
 
-        <div className="flex gap-1">
-          <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+        <div className="flex flex-wrap gap-2 sm:gap-1">
+          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <span className="flex items-center gap-2">
               <h1 className="text-sm translate-y-[7px]">Download Report</h1>
               <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" />
@@ -32,25 +32,25 @@ export default function Page() {
 
           <Link
             href={"/miner/registerMineral"}
-            className="bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center"
+            className="w-full sm:w-auto bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
           >
             <h1 className="translate-y-[4px]">Register Mineral</h1>
           </Link>
 
-          <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
           </button>
         </div>
       </div>
 
       {/* the mineral activity */}
-      <div className="flex gap-5 w-full items-stretch">
-        <div className="w-2/3">
+      <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
+        <div className="w-full lg:w-2/3">
           <div className="h-full">
             <MineralActivity />
           </div>
         </div>
-        <div className="w-1/3">
+        <div className="w-full lg:w-1/3">
           <div className="h-full">
             <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
           </div>
@@ -59,17 +59,20 @@ export default function Page() {
 
       {/* the notifications */}
       <div className="flex flex-col gap-5">
-        <div className="flex items-center gap-3 justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between">
           <div>
-            <p className="text-[20px] font-bold m-0 leading-tight">Recent Activities</p>
+            <p className="text-[18px] sm:text-[20px] font-bold m-0 leading-tight">Recent Activities</p>
           </div>
 
-          <div className="scale-90">
+          <div className="w-full sm:w-auto scale-90 origin-left sm:origin-center">
             <Search />
           </div>
 
-          <div className="flex gap-2">
-            <Link href={"#"} className="bg-red-500 gap-1 font-medium px-3 py-1 rounded-[6px] flex items-center text-sm">
+          <div className="flex w-full sm:w-auto gap-2">
+            <Link
+              href={"#"}
+              className="w-full sm:w-auto bg-red-500 gap-1 font-medium px-3 py-1 rounded-[6px] flex items-center justify-center text-sm"
+            >
               Clear Activities
             </Link>
 
