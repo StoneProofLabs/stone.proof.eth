@@ -7,13 +7,7 @@ import Icon from "./Icon";
 import Search from "./search";
 import SubscriptionCard from "./subscriptionCard";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
-
-interface SidebarItem {
-  name: string;
-  path: string;
-  icon: string;
-  iconAlt: string;
-}
+import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 
 interface SidebarProps {
   basePath: string;
@@ -23,38 +17,7 @@ export default function Sidebar({ basePath }: SidebarProps) {
   const pathname = usePathname();
 
   // Common items for all roles
-  const sidebarItems: SidebarItem[] = [
-    {
-      name: "Overview",
-      path: `${basePath}/overview`,
-      icon: "/dashboard/icon_set/overview.svg",
-      iconAlt: "Overview icon",
-    },
-    {
-      name: "Minerals",
-      path: `${basePath}/minerals`,
-      icon: "/dashboard/icon_set/minerals.svg",
-      iconAlt: "Minerals icon",
-    },
-    {
-      name: "Notifications",
-      path: `${basePath}/notifications`,
-      icon: "/dashboard/icon_set/notification.svg",
-      iconAlt: "Notifications icon",
-    },
-    {
-      name: "All mines",
-      path: `${basePath}/mines`,
-      icon: "/dashboard/icon_set/all_mines.svg",
-      iconAlt: "All mines icon",
-    },
-    {
-      name: "Disputes Resolutions",
-      path: `${basePath}/disputes`,
-      icon: "/dashboard/icon_set/disputes.svg",
-      iconAlt: "Disputes icon",
-    },
-  ];
+  const sidebarItems = getSidebarItems(basePath);
 
   // Check if item is active
   const isActive = (itemPath: string) => {

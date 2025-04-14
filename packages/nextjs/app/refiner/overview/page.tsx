@@ -3,12 +3,11 @@
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
-import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import StatsCard from "~~/components/dashboard/overview/statsCard";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
 import MineralRefineryGraph from "~~/components/dashboard/refiner/mineralRefinery";
-import { demands, mineralsData, reports, shipments, shipmentsData, supplyData, transfersData } from "~~/data/data";
+import { demands, mineralsData, reports, shipments, shipmentsData, transfersData } from "~~/data/data";
 
 // dummy user
 interface User {
