@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Icon from "./Icon";
+import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { SidebarItem } from "~~/types/dashboard/sidebarItems";
 
 interface BreadcrumbProps {
@@ -47,12 +48,16 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
     return [{ name: getPortalName, path: basePath }];
   }, [pathname, sidebarItems, basePath, getPortalName]);
 
+  const { isCollapsed, toggleSidebar } = useSidebarStore();
+
   return (
-    <div className="flex h-16 sticky top-0 z-30 items-center justify-between w-[80vw] px-[50px]">
+    <div
+      className={`flex h-16 sticky top-0 z-30 items-center justify-between px-[50px] transition-all duration-300 ease-in-out ${isCollapsed ? "w-[100vw]" : "w-[80vw]"}`}
+    >
       <div className="flex gap-1">
-        <Link href="#" className="mx-2">
+        <button className="mx-2" onClick={toggleSidebar}>
           <Icon path="/dashboard/icon_set/book.svg" alt="Menu" />
-        </Link>
+        </button>
 
         <Link href="#" className="mx-2">
           <Icon path="/dashboard/icon_set/star.svg" alt="Favorite" />

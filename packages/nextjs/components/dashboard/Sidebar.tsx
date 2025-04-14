@@ -6,6 +6,7 @@ import StoneProof from "../logo/Stoneproof";
 import Icon from "./Icon";
 import Search from "./search";
 import SubscriptionCard from "./subscriptionCard";
+import { useSidebarStore } from "~~/stores/useSidebarStore";
 
 interface SidebarItem {
   name: string;
@@ -60,8 +61,12 @@ export default function Sidebar({ basePath }: SidebarProps) {
     return pathname === itemPath;
   };
 
+  const { isCollapsed } = useSidebarStore();
+
   return (
-    <div className="bg-darkBlack min-h-screen w-[20vw] flex flex-col gap-10">
+    <div
+      className={`bg-darkBlack min-h-screen flex flex-col gap-10 transition-all duration-300 ease-in-out ${isCollapsed ? "w-0 overflow-hidden" : "w-[20vw]"}`}
+    >
       {/* Logo */}
       <div className="flex justify-between px-5 py-[16px]">
         <StoneProof />
