@@ -17,11 +17,21 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
 
   const getPortalName = useMemo(() => {
     if (!pathname) return "";
-    if (pathname.includes("miner")) return "Miner Portal";
-    if (pathname.includes("refiner")) return "Refiner Portal";
-    if (pathname.includes("warehouse")) return "Warehouse Portal";
-    if (pathname.includes("auditor")) return "Auditor Portal";
-    return "";
+
+    const base = pathname.split("/")[1];
+
+    switch (base) {
+      case "miner":
+        return "Miner Portal";
+      case "refiner":
+        return "Refiner Portal";
+      case "warehouse":
+        return "Warehouse Portal";
+      case "auditor":
+        return "Auditor Portal";
+      default:
+        return "";
+    }
   }, [pathname]);
 
   const breadcrumbItems = useMemo(() => {

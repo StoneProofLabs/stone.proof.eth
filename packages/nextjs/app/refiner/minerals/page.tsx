@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { supplyData } from "../../../data/data";
 import Icon from "~~/components/dashboard/Icon";
-import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralListTable from "~~/components/dashboard/minerals/mineralListTable/mineralList";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
+import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
@@ -55,7 +56,7 @@ export default function Page() {
       <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralActivity />
+            <MineralSupplyGraph data={supplyData} />
           </div>
         </div>
         <div className="w-full lg:w-1/3">

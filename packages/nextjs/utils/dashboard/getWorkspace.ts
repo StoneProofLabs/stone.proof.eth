@@ -4,13 +4,22 @@ export const useDynamicPathText = () => {
   const path = usePathname();
 
   const getWorkspace = () => {
-    if (!path) return ""; // the default fallback
+    if (!path) return "";
 
-    if (path.includes("miner")) return "Miner Workspace";
-    if (path.includes("refiner")) return "Refiner Workspace";
-    if (path.includes("warehouse")) return "Warehouse Workspace";
-    if (path.includes("auditor")) return "Auditor Workspace";
-    return ""; // the default fallback
+    const base = path.split("/")[1];
+
+    switch (base) {
+      case "miner":
+        return "Miner Workspace";
+      case "refiner":
+        return "Refiner Workspace";
+      case "warehouse":
+        return "Warehouse Workspace";
+      case "auditor":
+        return "Auditor Workspace";
+      default:
+        return "";
+    }
   };
 
   return { dynamicWorkspace: getWorkspace() };
