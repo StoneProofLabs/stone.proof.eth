@@ -21,18 +21,18 @@ const user: User = {
 
 export default function Page() {
   return (
-    <div className="px-10 flex flex-col gap-10">
+    <div className="px-4 sm:px-6 md:px-10 flex flex-col gap-6 sm:gap-8 md:gap-10">
       {/* the welcome message */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
         <div className="flex flex-col">
-          <p className="text-[28px] font-bold m-0 leading-tight">Hey there, {user.name}!</p>
-          <p className="text-[16px] text-[#979AA0] m-0 leading-tight">
+          <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Hey there, {user.name}!</p>
+          <p className="text-[14px] sm:text-[16px] text-[#979AA0] m-0 leading-tight">
             Welcome back, we&apos;re happy to have you here!
           </p>
         </div>
 
-        <div className="flex gap-1">
-          <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+        <div className="flex flex-wrap gap-2 sm:gap-1">
+          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <span className="flex items-center gap-2">
               <h1 className="text-sm translate-y-[7px]">Download Report</h1>
               <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" />
@@ -41,12 +41,12 @@ export default function Page() {
 
           <Link
             href={"/miner/registerMineral"}
-            className="bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center"
+            className="w-full sm:w-auto bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center"
           >
             <h1 className="translate-y-[4px]">Register Mineral</h1>
           </Link>
 
-          <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
           </button>
         </div>
@@ -54,7 +54,7 @@ export default function Page() {
 
       {/* the stats cards */}
       <div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <StatsCard
             title="Total Minerals Supplied"
             value="30"
@@ -70,10 +70,12 @@ export default function Page() {
       </div>
 
       {/* the mineral supply graph */}
-      <MineralSupplyGraph data={supplyData} />
+      <div className="w-full overflow-x-auto">
+        <MineralSupplyGraph data={supplyData} />
+      </div>
 
       {/* the other metric cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
 
         <TopDemands
