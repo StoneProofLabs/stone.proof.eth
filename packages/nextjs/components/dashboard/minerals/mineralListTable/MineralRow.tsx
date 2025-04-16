@@ -26,7 +26,10 @@ export default function MineralRow({ mineral, isSelected, onSelect }: MineralRow
             <div className="text-white font-medium">{mineral.name}</div>
             <div className="text-gray-400 text-xs sm:text-sm flex items-center">
               {mineral.code}
-              <button className="ml-1 p-1 hover:bg-gray-700 rounded-full transition-colors">
+              <button
+                onClick={async () => await navigator.clipboard.writeText(mineral.code)}
+                className="ml-1 p-1 hover:bg-gray-700 rounded-full transition-colors"
+              >
                 <svg
                   className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400"
                   fill="none"
