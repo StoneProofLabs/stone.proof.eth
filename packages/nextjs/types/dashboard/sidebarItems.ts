@@ -41,6 +41,40 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
         },
       ];
 
+    case "/auditor":
+      return [
+        {
+          name: "Overview",
+          path: `${basePath}/overview`,
+          icon: "/dashboard/icon_set/overview.svg",
+          iconAlt: "Overview icon",
+        },
+        {
+          name: "Minerals",
+          path: `${basePath}/minerals`,
+          icon: "/dashboard/icon_set/minerals.svg",
+          iconAlt: "Minerals icon",
+        },
+        {
+          name: "Notifications",
+          path: `${basePath}/notifications`,
+          icon: "/dashboard/icon_set/notification.svg",
+          iconAlt: "Notifications icon",
+        },
+        {
+          name: "Auditor",
+          path: `${basePath}/auditor`,
+          icon: "/dashboard/icon_set/all_mines.svg",
+          iconAlt: "Auditor icon",
+        },
+        {
+          name: "Disputes Resolution",
+          path: `${basePath}/disputes`,
+          icon: "/dashboard/icon_set/disputes.svg",
+          iconAlt: "Disputes icon",
+        }
+      ];
+
     case "/refiner":
       return [
         {
