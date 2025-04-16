@@ -24,7 +24,7 @@ export default function TableHeader({ sortConfig, onSort, allSelected, onSelectA
           ["name", "Mineral Name & ID", "block"],
           ["weight", "Weight", "hidden sm:table-cell"],
           ["origin", "Origin", "hidden md:table-cell"],
-          ["ellapsedTime", "Ellapsed Time", "block"],
+          ["time", "Ellapsed Time", "block"],
           ["purity", "Purity", "hidden lg:table-cell"],
         ].map(([key, label, visibility]) => (
           <th

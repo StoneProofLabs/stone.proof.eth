@@ -13,15 +13,15 @@ type MineralListTableProps = {
 const PAGE_SIZE = 6;
 
 export default function MineralListTable({ minerals }: MineralListTableProps) {
-  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: "ascending" });
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ key: "time", direction: "descending" });
   const [selected, setSelected] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   const sortedMinerals = useMemo(() => {
-    if (!sortConfig.key) return minerals;
     const sorted = [...minerals].sort((a, b) => {
-      const valA = a[sortConfig.key!];
-      const valB = b[sortConfig.key!];
+      const key = sortConfig.key || "time";
+      const valA = a[key];
+      const valB = b[key];
 
       if (typeof valA === "string" && typeof valB === "string") {
         return valA.localeCompare(valB);
