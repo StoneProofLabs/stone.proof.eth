@@ -9,6 +9,8 @@ export type Mineral = {
   time: number;
   purity: number;
   image: string;
+  type: string;
+  storageConditions: string;
 };
 
 export type MineralKey = keyof Mineral;
