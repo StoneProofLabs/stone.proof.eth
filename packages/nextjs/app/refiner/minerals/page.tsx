@@ -1,15 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { supplyData } from "../../../data/data";
+import { mineralsListRefiners, supplyData } from "../../../data/data";
 import Icon from "~~/components/dashboard/Icon";
-import MineralListTable from "~~/components/dashboard/minerals/mineralListTable/mineralList";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
+import MineralListTable from "~~/components/dashboard/refiner/mineralListTable/mineralList";
 import Search from "~~/components/dashboard/search";
-import { demands, mineralsList, reports, shipments } from "~~/data/data";
+import { demands, reports, shipments } from "~~/data/data";
 
 export type Shipment = {
   id: string;
@@ -100,7 +100,7 @@ export default function Page() {
 
         {/* the table */}
         <div className="overflow-x-auto">
-          <MineralListTable minerals={mineralsList} />
+          <MineralListTable minerals={mineralsListRefiners} />
         </div>
       </div>
 
