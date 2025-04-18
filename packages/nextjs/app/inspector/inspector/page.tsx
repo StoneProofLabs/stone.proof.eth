@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { ChevronDown, Minus, Plus } from "lucide-react";
 
-export default function AuditMinerals() {
+export default function InspectMinerals() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedMineral, setSelectedMineral] = useState("");
   const [quantity, setQuantity] = useState(0);
@@ -24,9 +24,9 @@ export default function AuditMinerals() {
   return (
     <div className="min-h-screen text-white p-4 sm:p-6 md:p-8">
       <div className="text-center mb-4 sm:mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold">Audit Minerals</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Inspect Minerals</h1>
         <p className="text-sm text-gray-400 max-w-xl mx-auto mt-2 px-2 sm:px-0">
-          Reach out to us with any question or inquiry you have and we'll do our best to get back to you as soon as possible.
+          Verify and inspect minerals to ensure compliance with quality standards and regulations.
         </p>
       </div>
 
@@ -34,7 +34,7 @@ export default function AuditMinerals() {
         {/* Left Panel */}
         <div className="space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 mb-4">
-            <h2 className="text-lg font-semibold">Pending In Warehouse</h2>
+            <h2 className="text-lg font-semibold">Pending Inspection</h2>
             <button className="w-full sm:w-auto bg-[#252525] hover:bg-gray-600 text-white px-4 py-2 rounded-md flex items-center justify-center gap-2">
               Filter
               <span className="bg-[#0A77FF] text-xs px-2 py-0.5 rounded-full">2</span>
@@ -110,103 +110,89 @@ export default function AuditMinerals() {
                   </div>
                 </div>
               </div>
-              <button className="mt-4 w-full bg-[#0A77FF] hover:bg-[#0A77FF] text-white py-2 rounded-md">
-                View Mineral
-              </button>
+              <div className="mt-4 flex justify-end">
+                <button className="bg-[#0A77FF] hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium">
+                  Inspect
+                </button>
+              </div>
             </div>
           ))}
         </div>
 
         {/* Right Panel */}
-        <div className="border-2 border-[#1c1c1e] rounded-lg p-4 sm:p-6 space-y-4 sm:space-y-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Custom Select Dropdown */}
-            <div className="relative">
-              <div className="bg-[#252525] border border-[#323539] rounded-md px-3 sm:px-4 py-3 text-white text-sm cursor-pointer">
-                {selectedMineral || "Valid Mineral name"}
-              </div>
-            </div>
+        <div>
+          <div className="bg-[#1c1c1e] rounded-lg p-4 sm:p-6 h-full">
+            <h3 className="text-lg font-medium mb-4">Inspection Form</h3>
 
-            <div className="relative">
-              <div className="bg-[#252525] border border-[#323539] rounded-md px-3 sm:px-4 py-3 text-white text-sm cursor-pointer">
-                {selectedMineral || "Valid Mineral name"}
-              </div>
-            </div>
-          </div>
-
-          {/* Top Mineral Select */}
-          <div className="relative">
-            <div className="bg-[#252525] border border-[#323539] rounded-md px-3 sm:px-4 py-3 text-white text-sm cursor-pointer">
-              Top Mineral
-            </div>
-          </div>
-
-          {/* Audit Report Textarea */}
-          <textarea
-            placeholder="Enter Audit Report"
-            className="w-full bg-[#252525] border border-[#323539] text-white rounded-md px-3 sm:px-4 py-3 focus:outline-none min-h-[100px]"
-          />
-
-          {/* Quantity Input */}
-          <div className="flex items-center gap-2">
-            <div className="bg-[#252525] flex items-center justify-between rounded-md px-3 sm:px-4 py-3 w-full border border-[#323539]">
-              <input
-                type="text"
-                value={`${quantity} KG`}
-                readOnly
-                className="bg-[#252525] focus:outline-none text-white text-[14px] w-full"
-              />
-              <div className="flex items-center ml-4 pl-4 border-l border-[#323539] gap-2">
-                <button
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                  className="w-8 h-8 flex items-center justify-center bg-[#3A3B3D] hover:bg-gray-600 rounded-full"
-                >
-                  <Minus size={16} />
-                </button>
-                <button
-                  onClick={() => handleQuantityChange(quantity + 1)}
-                  className="w-8 h-8 flex items-center justify-center bg-[#3A3B3D] hover:bg-gray-600 rounded-full"
-                >
-                  <Plus size={16} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Storage Conditions */}
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-            <div className="flex-1">
-              <div className="flex items-center bg-[#1E1E1E] border border-[#323539] rounded-xl overflow-hidden h-full">
-                <div className="flex-1 px-3 sm:px-4 py-3 text-white text-sm bg-[#252525]">
-                  {selectedCondition || "No Conditions specified"}
-                </div>
-                <div className="relative dropdown-container">
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">Select Mineral</label>
+                <div className="relative">
                   <button
                     onClick={() => setDropdownOpen(!dropdownOpen)}
-                    className="bg-[#2B2D2F] hover:bg-gray-600 px-3 sm:px-4 py-3 flex items-center gap-1 text-white text-sm h-full"
+                    className="w-full bg-[#252525] border border-[#323539] rounded-md px-4 py-2 text-left flex items-center justify-between"
                   >
-                    Select
-                    <ChevronDown size={18} />
+                    <span>{selectedMineral || "Select mineral..."}</span>
+                    <ChevronDown size={16} />
                   </button>
+                  {dropdownOpen && (
+                    <div className="absolute z-10 mt-1 w-full bg-[#252525] border border-[#323539] rounded-md shadow-lg">
+                      {["Cobalt", "Gold", "Copper", "Lithium"].map((mineral) => (
+                        <button
+                          key={mineral}
+                          className="block w-full text-left px-4 py-2 hover:bg-[#323539]"
+                          onClick={() => {
+                            setSelectedMineral(mineral);
+                            setDropdownOpen(false);
+                          }}
+                        >
+                          {mineral}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
+
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">Purity Level (%)</label>
+                <input
+                  type="number"
+                  className="w-full bg-[#252525] border border-[#323539] rounded-md px-4 py-2 focus:outline-none focus:border-[#0A77FF]"
+                  placeholder="Enter purity level"
+                />
+              </div>
+
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">Condition</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {["Good", "Average", "Poor"].map((condition) => (
+                    <button
+                      key={condition}
+                      className={`py-2 rounded-md text-sm font-medium ${selectedCondition === condition ? "bg-[#0A77FF] text-white" : "bg-[#252525] border border-[#323539] hover:bg-[#323539]"}`}
+                      onClick={() => setSelectedCondition(condition)}
+                    >
+                      {condition}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="text-sm text-gray-400 block mb-2">Notes</label>
+                <textarea
+                  className="w-full bg-[#252525] border border-[#323539] rounded-md px-4 py-2 h-24 focus:outline-none focus:border-[#0A77FF]"
+                  placeholder="Add inspection notes..."
+                ></textarea>
+              </div>
+
+              <div className="pt-4">
+                <button className="w-full bg-[#0A77FF] hover:bg-blue-600 text-white font-medium py-2 rounded-md">
+                  Submit Inspection
+                </button>
+              </div>
             </div>
-            <button className="w-full sm:w-auto bg-[#252525] hover:bg-gray-600 text-white px-4 py-3 rounded-md">
-              View
-            </button>
           </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
-            <button className="w-full bg-[#E33B32] hover:bg-red-600 text-white font-medium py-3 rounded">
-              Raise Dispute
-            </button>
-            <button className="w-full bg-[#0A77FF] hover:bg-blue-700 text-white font-medium py-3 rounded">
-              Send Report
-            </button>
-          </div>
-
-          <p className="text-base sm:text-lg text-gray-500 text-center">Your Transaction is secure and safe</p>
         </div>
       </div>
     </div>
