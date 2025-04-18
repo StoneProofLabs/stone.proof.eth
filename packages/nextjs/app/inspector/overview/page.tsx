@@ -63,7 +63,7 @@ export default function Page() {
             color="blue"
           />
 
-          <StatsCard title="Audited" value="27 Tons" tagName="Gold" chartData={transfersData} color="green" />
+          <StatsCard title="Inspected" value="27 Tons" tagName="Gold" chartData={transfersData} color="green" />
 
           <StatsCard title="Pending" value="27" tagName="Copper" chartData={shipmentsData} color="red" />
         </div>
