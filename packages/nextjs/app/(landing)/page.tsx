@@ -33,6 +33,7 @@ const Home: NextPage = () => {
         <FeaturesSection />
         <Subscribe />
       </div>
+      ;
     </>
   );
 };
