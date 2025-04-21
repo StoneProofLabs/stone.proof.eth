@@ -1,5 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
+import EllapsedTIme from "./EllapsedTime";
 import PurityIndicator from "./PurityIndicator";
-import StatusBadge from "./StatusBadge";
 import { Mineral } from "./types";
 
 type MineralRowProps = {
@@ -26,10 +28,7 @@ export default function MineralRow({ mineral, isSelected, onSelect }: MineralRow
             <div className="text-white font-medium">{mineral.name}</div>
             <div className="text-gray-400 text-xs sm:text-sm flex items-center">
               {mineral.code}
-              <button
-                onClick={async () => await navigator.clipboard.writeText(mineral.code)}
-                className="ml-1 p-1 hover:bg-gray-700 rounded-full transition-colors"
-              >
+              <button className="ml-1 p-1 hover:bg-gray-700 rounded-full transition-colors">
                 <svg
                   className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400"
                   fill="none"
@@ -56,19 +55,21 @@ export default function MineralRow({ mineral, isSelected, onSelect }: MineralRow
       </td>
       <td className="hidden md:table-cell px-2 sm:px-4 py-3 sm:py-4 text-white text-sm">{mineral.origin}</td>
       <td className="px-2 sm:px-4 py-3 sm:py-4">
-        <StatusBadge status={mineral.status} />
+        <EllapsedTIme time={mineral.time} />
       </td>
       <td className="hidden lg:table-cell px-2 sm:px-4 py-3 sm:py-4">
         <PurityIndicator value={mineral.purity} />
       </td>
       <td className="px-2 sm:px-4 py-3 sm:py-4">
-        <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors">
-          <span className="hidden sm:inline">Full Details</span>
-          <span className="sm:hidden">View</span>
-          <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
-        </button>
+        <Link href={`/refiner/minerals/${mineral.id}/update`}>
+          <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors">
+            <span className="hidden sm:inline">Update</span>
+            <span className="sm:hidden">Update</span>
+            <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </button>
+        </Link>
       </td>
     </tr>
   );

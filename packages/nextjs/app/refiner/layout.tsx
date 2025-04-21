@@ -9,14 +9,16 @@ const inter = Inter({
   display: "swap",
 });
 
-const sideBarItems = getSidebarItems("/refiner");
+const basepath = "/refiner";
+
+const sideBarItems = getSidebarItems(basepath);
 
 export default function MinerLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className={`${inter.variable} font-sans bg-lightBlack flex text-white h-screen`}>
-      <Sidebar basePath="/refiner" />
+      <Sidebar basePath={basepath} />
       <div className="flex flex-col flex-1 overflow-hidden">
-        <TopBar sidebarItems={sideBarItems} basePath="/refiner" />
+        <TopBar sidebarItems={sideBarItems} basePath={basepath} />
         <main className="flex-1 overflow-y-auto px-6 py-4">{children}</main>
       </div>
     </div>

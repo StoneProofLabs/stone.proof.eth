@@ -9,7 +9,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const basepath = "/miner";
+const basepath = "/warehouse";
 
 const sideBarItems = getSidebarItems(basepath);
 

@@ -39,6 +39,7 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
   const breadcrumbItems = useMemo(() => {
     if (!pathname) return [];
 
+    // Special cases handling
     if (pathname.includes("registerMineral")) {
       return [
         { name: getPortalName, path: basePath },
@@ -46,15 +47,39 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
       ];
     }
 
-    const activeItem = sidebarItems.find(
-      item => pathname === item.path || (pathname.startsWith(item.path) && item.path !== basePath),
-    );
-
-    if (activeItem) {
+    if (pathname.includes("update")) {
       return [
         { name: getPortalName, path: basePath },
-        { name: activeItem.name, path: activeItem.path },
+        { name: "Update Mineral", path: pathname },
       ];
+    }
+
+    const segments = pathname.split("/").filter(segment => segment);
+
+    if (segments.length >= 2 && segments[0] === basePath.replace("/", "")) {
+      const activeItem = sidebarItems.find(item => {
+        if (pathname === item.path) return true;
+
+        if (pathname.startsWith(item.path) && item.path !== basePath && item.path.length > 1) return true;
+
+        const itemSegments = item.path.split("/").filter(segment => segment);
+        return itemSegments.length > 0 && itemSegments[itemSegments.length - 1] === segments[segments.length - 1];
+      });
+
+      if (activeItem) {
+        return [
+          { name: getPortalName, path: basePath },
+          { name: activeItem.name, path: activeItem.path },
+        ];
+      } else {
+        const lastSegment = segments[segments.length - 1];
+        const pageName = lastSegment.charAt(0).toUpperCase() + lastSegment.slice(1);
+
+        return [
+          { name: getPortalName, path: basePath },
+          { name: pageName, path: pathname },
+        ];
+      }
     }
 
     return [{ name: getPortalName, path: basePath }];
