@@ -96,7 +96,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           iconAlt: "Notifications icon",
         },
         {
-          name: "Auditor",
+          name: "Auditory",
           path: `${basePath}/auditor`,
           icon: "/dashboard/icon_set/all_mines.svg",
           iconAlt: "Auditor icon",
