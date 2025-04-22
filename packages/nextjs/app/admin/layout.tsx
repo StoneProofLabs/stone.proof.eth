@@ -12,7 +12,7 @@ const inter = Inter({
 const sidebarItems = getSidebarItems("/admin");
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`${inter.variable} font-sans bg-lightBlack flex text-white h-screen`}>
+    <div className={`${inter.variable} font-sans bg-[#060A12] flex text-white h-screen`}>
       <Sidebar basePath="/admin" />
       <div className="flex flex-col flex-1 overflow-hidden">
         <TopBar sidebarItems={sidebarItems} basePath="/admin" />

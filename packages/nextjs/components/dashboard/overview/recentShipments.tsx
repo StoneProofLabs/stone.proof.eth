@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronRight, MoreHorizontal } from "lucide-react";
+import { cn } from "~~/utils/dashboard/cn";
 
 interface Shipment {
   id: string;
@@ -15,6 +16,7 @@ interface RecentShipmentsProps {
   title?: string;
   viewAllLabel?: string;
   onViewAll?: () => void;
+  bgColor?: string;
 }
 
 export default function RecentShipments({
@@ -23,9 +25,10 @@ export default function RecentShipments({
   viewAllLabel = "View full history",
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   onViewAll = () => {},
+  bgColor = "bg-[#252525]",
 }: RecentShipmentsProps) {
   return (
-    <div className="bg-[#252525] border border-[#323539] rounded-2xl p-4 w-full">
+    <div className={cn(bgColor, "border border-[#323539] rounded-2xl p-4 w-full")}>
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-white text-lg font-medium">{title}</h3>
         <button className="text-gray-400 hover:text-white">
