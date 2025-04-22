@@ -17,8 +17,10 @@ export const useDynamicPathText = () => {
         return "Warehouse Workspace";
       case "auditor":
         return "Auditor Workspace";
-        case "inspector":
-        return "Inspector Workspace"
+      case "inspector":
+        return "Inspector Workspace";
+      case "admin":
+        return "Admin Workspace";
       default:
         return "";
     }

@@ -36,28 +36,30 @@ export default function Sidebar({ basePath }: SidebarProps) {
         />
       )}
       <div
-        className={`bg-darkBlack min-h-screen flex flex-col gap-10 transition-all duration-300 ease-in-out fixed md:relative z-50 ${isCollapsed ? "w-0 overflow-hidden" : "w-full md:w-[20vw] max-w-[300px]"}`}
+        className={`bg-darkBlack min-h-screen flex flex-col gap-10 transition-all duration-300 ease-in-out fixed md:relative z-50 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${isCollapsed ? "w-0 overflow-hidden px-0 py-0" : "w-full md:w-[20vw] max-w-[300px] py-[16px]"}`}
       >
-        {/* Logo */}
-        <div className="flex justify-between px-5 py-[16px]">
+        {/* Logo - Now scrolls */}
+        <div className="flex justify-between px-5 flex-shrink-0">
           <StoneProof />
-          <div className="cursor-pointer flex items-center justify-center">
+          <div
+            className="cursor-pointer flex items-center justify-center"
+            onClick={() => useSidebarStore.getState().toggleSidebar()}
+          >
             <Icon path="/dashboard/icon_set/menu.svg" alt="Menu icon" />
           </div>
         </div>
 
+        {/* Removed intermediate scrollable div, content flows directly */}
         {/* the search bar */}
-        <div className="px-5">
+        <div className="px-5 flex-shrink-0">
           <Search />
         </div>
 
         {/* the menu list */}
-        <div>
+        <div className="flex flex-col flex-shrink-0">
           {sidebarItems.map((item, index) => (
             <Link
-              className={`px-5 border-l-[3px] flex items-center gap-[10px] ${
-                isActive(item.path) ? "border-accentBlue bg-[#2B2D2F]" : "border-transparent hover:bg-[#2B2D2F]/50"
-              }`}
+              className={`px-5 border-l-[3px] flex items-center gap-[10px] ${isActive(item.path) ? "border-accentBlue bg-[#2B2D2F]" : "border-transparent hover:bg-[#2B2D2F]/50"}`}
               href={item.path}
               key={index}
             >
@@ -69,8 +71,8 @@ export default function Sidebar({ basePath }: SidebarProps) {
           ))}
         </div>
 
-        {/* the subscription plan card */}
-        <div>
+        {/* the subscription plan card - removed mt-auto */}
+        <div className="px-5 flex-shrink-0 pb-5">
           <SubscriptionCard />
         </div>
       </div>
