@@ -8,11 +8,12 @@ import { Mineral, MineralKey, SortConfig } from "./types";
 
 type MineralListTableProps = {
   minerals: Mineral[];
+  title?: string;
 };
 
 const PAGE_SIZE = 6;
 
-export default function MineralListTable({ minerals }: MineralListTableProps) {
+export default function MineralListTable({ minerals, title }: MineralListTableProps) {
   const [sortConfig, setSortConfig] = useState<SortConfig>({ key: null, direction: "ascending" });
   const [selected, setSelected] = useState<number[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -67,6 +68,16 @@ export default function MineralListTable({ minerals }: MineralListTableProps) {
 
   return (
     <div className="rounded-xl bg-[#252525] border border-[#323539] text-white shadow-md overflow-hidden">
+      {title && (
+        <div className="px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between border-b border-[#323539]">
+          <h3 className="text-sm sm:text-base font-semibold text-white">{title}</h3>
+          <button className="text-gray-400 hover:text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
+            </svg>
+          </button>
+        </div>
+      )}
       <div className="overflow-x-auto w-full">
         <div className="min-w-[800px] lg:min-w-full">
           <table className="w-full text-sm text-left">

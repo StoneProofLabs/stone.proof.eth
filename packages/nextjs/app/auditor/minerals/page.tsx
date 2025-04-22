@@ -70,19 +70,20 @@ export default function Page() {
 
       {/* Transactions Section */}
       <div className="w-full">
-        <div className="bg-[#252525] rounded-2xl flex items-center">
+        <div className="bg-[#252525] rounded-2xl flex flex-col sm:flex-row items-center">
           <button
             onClick={() => setActiveTab("pending")}
-            className={`flex-1 py-3 px-6 text-lg transition-colors ${
+            className={`w-full sm:flex-1 py-2 sm:py-3 px-3 sm:px-6 text-base sm:text-lg transition-colors ${
               activeTab === "pending" ? "text-white font-semibold" : "text-[#71727A]"
             }`}
           >
             Pending Transactions (Waiting For Validation)
           </button>
-          <div className="w-[3px] h-4 bg-white"></div>
+          <div className="hidden sm:block w-[3px] h-4 bg-white"></div>
+          <div className="w-full h-[1px] sm:hidden bg-white my-1"></div>
           <button
             onClick={() => setActiveTab("validated")}
-            className={`flex-1 py-3 px-6 text-lg transition-colors ${
+            className={`w-full sm:flex-1 py-2 sm:py-3 px-3 sm:px-6 text-base sm:text-lg transition-colors ${
               activeTab === "validated" ? "text-white font-semibold" : "text-[#71727A]"
             }`}
           >
@@ -94,11 +95,11 @@ export default function Page() {
         <div className="pt-4">
           {activeTab === "pending" ? (
             <div className="overflow-x-auto">
-              <MineralListTable minerals={mineralsList} />
+              <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <MineralListTable minerals={mineralsList} />
+              <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
             </div>
           )}
         </div>
