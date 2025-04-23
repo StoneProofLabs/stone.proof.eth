@@ -26,7 +26,8 @@ export default function AuditMinerals() {
       <div className="text-center mb-4 sm:mb-6">
         <h1 className="text-2xl sm:text-3xl font-bold">Audit Minerals</h1>
         <p className="text-sm text-gray-400 max-w-xl mx-auto mt-2 px-2 sm:px-0">
-          Reach out to us with any question or inquiry you have and we'll do our best to get back to you as soon as possible.
+          Reach out to us with any question or inquiry you have and we'll do our best to get back to you as soon as
+          possible.
         </p>
       </div>
 

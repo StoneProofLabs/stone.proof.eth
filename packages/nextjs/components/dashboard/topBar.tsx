@@ -29,8 +29,8 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
         return "Warehouse Portal";
       case "auditor":
         return "Auditor Portal";
-        case "inspector":
-          return "Inspector Portal"
+      case "inspector":
+        return "Inspector Portal";
       default:
         return "";
     }
@@ -51,6 +51,13 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
       return [
         { name: getPortalName, path: basePath },
         { name: "Update Mineral", path: pathname },
+      ];
+    }
+
+    if (pathname.includes("raiseDispute")) {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Raise Dispute", path: pathname },
       ];
     }
 
