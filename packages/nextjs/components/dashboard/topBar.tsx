@@ -31,6 +31,8 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
         return "Auditor Portal";
       case "inspector":
         return "Inspector Portal";
+      case "admin":
+        return "Admin Portal";
       default:
         return "";
     }

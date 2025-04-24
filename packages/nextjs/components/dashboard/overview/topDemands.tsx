@@ -1,7 +1,14 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 "use client";
 
+import { cn } from "~~/utils/dashboard/cn";
+
+
 import { Plus } from "lucide-react";
+
+/* eslint-disable @typescript-eslint/no-empty-function */
+
+/* eslint-disable @typescript-eslint/no-empty-function */
 
 /* eslint-disable @typescript-eslint/no-empty-function */
 
@@ -20,6 +27,7 @@ interface TopDemandsProps {
   refreshLabel?: string;
   onRefresh?: () => void;
   onAddDemand?: (demandId: string) => void;
+  bgColor?: string;
 }
 
 export default function TopDemands({
@@ -28,9 +36,10 @@ export default function TopDemands({
   refreshLabel = "Refresh List",
   onRefresh = () => {},
   onAddDemand = () => {},
+  bgColor = "bg-[#252525]",
 }: TopDemandsProps) {
   return (
-    <div className="bg-[#252525] border border-[#323539] rounded-2xl p-4 w-full">
+    <div className={cn(bgColor, "border border-[#323539] rounded-2xl p-4 w-full")}>
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-white text-lg font-medium">{title}</h3>
       </div>
