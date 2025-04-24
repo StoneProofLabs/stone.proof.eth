@@ -1,11 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./components/**/*.{js,ts,jsx,tsx}",
-    "./utils/**/*.{js,ts,jsx,tsx}",
-    "*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./components/**/*.{js,ts,jsx,tsx}", "./utils/**/*.{js,ts,jsx,tsx}", "*.{js,ts,jsx,tsx,mdx}"],
   plugins: [require("daisyui")],
   darkTheme: "dark",
   darkMode: ["selector", "[data-theme='dark']"],
@@ -91,19 +86,16 @@ module.exports = {
       boxShadow: { center: "0 0 12px -2px rgb(0 0 0 / 0.05)" },
       animation: {
         "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        float: "float 6s ease-in-out infinite", // For floating mineral animations
+        "float": "float 6s ease-in-out infinite", // For floating mineral animations
       },
       fontFamily: {
-        sans: ["Montserrat", "sans-serif"],
+        sans: ['Montserrat', 'sans-serif'],
         montserrat: ["var(--font-montserrat)", "Montserrat", "sans-serif"],
       },
       colors: {
         // Adding Stone.Proof specific colors
         blockchain: "#FFD700",
-        darkBlack: "#060910", // the dark black for the sidebar
-        lightBlack: "#0C0F14", // the light black for the children
-        accentBlue: "#0A77FF", // that blue always poppin up
-
+       
         crystal: {
           100: "#E0F2FE", // Light crystal blue
           200: "#BAE6FD",
@@ -122,13 +114,14 @@ module.exports = {
       },
       keyframes: {
         float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-20px)" },
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
         },
       },
       backgroundImage: {
-        "mineral-pattern": "url('/minerals-background.jpg')",
-        "fade-white": "linear-gradient(to right, #FFFFFF, rgb(255 255 255 / 1), rgb(255 255 255 / 0.4))",
+        'mineral-pattern': "url('/minerals-background.jpg')",
+        'fade-white': 'linear-gradient(to right, #FFFFFF, rgb(255 255 255 / 1), rgb(255 255 255 / 0.4))',
+        
       },
     },
   },
