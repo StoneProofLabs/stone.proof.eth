@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 "use client";
 
+import { cn } from "~~/utils/dashboard/cn";
+
+
+
 interface Report {
   id: string;
   title: string;
@@ -14,6 +18,7 @@ interface MineralReportsProps {
   refreshLabel?: string;
   onRefresh?: () => void;
   onViewDetails?: (reportId: string) => void;
+  bgColor?: string;
 }
 
 export default function MineralReports({
@@ -22,9 +27,10 @@ export default function MineralReports({
   refreshLabel = "Refresh List",
   onRefresh = () => {},
   onViewDetails = () => {},
+  bgColor = "bg-[#252525]",
 }: MineralReportsProps) {
   return (
-    <div className="bg-[#252525] border border-[#323539] rounded-2xl p-4 w-full">
+    <div className={cn(bgColor, "border border-[#323539] rounded-2xl p-4 w-full")}>
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-white text-lg font-medium">{title}</h3>
       </div>

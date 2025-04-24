@@ -74,7 +74,7 @@ export default function MineralActivity({ data = defaultData }) {
             <Tooltip content={<CustomTooltip />} />
             <Line
               type="monotone"
-              dataKey="value"
+              dataKey="value" 
               stroke="#3b82f6"
               strokeWidth={3}
               dot={false}

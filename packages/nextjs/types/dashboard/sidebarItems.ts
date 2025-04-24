@@ -96,7 +96,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           iconAlt: "Notifications icon",
         },
         {
-          name: "Auditor",
+          name: "Auditory",
           path: `${basePath}/auditor`,
           icon: "/dashboard/icon_set/all_mines.svg",
           iconAlt: "Auditor icon",
@@ -167,6 +167,57 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           path: `${basePath}/warehouse`,
           icon: "/dashboard/icon_set/warehouse.svg",
           iconAlt: "Warehouse icon",
+        },
+        {
+          name: "Disputes Resolutions",
+          path: `${basePath}/disputes`,
+          icon: "/dashboard/icon_set/disputes.svg",
+          iconAlt: "Disputes icon",
+        },
+      ];
+    case "/admin":
+      return [
+        {
+          name: "Overview",
+          path: `${basePath}/overview`,
+          icon: "/dashboard/icon_set/overview.svg",
+          iconAlt: "Overview icon",
+        },
+        {
+          name: "Minerals",
+          path: `${basePath}/minerals`,
+          icon: "/dashboard/icon_set/minerals.svg",
+          iconAlt: "Minerals icon",
+        },
+        {
+          name: "Miners",
+          path: `${basePath}/miners`,
+          icon: "/dashboard/icon_set/miners.svg",
+          iconAlt: "Miners icon",
+        },
+        {
+          name: "Auditors",
+          path: `${basePath}/auditors`,
+          icon: "/dashboard/icon_set/auditors.svg",
+          iconAlt: "Auditors icon",
+        },
+        {
+          name: "Inspectors",
+          path: `${basePath}/inspectors`,
+          icon: "/dashboard/icon_set/inspectors.svg",
+          iconAlt: "Inspectors icon",
+        },
+        {
+          name: "Notifications",
+          path: `${basePath}/notifications`,
+          icon: "/dashboard/icon_set/notification.svg",
+          iconAlt: "Notifications icon",
+        },
+        {
+          name:"Management",
+          path: `${basePath}/management`,
+          icon: "/dashboard/icon_set/management.svg",
+          iconAlt: "Management icon",
         },
         {
           name: "Disputes Resolutions",
