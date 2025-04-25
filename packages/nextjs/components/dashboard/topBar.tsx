@@ -56,6 +56,20 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
       ];
     }
 
+    if (pathname.includes("raiseDispute")) {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Raise Dispute", path: pathname },
+      ];
+    }
+
+    if (pathname.includes("disputeDetails")) {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Dispute Details", path: pathname },
+      ];
+    }
+
     const segments = pathname.split("/").filter(segment => segment);
 
     if (segments.length >= 2 && segments[0] === basePath.replace("/", "")) {
