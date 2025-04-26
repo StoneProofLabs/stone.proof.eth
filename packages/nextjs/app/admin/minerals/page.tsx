@@ -43,9 +43,9 @@ export default function Page() {
 
           <Link
             href={"/miner/registerMineral"}
-            className="flex-1 md:flex-none bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center md:justify-start"
+            className="flex-1 md:flex-none bg-[#202634] gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center md:justify-start"
           >
-            <h1 className="translate-y-[4px]">View Pending Transactions</h1>
+            <h1 className="translate-y-[4px]">Request a report</h1>
           </Link>
 
           <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
@@ -58,7 +58,14 @@ export default function Page() {
       <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralActivity />
+            <MineralActivity
+            headerBg="#060910"
+            footerBg="#060910"
+          
+            
+           
+            
+            />
           </div>
         </div>
         <div className="w-full lg:w-1/3">

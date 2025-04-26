@@ -136,13 +136,12 @@ export default function NetworkTransactionsGraph({
         <span className="text-gray-400 text-sm">Graph for overall Transactions in the supplychain</span>
         <Link href="/minerals" className="text-[#0A77FF] hover:text-blue-500 text-sm flex items-center gap-1">
           Open Mineral Portal
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="ml-1 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path
-              d="M7 17L17 7M17 7H7M17 7V17"
-              stroke="currentColor"
-              strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
             />
           </svg>
         </Link>
