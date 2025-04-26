@@ -8,7 +8,6 @@ import MineralListTable from "~~/components/dashboard/minerals/mineralListTable/
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
-import Search from "~~/components/dashboard/search";
 import { demands, mineralsList, reports, shipments } from "~~/data/data";
 
 export type Shipment = {

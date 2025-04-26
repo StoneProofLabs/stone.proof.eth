@@ -5,6 +5,13 @@ import { useRouter } from "next/navigation";
 import { FaChartBar, FaRegCheckSquare, FaUser } from "react-icons/fa";
 import Icon from "~~/components/dashboard/Icon";
 import AdminStatCard from "~~/components/dashboard/admin/AdminStatCard";
+import EnterpriseTable from "~~/components/dashboard/admin/EnterpriseTable";
+import { enterpriseList } from "~~/data/data";
+import MineralReports from "~~/components/dashboard/overview/mineralReports";
+import RecentShipments from "~~/components/dashboard/overview/recentShipments";
+import TopDemands from "~~/components/dashboard/overview/topDemands";
+import { demands, mineralsList, reports, shipments } from "~~/data/data";
+
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState<"pending" | "validated">("pending");
@@ -70,7 +77,7 @@ const Page = () => {
               activeTab === "pending" ? "text-white font-semibold bg-[#2A2F3D] rounded-full" : "text-[#71727A]"
             }`}
           >
-           Active Mining Enterprises
+            Active Mining Enterprises
           </button>
 
           <div className="w-full h-[1px] sm:hidden bg-white my-1"></div>
@@ -84,7 +91,30 @@ const Page = () => {
           </button>
         </div>
       </div>
+      <EnterpriseTable data={enterpriseList} />
+
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+        <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")}
+        bgColor="bg-[#060910]"
+        />
+
+        <TopDemands
+          demands={demands}
+          onRefresh={() => console.log("Refresh demands")}
+          onAddDemand={id => console.log("Add demand", id)}
+          bgColor="bg-[#060910]"
+        />
+
+        <MineralReports
+          reports={reports}
+          onRefresh={() => console.log("Refresh reports")}
+          onViewDetails={id => console.log("View report details", id)}
+          bgColor="bg-[#060910]"
+        />
+      </div> 
     </div>
+
+
   );
 };
 
