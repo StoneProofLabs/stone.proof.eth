@@ -23,18 +23,11 @@ export default function Page() {
         </div>
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
-          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
-            <span className="flex items-center gap-2">
-              <h1 className="text-sm translate-y-[7px]">Download Report</h1>
-              <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" />
-            </span>
-          </button>
-
           <Link
-            href={"/miner/registerMineral"}
-            className="w-full sm:w-auto bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
+            href={"/refiner/disputes/raiseDispute"}
+            className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
           >
-            <h1 className="translate-y-[4px]">Register Mineral</h1>
+            <h1 className="translate-y-[4px]">Raise Dispute</h1>
           </Link>
 
           <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">

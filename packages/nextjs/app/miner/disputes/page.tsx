@@ -16,25 +16,18 @@ export default function Page() {
       {/* the welcome message */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0">
         <div className="flex flex-col">
-          <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Activity</p>
+          <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Disputes resolutions</p>
           <p className="text-[14px] sm:text-[16px] text-[#979AA0] m-0 leading-tight">
-            View Your Activities & Blockchain Activities here
+            View all On-goint disputes in the network
           </p>
         </div>
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
-          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
-            <span className="flex items-center gap-2">
-              <h1 className="text-sm translate-y-[7px]">Download Report</h1>
-              <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" />
-            </span>
-          </button>
-
           <Link
-            href={"/miner/registerMineral"}
-            className="w-full sm:w-auto bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
+            href={"/miner/disputes/raiseDispute"}
+            className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
           >
-            <h1 className="translate-y-[4px]">Register Mineral</h1>
+            <h1 className="translate-y-[4px]">Raise Dispute</h1>
           </Link>
 
           <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
