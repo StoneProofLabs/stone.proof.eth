@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
+import LocationMap from "~~/components/dashboard/transporter/MapSection";
 import StatsSection from "~~/components/dashboard/transporter/StatsSection";
 import TransportRequestsTable from "~~/components/dashboard/transporter/TransfersTable";
 
@@ -61,6 +62,9 @@ export default function Page() {
 
       {/* transports requests table */}
       <TransportRequestsTable />
+
+      {/* the map */}
+      <LocationMap />
     </div>
   );
 }
