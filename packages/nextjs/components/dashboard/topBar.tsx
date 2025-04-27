@@ -70,6 +70,14 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
       ];
     }
 
+    // Add refinery details special case
+    if (/^\/admin\/refineries\/[\w-]+$/.test(pathname)) {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Refinery Details", path: pathname },
+      ];
+    }
+
     const segments = pathname.split("/").filter(segment => segment);
 
     if (segments.length >= 2 && segments[0] === basePath.replace("/", "")) {
