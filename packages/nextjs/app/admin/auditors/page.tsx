@@ -1,9 +1,126 @@
-import React from 'react'
+"use client";
 
-const page = () => {
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FaChartBar, FaRegCheckSquare, FaUser } from "react-icons/fa";
+import Icon from "~~/components/dashboard/Icon";
+import AdminStatCard from "~~/components/dashboard/admin/AdminStatCard";
+import AuditorTable from "~~/components/dashboard/admin/AuditorTable";
+import MineralReports from "~~/components/dashboard/overview/mineralReports";
+import RecentShipments from "~~/components/dashboard/overview/recentShipments";
+import TopDemands from "~~/components/dashboard/overview/topDemands";
+import { mockAuditors } from "~~/data/data";
+import { demands, mineralsList, reports, shipments } from "~~/data/data";
+
+const Page = () => {
+  const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"active" | "inactive">("active");
   return (
-    <div>page</div>
-  )
-}
+    <div className="px-4 md:px-10 flex flex-col gap-6 md:gap-10">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
+        <div className="flex flex-col">
+          <p className="text-[24px] md:text-[28px] font-bold m-0 leading-tight">Auditors</p>
+          <p className="text-[14px] md:text-[16px] text-[#979AA0] m-0 leading-tight">
+            Access or info about registered Auditors
+          </p>
+        </div>
 
-export default page
+        <div className="flex flex-wrap gap-2 md:gap-3">
+          <button
+            className="flex-1 md:flex-none bg-[#202634] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]"
+            onClick={() => router.push("/admin/auditors/register")}
+          >
+            <span className="flex items-center gap-2">
+              <h1 className="text-sm translate-y-[7px]">Add Auditor</h1>
+              <img src="/dashboard/icon_set/add.svg" alt="Add Auditor icon" className="w-4 h-4 font-bold top-2" />
+            </span>
+          </button>
+
+          <button className="bg-[#202634] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+            <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+        <AdminStatCard
+          icon={<FaUser size={24} color="#fff" />}
+          iconBg="#22c55e"
+          title="Total Auditors"
+          value="1,234"
+          buttonText="View"
+          cardBg="#060910"
+          onButtonClick={() => router.push("/admin/auditors/total")}
+        />
+        <AdminStatCard
+          icon={<FaChartBar size={24} color="#fff" />}
+          iconBg="#2563eb"
+          title="Active"
+          value="56"
+          cardBg="#060910"
+          buttonText="View"
+          onButtonClick={() => router.push("/admin/auditors/active")}
+        />
+        <AdminStatCard
+          icon={<FaRegCheckSquare size={24} color="#fff" />}
+          iconBg="#ef4444"
+          title="Inactive"
+          value="12"
+          cardBg="#060910"
+          buttonText="View"
+          onButtonClick={() => router.push("/admin/auditors/inactive")}
+        />
+      </div>
+
+      <div className="w-full mt-4">
+        <div className="bg-[#060910] rounded-2xl flex flex-row items-center">
+          <button
+            onClick={() => setActiveTab("active")}
+            className={`flex-1 py-2 px-3 text-base transition-colors ${
+              activeTab === "active" ? "text-white font-semibold bg-[#2A2F3D] rounded-full" : "text-[#71727A]"
+            }`}
+          >
+            Active
+          </button>
+          <button
+            onClick={() => setActiveTab("inactive")}
+            className={`flex-1 py-2 px-3 text-base transition-colors ${
+              activeTab === "inactive" ? "text-white font-semibold bg-[#2A2F3D] rounded-full" : "text-[#71727A]"
+            }`}
+          >
+            Inactive
+          </button>
+        </div>
+      </div>
+      <AuditorTable
+        tableTitle={activeTab === "active" ? "Registered Auditors" : "Inactive Auditors"}
+        data={mockAuditors}
+        currentTab={activeTab}
+      />
+
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+        <RecentShipments
+          shipments={shipments}
+          onViewAll={() => console.log("View all shipments")}
+          bgColor="bg-[#060910]"
+        />
+
+        <TopDemands
+          demands={demands}
+          onRefresh={() => console.log("Refresh demands")}
+          onAddDemand={id => console.log("Add demand", id)}
+          bgColor="bg-[#060910]"
+        />
+
+        <MineralReports
+          reports={reports}
+          onRefresh={() => console.log("Refresh reports")}
+          onViewDetails={id => console.log("View report details", id)}
+          bgColor="bg-[#060910]"
+        />
+      </div>
+    </div>
+  );
+};
+
+export default Page;

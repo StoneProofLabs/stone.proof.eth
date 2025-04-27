@@ -79,6 +79,24 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
       ];
     }
 
+    // Add auditor registration special case
+    if (pathname === "/admin/auditors/register") {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Auditors", path: "/admin/auditors" },
+        { name: "Auditor Registration", path: pathname },
+      ];
+    }
+
+    // Add auditor details special case
+    if (/^\/admin\/auditors\/[^/]+$/.test(pathname)) {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Auditors", path: "/admin/auditors" },
+        { name: "Auditor Details", path: pathname },
+      ];
+    }
+
     const segments = pathname.split("/").filter(segment => segment);
 
     if (segments.length >= 2 && segments[0] === basePath.replace("/", "")) {

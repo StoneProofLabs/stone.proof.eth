@@ -20,11 +20,12 @@ interface Refinery {
 interface RefineryTableProps {
   data: Refinery[];
   showActions?: boolean;
+  tableTitle?: string;
 }
 
 const PAGE_SIZE = 5;
 
-const RefineryTable: React.FC<RefineryTableProps> = ({ data, showActions = false }) => {
+const RefineryTable: React.FC<RefineryTableProps> = ({ data, showActions = false, tableTitle }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const paginatedData = useMemo(() => {
     const start = (currentPage - 1) * PAGE_SIZE;
@@ -40,7 +41,7 @@ const RefineryTable: React.FC<RefineryTableProps> = ({ data, showActions = false
   return (
     <div className="rounded-2xl bg-[#181B20] border border-[#323539] text-white shadow-md overflow-hidden w-full">
       <div className="px-6 py-4 border-b border-[#323539] text-[18px] font-semibold flex items-center justify-between">
-        Registered Mining Refineries
+        {tableTitle || "Registered Mining Refineries"}
         <button className="text-gray-400 hover:text-white">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" />
