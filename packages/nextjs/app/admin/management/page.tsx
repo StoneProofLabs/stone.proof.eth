@@ -4,6 +4,7 @@ import React from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import Icon from "~~/components/dashboard/Icon";
+import ManagementTable from "~~/components/dashboard/admin/ManagementTable";
 import ProgressCardsSection from "~~/components/dashboard/admin/ProgressCardsSection";
 
 const ActivitiesDemographicsCard = dynamic(() => import("~~/components/dashboard/admin/ActivitiesDemographicsCard"), {
@@ -43,6 +44,9 @@ const Page = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full mt-4">
         <ActivitiesDemographicsCard />
         <OverallActivitiesReviewCard />
+      </div>
+      <div>
+        <ManagementTable />
       </div>
     </div>
   );

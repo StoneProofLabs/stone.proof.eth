@@ -28,9 +28,9 @@ export default function OverallActivitiesReviewCard() {
       <div className="flex flex-col md:flex-row items-center justify-center gap-6 flex-1 w-full">
         <div
           className="relative flex items-center justify-center w-full max-w-[340px] mx-auto"
-          style={{ minWidth: 0, minHeight: 240, height: "50vw", maxHeight: 340 }}
+          style={{ minWidth: 0, minHeight: 180, height: "40vw", maxHeight: 340 }}
         >
-          <ResponsiveContainer width="100%" height={340} aspect={1}>
+          <ResponsiveContainer width="100%" height="100%" aspect={1}>
             <PieChart>
               <Pie
                 data={data}
