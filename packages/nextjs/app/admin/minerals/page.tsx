@@ -41,7 +41,7 @@ export default function Page() {
           </button>
 
           <Link
-            href={"/miner/registerMineral"}
+            href={""}
             className="flex-1 md:flex-none bg-[#202634] gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center md:justify-start"
           >
             <h1 className="translate-y-[4px]">Request a report</h1>
