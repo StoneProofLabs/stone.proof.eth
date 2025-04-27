@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 
 /**
 * @title PrivacyGuard contract 
-* @author @0xJonaseb11
+* @author @0xJongiaseb11
 * It enforces privacy between the actors and also helps to keep sensitive data and activities safe from bad actors
 */
 import { RolesManager } from "./RolesManager.sol";

@@ -78,12 +78,13 @@
     "next": "^15.3.0",
     "postcss": "^8.5.3",
     "recharts": "^2.15.2",
+    "tailwind-merge": "^3.2.0",
     "zustand": "^5.0.3"
   },
   "dependenciesMeta": {
     "chalk@4.1.2": {
       "unplugged": true
     }
-  },
-  "packageManager": "yarn@4.9.1"
+  }
+ 
 }
