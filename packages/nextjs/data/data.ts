@@ -1000,3 +1000,42 @@ export const mockAuditors = [
     auditsPerWeek: 210,
   },
 ];
+
+export const mockInspectors = [
+  {
+    id: "1",
+    avatar: "https://randomuser.me/api/portraits/men/45.jpg",
+    name: "Inspector Alpha",
+    code: "#0xabcde-1234...xy",
+    mineralsInspected: "2 Types",
+    disputesInvolved: "+ 1,200.00",
+    transactions: "15",
+    inspectionsPerMonth: "+ 1,200.00",
+    registeredOn: "Mon 9:00 am",
+    inspectionsPerWeek: 12,
+  },
+  {
+    id: "2",
+    avatar: "https://randomuser.me/api/portraits/women/46.jpg",
+    name: "Inspector Beta",
+    code: "#0xbcdef-2345...yz",
+    mineralsInspected: "4 Types",
+    disputesInvolved: "- 2,500.00",
+    transactions: "22",
+    inspectionsPerMonth: "- 2,500.00",
+    registeredOn: "Tue 10:30 am",
+    inspectionsPerWeek: 34,
+  },
+  {
+    id: "3",
+    avatar: "https://randomuser.me/api/portraits/men/47.jpg",
+    name: "Inspector Gamma",
+    code: "#0xcdefg-3456...za",
+    mineralsInspected: "1 Type",
+    disputesInvolved: "+ 3,000.00",
+    transactions: "8",
+    inspectionsPerMonth: "+ 3,000.00",
+    registeredOn: "Wed 2:00 pm",
+    inspectionsPerWeek: 7,
+  },
+];

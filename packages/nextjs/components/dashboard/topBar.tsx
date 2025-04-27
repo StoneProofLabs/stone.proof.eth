@@ -97,6 +97,15 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
       ];
     }
 
+    // Add inspector details special case
+    if (/^\/admin\/inspectors\/[^/]+$/.test(pathname)) {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Inspectors", path: "/admin/inspectors" },
+        { name: "Inspector Details", path: pathname },
+      ];
+    }
+
     const segments = pathname.split("/").filter(segment => segment);
 
     if (segments.length >= 2 && segments[0] === basePath.replace("/", "")) {
