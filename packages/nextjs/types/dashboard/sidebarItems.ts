@@ -190,10 +190,16 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           iconAlt: "Minerals icon",
         },
         {
-          name: "Miners",
+          name: "Mines",
           path: `${basePath}/miners`,
           icon: "/dashboard/icon_set/miners.svg",
           iconAlt: "Miners icon",
+        },
+        {
+          name: "Refineries",
+          path: `${basePath}/refineries`,
+          icon: "/dashboard/icon_set/miners.svg",
+          iconAlt: "Refineries icon",
         },
         {
           name: "Auditors",

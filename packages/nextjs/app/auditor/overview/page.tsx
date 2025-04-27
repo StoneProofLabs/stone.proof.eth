@@ -16,7 +16,7 @@ interface User {
 
 // sample user
 const user: User = {
-  name: "Nyumbayire Laurent",
+  name: "Auditor",
 };
 
 export default function Page() {
