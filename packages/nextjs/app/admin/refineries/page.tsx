@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -6,12 +6,11 @@ import { FaChartBar, FaRegCheckSquare, FaUser } from "react-icons/fa";
 import Icon from "~~/components/dashboard/Icon";
 import AdminStatCard from "~~/components/dashboard/admin/AdminStatCard";
 import RefineryTable from "~~/components/dashboard/admin/RefineryTable";
-import { refineryList } from "~~/data/data";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
+import { refineryList } from "~~/data/data";
 import { demands, mineralsList, reports, shipments } from "~~/data/data";
-
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState<"pending" | "validated">("pending");
@@ -77,7 +76,7 @@ const Page = () => {
               activeTab === "pending" ? "text-white font-semibold bg-[#2A2F3D] rounded-full" : "text-[#71727A]"
             }`}
           >
-            Active Mining Refineries
+            Active Refining Enterprises
           </button>
 
           <div className="w-full h-[1px] sm:hidden bg-white my-1"></div>
@@ -91,10 +90,12 @@ const Page = () => {
           </button>
         </div>
       </div>
-      <RefineryTable data={refineryList} />
+      <RefineryTable data={refineryList} showActions={activeTab === "validated"} />
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-        <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")}
-        bgColor="bg-[#060910]"
+        <RecentShipments
+          shipments={shipments}
+          onViewAll={() => console.log("View all shipments")}
+          bgColor="bg-[#060910]"
         />
 
         <TopDemands
@@ -110,7 +111,7 @@ const Page = () => {
           onViewDetails={id => console.log("View report details", id)}
           bgColor="bg-[#060910]"
         />
-      </div> 
+      </div>
     </div>
   );
 };

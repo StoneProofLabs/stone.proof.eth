@@ -71,9 +71,10 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
     }
 
     // Add refinery details special case
-    if (/^\/admin\/refineries\/[\w-]+$/.test(pathname)) {
+    if (/^\/admin\/refineries\/[\w-]+$/.test(pathname) || /^\/admin\/refineries\/approval\/[\w-]+$/.test(pathname)) {
       return [
         { name: getPortalName, path: basePath },
+        { name: "Refineries", path: "/admin/refineries" },
         { name: "Refinery Details", path: pathname },
       ];
     }
