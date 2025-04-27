@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
-import NotificationList from "~~/components/dashboard/disputes/recentActivities";
+import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
-import { demands, myNotifications, reports, shipments } from "~~/data/data";
+import { demands, mockDisputes, myNotifications, reports, shipments } from "~~/data/data";
 
 export default function Page() {
   return (
@@ -54,7 +54,7 @@ export default function Page() {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between">
           <div>
-            <p className="text-[18px] sm:text-[20px] font-bold m-0 leading-tight">Recent Activities</p>
+            <p className="text-[18px] sm:text-[20px] font-bold m-0 leading-tight">Recent Disputes in your network</p>
           </div>
 
           <div className="w-full sm:w-auto scale-90 origin-left sm:origin-center">
@@ -66,7 +66,7 @@ export default function Page() {
               href={"#"}
               className="w-full sm:w-auto bg-red-500 gap-1 font-medium px-3 py-1 rounded-[6px] flex items-center justify-center text-sm"
             >
-              Clear Activities
+              Clear Activity
             </Link>
 
             <button className="bg-[#252525] border border-[#323539] flex items-center justify-center px-2 py-1 rounded-[6px]">
@@ -76,7 +76,7 @@ export default function Page() {
         </div>
 
         {/* the table */}
-        <NotificationList notifications={myNotifications} />
+        <NotificationList notifications={mockDisputes} />
       </div>
 
       {/* the other metric cards */}
