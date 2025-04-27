@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Shipment } from "~~/app/miner/minerals/page";
+import { Notifications } from "~~/components/dashboard/disputes/recentActivities";
 
 export const mineralsList = [
   {
@@ -710,5 +711,61 @@ export const mockTransportRequests = [
     destinationDetail: "Karongi, West",
     mineralState: "Outstanding",
     timestamp: "Fri 5:40 pm",
+  },
+];
+
+export const mockDisputes: Notifications[] = [
+  {
+    id: 1,
+    type: "success",
+    title: "Mineral Registration Approved",
+    date: "2hrs ago",
+    status: "Resolved",
+    secondaryStatus: "Complainant",
+    reference: "MR-2025-0428",
+    content:
+      "Your mineral registration for Quartz (ID: MR-2025-0428) has been successfully processed and approved. You can now proceed with the next steps as outlined in the mineral registration protocol.",
+  },
+  {
+    id: 2,
+    type: "warning",
+    title: "Documentation Required",
+    date: "Yesterday, 4:30 PM",
+    status: "Pending",
+    secondaryStatus: "High Priority",
+    reference: "MR-2025-0415",
+    content:
+      "Your mineral registration application (ID: MR-2025-0415) for Limestone requires additional documentation. Please submit the missing geological survey report within 7 days to avoid application rejection.",
+  },
+  {
+    id: 3,
+    type: "info",
+    title: "Registration Process Started",
+    date: "Apr 23, 2025",
+    status: "In Progress",
+    reference: "MR-2025-0399",
+    content:
+      "We've begun processing your mineral registration request for Granite deposits. The estimated completion time is 5-7 business days. You'll receive updates as your application progresses through our system.",
+  },
+  {
+    id: 4,
+    type: "error",
+    title: "Registration Rejected",
+    date: "Apr 20, 2025",
+    status: "Rejected",
+    secondaryStatus: "Escalated",
+    reference: "MR-2025-0377",
+    content:
+      "Your mineral registration application for Gold deposits has been rejected due to insufficient mineral rights documentation and overlapping claims in the specified area. You may appeal this decision within 14 days or submit a revised application.",
+  },
+  {
+    id: 5,
+    type: "shipment",
+    title: "Mineral Shipment Notification",
+    date: "Apr 18, 2025",
+    status: "Resolved",
+    reference: "SH-2025-0142",
+    content:
+      "Your registered shipment of processed Copper (5 tons) has been cleared for export. Transport documents have been verified and customs clearance is complete. Expected departure date: April 30, 2025.",
   },
 ];

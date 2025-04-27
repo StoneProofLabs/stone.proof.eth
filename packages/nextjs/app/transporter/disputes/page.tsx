@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
-import NotificationList from "~~/components/dashboard/disputes/recentActivities";
+import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
-import { demands, myNotifications, reports, shipments } from "~~/data/data";
+import { demands, mockDisputes, reports, shipments } from "~~/data/data";
 
 export default function Page() {
   return (
@@ -24,7 +24,7 @@ export default function Page() {
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
           <Link
-            href={"/miner/disputes/raiseDispute"}
+            href={"/transporter/disputes/raiseDispute"}
             className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
           >
             <h1 className="translate-y-[4px]">Raise Dispute</h1>
@@ -76,7 +76,7 @@ export default function Page() {
         </div>
 
         {/* the table */}
-        <NotificationList notifications={myNotifications} />
+        <NotificationList notifications={mockDisputes} />
       </div>
 
       {/* the other metric cards */}
