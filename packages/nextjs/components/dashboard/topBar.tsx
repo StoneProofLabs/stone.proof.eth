@@ -97,6 +97,15 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
       ];
     }
 
+    // Add inspector registration special case
+    if (pathname === "/admin/inspectors/register") {
+      return [
+        { name: getPortalName, path: basePath },
+        { name: "Inspectors", path: "/admin/inspectors" },
+        { name: "Inspector Registration", path: pathname },
+      ];
+    }
+
     // Add inspector details special case
     if (/^\/admin\/inspectors\/[^/]+$/.test(pathname)) {
       return [

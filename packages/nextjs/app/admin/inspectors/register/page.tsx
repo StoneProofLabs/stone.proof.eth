@@ -62,7 +62,7 @@ const InspectorRegisterPage = () => {
             {/* Left: Personal Info */}
             <div className="flex-1 flex flex-col gap-4 min-w-0">
               <div className="flex items-center gap-2 mb-2">
-                <img src="/dashboard/icon_set/auditors.svg" alt="Inspector Register" className="w-8 h-8" />
+                <img src="/dashboard/icon_set/inspectors.svg" alt="Inspector Register" className="w-8 h-8" />
                 <span className="text-white text-lg font-semibold">Inspector Register</span>
               </div>
               <div className="flex flex-col sm:flex-row gap-4">
