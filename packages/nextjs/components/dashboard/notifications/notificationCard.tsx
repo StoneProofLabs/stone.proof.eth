@@ -62,6 +62,7 @@ interface NotificationCardProps {
   message: string;
   onClose: () => void;
   onShowMore?: () => void;
+  bgColor?: string;
 }
 
 export default function NotificationCard({
@@ -70,6 +71,7 @@ export default function NotificationCard({
   message,
   onClose,
   onShowMore,
+  bgColor,
 }: NotificationCardProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -79,7 +81,9 @@ export default function NotificationCard({
   };
 
   return (
-    <div className="bg-[#252525] border border-[#323539] rounded-lg p-4 mb-4 relative shadow-lg">
+    <div
+      className={`${bgColor ? bgColor : "bg-[#252525]"} border border-[#323539] rounded-lg p-4 mb-4 relative shadow-lg`}
+    >
       <div className="flex items-start">
         <AlertIcon type={type} />
 
