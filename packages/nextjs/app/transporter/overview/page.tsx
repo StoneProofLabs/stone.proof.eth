@@ -2,12 +2,8 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
-import MineralReports from "~~/components/dashboard/overview/mineralReports";
-import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
-import RecentShipments from "~~/components/dashboard/overview/recentShipments";
-import StatsCard from "~~/components/dashboard/overview/statsCard";
-import TopDemands from "~~/components/dashboard/overview/topDemands";
-import { demands, mineralsData, reports, shipments, shipmentsData, supplyData, transfersData } from "~~/data/data";
+import StatsSection from "~~/components/dashboard/transporter/StatsSection";
+import TransportRequestsTable from "~~/components/dashboard/transporter/TransfersTable";
 
 // dummy user
 interface User {
@@ -16,7 +12,20 @@ interface User {
 
 // sample user
 const user: User = {
-  name: "Brian Ford",
+  name: "Transporter",
+};
+
+const stats = {
+  totalTrips: 157,
+  completed: 124,
+  pendingTransfers: 33,
+  declined: 4,
+  percentageChanges: {
+    total: 12,
+    completed: 8,
+    pending: -5,
+    declined: 2,
+  },
 };
 
 export default function Page() {
@@ -32,18 +41,11 @@ export default function Page() {
         </div>
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
-          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
-            <span className="flex items-center gap-2">
-              <h1 className="text-sm translate-y-[7px]">Download Report</h1>
-              <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" />
-            </span>
-          </button>
-
           <Link
-            href={"/miner/registerMineral"}
+            href={"#"}
             className="w-full sm:w-auto bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center"
           >
-            <h1 className="translate-y-[4px]">Register Mineral</h1>
+            <h1 className="translate-y-[4px]">Transfer Mineral</h1>
           </Link>
 
           <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
@@ -54,42 +56,11 @@ export default function Page() {
 
       {/* the stats cards */}
       <div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <StatsCard
-            title="Total Minerals Supplied"
-            value="30"
-            tagName="Coltan"
-            chartData={mineralsData}
-            color="blue"
-          />
-
-          <StatsCard title="Completed Transfers" value="27" tagName="Gold" chartData={transfersData} color="green" />
-
-          <StatsCard title="Active Shipments" value="27" tagName="Copper" chartData={shipmentsData} color="red" />
-        </div>
+        <StatsSection stats={stats} />
       </div>
 
-      {/* the mineral supply graph */}
-      <div className="w-full overflow-x-auto">
-        <MineralSupplyGraph data={supplyData} />
-      </div>
-
-      {/* the other metric cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
-
-        <TopDemands
-          demands={demands}
-          onRefresh={() => console.log("Refresh demands")}
-          onAddDemand={id => console.log("Add demand", id)}
-        />
-
-        <MineralReports
-          reports={reports}
-          onRefresh={() => console.log("Refresh reports")}
-          onViewDetails={id => console.log("View report details", id)}
-        />
-      </div>
+      {/* transports requests table */}
+      <TransportRequestsTable />
     </div>
   );
 }
