@@ -6,7 +6,7 @@ interface AdminStatCardProps {
   title: string;
   value: string | number;
   buttonText: string;
-  onButtonClick: () => void;
+  onButtonClick?: () => void;
   className?: string;
   cardBg?: string;
 }

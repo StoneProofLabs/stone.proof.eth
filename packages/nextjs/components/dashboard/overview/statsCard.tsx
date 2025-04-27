@@ -10,6 +10,7 @@ interface MetricCardProps {
   tagLabel?: string;
   chartData: Array<{ value: number }>;
   color: string;
+  bgColor?: string;
 }
 
 export default function StatsCard({
@@ -19,6 +20,7 @@ export default function StatsCard({
   tagLabel = "Top mineral",
   chartData,
   color,
+  bgColor,
 }: MetricCardProps) {
   const colorMap: Record<string, { bg: string; text: string; stroke: string }> = {
     blue: {
@@ -41,7 +43,7 @@ export default function StatsCard({
   const { bg, stroke } = colorMap[color] || colorMap.blue;
 
   return (
-    <div className="bg-[#252525] border border-[#323539] rounded-xl p-4 min-w-[280px]">
+    <div className={`${bgColor ? bgColor : "bg-[#252525]"} border border-[#323539] rounded-xl p-4 min-w-[280px]`}>
       <div className="flex justify-between items-center mb-3">
         <h3 className="text-white text-lg font-medium">{title}</h3>
         <button className="text-gray-400 hover:text-white">

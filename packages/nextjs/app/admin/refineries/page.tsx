@@ -56,7 +56,7 @@ const Page = () => {
           value="56"
           cardBg="#060910"
           buttonText="View"
-          onButtonClick={() => router.push("/admin/frozen-refineries")}
+          onButtonClick={() => router.push("/admin/refineries/frozen")}
         />
         <AdminStatCard
           icon={<FaRegCheckSquare size={24} color="#fff" />}
@@ -90,7 +90,7 @@ const Page = () => {
           </button>
         </div>
       </div>
-      <RefineryTable data={refineryList} showActions={activeTab === "validated"} />
+      <RefineryTable data={refineryList} showActions={activeTab === "validated"} tableTitle={activeTab === "validated" ? 'Pending Refining Requests' : undefined} />
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
         <RecentShipments
           shipments={shipments}
