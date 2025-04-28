@@ -17432,6 +17432,7 @@ __metadata:
     next: "npm:^15.3.0"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
+    react-dom: "npm:^19.1.0"
     react-icons: "npm:^5.5.0"
     react-simple-maps: "npm:^3.0.0"
     recharts: "npm:^2.15.3"

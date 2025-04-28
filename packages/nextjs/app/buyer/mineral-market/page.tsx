@@ -7,20 +7,11 @@ import { FaRegCheckSquare } from "react-icons/fa";
 import { FaUser } from "react-icons/fa";
 import Icon from "~~/components/dashboard/Icon";
 import AdminStatCard from "~~/components/dashboard/admin/AdminStatCard";
-import TransactionTable from "~~/components/dashboard/buyer/recentPurchasesTable";
+import MineralsListTable from "~~/components/dashboard/buyer/recentMarketPurchases";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
-import { demands, reports, sampleTransactions, shipments } from "~~/data/data";
-
-// dummy user
-interface User {
-  name: string;
-}
-
-const user: User = {
-  name: "Buyer",
-};
+import { demands, reports, sampleMinerals, shipments } from "~~/data/data";
 
 const Page = () => {
   const router = useRouter();
@@ -28,7 +19,7 @@ const Page = () => {
     <div className="px-4 sm:px-6 md:px-10 flex flex-col gap-6 sm:gap-8 md:gap-10">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
         <div className="flex flex-col">
-          <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Hey there, {user.name}!</p>
+          <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Buy minerals</p>
           <p className="text-[14px] sm:text-[16px] text-[#979AA0] m-0 leading-tight">
             Welcome back, we&apos;re happy to have you here!
           </p>
@@ -79,7 +70,7 @@ const Page = () => {
       </div>
 
       {/* recent purchases */}
-      <TransactionTable transactions={sampleTransactions} />
+      <MineralsListTable minerals={sampleMinerals} />
 
       {/* the other metric cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">

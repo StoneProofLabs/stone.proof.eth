@@ -239,22 +239,22 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           name: "Overview",
           path: `${basePath}/overview`,
           icon: "/dashboard/icon_set/overview.svg",
-          iconAlt: "Overview icon", 
+          iconAlt: "Overview icon",
+        },
+        {
+          name: "Mineral market",
+          path: `${basePath}/mineral-market`,
+          icon: "/dashboard/icon_set/management.svg",
+          iconAlt: "Notifications icon",
         },
         {
           name: "Notifications",
           path: `${basePath}/notifications`,
           icon: "/dashboard/icon_set/notification.svg",
-          iconAlt: "Notifications icon",
-        },
-        {
-          name: "Market",
-          path: `${basePath}/market`,
-          icon: "/dashboard/icon_set/management.svg",
           iconAlt: "Market icon",
         },
         {
-          name: "Disputes Resolutions", 
+          name: "Disputes Resolutions",
           path: `${basePath}/disputes`,
           icon: "/dashboard/icon_set/disputes.svg",
           iconAlt: "Disputes icon",
@@ -274,7 +274,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           icon: "/dashboard/icon_set/notification.svg",
           iconAlt: "Notifications icon",
         },
-       
+
         {
           name: "Disputes Resolutions",
           path: `${basePath}/disputes`,
