@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Shipment } from "~~/app/miner/minerals/page";
+import { MineralItem } from "~~/components/dashboard/buyer/recentMarketPurchases";
+import { RecentTransaction } from "~~/components/dashboard/buyer/recentPurchasesTable";
 import { Notifications } from "~~/components/dashboard/disputes/recentActivities";
 
 export const mineralsList = [
@@ -1345,5 +1347,188 @@ export const mockDisputes: Notifications[] = [
     status: "Rejected",
     secondaryStatus: "Escalated",
     reference: "ORD-58458",
+  },
+];
+
+export const sampleTransactions: RecentTransaction[] = [
+  {
+    id: "1",
+    name: "Express Mines",
+    mineralName: "Gold",
+    amount: 6320.53,
+    date: "Wed 1:00 pm",
+    transactionAccount: {
+      type: "Visa",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+  {
+    id: "2",
+    name: "Express Mines",
+    mineralName: "Silver",
+    amount: 6471.39,
+    date: "Wed 1:00 pm",
+    transactionAccount: {
+      type: "Google Pay",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+  {
+    id: "3",
+    name: "Express Mines",
+    mineralName: "Platinum",
+    amount: -2223.9,
+    date: "Wed 7:20 pm",
+    transactionAccount: {
+      type: "PayPal",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+  {
+    id: "4",
+    name: "Express Mines",
+    mineralName: "Diamond",
+    amount: 7344.5,
+    date: "Wed 1:00 pm",
+    transactionAccount: {
+      type: "Maestro",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+  {
+    id: "5",
+    name: "Express Mines",
+    mineralName: "Emerald",
+    amount: -6157.14,
+    date: "Wed 7:20 pm",
+    transactionAccount: {
+      type: "Apple Pay",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+];
+
+export const sampleMinerals: MineralItem[] = [
+  {
+    id: "1",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 3000,
+      unit: "KG",
+    },
+    role: "Coordinator",
+    origin: "Sri Lanka",
+    elapsedTime: {
+      value: 17,
+      unit: "hrs",
+    },
+    purity: 75,
+  },
+  {
+    id: "2",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 200,
+      unit: "KG",
+    },
+    role: "Facilitator",
+    origin: "Mauritania",
+    elapsedTime: {
+      value: 17,
+      unit: "hrs",
+    },
+    purity: 50,
+  },
+  {
+    id: "3",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 2500,
+      unit: "KG",
+    },
+    role: "Manager",
+    origin: "Faroe Islands",
+    elapsedTime: {
+      value: 17,
+      unit: "hrs",
+    },
+    purity: 75,
+  },
+  {
+    id: "4",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 305.5,
+      unit: "KG",
+    },
+    role: "Supervisor",
+    origin: "Kuwait",
+    elapsedTime: {
+      value: 1,
+      unit: "day",
+    },
+    purity: 25,
+  },
+  {
+    id: "5",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 4000,
+      unit: "KG",
+    },
+    role: "Director",
+    origin: "Italy",
+    elapsedTime: {
+      value: 4,
+      unit: "days",
+    },
+    purity: 75,
+  },
+  {
+    id: "6",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 4000,
+      unit: "KG",
+    },
+    role: "Officer",
+    origin: "Kuwait",
+    elapsedTime: {
+      value: 10,
+      unit: "days",
+    },
+    purity: 50,
+  },
+  {
+    id: "7",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 4000,
+      unit: "KG",
+    },
+    role: "Planner",
+    origin: "Singapore",
+    elapsedTime: {
+      value: 2,
+      unit: "months",
+    },
+    purity: 75,
   },
 ];
