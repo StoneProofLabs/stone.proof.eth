@@ -61,10 +61,10 @@ export default function MineralRow({ mineral, isSelected, onSelect }: MineralRow
         <PurityIndicator value={mineral.purity} />
       </td>
       <td className="px-2 sm:px-4 py-3 sm:py-4">
-        <Link href={`/refiner/minerals/${mineral.id}/update`}>
+        <Link href={`/refiner/minerals/${mineral.id}/refine`}>
           <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors">
-            <span className="hidden sm:inline">Update</span>
-            <span className="sm:hidden">Update</span>
+            <span className="hidden sm:inline">Refine mineral</span>
+            <span className="sm:hidden">Refine mineral</span>
             <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>

@@ -50,10 +50,10 @@ export default function Page() {
           </button>
 
           <Link
-            href={"/miner/registerMineral"}
+            href={"#"}
             className="flex-1 md:flex-none bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center md:justify-start"
           >
-            <h1 className="translate-y-[4px]">Register Mineral</h1>
+            <h1 className="translate-y-[4px]">Update Mineral</h1>
           </Link>
 
           <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">

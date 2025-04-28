@@ -72,7 +72,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           path: `${basePath}/disputes`,
           icon: "/dashboard/icon_set/disputes.svg",
           iconAlt: "Disputes icon",
-        }
+        },
       ];
 
     case "/auditor":
@@ -106,7 +106,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           path: `${basePath}/disputes`,
           icon: "/dashboard/icon_set/disputes.svg",
           iconAlt: "Disputes icon",
-        }
+        },
       ];
 
     case "/refiner":
@@ -220,7 +220,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           iconAlt: "Notifications icon",
         },
         {
-          name:"Management",
+          name: "Management",
           path: `${basePath}/management`,
           icon: "/dashboard/icon_set/management.svg",
           iconAlt: "Management icon",
@@ -234,6 +234,33 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
       ];
 
     case "/buyer":
+      return [
+        {
+          name: "Overview",
+          path: `${basePath}/overview`,
+          icon: "/dashboard/icon_set/overview.svg",
+          iconAlt: "Overview icon", 
+        },
+        {
+          name: "Notifications",
+          path: `${basePath}/notifications`,
+          icon: "/dashboard/icon_set/notification.svg",
+          iconAlt: "Notifications icon",
+        },
+        {
+          name: "Market",
+          path: `${basePath}/market`,
+          icon: "/dashboard/icon_set/management.svg",
+          iconAlt: "Market icon",
+        },
+        {
+          name: "Disputes Resolutions", 
+          path: `${basePath}/disputes`,
+          icon: "/dashboard/icon_set/disputes.svg",
+          iconAlt: "Disputes icon",
+        },
+      ];
+    case "/transporter":
       return [
         {
           name: "Overview",
@@ -254,7 +281,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           iconAlt: "Market icon",
         },
         {
-          name: "Disputes",
+          name: "Disputes Resolutions",
           path: `${basePath}/disputes`,
           icon: "/dashboard/icon_set/disputes.svg",
           iconAlt: "Disputes icon",

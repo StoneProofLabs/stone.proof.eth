@@ -23,6 +23,8 @@ export const useDynamicPathText = () => {
         return "Admin Workspace";
       case "buyer":
         return "Buyer Workspace";
+      case "transporter":
+        return "Transporter Workspace";
       default:
         return "";
     }

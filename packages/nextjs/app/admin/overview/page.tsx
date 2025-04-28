@@ -4,12 +4,12 @@ import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
 import NetworkTransactionsGraph from "~~/components/dashboard/admin/NetworkTransactionsGraph";
 import StatsSection from "~~/components/dashboard/admin/StatsSection";
-import { shipments } from "~~/data/data";
-import { reports } from "~~/data/data";
-import TopDemands from "~~/components/dashboard/overview/topDemands";
-import { demands } from "~~/data/data";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
+import TopDemands from "~~/components/dashboard/overview/topDemands";
+import { shipments } from "~~/data/data";
+import { reports } from "~~/data/data";
+import { demands } from "~~/data/data";
 
 interface User {
   name: string;
@@ -74,9 +74,12 @@ export default function AdminOverviewPage() {
         <NetworkTransactionsGraph />
       </div>
 
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-        <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} bgColor="bg-[#060910]" />
+        <RecentShipments
+          shipments={shipments}
+          onViewAll={() => console.log("View all shipments")}
+          bgColor="bg-[#060910]"
+        />
 
         <TopDemands
           demands={demands}
