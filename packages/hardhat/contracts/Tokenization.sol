@@ -16,7 +16,7 @@ import { RolesManager } from "./RolesManager.sol";
 import { Errors } from "./Errors/Errors.sol";
 
 
-abstract contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
+contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
 
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
