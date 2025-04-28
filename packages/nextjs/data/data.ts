@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Shipment } from "~~/app/miner/minerals/page";
+import { Notifications } from "~~/components/dashboard/disputes/recentActivities";
 
 export const mineralsList = [
   {
@@ -1211,3 +1212,138 @@ export const recentDisputes = [
   },
 ];
 
+export const mockTransportRequests = [
+  {
+    id: "TRQ-001",
+    location: "Mine Alpha",
+    locationId: "LOC-ALPHA-001",
+    destination: "Refinery Zeta",
+    destinationDetail: "REF-ZETA-001",
+    mineralState: "Registered",
+    timestamp: "2025-04-20 14:30",
+  },
+  {
+    id: "TRQ-002",
+    location: "Mine Beta",
+    locationId: "LOC-BETA-002",
+    destination: "Warehouse Delta",
+    destinationDetail: "WRH-DELTA-002",
+    mineralState: "Inspected",
+    timestamp: "2025-04-21 09:15",
+  },
+  {
+    id: "TRQ-003",
+    location: "Mine Gamma",
+    locationId: "LOC-GAMMA-003",
+    destination: "Processing Plant Theta",
+    destinationDetail: "PPL-THETA-003",
+    mineralState: "Purchased",
+    timestamp: "2025-04-22 16:45",
+  },
+  {
+    id: "TRQ-004",
+    location: "Mine Delta",
+    locationId: "LOC-DELTA-004",
+    destination: "Refinery Omega",
+    destinationDetail: "REF-OMEGA-004",
+    mineralState: "Outstanding",
+    timestamp: "2025-04-23 11:00",
+  },
+  {
+    id: "TRQ-005",
+    location: "Mine Epsilon",
+    locationId: "LOC-EPSILON-005",
+    destination: "Warehouse Sigma",
+    destinationDetail: "WRH-SIGMA-005",
+    mineralState: "Registered",
+    timestamp: "2025-04-24 08:30",
+  },
+  {
+    id: "TRQ-006",
+    location: "Mine Zeta",
+    locationId: "LOC-ZETA-006",
+    destination: "Processing Plant Lambda",
+    destinationDetail: "PPL-LAMBDA-006",
+    mineralState: "Inspected",
+    timestamp: "2025-04-24 14:20",
+  },
+  {
+    id: "TRQ-007",
+    location: "Mine Eta",
+    locationId: "LOC-ETA-007",
+    destination: "Warehouse Gamma",
+    destinationDetail: "WRH-GAMMA-007",
+    mineralState: "Outstanding",
+    timestamp: "2025-04-25 10:45",
+  },
+  {
+    id: "TRQ-008",
+    location: "Mine Theta",
+    locationId: "LOC-THETA-008",
+    destination: "Refinery Alpha",
+    destinationDetail: "REF-ALPHA-008",
+    mineralState: "Purchased",
+    timestamp: "2025-04-25 17:00",
+  },
+];
+
+export const mockDisputes: Notifications[] = [
+  {
+    id: 1,
+    type: "warning",
+    title: "Late Shipment Dispute",
+    date: "2025-04-27",
+    content: "Customer reported that the shipment arrived 5 days late.",
+    status: "Pending",
+    secondaryStatus: "High Priority",
+    reference: "ORD-58231",
+  },
+  {
+    id: 2,
+    type: "error",
+    title: "Damaged Product Complaint",
+    date: "2025-04-26",
+    content: "The customer received a damaged item and requested a refund.",
+    status: "Escalated",
+    secondaryStatus: "Complainant",
+    reference: "ORD-58345",
+  },
+  {
+    id: 3,
+    type: "success",
+    title: "Dispute Resolved - Refund Issued",
+    date: "2025-04-25",
+    content: "The refund was successfully processed and dispute closed.",
+    status: "Resolved",
+    reference: "ORD-58388",
+  },
+  {
+    id: 4,
+    type: "shipment",
+    title: "Shipment Lost in Transit",
+    date: "2025-04-24",
+    content: "Courier reported a lost package, awaiting customer confirmation.",
+    status: "In Progress",
+    secondaryStatus: "Pending",
+    reference: "ORD-58401",
+  },
+  {
+    id: 5,
+    type: "info",
+    title: "Customer Inquiry on Delay",
+    date: "2025-04-23",
+    content: "Customer contacted support regarding expected delivery timelines.",
+    status: "Pending",
+    reference: "ORD-58419",
+  },
+  {
+    id: 6,
+    type: "error",
+    title: "Dispute Rejected - Invalid Claim",
+    date: "2025-04-22",
+    content: "After investigation, the claim was found to be invalid.",
+    status: "Rejected",
+    secondaryStatus: "Escalated",
+    reference: "ORD-58458",
+  },
+];
