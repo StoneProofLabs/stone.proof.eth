@@ -2,28 +2,20 @@
 
 // import { useEffect, useState } from "react";
 import type { NextPage } from "next";
-import { AboutSection } from "~~/components/landing/AboutSection";
-import { FeaturesSection } from "~~/components/landing/FeaturesSection";
-import { SecuritySection } from "~~/components/landing/SecuritySection";
-import { ServicesSection } from "~~/components/landing/ServicesSection";
-import Subscribe from "~~/components/landing/Subscribe";
+import  Hero  from "~~/components/landing/Hero";
+import Features from "~~/components/landing/Features";
+import Unique from "~~/components/landing/Unique";
+import Ecosystem from "~~/components/landing/Ecosystem";
+
 
 const Home: NextPage = () => {
-  
-
   return (
     <>
-      <div className="flex items-center flex-col flex-grow">
-
-        {/* <AboutSection /> */}
-        {/* <ServicesSection />
-        <SecuritySection />
-        <FeaturesSection />
-        <Subscribe /> */}
-
-
-      </div>
-      ;
+      <Hero />
+      <Features />
+      <Unique />
+      <Ecosystem />
+      
     </>
   );
 };
