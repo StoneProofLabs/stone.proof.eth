@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
-import NotificationList from "~~/components/dashboard/disputes/recentActivities";
+import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
-import { demands, myNotifications, reports, shipments } from "~~/data/data";
+import { demands, mockDisputes, reports, shipments } from "~~/data/data";
 
 export default function Page() {
   return (
@@ -23,18 +23,11 @@ export default function Page() {
         </div>
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
-          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
-            <span className="flex items-center gap-2">
-              <h1 className="text-sm translate-y-[7px]">Download Report</h1>
-              <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" />
-            </span>
-          </button>
-
           <Link
-            href={"/miner/registerMineral"}
-            className="w-full sm:w-auto bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
+            href={"/refiner/disputes/raiseDispute"}
+            className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
           >
-            <h1 className="translate-y-[4px]">Register Mineral</h1>
+            <h1 className="translate-y-[4px]">Raise Dispute</h1>
           </Link>
 
           <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
@@ -61,7 +54,7 @@ export default function Page() {
       <div className="flex flex-col gap-5">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between">
           <div>
-            <p className="text-[18px] sm:text-[20px] font-bold m-0 leading-tight">Recent Activities</p>
+            <p className="text-[18px] sm:text-[20px] font-bold m-0 leading-tight">Recent Disputes in your network</p>
           </div>
 
           <div className="w-full sm:w-auto scale-90 origin-left sm:origin-center">
@@ -83,7 +76,7 @@ export default function Page() {
         </div>
 
         {/* the table */}
-        <NotificationList notifications={myNotifications} />
+        <NotificationList notifications={mockDisputes} />
       </div>
 
       {/* the other metric cards */}
