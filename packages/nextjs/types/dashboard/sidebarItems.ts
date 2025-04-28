@@ -233,6 +233,34 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
         },
       ];
 
+    case "/buyer":
+      return [
+        {
+          name: "Overview",
+          path: `${basePath}/overview`,
+          icon: "/dashboard/icon_set/overview.svg",
+          iconAlt: "Overview icon",
+        },
+        {
+          name: "Notifications",
+          path: `${basePath}/notifications`,
+          icon: "/dashboard/icon_set/notification.svg",
+          iconAlt: "Notifications icon",
+        },
+        {
+          name: "Market",
+          path: `${basePath}/market`,
+          icon: "/dashboard/icon_set/management.svg",
+          iconAlt: "Market icon",
+        },
+        {
+          name: "Disputes",
+          path: `${basePath}/disputes`,
+          icon: "/dashboard/icon_set/disputes.svg",
+          iconAlt: "Disputes icon",
+        },
+      ];
+
     default:
       return [];
   }

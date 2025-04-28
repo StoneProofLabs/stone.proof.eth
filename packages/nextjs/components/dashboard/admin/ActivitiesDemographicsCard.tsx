@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import type { Feature } from "geojson";
+import Image from "next/image";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps";
-import { ResponsiveContainer } from "recharts";
-
-const geoUrl = "https://raw.githubusercontent.com/deldersveld/topojson/master/world-countries.json";
 
 const markers: { name: string; coordinates: [number, number]; color: string }[] = [
   { name: "Rwanda", coordinates: [30.0619, -1.9403], color: "#22c55e" },
@@ -30,44 +26,32 @@ export default function ActivitiesDemographicsCard() {
       </div>
       <div className="flex flex-col md:flex-row items-center justify-center gap-6 flex-1 w-full">
         <div
-          className="relative flex items-center justify-center w-full max-w-[340px] mx-auto"
-          style={{ minWidth: 0, minHeight: 180, height: "40vw", maxHeight: 260 }}
+          className="relative w-full max-w-[500px] mx-auto"
+          style={{ minHeight: 300, height: "50vw", maxHeight: 400 }}
         >
-          <ResponsiveContainer width="100%" height="100%" aspect={1}>
-            <ComposableMap
-              projectionConfig={{ scale: 80 }}
-              width={340}
-              height={180}
-              style={{ width: "100%", height: "100%" }}
-            >
-              <Geographies geography={geoUrl}>
-                {({ geographies }: { geographies: Feature[] }) =>
-                  geographies.map(geo => (
-                    <Geography
-                      key={(geo as Feature & { rsmKey: string }).rsmKey}
-                      geography={geo}
-                      fill="#23272b"
-                      stroke="#323539"
-                      style={{ outline: "none" }}
-                    />
-                  ))
-                }
-              </Geographies>
-              {markers.map((marker, idx) => (
-                <Marker key={idx} coordinates={marker.coordinates}>
-                  <circle r={6} fill={marker.color} stroke="#fff" strokeWidth={2} />
-                  <text textAnchor="middle" y={-12} style={{ fontFamily: "inherit", fontSize: 10, fill: "#fff" }}>
-                    {marker.name}
-                  </text>
-                </Marker>
-              ))}
-            </ComposableMap>
-          </ResponsiveContainer>
+          <div className="relative w-full h-full select-none pointer-events-none">
+            <Image
+              src="/dashboard/icon_set/map.svg"
+              alt="World Map"
+              fill
+              className="object-contain"
+              style={{
+                filter: "brightness(0.8)",
+                userSelect: "none",
+                WebkitUserSelect: "none",
+                MozUserSelect: "none",
+                msUserSelect: "none",
+                pointerEvents: "none",
+              }}
+              draggable={false}
+              onDragStart={e => e.preventDefault()}
+            />
+          </div>
         </div>
-        <div className="flex flex-row flex-wrap md:flex-col gap-2 min-w-[120px] w-full md:w-auto justify-center md:justify-start">
+        <div className="flex flex-col gap-4 min-w-[120px] w-full md:w-auto justify-center md:justify-start">
           {markers.map(item => (
-            <div key={item.name} className="flex items-center gap-2 text-xs md:text-base w-1/2 md:w-auto">
-              <span className="w-3 h-3 rounded-full inline-block" style={{ background: item.color }} />
+            <div key={item.name} className="flex items-center gap-3 text-sm md:text-base">
+              <span className="w-4 h-4 rounded-full inline-block" style={{ background: item.color }} />
               <span className="text-white font-medium">{item.name}</span>
             </div>
           ))}

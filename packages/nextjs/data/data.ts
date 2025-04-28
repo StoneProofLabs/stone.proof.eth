@@ -1183,3 +1183,31 @@ export const mockRecentActivities = [
     statusIcon: "visa",
   },
 ];
+
+export const recentDisputes = [
+  {
+    id: 1,
+    mineral: "Gold",
+    avatar: "/dashboard/gold.jpeg",
+    time: "16 hrs ago",
+    status: "Defendant",
+    statusColor: "red",
+  },
+  {
+    id: 2,
+    mineral: "Cobalt",
+    avatar: "/dashboard/cobalt.jpeg",
+    time: "3 days ago",
+    status: "Complainant",
+    statusColor: "green",
+  },
+  {
+    id: 3,
+    mineral: "Copper",
+    avatar: "/dashboard/copper.jpeg",
+    time: "2 weeks ago",
+    status: "Complainant",
+    statusColor: "green",
+  },
+];
+
