@@ -4,7 +4,7 @@
 
 :root,
 [data-theme] {
-  background: linear-gradient(to bottom right, #111b2b, #2c3c54, #111b2b);
+  background: 'black';
   min-height: 100vh;
 }
 
