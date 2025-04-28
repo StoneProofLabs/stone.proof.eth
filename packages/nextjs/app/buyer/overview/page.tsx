@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import React from 'react'
+import React from "react";
+import { useRouter } from "next/navigation";
+import { FaChartBar } from "react-icons/fa";
+import { FaRegCheckSquare } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import Icon from "~~/components/dashboard/Icon";
-import { FaChartBar } from 'react-icons/fa';
-import { FaRegCheckSquare } from 'react-icons/fa';
-import { FaUser } from 'react-icons/fa';
-import AdminStatCard from '~~/components/dashboard/admin/AdminStatCard';
-import { useRouter } from 'next/navigation';
+import AdminStatCard from "~~/components/dashboard/admin/AdminStatCard";
 
 // dummy user
 interface User {
@@ -17,14 +17,11 @@ const user: User = {
   name: "Buyer",
 };
 
-
 const Page = () => {
   const router = useRouter();
   return (
     <div className="px-4 sm:px-6 md:px-10 flex flex-col gap-6 sm:gap-8 md:gap-10">
-
-
-<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
         <div className="flex flex-col">
           <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Hey there, {user.name}!</p>
           <p className="text-[14px] sm:text-[16px] text-[#979AA0] m-0 leading-tight">
@@ -40,7 +37,7 @@ const Page = () => {
             </span>
           </button>
 
-      <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
           </button>
         </div>
@@ -75,9 +72,8 @@ const Page = () => {
           onButtonClick={() => router.push("/admin/approvals")}
         />
       </div>
-
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
