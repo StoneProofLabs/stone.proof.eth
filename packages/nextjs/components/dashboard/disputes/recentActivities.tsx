@@ -166,7 +166,7 @@ export const NotificationList = ({ notifications }: NotificationListProps) => {
 
   return (
     <div className="">
-      {notifications.map(notification => (
+      {(notifications ?? []).map(notification => (
         <NotificationItem
           key={notification.id}
           notification={notification}

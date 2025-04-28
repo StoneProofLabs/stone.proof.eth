@@ -36,7 +36,7 @@ export default function TransportRequestsTable() {
 
   // Filter and paginate data
   useEffect(() => {
-    const filtered = mockTransportRequests.filter(
+    const filtered = (mockTransportRequests ?? []).filter(
       item =>
         item.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.locationId.toLowerCase().includes(searchTerm.toLowerCase()) ||

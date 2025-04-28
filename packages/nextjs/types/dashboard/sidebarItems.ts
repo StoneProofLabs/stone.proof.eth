@@ -274,12 +274,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           icon: "/dashboard/icon_set/notification.svg",
           iconAlt: "Notifications icon",
         },
-        {
-          name: "Market",
-          path: `${basePath}/market`,
-          icon: "/dashboard/icon_set/management.svg",
-          iconAlt: "Market icon",
-        },
+       
         {
           name: "Disputes Resolutions",
           path: `${basePath}/disputes`,
