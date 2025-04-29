@@ -11,6 +11,24 @@ import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { useInitializeNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
+// Custom light and dark themes for RainbowKit
+const customLightTheme = lightTheme({
+  accentColor: "#0A7AFF", // StoneProof Blue
+  accentColorForeground: "white",
+  borderRadius: "large",
+  fontStack: "rounded",
+  overlayBlur: "small", // light frosted-glass effect
+});
+
+const customDarkTheme = darkTheme({
+  accentColor: "#0A7AFF", // StoneProof Blue
+  accentColorForeground: "white",
+  borderRadius: "large",
+  fontStack: "rounded",
+  overlayBlur: "small", // dark frosted-glass effect
+});
+
+// Main ScaffoldEthAppWithProviders component
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   useInitializeNativeCurrencyPrice();
 
@@ -22,6 +40,7 @@ const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
+// Initialize query client for React Query
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -30,6 +49,7 @@ export const queryClient = new QueryClient({
   },
 });
 
+// ScaffoldEthAppWithProviders component wrapping app with all required providers
 export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
@@ -45,7 +65,7 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
         <ProgressBar height="3px" color="#2299dd" />
         <RainbowKitProvider
           avatar={BlockieAvatar}
-          theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
+          theme={mounted ? (isDarkMode ? customDarkTheme : customLightTheme) : customLightTheme}
         >
           <ScaffoldEthApp>{children}</ScaffoldEthApp>
         </RainbowKitProvider>
