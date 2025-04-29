@@ -29,7 +29,7 @@ const CARDS = [
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic2.svg", // Replace with your icon
+    icon: "/landing/icon5.svg", // Replace with your icon
   },
 ];
 
