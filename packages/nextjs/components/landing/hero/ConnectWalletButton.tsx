@@ -1,25 +1,17 @@
 "use client";
 
 import React from "react";
-import { FaWallet } from "react-icons/fa";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Loader2 } from "lucide-react";
+import { FaWallet } from "react-icons/fa";
 
 const ConnectWalletButton: React.FC = () => {
   return (
     <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openConnectModal,
-        authenticationStatus,
-        mounted,
-        openChainModal,
-        openAccountModal,
-        isConnecting,
-      }) => {
+      {({ account, chain, openConnectModal, authenticationStatus, mounted, openChainModal, openAccountModal }) => {
         const ready = mounted && authenticationStatus !== "loading";
         const connected = ready && account && chain;
+        const isConnecting = authenticationStatus === "loading";
 
         return (
           <div
@@ -39,11 +31,7 @@ const ConnectWalletButton: React.FC = () => {
                     onClick={openConnectModal}
                     className="relative flex items-center gap-2 px-8 py-3 rounded-lg font-semibold bg-[#23272F] text-white border-2 border-white focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_0_16px_2px_rgba(59,130,246,0.25)] min-h-[48px]"
                   >
-                    {isConnecting ? (
-                      <Loader2 className="animate-spin w-5 h-5" />
-                    ) : (
-                      <FaWallet className="text-lg" />
-                    )}
+                    {isConnecting ? <Loader2 className="animate-spin w-5 h-5" /> : <FaWallet className="text-lg" />}
                     {isConnecting ? "Connecting..." : "Connect Wallet"}
                   </button>
                 );
@@ -73,11 +61,7 @@ const ConnectWalletButton: React.FC = () => {
                     className="relative flex items-center gap-2 px-4 py-3 rounded-lg font-semibold bg-[#23272F] text-white border-2 border-white focus:outline-none focus:ring-2 focus:ring-green-400 shadow-[0_0_16px_2px_rgba(34,197,94,0.25)] min-h-[48px]"
                   >
                     {chain.iconUrl && (
-                      <img
-                        alt={chain.name ?? "Chain icon"}
-                        src={chain.iconUrl}
-                        className="w-5 h-5 rounded-full"
-                      />
+                      <img alt={chain.name ?? "Chain icon"} src={chain.iconUrl} className="w-5 h-5 rounded-full" />
                     )}
                     {chain.name}
                   </button>
