@@ -1,14 +1,14 @@
-"use client"
+"use client";
 
-import type React from "react"
-import { useState } from "react"
-import { Menu, X } from "lucide-react"
-import StoneProof from "./landing/Header/StoneProof"
-import ContactUsButton from "./landing/Header/ContactUsButton"
+import type React from "react";
+import { useEffect, useState } from "react";
+import ContactUsButton from "./landing/Header/ContactUsButton";
+import StoneProof from "./landing/Header/StoneProof";
+import { Menu, X } from "lucide-react";
 
 interface NavLink {
-  name: string
-  href: string
+  name: string;
+  href: string;
 }
 
 const navLinks: NavLink[] = [
@@ -17,18 +17,31 @@ const navLinks: NavLink[] = [
   { name: "Services", href: "/services" },
   { name: "Portfolio", href: "/portfolio" },
   { name: "Blog", href: "/blog" },
-]
-
+];
 
 const Header: React.FC = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen)
-  }
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   return (
-    <header className="bg-[#060910] sticky top-0 z-50">
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-[#060910]/80 backdrop-blur-md shadow-lg" : "bg-[#060910]"
+      }`}
+    >
       <div className="container mx-auto flex items-center justify-between py-3 px-4 md:px-6 lg:px-8">
         {/* Logo */}
         <StoneProof />
@@ -36,7 +49,7 @@ const Header: React.FC = () => {
         {/* Desktop Navigation */}
         <nav className="hidden md:flex flex-1 justify-center">
           <ul className="flex gap-2 lg:gap-10">
-            {navLinks.map((link) => (
+            {navLinks.map(link => (
               <li key={link.name}>
                 <a
                   href={link.href}
@@ -64,7 +77,7 @@ const Header: React.FC = () => {
       {mobileMenuOpen && (
         <div className="fixed inset-0 bg-[#060910] z-10 flex flex-col items-center justify-center lg:hidden">
           <ul className="flex flex-col gap-6 text-center">
-            {navLinks.map((link) => (
+            {navLinks.map(link => (
               <li key={link.name}>
                 <a
                   href={link.href}
@@ -82,7 +95,7 @@ const Header: React.FC = () => {
         </div>
       )}
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
