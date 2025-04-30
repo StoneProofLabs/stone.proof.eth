@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import ConnectWalletButton from "./hero/ConnectWalletButton";
 import { FaWallet } from "react-icons/fa";
 
@@ -33,8 +34,6 @@ import { FaWallet } from "react-icons/fa";
 const Hero: React.FC = () => {
   return (
     <section className="relative overflow-visible bg-[#060910] pt-16 pb-8 sm:pb-16 min-h-[80vh] flex flex-col justify-center items-center">
-      
-
       <div className="relative w-full min-h-[600px] flex flex-col items-center justify-center">
         {/* Stones */}
         <img
@@ -60,9 +59,12 @@ const Hero: React.FC = () => {
           </p>
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8">
-            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400">
+            <Link
+              href="/auth/signup"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
               Get Started
-            </button>
+            </Link>
             <ConnectWalletButton />
           </div>
         </div>
