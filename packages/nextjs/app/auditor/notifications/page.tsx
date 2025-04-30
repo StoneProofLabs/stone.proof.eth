@@ -11,6 +11,8 @@ import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
 import { demands, mineralsData, notifications, reports, shipments, shipmentsData, transfersData } from "~~/data/data";
 
+import RolesManagerAbi from "../contracts
+
 export default function Page() {
   const [notification, setNotifications] = useState(notifications);
   const handleClose = (id: number) => {

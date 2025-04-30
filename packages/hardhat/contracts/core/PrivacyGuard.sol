@@ -83,6 +83,6 @@ contract PrivacyGuard is RolesManager {
     * @return A boolean indicating access rights
     */
     function hasAccess(address account) internal view onlyNonZeroAddress(account) returns(bool) {
-        return isMiner(account) || isAuditor(account) || isInspector(account);
+        return hasMinerRole(account) || hasAuditorRole(account) || hasInspectorRole(account);
     }
 }

@@ -9,8 +9,8 @@ pragma solidity ^0.8.20;
 * @notice It is the base contract of the supplychain
 */
 
-import { Errors } from "./Errors/Errors.sol";
-import { RolesManager } from "./RolesManager.sol";
+import { Errors } from "../utils/Errors.sol";
+import { RolesManager } from "../core/RolesManager.sol";
 
 
 contract MineralRegistry is Errors, RolesManager {
@@ -35,7 +35,7 @@ contract MineralRegistry is Errors, RolesManager {
     * @dev Restrict actions to specific roles
     */
     modifier onlyAuthorized(bytes32 role) {
-        if (!hasRoleAssigned(msg.sender, role)) {
+        if (!hasRole(role, msg.sender)) {
             revert InsufficientPermissionsToPerformAction(msg.sender);
         }
         _;
@@ -56,10 +56,10 @@ contract MineralRegistry is Errors, RolesManager {
             revert MineralRegistry__InvalidMineralStatus();
 
         if (
-            !hasRoleAssigned(msg.sender, REFINER_ROLE) ||
-            !hasRoleAssigned(msg.sender, TRANSPORTER_ROLE) ||
-            !hasRoleAssigned(msg.sender, AUDITOR_ROLE) ||
-            !hasRoleAssigned(msg.sender, INSPECTOR_ROLE)
+            !hasRole(REFINER_ROLE, msg.sender) ||
+            !hasRole(TRANSPORTER_ROLE, msg.sender) ||
+            !hasRole(AUDITOR_ROLE, msg.sender) ||
+            !hasRole(INSPECTOR_ROLE, msg.sender)
         ) {
             revert InsufficientPermissionsToPerformAction(msg.sender);
         }

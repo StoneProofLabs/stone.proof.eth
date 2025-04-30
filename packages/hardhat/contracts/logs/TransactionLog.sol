@@ -8,8 +8,8 @@ pragma solidity ^0.8.20;
 * It keeps track of all the operations, transactions perfomed in the whole supply chain
 * Helps to keep track of actities in the chain to enforce traceability
 */
-import { RolesManager } from "./RolesManager.sol";
-import { Errors } from "./Errors/Errors.sol";
+import { RolesManager } from "../core/RolesManager.sol";
+import { Errors } from "../utils/Errors.sol";
 
 contract TransactionLog is Errors, RolesManager {
 
@@ -62,11 +62,11 @@ contract TransactionLog is Errors, RolesManager {
     modifier onlyAuthorizedRoles() {
 
         if (
-            !hasRoleAssigned(msg.sender, MINER_ROLE) ||
-            !hasRoleAssigned(msg.sender, TRANSPORTER_ROLE) ||
-            !hasRoleAssigned(msg.sender, AUDITOR_ROLE) ||
-            !hasRoleAssigned(msg.sender, INSPECTOR_ROLE) || 
-            !hasRoleAssigned(msg.sender, DEFAULT_ADMIN_ROLE)
+            !hasRole(MINER_ROLE, msg.sender) ||
+            !hasRole(TRANSPORTER_ROLE, msg.sender) ||
+            !hasRole(AUDITOR_ROLE, msg.sender) ||
+            !hasRole(INSPECTOR_ROLE, msg.sender) || 
+            !hasRole(DEFAULT_ADMIN_ROLE, msg.sender)
         )
 
         revert InsufficientPermissionsToPerformAction(msg.sender);

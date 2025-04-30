@@ -41,46 +41,36 @@ contract RolesManager is AccessControl, Errors {
         address indexed miner,
         uint256 registeredAt
     );
-    event MineralRefined(string indexed mineralId, address indexed refiner, uint256 refinedAt);
+    event MineralRefined(string mineralId, address indexed refiner, uint256 refinedAt);
     event MineralTransported(
-        string indexed mineralId,
+        string mineralId,
         address indexed transporter,
         address receivingParty,
         string origin,
         string destination,
         uint256 transportedAt
     );
-    event MineralInspected(
-        string indexed mineralId,
-        string mineralStatus,
-        address indexed inspector,
-        uint256 inspectedAt
-    );
-    event MineralAudited(string indexed mineralId, string status, address indexed auditor, uint256 auditedAt);
-    event MineralPurchased(string indexed mineralId, address indexed buyer, uint256 purchasedAt);
-    event MineralReadyToTrade(
-        string indexed mineralId,
-        address inspector_Auditor,
-        string status,
-        uint256 inspectionDate
-    );
+    event MineralInspected(string mineralId, string mineralStatus, address indexed inspector, uint256 inspectedAt);
+    event MineralAudited(string mineralId, string status, address indexed auditor, uint256 auditedAt);
+    event MineralPurchased(string mineralId, address indexed buyer, uint256 purchasedAt);
+    event MineralReadyToTrade(string mineralId, address indexed ApprovedBy, string status, uint256 inspectionDate);
 
     // For every assigned role
-    event MinerRoleAssigned(address assignee, uint256 timestamp);
-    event RefinerRoleAssigned(address assignee, uint256 timestamp);
-    event TransporterRoleAssigned(address assignee, uint256 timestamp);
-    event AuditorRoleAssigned(address assignee, uint256 timestamp);
-    event InspectorRoleAssigned(address assignee, uint256 timestamp);
-    event BuyerRoleAssigned(address assignee, uint256 timestamp);
-    event AdminRoleAssigned(address assignee, uint256 timestamp);
+    event MinerRoleAssigned(address indexed assignee, uint256 timestamp);
+    event RefinerRoleAssigned(address indexed assignee, uint256 timestamp);
+    event TransporterRoleAssigned(address indexed assignee, uint256 timestamp);
+    event AuditorRoleAssigned(address indexed assignee, uint256 timestamp);
+    event InspectorRoleAssigned(address indexed assignee, uint256 timestamp);
+    event BuyerRoleAssigned(address indexed assignee, uint256 timestamp);
+    event AdminRoleAssigned(address indexed assignee, uint256 timestamp);
     // For every revoked role
-    event MinerRoleRevoked(address revokee, uint256 timestamp);
-    event RefinerRoleRevoked(address revokee, uint256 timestamp);
-    event TransporterRoleRevoked(address revokee, uint256 timestamp);
-    event AuditorRoleRevoked(address revokee, uint256 timestamp);
-    event InspectorRoleRevoked(address revokee, uint256 timestamp);
-    event BuyerRoleRevoked(address revokee, uint256 timestamp);
-    event AdminRoleRevoked(address revokee, uint256 timestamp);
+    event MinerRoleRevoked(address indexed revokee, uint256 timestamp);
+    event RefinerRoleRevoked(address indexed revokee, uint256 timestamp);
+    event TransporterRoleRevoked(address indexed revokee, uint256 timestamp);
+    event AuditorRoleRevoked(address indexed revokee, uint256 timestamp);
+    event InspectorRoleRevoked(address indexed revokee, uint256 timestamp);
+    event BuyerRoleRevoked(address indexed revokee, uint256 timestamp);
+    event AdminRoleRevoked(address indexed revokee, uint256 timestamp);
 
     struct MineralDetails {
         string id;
@@ -324,7 +314,7 @@ contract RolesManager is AccessControl, Errors {
         ===============================================================
         //////////////////////////////////////////////////////////////*/
 
-             /*///////////////////////////////////////////////
+    /*///////////////////////////////////////////////
                                INSPECTOR
             ///////////////////////////////////////////////*/
 
@@ -419,9 +409,7 @@ contract RolesManager is AccessControl, Errors {
     //////////////////////////////////////////////////////////////*/
 
     /*//////////////////////////////////////////////////////////////
-    ===============================================================
                             ADMIN FUNCTIONS
-    ===============================================================
     //////////////////////////////////////////////////////////////*/
 
     ////////////////////////////////////////////////
@@ -469,7 +457,7 @@ contract RolesManager is AccessControl, Errors {
     }
 
     function assignBuyer(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
-        grantRole(AUDITOR_ROLE, account);
+        grantRole(BUYER_ROLE, account);
 
         emit BuyerRoleAssigned(account, block.timestamp);
     }

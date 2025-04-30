@@ -11,12 +11,12 @@ pragma solidity ^0.8.20;
 
 import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { RolesManager } from "./RolesManager.sol";
-import { MineralRegistry } from "./MineralRegistry.sol";
-import { PrivacyGuard } from "./PrivacyGuard.sol";
-import { Tokenization } from "./Tokenization.sol";
-import { TransactionLog } from "./TransactionLog.sol";
-import { MineralTransporter } from "./MineralTransporter.sol";
-import { Errors } from "./Errors/Errors.sol";
+import { MineralRegistry } from "../modules/MineralRegistry.sol";
+import { PrivacyGuard } from "../core/PrivacyGuard.sol";
+import { Tokenization } from "../tokens/Tokenization.sol";
+import { TransactionLog } from "../logs/TransactionLog.sol";
+import { LogisticsManager } from "../modules/LogisticsManager.sol";
+import { Errors } from "../utils/Errors.sol";
 
 contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
 
@@ -26,7 +26,7 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
     PrivacyGuard private privacyGuard;
     Tokenization private tokenization;
     TransactionLog private transactionLog;
-    MineralTransporter private mineralTransporter;
+    LogisticsManager private logisticsManager;
 
     /**
     * @dev Events for traceability
@@ -43,7 +43,7 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
         _;
     }
 
-    modifier onlyValidMineral(uint256 mineralId) override {
+    modifier onlyValidMineral(uint256 mineralId) {
 
         if (!isMineralRegistered(mineralId) || mineralId == 0) {
             revert InvalidMineralIdOrNotFound(mineralId);
@@ -57,14 +57,14 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
         address _privacyGuard,
         address _tokenization,
         address _transactionLog,
-        address _mineralTransporter
+        address _logisticsManager
     ) MineralRegistry(_rolesManager){
         rolesManager = RolesManager(_rolesManager);
         mineralRegistry = MineralRegistry(_mineralRegistry);
         privacyGuard = PrivacyGuard(_privacyGuard);
         tokenization = Tokenization(_tokenization);
         transactionLog = TransactionLog(_transactionLog);
-        mineralTransporter = MineralTransporter(_mineralTransporter);
+        logisticsManager = LogisticsManager(_logisticsManager);
     }
 
         /*//////////////////////////////////////////////////////////////

@@ -12,8 +12,8 @@ import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import { ERC721URIStorage } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
 
-import { RolesManager } from "./RolesManager.sol";
-import { Errors } from "./Errors/Errors.sol";
+import { RolesManager } from "../core/RolesManager.sol";
+import { Errors } from "../utils/Errors.sol";
 
 
 contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
@@ -59,10 +59,10 @@ contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
     */
     modifier onlyAuthorizedRoles() {
         if (
-            !hasRoleAssigned(msg.sender, MINTER_ROLE) ||
-            !hasRoleAssigned(msg.sender, AUDITOR_ROLE) ||
-            !hasRoleAssigned(msg.sender, INSPECTOR_ROLE) ||
-            !hasRoleAssigned(msg.sender, BUYER_ROLE)
+            !hasRole(MINTER_ROLE, msg.sender) ||
+            !hasRole(AUDITOR_ROLE, msg.sender) ||
+            !hasRole(INSPECTOR_ROLE, msg.sender) ||
+            !hasRole(BUYER_ROLE, msg.sender)
         ) 
         revert InsufficientPermissionsToPerformAction(msg.sender);
         _;

@@ -19,13 +19,13 @@ contract StonepProofEvents {
 
 
     // For every assigned role
-    event MinerRoleAssigned(address assignee, block.timestamp);
-    event RefinerRoleAssigned(address assignee, block.timestamp);
-    event TransporterRoleAssigned(address assignee, block.timestamp);
-    event AuiditorRoleRevoked(address assignee, block.timestamp);
-    event InspectorRoleAssigned(address assignee, block.timestamp);
-    event BuyerRoleAssigned(address assignee, block.timestamp);
-    event AdminRoleAssigned(address assignee, block.timestamp);
+    event MinerRoleAssigned(address assignee, uint256 timestamp);
+    event RefinerRoleAssigned(address assignee, uint256 timestamp);
+    event TransporterRoleAssigned(address assignee, uint256 timestamp);
+    event AuiditorRoleRevoked(address assignee, uint256 timestamp);
+    event InspectorRoleAssigned(address assignee, uint256 timestamp);
+    event BuyerRoleAssigned(address assignee, uint256 imestamp);
+    event AdminRoleAssigned(address assignee, uint256 timestamp);
     // For every revoked role
     event MinerRoleRevoked(address revokee, uint256 timestamp);
     event RefinerRoleRevoked(address revokee, uint256 timestamp);
