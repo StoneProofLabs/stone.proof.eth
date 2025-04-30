@@ -12,8 +12,8 @@ pragma solidity ^0.8.20;
 
 
 import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
-import { MineralRegistry } from "./MineralRegistry.sol";
-import { Errors } from "./Errors/Errors.sol";
+import { MineralRegistry } from "../modules/MineralRegistry.sol";
+import { Errors } from "../utils/Errors.sol";
 
 contract RolesManager is AccessControl, Errors {
 
@@ -45,8 +45,25 @@ contract RolesManager is AccessControl, Errors {
     event MineralReadyToTrade(uint256 indexed mineralId, address inspector_Auditor, string status, uint256 inspectionDate);
 
 
+    // For every assigned role
+    event MinerRoleAssigned(address assignee, block.timestamp);
+    event RefinerRoleAssigned(address assignee, block.timestamp);
+    event TransporterRoleAssigned(address assignee, block.timestamp);
+    event AuiditorRoleRevoked(address assignee, block.timestamp);
+    event InspectorRoleAssigned(address assignee, block.timestamp);
+    event BuyerRoleAssigned(address assignee, block.timestamp);
+    event AdminRoleAssigned(address assignee, block.timestamp);
+    // For every revoked role
+    event MinerRoleRevoked(address revokee, uint256 timestamp);
+    event RefinerRoleRevoked(address revokee, uint256 timestamp);
+    event TransporterRoleRevoked(address revokee, uint256 timestamp);
+    event AuditorRoleRevoked(address revokee, uint256 timestamp);
+    event InspectorRoleRevoked(address revokee, uint256 timestamp);
+    event BuyerRoleRevoked(address revokee, uint256 timestamp);
+    event AdminRoleRevoked(address revokee, uint256 timestamp);
+
     struct MineralDetails {
-        uint256 id;
+        string id;
         string name;
         string origin;
         string mineralType;
@@ -66,7 +83,7 @@ contract RolesManager is AccessControl, Errors {
     }
 
     struct MineralHistory {
-        uint256 id;
+        string id;
         string fieldChanged;
         string newValue;
         address updatedBy;
@@ -74,9 +91,9 @@ contract RolesManager is AccessControl, Errors {
     }
 
 
-
-    mapping(uint256 => MineralDetails) public mineralDetails;
-    mapping(uint256 => MineralHistory[]) public mineralHistories; 
+    uint256 private nonce = 1;
+    mapping(string => MineralDetails) public mineralDetails;
+    mapping(string => MineralHistory[]) public mineralHistories; 
 
     uint256 private nextMineralId = 1;
 
@@ -108,7 +125,7 @@ contract RolesManager is AccessControl, Errors {
         _;
     }
 
-    modifier onlyValidMineralId(uint256 mineralId) {
+    modifier onlyValidMineralId(string mineralId) {
         if (mineralDetails[mineralId].id != mineralId) {
             revert InvalidMineralIdOrNotFound(mineralId);
         }
@@ -121,7 +138,7 @@ contract RolesManager is AccessControl, Errors {
             ATTENTION HERE - CHECKING VALIDITY OF A MINERAL
     \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\        
     //////////////////////////////////////////////////////////////*/
-       modifier onlyValidMineral(uint256 mineralId) virtual {
+       modifier onlyValidMineral(string mineralId) virtual {
 
         if (!mineralRegistry.isMineralRegistered(mineralId) || mineralId == 0) {
             revert InvalidMineralIdOrNotFound(mineralId);
@@ -160,7 +177,7 @@ contract RolesManager is AccessControl, Errors {
     function registerMineral(
         string memory _name, 
         string memory _mineralType,
-        string memory _weight,
+        uint256 memory _weight,
         string memory _origin,
         uint256 _purityPercentage,
         string memory _storageConditions
@@ -174,7 +191,7 @@ contract RolesManager is AccessControl, Errors {
             if (bytes(_mineralType).length == 0)
                 revert RolesManager__InvalidMineralType();
             
-            if (bytes(_weight).length == 0) 
+            if (_weight == 0) 
                 revert RolesManager__InvalidMineralWeight();
 
             if (_purityPercentage == 0 || _purityPercentage > 100) 
@@ -186,7 +203,7 @@ contract RolesManager is AccessControl, Errors {
             if (bytes(_storageConditions).length == 0) 
                 revert RolesManager__InvalidMineralStorageConditions();
             
-        uint256 mineralId = nextMineralId++;
+        string memory mineralId = _generatehashedMineralId(_mineralType);
         
         mineralDetails[mineralId] = MineralDetails({
             id: mineralId,
@@ -238,7 +255,7 @@ contract RolesManager is AccessControl, Errors {
      * @param mineralId The ID of the mineral under refinery
      * @notice Emits MineralRefined event on successfl refining process
     */
-    function refineMineral(uint256 mineralId) public restrictedToRole(REFINER_ROLE) {
+    function refineMineral(string mineralId) public restrictedToRole(REFINER_ROLE) {
 
         if (mineralDetails[mineralId].id != mineralId ||mineralId == 0) 
             revert RolesManager__InvalidMineralIdOrNotFound();
@@ -398,51 +415,162 @@ contract RolesManager is AccessControl, Errors {
 
 
 
+    ////////////////////////////////////////////////
+    /////// ROLEMANAGEMENT FUNCTIONS ////////////////
+    ////////////////////////////////////////////////
+    
+
+    /////////////////////////////////
+    ////// ROLE GRANTING ////////////
+    /////////////////////////////////
+
+    /**
+    * @dev assigns role to an account - only by admin
+    * @param account The address of the account to be assigned a role by admin
+    * @notice Emits event of the assigned role
+    */
+
+    function assignMiner(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE){
+        grantRole(MINER_ROLE, account);
+
+        emit MinerRoleAssigned(account, block.timestamp);
+
+    }
+
+    function assignRefiner(address account ) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
+        grantRole(REFINER_ROLE, account);
+
+        emit RefinerRoleAssigned(account, block.timestamp);
+    }
+
+    function assignTransporter(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE){
+        grantRole(TRANSPORTER_ROLE, account);
+
+        emit TransporterRoleAssigned(account, block.timestamp);
+    }
+
+    function assignAuditor(address account) external onlyNonZeroAddress(account)  onlyRole(DEFAULT_ADMIN_ROLE){
+        grantRole(AUDITOR_ROLE, account);
+
+        emit AuditorRoleAssigned(account, block.timestamp);
+    }
+
+        function assignInspector(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE){
+        grantRole(INSPECTOR_ROLE, account);
+
+        emit InspectorRoleAssigned(account, block.timestamp);
+    }
+
+    function assignBuyer(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE){
+        grantRole(AUDITOR_ROLE, account);
+
+        emit BuyerRoleAssigned(account, block.timestamp);
+    }
+
+
+
+    /////////////////////////////////
+    // ROLE REVOKATION /////////////
+    ////////////////////////////////
+
+    /**
+    * @dev Revokes role from an account - onlydmin 
+    * @param account The address of the account to be revoked role by the admin
+    * @notice Emits event of the revoked role
+    */
+
+    function revokeMiner(address account) external {
+        revokeRole(MINER_ROLE, account);
+
+        emit MinerRoleRevoked(account, block.timestamp);
+    }
+
+    function revokeRefiner(address account) external {
+        revokeRole(REFINER_ROLE, account);
+
+        emit RefinerRoleRevoked(account, block.timestamp);
+    }
+
+    function revokeTransporter(address account) external {
+        revokeRole(TRANSPORTER_ROLE, account);
+
+        emit TransporterRoleRevoked(account, block.timestamp);
+    }
+
+    function revokeInspector(address account) external {
+        revokeRole(INSPECTOR_ROLE, account);
+
+        emit InspectorRoleRevoked(account, block.timestamp);
+    }
+
+    function revokeAuditor(address account) external {
+    revokeRole(AUDITOR_ROLE, account);
+
+    emit AuditorRoleRevoked(account, block.timestamp);
+    }
+
+    function revokeBuyer(address account) external {
+        revokeRole(BUYER_ROLE, account);
+    }
+
+
+    /////////////////////////////////////////////////
+    //////// ROLE OWNERSHIP CHECKS //////////////////
+    /////////////////////////////////////////////////
+    
+    function isAdmin(address account) external view returns(bool) {
+        return hasRole(DEFAULT_ADMIN_ROLE, account);
+    }
+
     function _setupRole(bytes32 role, address account) internal  {
         _grantRole(role, account);
     }
 
 
-    /**
-    * @dev assigns role to an account - only by admin
-    * @param account The address of the account to be assigned a role by admin
-    * @param role The role to be assigned the account
-    * @notice Emits RoleAssigned event
-    */
-    function assignRole(address account, bytes32 role) public restrictedToRole(DEFAULT_ADMIN_ROLE) {
-        if (account == address(0) || account.code.length != 0) 
-            revert RolesManager__InvalidAddress();
-        
-        if (role == 0 || !isValidRole(role)) 
-            revert RolesManager__InvalidRole();
-        
-        grantRole(role, account);
-        emit RoleAssigned(account, role, block.timestamp);
-    }
+
 
 
     /**
-    * @dev Revokes to from an account - onlydmin 
-    * @param account The address of the account to be revoked role by the admin
-    * @param role The role to be revoked from the account by the admin
-    * @notice Emits RoleRevoked event
-    */
-    function revokeRole(address account, bytes32 role) public restrictedToRole(DEFAULT_ADMIN_ROLE) {
-        revokeRole(role, account);
-        emit RoleRevoked(role, account, msg.sender, block.timestamp);
-    }
-
-    /**
+    ** @dev Roles helper functions
     * @dev checks if an account has a specific role
     * @param account The address of the account to checked with role association
-    * @param role The role associated to account
     */
-    function hasRoleAssigned(address account, bytes32 role) public view returns (bool) {
-        return hasRole(role, account);
+    function hasMinerRole(address account) public view returns(bool) {
+        return hasRole(MINER_ROLE, account);
+    }
+        function hasRefinerRole(address account) public view returns(bool) {
+        return hasRole(REFINER_ROLE, account);
+    }
+        function hasTransporterRole(address account) public view returns(bool) {
+        return hasRole(TRANSPORTER_ROLE, account);
+    }
+        function hasInspectorRole(address account) public view returns(bool) {
+        return hasRole(INSPECTOR_ROLE, account);
+    }
+        function hasAuditorRole(address account) public view returns(bool) {
+        return hasRole(AUDITOR_ROLE, account);
+    }
+        function hasBuyerRole(address account) public view returns(bool) {
+        return hasRole(BUYER_ROLE, account);
+    }
+        function hasAdminRole(address account) public view returns(bool) {
+        return hasRole(DEFAULT_ADMIN_ROLE, account);
     }
 
+    
+        // Helper function to validate the role
+    function isValidRole(bytes32 role) private pure returns (bool) {
+    return role == MINER_ROLE || 
+           role == REFINER_ROLE || 
+           role == TRANSPORTER_ROLE || 
+           role == AUDITOR_ROLE || 
+           role == INSPECTOR_ROLE || 
+           role == BUYER_ROLE;
+  }
 
-        /**
+
+
+    /**
     * @dev checks audit and inspection status
     * @param mineralId The ID of the mineral to check for audit and inspection status
 
@@ -467,34 +595,6 @@ contract RolesManager is AccessControl, Errors {
         return (isAudited, isInspected);
     }
 
-    /**
-    * @dev Helper functions for each role
-    * @notice These helper functions are for aiding in roles
-    */
-    function isMiner(address account) public view returns(bool) {
-        return hasRole(MINER_ROLE, account);
-    }
-
-    function isRefiner(address account) public view returns(bool) {
-        return hasRole(REFINER_ROLE, account);
-    } 
-
-    function isTransporter(address account) public view returns(bool) {
-        return hasRole(TRANSPORTER_ROLE, account);
-    }
-
-    function isAuditor(address account) public view returns(bool) {
-        return hasRole(AUDITOR_ROLE, account);
-    }
-
-    function isInspector(address account) public view returns(bool) {
-        return hasRole(INSPECTOR_ROLE, account);
-    }
-
-    function isBuyer(address account) public view returns(bool) {
-        return hasRole(BUYER_ROLE, account);
-    }
-
 
 
     /*//////////////////////////////////////////////////////////////
@@ -511,15 +611,31 @@ contract RolesManager is AccessControl, Errors {
     }
 
 
-    // Helper function to validate the role
-    function isValidRole(bytes32 role) private pure returns (bool) {
-    return role == MINER_ROLE || 
-           role == REFINER_ROLE || 
-           role == TRANSPORTER_ROLE || 
-           role == AUDITOR_ROLE || 
-           role == INSPECTOR_ROLE || 
-           role == BUYER_ROLE;
-  }
+
+ //////////////////////////////////////////////////////
+ //////// GENERATE HASHED MINERALID FOR UNIQUENESS/////
+ //////////////////////////////////////////////////////
+function _generateHashedMineralId(string memory mineralType) internal returns (string memory) {
+    bytes32 fullHash = keccak256(
+        abi.encodePacked(mineralType, msg.sender, block.timestamp, nonce++)
+    );
+
+    // Convert first 4 bytes (8 hex characters) into hex string with "0x"
+    bytes memory shortHex = new bytes(10); // 2 for "0x", 8 for hex chars
+    shortHex[0] = "0";
+    shortHex[1] = "x";
+    for (uint i = 0; i < 4; i++) {
+        shortHex[2 + i * 2] = _nibbleToHexChar(uint8(fullHash[i] >> 4));
+        shortHex[3 + i * 2] = _nibbleToHexChar(uint8(fullHash[i] & 0x0f));
+    }
+
+    return string(abi.encodePacked(mineralType, "-", string(shortHex)));
+}
 
 
+ // helper: convert nibble to hex char (0-9, a-f)
+ function _nibbleTohexChar(uint8 nibble) internal pure returns(bytes1) {
+    return nibble < 10 ? bytes1(nibble + 0x30) : bytes1(nibble + 0x61 - 10;)
+ }
+ 
 }
