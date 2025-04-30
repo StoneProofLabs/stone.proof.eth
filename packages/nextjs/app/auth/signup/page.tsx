@@ -1,12 +1,18 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import StoneProof from "../../../components/landing/Header/StoneProof";
-import { FiArrowLeft, FiInfo } from "react-icons/fi";
+import { FiArrowLeft, FiChevronDown, FiInfo } from "react-icons/fi";
+
+const mineralsList = ["Coltan", "Cobalt", "Gold", "Copper", "Tin", "Tungsten"];
 
 export default function SignupPage() {
   const router = useRouter();
+  const [step, setStep] = useState(1);
+  const [animating, setAnimating] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -14,13 +20,46 @@ export default function SignupPage() {
     password: "",
     confirmPassword: "",
     acceptTerms: false,
+    companyName: "",
+    phoneNumber: "",
+    mineralsMined: ["Coltan", "Cobalt"],
+    location: "",
+    employees: "",
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleContinue = (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement signup logic
-    console.log("Signup form submitted:", formData);
+    setAnimating(true);
+    setTimeout(() => {
+      setStep(step + 1);
+      setAnimating(false);
+    }, 300);
   };
+
+  // Multi-select handler for minerals
+  const handleMineralToggle = (mineral: string) => {
+    setFormData(prev => {
+      const exists = prev.mineralsMined.includes(mineral);
+      return {
+        ...prev,
+        mineralsMined: exists ? prev.mineralsMined.filter(m => m !== mineral) : [...prev.mineralsMined, mineral],
+      };
+    });
+  };
+
+  // Add click outside handler
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen w-full bg-[#060910] flex flex-col md:flex-row items-stretch px-2 sm:px-4 md:px-8 lg:px-12 xl:px-20 py-0 gap-0">
@@ -66,7 +105,9 @@ export default function SignupPage() {
       >
         {/* Title and Subtitle outside the card */}
         <div className="w-full max-w-xl mx-auto pt-8 md:pt-12 pb-2 md:pb-4 px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-2">Create Account</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-2">
+            {step === 1 ? "Create Account" : "Tell us about your company"}
+          </h2>
           <p className="text-gray-400 text-center text-base sm:text-lg">
             Create you first account here to enter our system
           </p>
@@ -78,26 +119,33 @@ export default function SignupPage() {
             {/* Progress Bar */}
             <div className="relative w-full h-2">
               <div className="absolute left-0 top-0 h-2 w-full bg-[#23272F] rounded-t-xl" />
-              <div className="absolute left-0 top-0 h-2 bg-blue-600 rounded-tl-xl" style={{ width: "33%" }} />
+              <div
+                className={`absolute left-0 top-0 h-2 bg-blue-600 rounded-tl-xl transition-all duration-300`}
+                style={{ width: step === 1 ? "33%" : "66%" }}
+              />
             </div>
             {/* Steps */}
             <div className="flex w-full justify-between items-center px-2 sm:px-4 md:px-8 pt-3">
               {/* Step 1 */}
               <div className="flex flex-col items-center flex-1">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 border-blue-600 bg-blue-600 text-white text-sm sm:text-base font-bold">
-                  1
+                <div
+                  className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 ${step > 1 ? "border-blue-600 bg-blue-600" : "border-blue-600 bg-blue-600"} text-white text-sm sm:text-base font-bold transition-all duration-300`}
+                >
+                  {step > 1 ? <span className="text-lg">&#10003;</span> : "1"}
                 </div>
               </div>
               {/* Dotted line */}
               <div className="flex-1 flex items-center justify-center">
                 <div
-                  className="w-full border-t-2 border-dotted border-blue-500"
+                  className={`w-full border-t-2 border-dotted ${step > 1 ? "border-blue-500" : "border-blue-500"}`}
                   style={{ borderStyle: "dotted" }}
                 ></div>
               </div>
               {/* Step 2 */}
               <div className="flex flex-col items-center flex-1">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 border-[#23272F] bg-[#23272F] text-gray-400 text-sm sm:text-base font-bold">
+                <div
+                  className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 ${step === 2 ? "border-blue-600 bg-blue-600 text-white" : "border-[#23272F] bg-[#23272F] text-gray-400"} text-sm sm:text-base font-bold transition-all duration-300`}
+                >
                   2
                 </div>
               </div>
@@ -110,174 +158,333 @@ export default function SignupPage() {
               </div>
               {/* Step 3 */}
               <div className="flex flex-col items-center flex-1">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 border-[#23272F] bg-[#23272F] text-gray-400 text-sm sm:text-base font-bold">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 border-[#23272F] bg-[#23272F] text-gray-400 text-sm sm:text-base font-bold transition-all duration-300">
                   3
                 </div>
               </div>
             </div>
           </div>
           {/* Card Body */}
-          <div className="bg-[#060910] rounded-b-xl px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col border-t-0 border border-[#23272F]">
-            <form className="space-y-6" onSubmit={handleSubmit}>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="w-full sm:w-1/2">
-                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-300 mb-1">
-                    First Name
+          <div
+            className={`bg-[#060910] rounded-b-xl px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col border-t-0 border border-[#23272F] transition-all duration-300 ${animating ? "opacity-0 translate-x-8" : "opacity-100 translate-x-0"}`}
+          >
+            {step === 1 ? (
+              <form className="space-y-6" onSubmit={handleContinue}>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="firstName" className="block text-sm font-medium text-gray-300 mb-1">
+                      First Name
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="firstName"
+                        name="firstName"
+                        placeholder="John"
+                        type="text"
+                        required
+                        className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
+                        value={formData.firstName}
+                        onChange={e => setFormData({ ...formData, firstName: e.target.value })}
+                      />
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
+                        <FiInfo size={16} />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="lastName" className="block text-sm font-medium text-gray-300 mb-1">
+                      Last Name
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="lastName"
+                        name="lastName"
+                        placeholder="Doe"
+                        type="text"
+                        required
+                        className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
+                        value={formData.lastName}
+                        onChange={e => setFormData({ ...formData, lastName: e.target.value })}
+                      />
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
+                        <FiInfo size={16} />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
+                    Email*
                   </label>
                   <div className="relative">
                     <input
-                      id="firstName"
-                      name="firstName"
-                      placeholder="John"
-                      type="text"
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="john.doe@example.com"
                       required
                       className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
-                      value={formData.firstName}
-                      onChange={e => setFormData({ ...formData, firstName: e.target.value })}
+                      value={formData.email}
+                      onChange={e => setFormData({ ...formData, email: e.target.value })}
                     />
                     <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
                       <FiInfo size={16} />
                     </span>
                   </div>
+                  <span className="text-xs text-gray-500 ml-1">Input your email address</span>
                 </div>
-                <div className="w-full sm:w-1/2">
-                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-300 mb-1">
-                    Last Name
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="lastName"
-                      name="lastName"
-                      placeholder="Doe"
-                      type="text"
-                      required
-                      className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
-                      value={formData.lastName}
-                      onChange={e => setFormData({ ...formData, lastName: e.target.value })}
-                    />
-                    <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
-                      <FiInfo size={16} />
-                    </span>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
+                      Password*
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="password"
+                        name="password"
+                        type="password"
+                        placeholder="Password"
+                        required
+                        className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
+                        value={formData.password}
+                        onChange={e => setFormData({ ...formData, password: e.target.value })}
+                      />
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
+                        <FiInfo size={16} />
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-500 ml-1">Please enter your password</span>
+                  </div>
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-1">
+                      Confirm Password*
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        placeholder="Confirm Password"
+                        required
+                        className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
+                        value={formData.confirmPassword}
+                        onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })}
+                      />
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
+                        <FiInfo size={16} />
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-500 ml-1">Passwords need to match</span>
                   </div>
                 </div>
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">
-                  Email*
-                </label>
-                <div className="relative">
+                <div className="flex items-center mb-2">
                   <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="john.doe@example.com"
+                    id="acceptTerms"
+                    name="acceptTerms"
+                    type="checkbox"
                     required
-                    className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
-                    value={formData.email}
-                    onChange={e => setFormData({ ...formData, email: e.target.value })}
+                    checked={formData.acceptTerms}
+                    onChange={e => setFormData({ ...formData, acceptTerms: e.target.checked })}
+                    className="w-5 h-5 border border-[#23272F] rounded-sm focus:bg-[#181c27] checked:bg-[#181c27] accent-blue-600 focus:ring-2 focus:ring-blue-600 mr-2"
                   />
-                  <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
-                    <FiInfo size={16} />
-                  </span>
-                </div>
-                <span className="text-xs text-gray-500 ml-1">Input your email address</span>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="w-full sm:w-1/2">
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-1">
-                    Password*
+                  <label htmlFor="acceptTerms" className="text-sm text-white select-none">
+                    I accept the <span className="underline cursor-pointer">Terms and Privacy Policy</span>
                   </label>
-                  <div className="relative">
-                    <input
-                      id="password"
-                      name="password"
-                      type="password"
-                      placeholder="Password"
-                      required
-                      className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
-                      value={formData.password}
-                      onChange={e => setFormData({ ...formData, password: e.target.value })}
-                    />
-                    <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
-                      <FiInfo size={16} />
-                    </span>
-                  </div>
-                  <span className="text-xs text-gray-500 ml-1">Please enter your password</span>
                 </div>
-                <div className="w-full sm:w-1/2">
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-1">
-                    Confirm Password*
-                  </label>
-                  <div className="relative">
-                    <input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type="password"
-                      placeholder="Confirm Password"
-                      required
-                      className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
-                      value={formData.confirmPassword}
-                      onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    />
-                    <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
-                      <FiInfo size={16} />
-                    </span>
-                  </div>
-                  <span className="text-xs text-gray-500 ml-1">Passwords need to match</span>
+                <button
+                  type="submit"
+                  className="w-full py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors mb-2 shadow-none border-none flex items-center justify-center gap-2"
+                >
+                  Continue <span className="text-xl">→</span>
+                </button>
+                <div className="text-center mb-2">
+                  <span className="text-gray-400 text-sm">Already have an account? </span>
+                  <button
+                    type="button"
+                    className="text-[#0A77FF] hover:text-[#0A77FF]/80 text-sm font-semibold ml-1"
+                    onClick={() => router.push("/auth/login")}
+                  >
+                    Log in
+                  </button>
                 </div>
-              </div>
-              <div className="flex items-center mb-2">
-                <input
-                  id="acceptTerms"
-                  name="acceptTerms"
-                  type="checkbox"
-                  required
-                  checked={formData.acceptTerms}
-                  onChange={e => setFormData({ ...formData, acceptTerms: e.target.checked })}
-                  className="w-5 h-5 border border-[#23272F] rounded-sm focus:bg-[#181c27] checked:bg-[#181c27] accent-blue-600 focus:ring-2 focus:ring-blue-600 mr-2"
-                />
-                <label htmlFor="acceptTerms" className="text-sm text-white select-none">
-                  I accept the <span className="underline cursor-pointer">Terms and Privacy Policy</span>
-                </label>
-              </div>
-              <button
-                type="submit"
-                className="w-full py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors mb-2 shadow-none border-none"
-              >
-                Continue
-              </button>
-              <div className="text-center mb-2">
-                <span className="text-gray-400 text-sm">Already have an account? </span>
-                <button
-                  type="button"
-                  className="text-[#0A77FF] hover:text-[#0A77FF]/80 text-sm font-semibold ml-1"
-                  onClick={() => router.push("/auth/login")}
-                >
-                  Log in
-                </button>
-              </div>
-              {/* Divider */}
-              <div className="flex items-center my-4">
-                <div className="flex-grow h-px bg-[#23272F]" />
-                <span className="mx-4 text-gray-500 text-sm">Or, sign up with your email</span>
-                <div className="flex-grow h-px bg-[#23272F]" />
-              </div>
-              {/* Social Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  type="button"
-                  className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#232B3E] text-white font-semibold hover:bg-[#23272F] transition-colors"
-                >
-                  <img src="/auth/google.svg" alt="Google" className="w-6 h-6 pointer-events-none select-none" /> Sign up with Google
-                </button>
-                <button
-                  type="button"
-                  className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#232B3E] text-white font-semibold hover:bg-[#23272F] transition-colors"
-                >
-                  <img src="/auth/metamask.svg" alt="Metamask" className="w-6 h-6 pointer-events-none select-none" /> Connect Metamask
-                </button>
-              </div>
-            </form>
+                {/* Divider */}
+                <div className="flex items-center my-4">
+                  <div className="flex-grow h-px bg-[#23272F]" />
+                  <span className="mx-4 text-gray-500 text-sm">Or, sign up with your email</span>
+                  <div className="flex-grow h-px bg-[#23272F]" />
+                </div>
+                {/* Social Buttons */}
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <button
+                    type="button"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#2B2D2F] text-white font-semibold hover:bg-[#23272F] transition-colors"
+                  >
+                    <img src="/auth/google.svg" alt="Google" className="w-6 h-6 pointer-events-none select-none" /> Sign
+                    up with Google
+                  </button>
+                  <button
+                    type="button"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[2B2D2F] text-white font-semibold hover:bg-[#23272F] transition-colors"
+                  >
+                    <img src="/auth/metamask.svg" alt="Metamask" className="w-6 h-6 pointer-events-none select-none" />{" "}
+                    Connect Metamask
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <form className="space-y-6" onSubmit={handleContinue}>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="companyName" className="block text-sm font-medium text-gray-300 mb-1">
+                      Company Name
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="companyName"
+                        name="companyName"
+                        placeholder="Your Company"
+                        type="text"
+                        required
+                        className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
+                        value={formData.companyName}
+                        onChange={e => setFormData({ ...formData, companyName: e.target.value })}
+                      />
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
+                        <FiInfo size={16} />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-300 mb-1">
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        placeholder="+1234567890"
+                        type="text"
+                        required
+                        className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
+                        value={formData.phoneNumber}
+                        onChange={e => setFormData({ ...formData, phoneNumber: e.target.value })}
+                      />
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
+                        <FiInfo size={16} />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Minerals Mined</label>
+                  <div className="flex flex-wrap gap-2 bg-[#232B3E] rounded-md px-3 py-2 min-h-[44px]">
+                    {formData.mineralsMined.map(mineral => (
+                      <span
+                        key={mineral}
+                        className="bg-white text-[#181c27] px-3 py-1 rounded-full text-xs flex items-center gap-1"
+                      >
+                        {mineral}
+                        <button
+                          type="button"
+                          className="ml-1 text-gray-600 hover:text-red-400"
+                          onClick={() => handleMineralToggle(mineral)}
+                        >
+                          &times;
+                        </button>
+                      </span>
+                    ))}
+                    <div className="relative" ref={dropdownRef}>
+                      <button
+                        type="button"
+                        className="bg-[#181c27] text-gray-400 outline-none border-none focus:ring-2 focus:ring-blue-600 text-xs px-2 py-1 rounded-md transition-colors flex items-center gap-1"
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                      >
+                        Add mineral...
+                        <FiChevronDown
+                          className={`w-3 h-3 transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+                        />
+                      </button>
+                      {dropdownOpen && (
+                        <div className="absolute z-10 mt-1 w-full bg-[#181c27] border border-[#23272F] rounded-md shadow-lg">
+                          {mineralsList
+                            .filter(m => !formData.mineralsMined.includes(m))
+                            .map(m => (
+                              <button
+                                key={m}
+                                type="button"
+                                className="block w-full text-left px-3 py-2 text-white hover:bg-[#23272F] text-xs"
+                                onClick={() => {
+                                  handleMineralToggle(m);
+                                  setDropdownOpen(false);
+                                }}
+                              >
+                                {m}
+                              </button>
+                            ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="location" className="block text-sm font-medium text-gray-300 mb-1">
+                      Location*
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="location"
+                        name="location"
+                        placeholder="Location"
+                        type="text"
+                        required
+                        className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
+                        value={formData.location}
+                        onChange={e => setFormData({ ...formData, location: e.target.value })}
+                      />
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
+                        <FiInfo size={16} />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="w-full sm:w-1/2">
+                    <label htmlFor="employees" className="block text-sm font-medium text-gray-300 mb-1">
+                      Number of Employees
+                    </label>
+                    <div className="relative">
+                      <input
+                        id="employees"
+                        name="employees"
+                        placeholder="20"
+                        type="text"
+                        required
+                        className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
+                        value={formData.employees}
+                        onChange={e => setFormData({ ...formData, employees: e.target.value })}
+                      />
+                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
+                        <FiInfo size={16} />
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    type="button"
+                    className="w-1/2 py-3 rounded-md bg-[#232B3E] hover:bg-[#23272F] text-white font-semibold text-lg transition-colors border-none"
+                    onClick={() => setStep(1)}
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="submit"
+                    className="w-1/2 py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors shadow-none border-none flex items-center justify-center gap-2"
+                  >
+                    Continue <span className="text-xl">→</span>
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
