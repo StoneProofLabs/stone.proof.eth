@@ -31,7 +31,7 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2 md:gap-1">
+        <div className="flex flex-wrap flex-col md:flex-row gap-2 md:gap-1">
           <button className="flex-1 md:flex-none bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <span className="flex items-center gap-2">
               <h1 className="text-sm translate-y-[7px]">Download Report</h1>
@@ -100,7 +100,13 @@ export default function Page() {
 
         {/* the table */}
         <div className="overflow-x-auto">
-          <MineralListTable minerals={mineralsListRefiners} />
+          <MineralListTable
+            minerals={mineralsListRefiners.map(mineral => ({
+              ...mineral,
+              type: "raw",
+              storageConditions: "room temperature",
+            }))}
+          />
         </div>
       </div>
 
