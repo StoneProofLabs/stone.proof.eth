@@ -39,19 +39,7 @@ export default function Page() {
     onBlockConfirmation: (txnReceipt: any) => {
       notification.success(
         "Mineral Registered!",
-        <div className="flex flex-col">
-          <span>Transaction Hash: {txnReceipt.transactionHash}</span>
-          <span>View on Explorer: 
-            <a 
-              href={`https://sepolia.etherscan.io/tx/${txnReceipt.transactionHash}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-500 ml-1"
-            >
-              Link
-            </a>
-          </span>
-        </div>
+        { body: `Transaction Hash: ${txnReceipt.transactionHash}. View on Explorer: https://sepolia.etherscan.io/tx/${txnReceipt.transactionHash}` }
       );
     },
   });
@@ -145,6 +133,7 @@ export default function Page() {
                     value={formData.mineralType}
                     onChange={(e) => handleInputChange("mineralType", e.target.value)}
                   />
+
                 </div>
 
                 {/* Origin */}
