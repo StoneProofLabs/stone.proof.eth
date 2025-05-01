@@ -7,11 +7,11 @@ pragma solidity ^0.8.20;
 * This contract acts as a storage facility for minerals, allowing authorized buyers to purchase them.
 */
 
-import { RolesManager } from "./RolesManager.sol";
-import { MineralRegistry } from "./MineralRegistry.sol";
+import { RolesManager } from "../core/RolesManager.sol";
+import { MineralRegistry } from "../modules/MineralRegistry.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
-import { Errors } from "./Errors/Errors.sol";
+import { Errors } from "../utils/Errors.sol";
 
 contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
 
@@ -22,7 +22,7 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
     enum PaymentMethod { ETH, TOKEN}
 
     struct StoredMineral {
-        uint256 mineralId;
+        string mineralId;
         address refiner;
         uint256 storedAt;
         uint256 soldAt;
@@ -41,7 +41,7 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
     
     mapping(uint256 => mapping(address => uint256)) public tokenPrices;
 
-    mapping(uint256 => StoredMineral) private warehouse;
+    mapping(string => StoredMineral) private warehouse;
     uint256[] private storedMineralIds;
     mapping(address => bool) public acceptedTokens;
 
@@ -49,9 +49,9 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
 
 
     // events for transparency
-    event MineralStored(uint256 indexed mineralId, address indexed refiner, uint256 storedAt);
-    event MineralListedForSale(uint256 indexed mineralId, string price, address indexed lister);
-    event MineralSold__Purchase(uint256 indexed mineralId, address indexed buyer, address seller, uint256 soldAt);
+    event MineralStored(string  mineralId, address indexed refiner, uint256 storedAt);
+    event MineralListedForSale(string  mineralId, string price, address indexed lister);
+    event MineralSold__Purchase(string  mineralId, address indexed buyer, address seller, uint256 soldAt);
 
     constructor(address rolesManagerAddress, address mineralRegistryAddress) MineralRegistry(rolesManagerAddress)  {
         rolesManager = RolesManager(rolesManagerAddress);
@@ -71,7 +71,7 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
     * @dev stores a refined mineral  into the warehouse - only refiners can do this 
     */
     function store_refined_mineral_to_warehouse(
-        uint256 _mineralId, 
+        string memory _mineralId, 
         uint256 _priceETH, 
         address[] memory tokens, 
         uint256[] memory prices
@@ -106,7 +106,6 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
         }
 
    
-
         storedMineralIds.push(_mineralId);
 
         emit MineralStored(_mineralId, msg.sender, block.timestamp);
@@ -123,7 +122,7 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
     * @notice Emits MineralListedForSale event to indicate that a mineral is for sale to buyers
 
     */
-    function list_Mineral_ForSale(uint256 _mineralId, string memory _price) public restrictedToRole(REFINER_ROLE) {
+    function list_Mineral_ForSale(string memory _mineralId, string memory _price) public restrictedToRole(REFINER_ROLE) {
         StoredMineral storage mineral = warehouse[_mineralId];
         address seller = msg.sender;
 
@@ -148,7 +147,7 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
       /**
     * @dev Allows buyers to purchase minerals with ETH or an accepted ERC-20 token
     */
-    function purhase_mineral(uint256 _mineralId, PaymentMethod method, address token) public payable  restrictedToRole(BUYER_ROLE) {
+    function purhase_mineral(string memory _mineralId, PaymentMethod method, address token) public payable  restrictedToRole(BUYER_ROLE) {
         StoredMineral storage mineral = warehouse[_mineralId];
         address seller = mineral.refiner;
         // address buyer = mineral.buyer;
@@ -217,9 +216,9 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
     /**
     * @dev Retrieves the details of a stored mineral 
     */
-function get_stored_mineral_by_Id(uint256 _mineralId) 
+function get_stored_mineral_by_Id(string memory _mineralId) 
     public returns (
-        uint256, 
+        string, 
         address, 
         uint256, 
         uint256,
@@ -281,18 +280,18 @@ function get_stored_mineral_by_Id(uint256 _mineralId)
     /**
     * @dev Checks the price of a mineral in a given ERC-20 token 
     */
-function getMineralPriceInToken(uint256 _mineralId, address token) public view returns(uint256) {
+function getMineralPriceInToken(string memory _mineralId, address token) public view returns(uint256) {
 
     if (!acceptedTokens[token]) revert MineralWarehouse__UnacceptedToken(token);
     return tokenPrices[_mineralId][token];
 }
 
 
-    function isMineralMarketReady(uint256 _mineralId) public  view returns (bool) {
+    function isMineralMarketReady(string memory _mineralId) public  view returns (bool) {
         return warehouse[_mineralId].isMarketReady[_mineralId];
     }
 
-    // function getTokenPrice(uint256 _mineralId, address _token) public view returns (uint256) {
+    // function getTokenPrice(string memory _mineralId, address _token) public view returns (uint256) {
     // return warehouse[_mineralId].tokenPrices[_token];
 //  }
 

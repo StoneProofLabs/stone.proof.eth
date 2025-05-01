@@ -9,10 +9,10 @@ pragma solidity ^0.8.20;
 * @notice Hard-to-resolve disputes are later on decided by the super admins for resolution
 */
 
-import { MineralRegistry } from "./MineralRegistry.sol";
-import { TransactionLog } from "./TransactionLog.sol";
-import { RolesManager } from "./RolesManager.sol";
-import { Errors } from "./Errors/Errors.sol";
+import { MineralRegistry } from "../modules/MineralRegistry.sol";
+import { TransactionLog } from "../logs/TransactionLog.sol";
+import { RolesManager } from "../core/RolesManager.sol";
+import { Errors } from "../utils/Errors.sol";
 
 contract DisputeResolution is Errors, RolesManager {
 

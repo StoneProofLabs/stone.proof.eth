@@ -1,10 +1,11 @@
-
 import { Montserrat } from "next/font/google";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Metadata } from "next";
+import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
 import "~~/styles/globals.css";
-import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders"; // NEW: our client provider
+
+// NEW: our client provider
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -37,9 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${montserrat.variable} min-h-screen`}>
       <body>
         <ScaffoldEthAppWithProviders>
-          <ThemeProvider enableSystem>
-            {children}
-          </ThemeProvider>
+          <ThemeProvider enableSystem>{children}</ThemeProvider>
         </ScaffoldEthAppWithProviders>
       </body>
     </html>
