@@ -35,14 +35,14 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
         mapping(address => uint256) tokenPrices;
 
         // store market ready mineral
-        mapping(uint256 => bool) isMarketReady;
+        mapping(string => bool) isMarketReady;
        
     }
     
-    mapping(uint256 => mapping(address => uint256)) public tokenPrices;
+    mapping(string => mapping(address => uint256)) public tokenPrices;
 
     mapping(string => StoredMineral) private warehouse;
-    uint256[] private storedMineralIds;
+    string[] private storedMineralIds;
     mapping(address => bool) public acceptedTokens;
 
 
@@ -218,7 +218,7 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
     */
 function get_stored_mineral_by_Id(string memory _mineralId) 
     public returns (
-        string, 
+        string memory, 
         address, 
         uint256, 
         uint256,
