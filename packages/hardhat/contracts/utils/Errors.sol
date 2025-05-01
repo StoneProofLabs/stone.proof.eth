@@ -7,7 +7,7 @@ contract Errors {
                         MINERALREGISTRY__CUSTOM ERRORS
         //////////////////////////////////////////////////////////////*/
 
-    error MineralRegistry__MineralNotRegistered(uint256 mineralId);
+    error MineralRegistry__MineralNotRegistered(string mineralId);
     error MineralRegistry__MineralAlreadyPurchased();
     error MineralRegistry__MineralAlreadyAudited();
     error MineralRegistry__MineralAlreadyInspected();
@@ -15,7 +15,7 @@ contract Errors {
     error MineralRegistry__MineralNotInspected();
 
     error MineralRegistry__InvalidMineralDetails();
-    error MineralRegistry__InvalidMineralIdOrNotFound(uint256 mineralId);
+    error MineralRegistry__InvalidMineralIdOrNotFound(string mineralId);
     error MineralRegistry__InvalidMineralStatus();
     error MineralRegistry__InvalidMineralName();
     error MineralRegistry__InvalidMineralOrigin();
@@ -27,23 +27,23 @@ contract Errors {
     error MineralRegistry__InvalidReceivingPartyAddress();
     error MineralRegistry__InvalidMineralDestination();
     
-    error MineralNotReadyToTrade(uint256 mineralId);
+    error MineralNotReadyToTrade(string mineralId);
 
 
         /*//////////////////////////////////////////////////////////////
                             ROLESMANAGER__CUSTOM ERRORS
         //////////////////////////////////////////////////////////////*/
-    error RolesManager__MineralAlreadyRefined(uint256 mineralId);
-    error RolesManager__MineralAlreadyPurchased(uint256 mineralId);
-    error RolesManager__MineralAlreadyInspected(uint256 mineralId);
-    error RolesManager__MineralAlreadyAudited(uint256 mineralId);
+    error RolesManager__MineralAlreadyRefined(string mineralId);
+    error RolesManager__MineralAlreadyPurchased(string mineralId);
+    error RolesManager__MineralAlreadyInspected(string mineralId);
+    error RolesManager__MineralAlreadyAudited(string mineralId);
     error RolesManager__NotTheAssignedBuyer(address caller);
 
     error RolesManager__InvalidMineralName();
     error RolesManager__InvalidMineralOrigin();
     error RolesManager__InvalidMineralDestination();
 
-    error RolesManager__MineralNotMarketReady(uint256 mineralId);
+    error RolesManager__MineralNotMarketReady(string mineralId);
 
     error RolesManager__InvalidMineralIdOrNotFound();
     error RolesManager__InvalidMineralType();
@@ -82,20 +82,20 @@ contract Errors {
         //////////////////////////////////////////////////////////////*/
 
     error MineralWarehouse__InvalidTokenAddress(address tokenAddress);
-    error MineralWarehouse__MineralNotRefined(uint256 mineralId);
+    error MineralWarehouse__MineralNotRefined(string mineralId);
     error MineralWarehouse__InvalidNumberOfPrices();
     error MineralWarehouse__UnacceptedToken(address tokenAddress);
     error MineralWarehouse__UnacceptedTokens(address[] tokenAddresses);
-    error MineralWarehouse__MineralNotMarketReady(uint256 mineralId);
+    error MineralWarehouse__MineralNotMarketReady(string mineralId);
     error MineralWarehouse__InvalidMineralPrice();
-    error MineralWarehouse__MineralAlreadySold(uint256 mineralId);
+    error MineralWarehouse__MineralAlreadySold(string mineralId);
     error MineralWarehouse__UnauthorizedSeller(address seller);
-    error MineralNotMarketReady(uint256 mineralId);
+    error MineralNotMarketReady(string mineralId);
     error MineralWarehouse__IncorrectETHAmount();
     error MineralWarehouse__ETHTransferFailed();
     error MineralWarehouse__InvalidTokenPrice();
     
-    error MineralWarehouse__MineralNotFoundInWarehouse(uint256 mineralId);
+    error MineralWarehouse__MineralNotFoundInWarehouse(string mineralId);
 
 
         /*//////////////////////////////////////////////////////////////
@@ -122,7 +122,7 @@ contract Errors {
                         SUPPLYCHAINVALIDATOR__CUSTOM ERRORS
         //////////////////////////////////////////////////////////////*/
     
-    error SupplychainValidator__InvalidMineralIdOrNotFound(uint256 mineralId);
+    error SupplychainValidator__InvalidMineralIdOrNotFound(string mineralId);
     error SupplychainValidator__InvalidMineralTransactionHistory();
     error SupplychainValidator__InvalidMineralOwnershipChain();
 
@@ -133,7 +133,7 @@ contract Errors {
     error InvalidAccountAddress();
     error ERC20TokenTransferFailed(address token, uint256 tokenAmount);
     error InvalidPaymentMethods();
-    error InvalidMineralIdOrNotFound(uint256 mineralId);
+    error InvalidMineralIdOrNotFound(string mineralId);
     error InsufficientPermissionsToPerformAction(address caller);
     
 }
