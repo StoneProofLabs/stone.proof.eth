@@ -75,11 +75,17 @@ export default function Page() {
                 <label className="block text-sm font-medium mb-2">Quantity</label>
                 <div className="bg-[#252525] flex items-center justify-between rounded-md px-4 py-3 w-full border border-[#323539]">
                   <input
-                    type="text"
-                    value={`${quantity} KG`}
-                    readOnly
+                    type="number"
+                    value={quantity}
+                    onChange={e => {
+                      const value = parseFloat(e.target.value);
+                      handleQuantityChange(isNaN(value) ? 0 : value);
+                    }}
                     className="bg-[#252525] focus:outline-none text-white text-[14px] w-full"
+                    min="0"
+                    step="0.1"
                   />
+                  <span className="text-[#979AA0] ml-2">KG</span>
                   <div className="flex items-center ml-4 pl-4 border-l border-[#323539] gap-2">
                     <button
                       onClick={() => handleQuantityChange(quantity - 1)}
