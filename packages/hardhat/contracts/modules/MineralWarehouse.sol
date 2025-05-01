@@ -71,7 +71,7 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
     * @dev stores a refined mineral  into the warehouse - only refiners can do this 
     */
     function store_refined_mineral_to_warehouse(
-        string memory _mineralId, 
+        string memory _mineralId,
         uint256 _priceETH, 
         address[] memory tokens, 
         uint256[] memory prices

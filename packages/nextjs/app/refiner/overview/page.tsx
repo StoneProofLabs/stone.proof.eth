@@ -43,7 +43,7 @@ export default function Page() {
             href={"#"}
             className="w-full sm:w-auto bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center"
           >
-            <h1 className="translate-y-[4px]">Update Mineral</h1>
+            <h1 className="translate-y-[4px]">Refine Mineral</h1>
           </Link>
 
           <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">

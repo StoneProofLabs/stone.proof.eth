@@ -1,328 +1,512 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { AlertCircle, Check, ChevronDown, MapPin, Minus, Plus } from "lucide-react";
+import React, { useState } from "react";
+import {
+  AlertCircle,
+  Check,
+  ChevronDown,
+  Droplet,
+  MapPin,
+  Minus,
+  Plus,
+  Thermometer,
+  ShieldAlert,
+} from "lucide-react";
 import { useAccount } from "wagmi";
-import { useScaffoldContractWrite, useScaffoldContractRead, useScaffoldEventSubscriber } from "~~/hooks/scaffold-eth";
-import { getParsedError, notification } from "~~/utils/scaffold-eth";
+import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+
+// Define the MINER_ROLE constant (should match your contract's MINER_ROLE)
+const MINER_ROLE = "0x241ecf16d79d0f8dbfb92cbc07fe17840425976cf0667f022fe9877caa831b08";
 
 export default function Page() {
-  const { address } = useAccount();
-  const [formData, setFormData] = useState({
-    mineralName: "",
-    mineralType: "",
-    origin: "",
-    weight: 0,
-    purityPercentage: 81, // Minimum 81% as per contract
-    storageConditions: "",
+  const { address, isConnected } = useAccount();
+  const [quantity, setQuantity] = useState(0);
+  const [purity, setPurity] = useState(0);
+  const [portalOpen, setPortalOpen] = useState(false);
+  const [mineralName, setMineralName] = useState("");
+  const [mineralType, setMineralType] = useState("");
+  const [origin, setOrigin] = useState("");
+  const [selectedCondition, setSelectedCondition] = useState({
+    temperature: "In Celsius",
+    storage: "Select Type",
+    humidity: "Select Type",
   });
 
-  // Check miner role
-  const { data: hasMinerRole } = useScaffoldContractRead({
+  // Check if user has miner role
+  const { data: hasMinerRole, isLoading: isRoleLoading } = useScaffoldReadContract({
     contractName: "RolesManager",
-    functionName: "hasMinerRole",
-    args: [address],
+    contractAddress: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+    functionName: "hasRole",
+    args: [MINER_ROLE, address],
+    enabled: isConnected,
   });
 
-  // Contract write configuration
-  const { writeAsync, isLoading, isMining } = useScaffoldContractWrite({
+  const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`;
+
+  const allFieldsReady =
+    isConnected &&
+    hasMinerRole &&
+    mineralName &&
+    mineralType &&
+    origin &&
+    selectedCondition.storage !== "Select Type" &&
+    selectedCondition.humidity !== "Select Type" &&
+    quantity > 0 &&
+    purity > 80;
+
+  const { writeAsync, isLoading: isRegistering } = useScaffoldContract({
     contractName: "RolesManager",
+    contractAddress: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
     functionName: "registerMineral",
     args: [
-      formData.mineralName,
-      formData.mineralType,
-      BigInt(formData.weight),
-      formData.origin,
-      BigInt(formData.purityPercentage),
-      formData.storageConditions,
+      mineralName,
+      mineralType,
+      quantity,
+      origin,
+      purity,
+      storageConditions
     ],
-    onBlockConfirmation: (txnReceipt: any) => {
-      notification.success(
-        "Mineral Registered!",
-        { body: `Transaction Hash: ${txnReceipt.transactionHash}. View on Explorer: https://sepolia.etherscan.io/tx/${txnReceipt.transactionHash}` }
-      );
-    },
-  });
-
-  // Listen for registration events
-  useScaffoldEventSubscriber({
-    contractName: "RolesManager",
-    eventName: "MineralRegistered",
-    listener: (mineralId, name, mineralType, origin, weight, purityPercentage, miner, timestamp) => {
-      console.log("New mineral registered:", mineralId);
-      // Reset form on successful registration
-      setFormData({
-        mineralName: "",
-        mineralType: "",
-        origin: "",
-        weight: 0,
-        purityPercentage: 81,
-        storageConditions: "",
+    enabled: allFieldsReady,
+    onSuccess: (mineralId) => {
+      alert(`Mineral registered successfully! Mineral ID: ${mineralId}`);
+      // Reset form after successful registration
+      setMineralName("");
+      setMineralType("");
+      setOrigin("");
+      setQuantity(0);
+      setPurity(0);
+      setSelectedCondition({
+        temperature: "In Celsius",
+        storage: "Select Type",
+        humidity: "Select Type",
       });
     },
+    onError: (error) => {
+      console.error("Registration failed:", error);
+      let errorMessage = "Failed to register mineral.";
+      
+      if (error.message.includes("RolesManager__MineralPurityPercentageTooLowToRegister")) {
+        errorMessage = "Purity percentage must be greater than 80%";
+      } else if (error.message.includes("RolesManager__InvalidMineralWeight")) {
+        errorMessage = "Mineral weight must be greater than 0";
+      } else if (error.message.includes("caller is missing role")) {
+        errorMessage = "Your account doesn't have miner privileges";
+      }
+      
+      alert(errorMessage);
+    },
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Client-side validation
-    if (!formData.mineralName || !formData.mineralType || !formData.origin || formData.weight <= 0) {
-      notification.error("Validation Error", "Please fill all required fields");
+  const handleQuantityChange = (value: number) => {
+    setQuantity(Math.max(0, value));
+  };
+
+  const handlePurityChange = (value: number) => {
+    setPurity(Math.max(0, Math.min(100, value)));
+  };
+
+  const handleRegister = async () => {
+    if (!isConnected) {
+      alert("Please connect your wallet.");
       return;
     }
 
-    if (formData.purityPercentage < 81) {
-      notification.error("Validation Error", "Purity percentage must be at least 81%");
+    if (!hasMinerRole) {
+      alert("Your account doesn't have miner privileges.");
+      return;
+    }
+
+    if (!allFieldsReady) {
+      alert("Please fill in all required fields correctly.");
       return;
     }
 
     try {
-      await writeAsync();
-    } catch (error) {
-      const parsedError = getParsedError(error);
-      notification.error("Registration Failed", parsedError);
+      if (writeAsync) {
+        const tx = await writeAsync();
+        console.log("Transaction submitted:", tx.hash);
+      }
+    } catch (err: any) {
+      console.error("Error calling write function:", err);
+      let errorMessage = "An unexpected error occurred.";
+      
+      if (err.message.includes("user rejected transaction")) {
+        errorMessage = "Transaction was rejected";
+      }
+      
+      alert(errorMessage);
     }
   };
 
-  const handleInputChange = (field: string, value: string | number) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
+  // Loading state while checking roles
+  if (isConnected && isRoleLoading) {
+    return (
+      <div className="text-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Checking permissions...</h2>
+          <p>Verifying your miner role status</p>
+        </div>
+      </div>
+    );
+  }
 
-  const handleQuantityChange = (value: number) => {
-    const newValue = Math.max(0, value);
-    handleInputChange("weight", newValue);
-  };
+  // Not connected state
+  if (!isConnected) {
+    return (
+      <div className="text-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Wallet Not Connected</h2>
+          <p className="text-gray-400">Please connect your wallet to register minerals</p>
+        </div>
+      </div>
+    );
+  }
 
-  const handlePurityChange = (value: number) => {
-    const newValue = Math.max(81, Math.min(100, value));
-    handleInputChange("purityPercentage", newValue);
-  };
+  // No miner role state
+  if (isConnected && !hasMinerRole) {
+    return (
+      <div className="text-white min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="flex justify-center mb-4">
+            <ShieldAlert size={48} className="text-red-500" />
+          </div>
+          <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>
+          <p className="text-gray-400 mb-4">
+            Your account doesn't have miner privileges to register minerals.
+          </p>
+          <p className="text-gray-500 text-sm">
+            Contact the system administrator to get miner role assigned to your address.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
+  // Main form for users with miner role
   return (
     <div className="text-white min-h-screen flex flex-col items-center p-6">
+      {/* Form Header */}
       <div className="w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-3">Register Mineral</h1>
-
         <p className="text-gray-400 text-center mb-8">
-          Please fill in all required fields to register a new mineral in the supply chain
+          Register new minerals in the system. All fields are required.
         </p>
 
         <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left Form Section */}
           <div className="border border-[#323539] rounded-lg p-6 flex-1">
-            <form onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Mineral Name */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">Mineral Name *</label>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Mineral Fields */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Mineral Name</label>
+                <input
+                  type="text"
+                  value={mineralName}
+                  onChange={e => setMineralName(e.target.value)}
+                  placeholder="Valid Mineral name"
+                  className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Type</label>
+                <input
+                  type="text"
+                  value={mineralType}
+                  onChange={e => setMineralType(e.target.value)}
+                  placeholder="Mineral type here"
+                  className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-2">Origin</label>
+                <div className="relative">
                   <input
                     type="text"
-                    placeholder="e.g. Gold Ore"
+                    value={origin}
+                    onChange={e => setOrigin(e.target.value)}
+                    placeholder="Enter Origin here"
                     className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
-                    value={formData.mineralName}
-                    onChange={(e) => handleInputChange("mineralName", e.target.value)}
                   />
+                  <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
                 </div>
+              </div>
 
-                {/* Mineral Type */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">Mineral Type *</label>
+              {/* Quantity and Purity */}
+              <div>
+                <label className="block text-sm font-medium mb-2">Quantity (KG)</label>
+                <div className="bg-[#252525] flex items-center justify-between rounded-md px-4 py-3 w-full border border-[#323539]">
                   <input
-                    type="text"
-                    placeholder="e.g. Gold, Diamond"
-                    className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
-                    value={formData.mineralType}
-                    onChange={(e) => handleInputChange("mineralType", e.target.value)}
+                    type="number"
+                    value={quantity}
+                    onChange={e => {
+                      const value = parseFloat(e.target.value);
+                      handleQuantityChange(isNaN(value) ? 0 : value);
+                    }}
+                    className="bg-[#252525] focus:outline-none text-white text-[14px] w-full"
+                    min="0"
+                    step="0.1"
                   />
-
-                </div>
-
-                {/* Origin */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">Origin *</label>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Country or Region"
-                      className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
-                      value={formData.origin}
-                      onChange={(e) => handleInputChange("origin", e.target.value)}
-                    />
-                    <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-                  </div>
-                </div>
-
-                {/* Weight */}
-                <div>
-                  <label className="block text-sm font-medium mb-2">Weight (KG) *</label>
-                  <div className="bg-[#252525] flex items-center justify-between rounded-md px-4 py-3 w-full border border-[#323539]">
-                    <input
-                      type="text"
-                      value={`${formData.weight} KG`}
-                      readOnly
-                      className="bg-[#252525] focus:outline-none text-white text-[14px] w-full"
-                    />
-                    <div className="flex items-center ml-4 pl-4 border-l border-[#323539] gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleQuantityChange(formData.weight - 1)}
-                        className="w-8 h-8 flex items-center justify-center bg-[#3A3B3D] hover:bg-gray-600 rounded-full"
-                      >
-                        <Minus size={16} />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleQuantityChange(formData.weight + 1)}
-                        className="w-8 h-8 flex items-center justify-center bg-[#3A3B3D] hover:bg-gray-600 rounded-full"
-                      >
-                        <Plus size={16} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Purity Percentage */}
-                <div className="w-full">
-                  <label className="block text-sm font-medium mb-2 text-white">Purity Percentage *</label>
-                  <div className="flex items-center bg-[#1E1E1E] rounded-xl overflow-hidden border border-[#323539]">
-                    <div className="flex-1 px-4 py-3">
-                      <input
-                        type="range"
-                        min="81"
-                        max="100"
-                        value={formData.purityPercentage}
-                        onChange={(e) => handlePurityChange(Number(e.target.value))}
-                        className="w-full h-2 rounded-full appearance-none bg-[#e5e5ee] slider-thumb-blue"
-                        style={{
-                          background: `linear-gradient(to right, #007BFF 0%, #007BFF ${formData.purityPercentage}%, #e5e5ee ${formData.purityPercentage}%, #e5e5ee 100%)`,
-                        }}
-                      />
-                    </div>
-                    <div className="flex items-center gap-2 px-3 py-2 bg-[#2B2D2F] min-w-[130px] justify-end">
-                      <button
-                        type="button"
-                        onClick={() => handlePurityChange(formData.purityPercentage - 1)}
-                        className="w-7 h-7 flex items-center justify-center bg-[#2f3135] hover:bg-gray-600 rounded-full text-white"
-                      >
-                        <Minus size={14} />
-                      </button>
-                      <span className="text-white text-sm w-10 text-center">
-                        {formData.purityPercentage}%
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => handlePurityChange(formData.purityPercentage + 1)}
-                        className="w-7 h-7 flex items-center justify-center bg-[#2f3135] hover:bg-gray-600 rounded-full text-white"
-                      >
-                        <Plus size={14} />
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Storage Conditions */}
-                <div className="w-full relative">
-                  <label className="block text-sm font-medium mb-2 text-white">Storage Conditions *</label>
-                  <div className="flex items-center bg-[#1E1E1E] border border-[#323539] rounded-xl overflow-hidden">
-                    <div className="flex-1 px-4 py-3 text-white text-sm bg-[#252525]">
-                      {formData.storageConditions || "Select storage conditions"}
-                    </div>
-                    <div className="relative dropdown-container">
-                      <button
-                        type="button"
-                        onClick={() => setDropdownOpen(!dropdownOpen)}
-                        className="bg-[#2B2D2F] hover:bg-gray-600 px-4 py-3 flex items-center gap-1 text-white text-sm h-full"
-                      >
-                        Select
-                        <ChevronDown size={18} />
-                      </button>
-                      {dropdownOpen && (
-                        <ul className="absolute right-0 top-full mt-1 bg-[#2B2D2F] border border-[#323539] rounded-md shadow-lg z-10 w-48">
-                          {["Cool & Dry Place", "Refrigerated", "Room Temperature", "Frozen"].map(condition => (
-                            <li
-                              key={condition}
-                              onClick={() => {
-                                handleInputChange("storageConditions", condition);
-                                setDropdownOpen(false);
-                              }}
-                              className="px-4 py-2 hover:bg-gray-600 text-white text-sm cursor-pointer"
-                            >
-                              {condition}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
+                  <div className="flex items-center ml-4 pl-4 border-l border-[#323539] gap-2">
+                    <button
+                      onClick={() => handleQuantityChange(quantity - 1)}
+                      className="w-8 h-8 flex items-center justify-center bg-[#3A3B3D] hover:bg-gray-600 rounded-full"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <button
+                      onClick={() => handleQuantityChange(quantity + 1)}
+                      className="w-8 h-8 flex items-center justify-center bg-[#3A3B3D] hover:bg-gray-600 rounded-full"
+                    >
+                      <Plus size={16} />
+                    </button>
                   </div>
                 </div>
               </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                className="w-full bg-accentBlue hover:bg-blue-600 text-white font-medium py-3 rounded mt-8 duration-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!hasMinerRole || isLoading || isMining}
-              >
-                {!hasMinerRole ? "Not Authorized (MINER_ROLE required)" :
-                 isLoading || isMining ? "Processing..." : "Register Mineral"}
-              </button>
+              <div className="w-full">
+                <label className="block text-sm font-medium mb-2 text-white">
+                  Purity Percentage {purity <= 80 && (
+                    <span className="text-red-500 ml-2">(Must be > 80%)</span>
+                  )}
+                </label>
+                <div className="flex items-center bg-[#1E1E1E] rounded-xl overflow-hidden border border-[#323539]">
+                  <div className="flex-1 px-4 py-3">
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={purity}
+                      onChange={e => handlePurityChange(Number(e.target.value))}
+                      className="w-full h-2 rounded-full appearance-none bg-[#e5e5ee]"
+                      style={{
+                        background: `linear-gradient(to right, #007BFF 0%, #007BFF ${purity}%, #e5e5ee ${purity}%, #e5e5ee 100%)`,
+                      }}
+                    />
+                  </div>
+                  <div className="flex items-center gap-2 px-3 py-2 bg-[#2B2D2F] min-w-[130px] justify-end">
+                    <button
+                      onClick={() => handlePurityChange(purity - 1)}
+                      className="w-7 h-7 flex items-center justify-center bg-[#2f3135] hover:bg-gray-600 rounded-full text-white"
+                    >
+                      <Minus size={14} />
+                    </button>
+                    <span className={`text-sm w-10 text-center ${
+                      purity <= 80 ? 'text-red-500' : 'text-white'
+                    }`}>
+                      {purity}%
+                    </span>
+                    <button
+                      onClick={() => handlePurityChange(purity + 1)}
+                      className="w-7 h-7 flex items-center justify-center bg-[#2f3135] hover:bg-gray-600 rounded-full text-white"
+                    >
+                      <Plus size={14} />
+                    </button>
+                  </div>
+                </div>
+              </div>
 
-              <p className="text-gray-400 text-sm text-center mt-4">
-                {hasMinerRole ? 
-                  "Your transaction is secure and will be recorded on-chain" :
-                  "Connect with a MINER_ROLE account to register minerals"}
-              </p>
-            </form>
+              {/* Storage Conditions */}
+              <div className="w-full relative">
+                <label className="block text-sm font-medium mb-2 text-white">Storage Conditions</label>
+                <div className="flex items-center bg-[#1E1E1E] border border-[#323539] rounded-xl overflow-hidden">
+                  <div className="flex-1 px-4 py-3 text-white text-sm bg-[#252525]">
+                    {selectedCondition.storage !== "Select Type"
+                      ? `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`
+                      : "No Conditions specified"}
+                  </div>
+                  <div className="relative">
+                    <button
+                      onClick={() => setPortalOpen(true)}
+                      className="bg-[#2B2D2F] hover:bg-gray-600 px-4 py-3 flex items-center gap-1 text-white text-sm h-full"
+                    >
+                      Select <ChevronDown size={18} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Register Button */}
+            <button
+              onClick={handleRegister}
+              disabled={!allFieldsReady || isRegistering}
+              className={`w-full ${
+                allFieldsReady ? 'bg-accentBlue hover:bg-blue-600' : 'bg-gray-600 cursor-not-allowed'
+              } text-white font-medium py-3 rounded mt-8 duration-500 flex items-center justify-center`}
+            >
+              {isRegistering ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                "Register Mineral"
+              )}
+            </button>
+            <p className="text-gray-400 text-sm text-center mt-4">
+              {allFieldsReady 
+                ? "All required fields are complete. You can register the mineral."
+                : "Please fill all required fields to register."}
+            </p>
           </div>
 
-          {/* Checkpoints Section */}
+          {/* Right Info Panel */}
           <div className="lg:w-72">
             <div className="rounded-lg p-6">
-              <h2 className="text-lg font-medium mb-4">Validation Checks</h2>
+              <h2 className="text-lg font-medium mb-4">Check-points</h2>
               <div className="space-y-3 mb-6">
                 <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${formData.mineralName ? "bg-green-500" : "bg-gray-500"}`}>
-                    <Check size={12} />
+                  <div className={`rounded-full p-1 ${
+                    mineralName ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {mineralName ? <Check size={12} /> : <Minus size={12} />}
                   </div>
                   <span className="text-sm">Valid mineral name</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${formData.mineralType ? "bg-green-500" : "bg-gray-500"}`}>
-                    <Check size={12} />
+                  <div className={`rounded-full p-1 ${
+                    mineralType ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {mineralType ? <Check size={12} /> : <Minus size={12} />}
                   </div>
-                  <span className="text-sm">Valid mineral type</span>
+                  <span className="text-sm">Mineral type specified</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${formData.origin ? "bg-green-500" : "bg-gray-500"}`}>
-                    <Check size={12} />
+                  <div className={`rounded-full p-1 ${
+                    origin ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {origin ? <Check size={12} /> : <Minus size={12} />}
                   </div>
-                  <span className="text-sm">Valid origin</span>
+                  <span className="text-sm">Origin provided</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${formData.weight > 0 ? "bg-green-500" : "bg-gray-500"}`}>
-                    <Check size={12} />
+                  <div className={`rounded-full p-1 ${
+                    quantity > 0 ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {quantity > 0 ? <Check size={12} /> : <Minus size={12} />}
                   </div>
-                  <span className="text-sm">Minimum weight (1 KG)</span>
+                  <span className="text-sm">Valid quantity</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${formData.purityPercentage >= 81 ? "bg-green-500" : "bg-gray-500"}`}>
-                    <Check size={12} />
+                  <div className={`rounded-full p-1 ${
+                    purity > 80 ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {purity > 80 ? <Check size={12} /> : <Minus size={12} />}
                   </div>
-                  <span className="text-sm">Minimum purity (81%)</span>
+                  <span className="text-sm">Purity > 80%</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`rounded-full p-1 ${
+                    selectedCondition.storage !== "Select Type" && 
+                    selectedCondition.humidity !== "Select Type" 
+                      ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {selectedCondition.storage !== "Select Type" && 
+                     selectedCondition.humidity !== "Select Type" 
+                      ? <Check size={12} /> : <Minus size={12} />}
+                  </div>
+                  <span className="text-sm">Storage conditions set</span>
                 </div>
               </div>
-
-              <h3 className="font-medium mb-2">Important Notes:</h3>
+              <h3 className="font-medium mb-2">Tips:</h3>
               <div className="flex gap-2 text-sm">
                 <AlertCircle className="min-w-5 h-5 text-white mt-0.5" />
                 <p className="text-gray-400">
-                  All information will be permanently recorded on the blockchain. 
-                  Double-check all details before submission.
+                  Ensure the details entered are accurate. Modifications won't be allowed post registration.
                 </p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Storage Conditions Modal */}
+      {portalOpen && (
+        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+          <div className="bg-[#0D0D0D] border border-gray-700 rounded-xl p-8 w-[400px] relative">
+            <h2 className="text-white text-lg mb-6 font-semibold">Specify Storage Conditions</h2>
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Storage Type</label>
+                <select
+                  value={selectedCondition.storage}
+                  onChange={e => setSelectedCondition({...selectedCondition, storage: e.target.value})}
+                  className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
+                >
+                  <option value="Select Type">Select Type</option>
+                  <option value="Dry Storage">Dry Storage</option>
+                  <option value="Climate Controlled">Climate Controlled</option>
+                  <option value="Refrigerated">Refrigerated</option>
+                  <option value="Airtight Container">Airtight Container</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Temperature</label>
+                <div className="relative">
+                  <select
+                    value={selectedCondition.temperature}
+                    onChange={e => setSelectedCondition({...selectedCondition, temperature: e.target.value})}
+                    className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
+                  >
+                    <option value="In Celsius">In Celsius</option>
+                    <option value="Below 0°C">Below 0°C</option>
+                    <option value="0°C to 10°C">0°C to 10°C</option>
+                    <option value="10°C to 25°C">10°C to 25°C</option>
+                    <option value="Above 25°C">Above 25°C</option>
+                  </select>
+                  <Thermometer className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Humidity</label>
+                <div className="relative">
+                  <select
+                    value={selectedCondition.humidity}
+                    onChange={e => setSelectedCondition({...selectedCondition, humidity: e.target.value})}
+                    className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
+                  >
+                    <option value="Select Type">Select Type</option>
+                    <option value="Low (<30%)">Low (&lt;30%)</option>
+                    <option value="Moderate (30-60%)">Moderate (30-60%)</option>
+                    <option value="High (>60%)">High (&gt;60%)</option>
+                  </select>
+                  <Droplet className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-end mt-6 space-x-3">
+              <button
+                onClick={() => setPortalOpen(false)}
+                className="px-4 py-2 border border-gray-600 rounded-lg text-white hover:bg-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (
+                    selectedCondition.storage !== "Select Type" && 
+                    selectedCondition.humidity !== "Select Type"
+                  ) {
+                    setPortalOpen(false);
+                  } else {
+                    alert("Please select both Storage Type and Humidity");
+                  }
+                }}
+                className="px-4 py-2 bg-accentBlue rounded-lg text-white hover:bg-blue-600"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
