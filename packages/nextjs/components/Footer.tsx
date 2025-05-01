@@ -1,57 +1,58 @@
-"use client";
+import React from "react";
+import StoneProof from "./landing/Header/StoneProof";
 
-import Link from "next/link";
-import { Github, Twitter } from "lucide-react";
+// Footer data structure
+const footerData = {
+  description: "Design outstanding interfaces with advanced Figma features in a matter of minutes.",
+  sections: [
+    {
+      title: "Why Choose Us?",
+      links: ["Scale", "Solutions", "Our Competition", "Channels", "Events", "Watch the Demo"],
+    },
+    {
+      title: "Company",
+      links: ["Leadership", "Careers", "Investor Relations", "Media Kit"],
+    },
+    {
+      title: "Resources",
+      links: ["Community", "Events", "Help Center", "Partners"],
+    },
+  ],
+};
 
-export const Footer = () => {
-  const footerLinks = {
-    Learn: [
-      { label: "Introduction", href: "#" },
-      { label: "Features", href: "#" },
-      { label: "Staking", href: "#" },
-      { label: "Get Stone.prof", href: "#" },
-      { label: "FAQ", href: "#" },
-    ],
-    Build: [
-      { label: "EnvironmentI", href: "#" },
-      { label: "BlockChain", href: "#" },
-      { label: "Community", href: "#" },
-    ],
-    Explore: [
-      { label: "Mining", href: "#" },
-      { label: "Transport", href: "#" },
-      { label: "WareHouses", href: "#" },
-      { label: "Market Place", href: "#" },
-    ],
-    Participate: [
-      { label: "Community", href: "#" },
-      { label: "Contributors", href: "#" },
-      { label: "Events", href: "#" },
-      { label: "Newsletters", href: "#" },
-    ],
-    Resources: [
-      { label: "About", href: "#" },
-      { label: "Press Kit", href: "#" },
-      { label: "Design", href: "#" },
-      { label: "Resources", href: "#" },
-    ],
-  };
-
+const Footer = () => {
   return (
-    <footer className="py-12 px-4 md:px-8 text-gray-400 font-montserrat">
-      <div className="max-w-7xl mx-auto">
-        <div className="w-full h-[1px] bg-white opacity-10 mb-12"></div>
+    <footer className="bg-[#060910] text-white py-8 sm:py-12 md:py-16">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 md:gap-16">
+          {/* Logo and subscription section */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <div className="mb-4">
+              <StoneProof />
+            </div>
+            <p className="text-gray-400 mb-6 max-w-xs">{footerData.description}</p>
+            <div className="flex">
+              <input
+                type="email"
+                placeholder="Input your email"
+                className="bg-[#252525] border border-gray-700 rounded-l-md py-2 px-4 w-full focus:outline-none"
+              />
+              <button className="bg-[#1D4ED8] hover:bg-[#1e40af] text-white py-2 px-6 rounded-r-md transition-colors duration-200">
+                Submit
+              </button>
+            </div>
+          </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
-              <h3 className="font-semibold text-white mb-4">{category}</h3>
-              <ul className="space-y-2">
-                {links.map(link => (
-                  <li key={link.label}>
-                    <Link href={link.href} className="hover:text-white transition-colors">
-                      {link.label}
-                    </Link>
+          {/* Dynamic sections */}
+          {footerData.sections.map((section, index) => (
+            <div key={index} className="sm:pl-0 lg:pl-16">
+              <h3 className="text-lg font-semibold mb-4 sm:mb-6">{section.title}</h3>
+              <ul className="space-y-2 sm:space-y-4">
+                {section.links.map((link, linkIndex) => (
+                  <li key={linkIndex}>
+                    <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">
+                      {link}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -59,21 +60,14 @@ export const Footer = () => {
           ))}
         </div>
 
-        <div className="mt-12 pt-6 border-t border-base-content/10 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-base-content/50">© {new Date().getFullYear()} Stoneproof. All rights reserved.</p>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <Link href="#" className="text-sm text-base-content/50 hover:text-primary transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="text-sm text-base-content/50 hover:text-primary transition-colors">
-              Terms of Service
-            </Link>
-            <Link href="#" className="text-sm text-base-content/50 hover:text-primary transition-colors">
-              Cookie Policy
-            </Link>
-          </div>
-        </div>
+        {/* Divider */}
+        <div className="border-t border-gray-800 my-8 sm:my-10"></div>
+
+        {/* Copyright */}
+        <div className="text-center text-gray-500">© 2025 stoneProof. All Rights Reserved.</div>
       </div>
     </footer>
   );
 };
+
+export default Footer;

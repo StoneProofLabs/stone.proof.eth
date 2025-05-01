@@ -398,9 +398,9 @@ contract RolesManager is AccessControl, Errors {
 
 
 
-      function _setupRole(bytes32 role, address account) internal  {
+    function _setupRole(bytes32 role, address account) internal  {
         _grantRole(role, account);
-     }
+    }
 
 
     /**
@@ -422,7 +422,7 @@ contract RolesManager is AccessControl, Errors {
 
 
     /**
-    * @dev Revokes to from an account - only admin 
+    * @dev Revokes to from an account - onlydmin 
     * @param account The address of the account to be revoked role by the admin
     * @param role The role to be revoked from the account by the admin
     * @notice Emits RoleRevoked event

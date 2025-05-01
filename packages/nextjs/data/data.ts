@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { Shipment } from "~~/app/miner/minerals/page";
+import { MineralItem } from "~~/components/dashboard/buyer/recentMarketPurchases";
+import { RecentTransaction } from "~~/components/dashboard/buyer/recentPurchasesTable";
+import { Notifications } from "~~/components/dashboard/disputes/recentActivities";
 
 export const mineralsList = [
   {
@@ -1181,5 +1184,351 @@ export const mockRecentActivities = [
     mediumLabel: "Visa 1234",
     mediumDetails: "Expire 24/2032",
     statusIcon: "visa",
+  },
+];
+
+export const recentDisputes = [
+  {
+    id: 1,
+    mineral: "Gold",
+    avatar: "/dashboard/gold.jpeg",
+    time: "16 hrs ago",
+    status: "Defendant",
+    statusColor: "red",
+  },
+  {
+    id: 2,
+    mineral: "Cobalt",
+    avatar: "/dashboard/cobalt.jpeg",
+    time: "3 days ago",
+    status: "Complainant",
+    statusColor: "green",
+  },
+  {
+    id: 3,
+    mineral: "Copper",
+    avatar: "/dashboard/copper.jpeg",
+    time: "2 weeks ago",
+    status: "Complainant",
+    statusColor: "green",
+  },
+];
+
+export const mockTransportRequests = [
+  {
+    id: "TRQ-001",
+    location: "Mine Alpha",
+    locationId: "LOC-ALPHA-001",
+    destination: "Refinery Zeta",
+    destinationDetail: "REF-ZETA-001",
+    mineralState: "Registered",
+    timestamp: "2025-04-20 14:30",
+  },
+  {
+    id: "TRQ-002",
+    location: "Mine Beta",
+    locationId: "LOC-BETA-002",
+    destination: "Warehouse Delta",
+    destinationDetail: "WRH-DELTA-002",
+    mineralState: "Inspected",
+    timestamp: "2025-04-21 09:15",
+  },
+  {
+    id: "TRQ-003",
+    location: "Mine Gamma",
+    locationId: "LOC-GAMMA-003",
+    destination: "Processing Plant Theta",
+    destinationDetail: "PPL-THETA-003",
+    mineralState: "Purchased",
+    timestamp: "2025-04-22 16:45",
+  },
+  {
+    id: "TRQ-004",
+    location: "Mine Delta",
+    locationId: "LOC-DELTA-004",
+    destination: "Refinery Omega",
+    destinationDetail: "REF-OMEGA-004",
+    mineralState: "Outstanding",
+    timestamp: "2025-04-23 11:00",
+  },
+  {
+    id: "TRQ-005",
+    location: "Mine Epsilon",
+    locationId: "LOC-EPSILON-005",
+    destination: "Warehouse Sigma",
+    destinationDetail: "WRH-SIGMA-005",
+    mineralState: "Registered",
+    timestamp: "2025-04-24 08:30",
+  },
+  {
+    id: "TRQ-006",
+    location: "Mine Zeta",
+    locationId: "LOC-ZETA-006",
+    destination: "Processing Plant Lambda",
+    destinationDetail: "PPL-LAMBDA-006",
+    mineralState: "Inspected",
+    timestamp: "2025-04-24 14:20",
+  },
+  {
+    id: "TRQ-007",
+    location: "Mine Eta",
+    locationId: "LOC-ETA-007",
+    destination: "Warehouse Gamma",
+    destinationDetail: "WRH-GAMMA-007",
+    mineralState: "Outstanding",
+    timestamp: "2025-04-25 10:45",
+  },
+  {
+    id: "TRQ-008",
+    location: "Mine Theta",
+    locationId: "LOC-THETA-008",
+    destination: "Refinery Alpha",
+    destinationDetail: "REF-ALPHA-008",
+    mineralState: "Purchased",
+    timestamp: "2025-04-25 17:00",
+  },
+];
+
+export const mockDisputes: Notifications[] = [
+  {
+    id: 1,
+    type: "warning",
+    title: "Late Shipment Dispute",
+    date: "2025-04-27",
+    content: "Customer reported that the shipment arrived 5 days late.",
+    status: "Pending",
+    secondaryStatus: "High Priority",
+    reference: "ORD-58231",
+  },
+  {
+    id: 2,
+    type: "error",
+    title: "Damaged Product Complaint",
+    date: "2025-04-26",
+    content: "The customer received a damaged item and requested a refund.",
+    status: "Escalated",
+    secondaryStatus: "Complainant",
+    reference: "ORD-58345",
+  },
+  {
+    id: 3,
+    type: "success",
+    title: "Dispute Resolved - Refund Issued",
+    date: "2025-04-25",
+    content: "The refund was successfully processed and dispute closed.",
+    status: "Resolved",
+    reference: "ORD-58388",
+  },
+  {
+    id: 4,
+    type: "shipment",
+    title: "Shipment Lost in Transit",
+    date: "2025-04-24",
+    content: "Courier reported a lost package, awaiting customer confirmation.",
+    status: "In Progress",
+    secondaryStatus: "Pending",
+    reference: "ORD-58401",
+  },
+  {
+    id: 5,
+    type: "info",
+    title: "Customer Inquiry on Delay",
+    date: "2025-04-23",
+    content: "Customer contacted support regarding expected delivery timelines.",
+    status: "Pending",
+    reference: "ORD-58419",
+  },
+  {
+    id: 6,
+    type: "error",
+    title: "Dispute Rejected - Invalid Claim",
+    date: "2025-04-22",
+    content: "After investigation, the claim was found to be invalid.",
+    status: "Rejected",
+    secondaryStatus: "Escalated",
+    reference: "ORD-58458",
+  },
+];
+
+export const sampleTransactions: RecentTransaction[] = [
+  {
+    id: "1",
+    name: "Express Mines",
+    mineralName: "Gold",
+    amount: 6320.53,
+    date: "Wed 1:00 pm",
+    transactionAccount: {
+      type: "Visa",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+  {
+    id: "2",
+    name: "Express Mines",
+    mineralName: "Silver",
+    amount: 6471.39,
+    date: "Wed 1:00 pm",
+    transactionAccount: {
+      type: "Google Pay",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+  {
+    id: "3",
+    name: "Express Mines",
+    mineralName: "Platinum",
+    amount: -2223.9,
+    date: "Wed 7:20 pm",
+    transactionAccount: {
+      type: "PayPal",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+  {
+    id: "4",
+    name: "Express Mines",
+    mineralName: "Diamond",
+    amount: 7344.5,
+    date: "Wed 1:00 pm",
+    transactionAccount: {
+      type: "Maestro",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+  {
+    id: "5",
+    name: "Express Mines",
+    mineralName: "Emerald",
+    amount: -6157.14,
+    date: "Wed 7:20 pm",
+    transactionAccount: {
+      type: "Apple Pay",
+      number: "1234",
+      expiry: "24/2032",
+    },
+    reference: "#0xefce-fc23...3c",
+  },
+];
+
+export const sampleMinerals: MineralItem[] = [
+  {
+    id: "1",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 3000,
+      unit: "KG",
+    },
+    role: "Coordinator",
+    origin: "Sri Lanka",
+    elapsedTime: {
+      value: 17,
+      unit: "hrs",
+    },
+    purity: 75,
+  },
+  {
+    id: "2",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 200,
+      unit: "KG",
+    },
+    role: "Facilitator",
+    origin: "Mauritania",
+    elapsedTime: {
+      value: 17,
+      unit: "hrs",
+    },
+    purity: 50,
+  },
+  {
+    id: "3",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 2500,
+      unit: "KG",
+    },
+    role: "Manager",
+    origin: "Faroe Islands",
+    elapsedTime: {
+      value: 17,
+      unit: "hrs",
+    },
+    purity: 75,
+  },
+  {
+    id: "4",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 305.5,
+      unit: "KG",
+    },
+    role: "Supervisor",
+    origin: "Kuwait",
+    elapsedTime: {
+      value: 1,
+      unit: "day",
+    },
+    purity: 25,
+  },
+  {
+    id: "5",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 4000,
+      unit: "KG",
+    },
+    role: "Director",
+    origin: "Italy",
+    elapsedTime: {
+      value: 4,
+      unit: "days",
+    },
+    purity: 75,
+  },
+  {
+    id: "6",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 4000,
+      unit: "KG",
+    },
+    role: "Officer",
+    origin: "Kuwait",
+    elapsedTime: {
+      value: 10,
+      unit: "days",
+    },
+    purity: 50,
+  },
+  {
+    id: "7",
+    name: "Express Mines",
+    reference: "#0xefce-fc23...3c",
+    weight: {
+      value: 4000,
+      unit: "KG",
+    },
+    role: "Planner",
+    origin: "Singapore",
+    elapsedTime: {
+      value: 2,
+      unit: "months",
+    },
+    purity: 75,
   },
 ];

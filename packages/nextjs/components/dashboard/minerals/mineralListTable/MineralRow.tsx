@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Icon from "../../Icon";
 import PurityIndicator from "./PurityIndicator";
 import StatusBadge from "./StatusBadge";
 import { Mineral } from "./types";
@@ -61,14 +63,21 @@ export default function MineralRow({ mineral, isSelected, onSelect }: MineralRow
       <td className="hidden lg:table-cell px-2 sm:px-4 py-3 sm:py-4">
         <PurityIndicator value={mineral.purity} />
       </td>
-      <td className="px-2 sm:px-4 py-3 sm:py-4">
+      <td className="flex justify-center items-center gap-2 px-2 sm:px-4 py-3 sm:py-4">
         <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors">
           <span className="hidden sm:inline">Full Details</span>
-          <span className="sm:hidden">View</span>
-          <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-          </svg>
+          <span className="sm:hidden">Accept</span>
+          <Icon path="/dashboard/icon_set/minerals.svg" alt="Minerals icon" />
         </button>
+
+        <Link
+          href={"/miner/disputes/raiseDispute"}
+          className="bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors"
+        >
+          <span className="hidden sm:inline">Raise</span>
+          <span className="sm:hidden">View</span>
+          <Icon path="/dashboard/icon_set/attention.svg" alt="Attention icon" />
+        </Link>
       </td>
     </tr>
   );

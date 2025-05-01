@@ -67,7 +67,7 @@ export default function UpdateMineralForm({ mineral, onSubmit }: UpdateMineralFo
   return (
     <div className="min-h-screen text-white p-4">
       <div className="max-w-3xl mx-auto">
-        <h1 className="text-2xl font-bold mb-8 text-center">Update Mineral</h1>
+        <h1 className="text-2xl font-bold mb-8 text-center">Refine Mineral</h1>
 
         <form onSubmit={handleSubmit} className="border border-[#323539] rounded-xl p-6">
           <div className="mb-6">
@@ -211,7 +211,7 @@ export default function UpdateMineralForm({ mineral, onSubmit }: UpdateMineralFo
               disabled={loading}
               className="w-full bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-md font-medium transition-colors"
             >
-              {loading ? "Updating..." : "Update Mineral"}
+              {loading ? "Refining..." : "Refine Mineral"}
             </button>
             <p className="text-center text-sm text-gray-400 mt-2">Notification will be given to all members</p>
           </div>

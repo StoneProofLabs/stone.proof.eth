@@ -1,9 +1,10 @@
+
 import { Montserrat } from "next/font/google";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Metadata } from "next";
-import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
 import "~~/styles/globals.css";
+import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders"; // NEW: our client provider
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -31,16 +32,16 @@ export const metadata: Metadata = {
   },
 };
 
-const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html suppressHydrationWarning className={`${montserrat.variable} min-h-screen`}>
+    <html lang="en" suppressHydrationWarning className={`${montserrat.variable} min-h-screen`}>
       <body>
-        <ThemeProvider enableSystem>
-          <ScaffoldEthAppWithProviders>{children}</ScaffoldEthAppWithProviders>
-        </ThemeProvider>
+        <ScaffoldEthAppWithProviders>
+          <ThemeProvider enableSystem>
+            {children}
+          </ThemeProvider>
+        </ScaffoldEthAppWithProviders>
       </body>
     </html>
   );
-};
-
-export default ScaffoldEthApp;
+}
