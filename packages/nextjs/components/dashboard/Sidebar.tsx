@@ -36,8 +36,8 @@ export default function Sidebar({ basePath }: SidebarProps) {
         />
       )}
       <div
-        className={`bg-darkBlack min-h-screen flex flex-col gap-10 transition-all duration-300 ease-in-out sticky top-0 md:relative z-50 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${
-          isCollapsed ? "w-0 overflow-hidden" : "w-full md:w-[20vw] max-w-[300px]"
+        className={`bg-darkBlack min-h-screen flex flex-col gap-10 transition-all duration-300 ease-in-out fixed left-0 top-0 h-full z-50 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${
+          isCollapsed ? "w-0 overflow-hidden" : "w-[85vw] md:w-[20vw] max-w-[300px]"
         }`}
       >
         {/* Logo - Sticky at the top */}
@@ -79,7 +79,6 @@ export default function Sidebar({ basePath }: SidebarProps) {
           </div>
 
           {/* the subscription plan card */}
-
           <SubscriptionCard />
         </div>
       </div>
