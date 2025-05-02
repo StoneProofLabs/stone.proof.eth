@@ -516,6 +516,62 @@ contract RolesManager is AccessControl, Errors {
     //////// ROLE OWNERSHIP CHECKS //////////////////
     /////////////////////////////////////////////////
 
+
+/**
+ * @dev Returns all roles assigned to a given address
+ * @param account The address to check roles for
+ * @return roles An array of role names the address has
+ */
+function getRolesForAddress(address account) public view onlyNonZeroAddress(account) returns (string[] memory roles) {
+    // Count how many roles the address has
+    uint256 roleCount = 0;
+    
+    if (hasRole(DEFAULT_ADMIN_ROLE, account)) roleCount++;
+    if (hasRole(MINER_ROLE, account)) roleCount++;
+    if (hasRole(REFINER_ROLE, account)) roleCount++;
+    if (hasRole(TRANSPORTER_ROLE, account)) roleCount++;
+    if (hasRole(AUDITOR_ROLE, account)) roleCount++;
+    if (hasRole(INSPECTOR_ROLE, account)) roleCount++;
+    if (hasRole(BUYER_ROLE, account)) roleCount++;
+
+    // Initialize array with the counted size
+    roles = new string[](roleCount);
+    uint256 index = 0;
+
+    // Populate the array with role names
+    if (hasRole(DEFAULT_ADMIN_ROLE, account)) {
+        roles[index] = "ADMIN";
+        index++;
+    }
+    if (hasRole(MINER_ROLE, account)) {
+        roles[index] = "MINER";
+        index++;
+    }
+    if (hasRole(REFINER_ROLE, account)) {
+        roles[index] = "REFINER";
+        index++;
+    }
+    if (hasRole(TRANSPORTER_ROLE, account)) {
+        roles[index] = "TRANSPORTER";
+        index++;
+    }
+    if (hasRole(AUDITOR_ROLE, account)) {
+        roles[index] = "AUDITOR";
+        index++;
+    }
+    if (hasRole(INSPECTOR_ROLE, account)) {
+        roles[index] = "INSPECTOR";
+        index++;
+    }
+    if (hasRole(BUYER_ROLE, account)) {
+        roles[index] = "BUYER";
+        index++;
+    }
+
+    return roles;
+}
+
+
     function isAdmin(address account) external view returns (bool) {
         return hasRole(DEFAULT_ADMIN_ROLE, account);
     }

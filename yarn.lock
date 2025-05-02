@@ -4527,7 +4527,7 @@ __metadata:
     eslint: "npm:~8.57.1"
     eslint-config-prettier: "npm:~8.10.0"
     eslint-plugin-prettier: "npm:~5.2.1"
-    ethers: "npm:~6.13.2"
+    ethers: "npm:^6.13.7"
     hardhat: "npm:~2.22.10"
     hardhat-deploy: "npm:~0.12.4"
     hardhat-deploy-ethers: "npm:~0.4.2"
@@ -11599,7 +11599,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ethers@npm:^6.7.0, ethers@npm:~6.13.2":
+"ethers@npm:^6.13.7, ethers@npm:^6.7.0":
   version: 6.13.7
   resolution: "ethers@npm:6.13.7"
   dependencies:
