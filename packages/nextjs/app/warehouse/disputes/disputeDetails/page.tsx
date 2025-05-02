@@ -204,7 +204,7 @@ export default function DisputeDetailsPage() {
                 Raised 3 hrs Ago by Refiner with ID:
               </div>
 
-              <div className="flex flex-wrap items-center justify-center gap-2 bg-zinc-900 rounded px-3 sm:px-4 py-2 sm:py-3">
+              <div className="flex flex-wrap items-center justify-center gap-2 bg-zinc-800 rounded px-3 sm:px-4 py-2 sm:py-3">
                 <span className="font-mono text-white text-xs sm:text-sm break-all text-center">
                   #0xffed-ecd3-3345-2f2c
                 </span>
