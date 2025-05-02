@@ -19,8 +19,8 @@ contract MineralRegistry is Errors, RolesManager {
     uint256 private nextMineralId = 1;
 
     // Events for transparency
-    event MineralUpdated(uint256 indexed mineralId, string updatedField, string newValue, address indexed updatedBy, uint256 updatedAt);
-    event MineralLocationUpdated(uint256 mineralId, string previousLocation, string newLocation, address indexed tranporter);
+    event MineralUpdated(string mineralId, string updatedField, string newValue, address indexed updatedBy, uint256 updatedAt);
+    event MineralLocationUpdated(string mineralId, string previousLocation, string newLocation, address indexed tranporter);
 
 
     /**
@@ -47,11 +47,13 @@ contract MineralRegistry is Errors, RolesManager {
     * @param newStatus New status of the mineral
     * @notice Emits MineralUpdated event on successful updation
     */
-    function updateMineralStatus(uint256 mineralId, string memory newStatus) public {
-
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) 
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-
+    function updateMineralStatus(string memory mineralId, string memory newStatus) public {
+     if (
+     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+     bytes(mineralId).length == 0
+     ) {
+      revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+     }
         if (bytes(newStatus).length == 0)
             revert MineralRegistry__InvalidMineralStatus();
 
@@ -93,13 +95,16 @@ contract MineralRegistry is Errors, RolesManager {
     * @param newLocation The new location of the mineral
     * @notice Emits MineralLocationUpdated event on successful location update!
     */
-    function updateMineralLocation(uint256 mineralId, string memory newLocation) public onlyAuthorized(TRANSPORTER_ROLE) {
+    function updateMineralLocation(string memory mineralId, string memory newLocation) public onlyAuthorized(TRANSPORTER_ROLE) {
 
         // custom error handling
         
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
+     if (
+     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+     bytes(mineralId).length == 0
+     ) {
+      revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+     }
 
         if (bytes(newLocation).length == 0) {
             revert MineralRegistry__InvalidMineralLocation();
@@ -121,11 +126,13 @@ contract MineralRegistry is Errors, RolesManager {
     * @dev retrieves mineral details of specified mineralId
     * @return mineral details of specified mineralId
     */
-    function getMineralDetails(uint256 mineralId) public virtual view returns(MineralDetails memory) {
-
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-       }
+    function getMineralDetails(string memory mineralId) public virtual view returns(MineralDetails memory) {
+     if (
+     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+     bytes(mineralId).length == 0
+     ) {
+      revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+     }
         return mineralDetails[mineralId];
     }    
 
@@ -134,11 +141,13 @@ contract MineralRegistry is Errors, RolesManager {
     * @dev retrieves fll history of a mineral (for audit retail)
     * @return history of specified mineral sing its mineralId
     */
-    function _getMineralHistory(uint256 mineralId) public /*override*/ view returns(MineralHistory[] memory) {
-
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
+    function _getMineralHistory(string memory mineralId) public /*override*/ view returns(MineralHistory[] memory) {
+     if (
+     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+     bytes(mineralId).length == 0
+     ) {
+      revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+     }
         return mineralHistories[mineralId];
 
     }
@@ -148,31 +157,30 @@ contract MineralRegistry is Errors, RolesManager {
     * @param mineralId the ID of the mineral to check
     * @return A boolean indicating whether the mineral is registered or not
     */
-    function isMineralRegistered(uint256 mineralId) public view returns(bool) {
 
-        if (mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
 
-        if (mineralDetails[mineralId].id != mineralId) {
-            revert MineralRegistry__MineralNotRegistered(mineralId);
-        }
-        return mineralDetails[mineralId].id == mineralId;
-    }
 
-    function isMineralAudited(uint256 mineralId) public view returns(bool) {
+    function isMineralAudited(string memory mineralId) public view returns(bool) {
 
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
+     if (
+     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+     bytes(mineralId).length == 0
+     ) {
+      revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+     }
+
         return mineralDetails[mineralId].isAudited;
     }
 
-    function isMineralInspected(uint256 mineralId) public view returns(bool) {
+    function isMineralInspected(string memory mineralId) public view returns(bool) {
 
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
+      if (
+        keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        bytes(mineralId).length == 0
+      ) {
+      revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+       }
+
         return mineralDetails[mineralId].isInspected;
     }
 
@@ -187,11 +195,15 @@ contract MineralRegistry is Errors, RolesManager {
     * @dev enables an auditor to audit a mineral 
     * @notice Emits MineralAudited event on successful auditing of a mineral
     */
-    function auditMineral(uint256 mineralId, bytes32 status) public /*override*/ onlyAuthorized(AUDITOR_ROLE) {
+    function auditMineral(string memory mineralId, string memory report) public /*override*/ onlyAuthorized(AUDITOR_ROLE) {
 
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
+      if (
+        keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        bytes(mineralId).length == 0
+        ) {
+         revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+       }
+
 
         if (mineralDetails[mineralId].isAudited == true) {
             revert MineralRegistry__MineralAlreadyAudited();
@@ -199,7 +211,7 @@ contract MineralRegistry is Errors, RolesManager {
 
         mineralDetails[mineralId].isAudited = true;
 
-        emit MineralAudited(mineralId, status, msg.sender, block.timestamp);
+        emit MineralAudited(mineralId, report, msg.sender, block.timestamp);
     }
 
         /*///////////////////////////////////////////////////////
@@ -210,11 +222,15 @@ contract MineralRegistry is Errors, RolesManager {
     * @dev enables only the inspector to audit a mineralDetails
     * @notice Emits MineralInspected even
     */
-    function inspectMineral(uint256 mineralId) public onlyAuthorized(INSPECTOR_ROLE) {
+    function inspectMineral(string memory mineralId) public onlyAuthorized(INSPECTOR_ROLE) {
 
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
+      if (
+        keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        bytes(mineralId).length == 0
+       ) {
+        revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+       }
+
 
         if (mineralDetails[mineralId].isInspected == true) {
             revert MineralRegistry__MineralAlreadyInspected();
@@ -229,11 +245,15 @@ contract MineralRegistry is Errors, RolesManager {
     * @dev checks audit and inspection status
     * Returns the status of both audit and inspection of mineral according to mineralId
     */
-    function _checkAuditAndInspectionStatus(uint256 mineralId) public /*override*/ onlyAuthorized(DEFAULT_ADMIN_ROLE) returns(bool isAudited, bool isInspected) {
+    function _checkAuditAndInspectionStatus(string memory mineralId) public /*override*/ onlyAuthorized(DEFAULT_ADMIN_ROLE) returns(bool isAudited, bool isInspected) {
 
-        if (mineralDetails[mineralId].id != mineralId || mineralId == 0) {
-            revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
-        }
+      if (
+        keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        bytes(mineralId).length == 0
+       ) {
+       revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
+       }
+
 
         if (mineralDetails[mineralId].isAudited && mineralDetails[mineralId].isInspected) {
             emit MineralReadyToTrade(mineralId, msg.sender, "TradingReady", block.timestamp);

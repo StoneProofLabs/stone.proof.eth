@@ -21,14 +21,14 @@ contract TransactionLog is Errors, RolesManager {
         uint256 indexed transactionId,
         address indexed sender,
         address indexed receiver,
-        uint256 mineralId,
+        string mineralId,
         uint256 timestamp,
         string transactionType
     );
     event OperationRecorded(
         address indexed actor, 
         string operationType, 
-        uint256 indexed mineralId, 
+        string mineralId, 
         uint256 timestamp
     );
 
@@ -37,7 +37,7 @@ contract TransactionLog is Errors, RolesManager {
         uint256 transactionId;
         address sender;
         address receiver;
-        uint256 mineralId;
+        string mineralId;
         uint256 timestamp;
         string transactionType;
     }
@@ -48,7 +48,7 @@ contract TransactionLog is Errors, RolesManager {
     struct Operation {
         address actor;
         string operationType;
-        uint256 mineralId;
+        string mineralId;
         uint256 timestamp;
     }
 
@@ -80,7 +80,7 @@ contract TransactionLog is Errors, RolesManager {
     * @dev records operation in the supply chain
     * @notice Emits OperationRecorded even on successful record 
     */
-    function recordOperation(address actor, string memory operationType, uint256 mineralId) onlyAuthorizedRoles onlyNonZeroAddress(actor) onlyValidMineralId(mineralId) external {
+    function recordOperation(address actor, string memory operationType, string memory mineralId) onlyAuthorizedRoles onlyNonZeroAddress(actor) onlyValidMineralId(mineralId) external {
 
         if (bytes(operationType).length == 0) 
         revert TransactionLog__InvalidOperationType();
@@ -101,7 +101,7 @@ contract TransactionLog is Errors, RolesManager {
     * @notice Emits TransactionRecorded event on successful transaction recording
     */
 
-    function recordTransaction(address receiver, uint256 mineralId, string memory transactionType) public onlyAuthorizedRoles onlyValidMineralId(mineralId) onlyNonZeroAddress(receiver) {
+    function recordTransaction(address receiver, string memory mineralId, string memory transactionType) public onlyAuthorizedRoles onlyValidMineralId(mineralId) onlyNonZeroAddress(receiver) {
 
         if (bytes(transactionType).length == 0)
         revert TransactionLog__InvalidOperationType();
@@ -128,7 +128,7 @@ contract TransactionLog is Errors, RolesManager {
 function getOperation(uint256 index) external view returns (
 
     address actor, string memory operationType,
-    uint256 mineralId, uint256 timestamp
+    string memory mineralId, uint256 timestamp
 ) {
     if (index == 0 || index > operations.length) 
     revert TransactionLog__InvalidOperationIndex(index);
@@ -167,23 +167,24 @@ function getOperation(uint256 index) external view returns (
     * @dev retrieve transactions using mineralIDs
     * @return results of transactions with specified mineralIDs
     */
-    function getTransactionsByMineral(uint256 mineralId) onlyValidMineralId(mineralId) public view returns(Transaction[] memory) {
+    function getTransactionsByMineral(string memory mineralId) onlyValidMineralId(mineralId) public view returns(Transaction[] memory) {
         uint256 count = 0;
 
         for(uint256 i = 1; i < nextTransactionId; i++) {
-            if (transactions[i].mineralId == mineralId) {
+            if (keccak256(bytes(transactions[i].mineralId)) == keccak256(bytes(mineralId))) {
                 count++;
             }
         }
 
         Transaction[] memory results = new Transaction[] (count);
         uint256 index = 0;
-        for(uint256 i = 1; i < nextTransactionId; i++) {
-            if (transactions[i].mineralId == mineralId) {
-                results[index] = transactions[i];
-                index++;
-            }
-        }
+       for (uint256 i = 1; i < nextTransactionId; i++) {
+    if (keccak256(bytes(transactions[i].mineralId)) == keccak256(bytes(mineralId))) {
+        results[index] = transactions[i];
+        index++;
+    }
+}
+
         return results;
     }
 }

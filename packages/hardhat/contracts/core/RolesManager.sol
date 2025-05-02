@@ -240,7 +240,7 @@ contract RolesManager is AccessControl, Errors {
         return mineralId;
     }
 
-    /*//////////////////////////////////////////////////////////////
+        /*//////////////////////////////////////////////////////////////
         ===============================================================
                               PROCESSING ENTERPRISE
         ===============================================================                    
@@ -616,7 +616,7 @@ contract RolesManager is AccessControl, Errors {
      * @param mineralId the ID of the mineral to check
      * @return A boolean indicating whether the mineral is registered or not
      */
-    function isMineralRegistered(string memory mineralId) public view returns (bool) {
+    function isMineralRegistered(string memory mineralId) public  virtual returns (bool) {
         if (bytes(mineralId).length == 0) {
             revert MineralRegistry__InvalidMineralIdOrNotFound(mineralId);
         }

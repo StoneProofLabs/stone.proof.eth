@@ -1,68 +1,229 @@
 "use client";
 
 import React, { useState } from "react";
-import { AlertCircle, Check, ChevronDown, Droplet, MapPin, Minus, Plus, Thermometer } from "lucide-react";
+import {
+  AlertCircle,
+  Check,
+  ChevronDown,
+  Droplet,
+  MapPin,
+  Minus,
+  Plus,
+  Thermometer,
+  ShieldAlert,
+} from "lucide-react";
+import { useAccount } from "wagmi";
+import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+
+// Define the MINER_ROLE constant (should match your contract's MINER_ROLE)
+const MINER_ROLE = "0x241ecf16d79d0f8dbfb92cbc07fe17840425976cf0667f022fe9877caa831b08";
 
 export default function Page() {
+  const { address, isConnected } = useAccount();
   const [quantity, setQuantity] = useState(0);
   const [purity, setPurity] = useState(0);
   const [portalOpen, setPortalOpen] = useState(false);
+  const [mineralName, setMineralName] = useState("");
+  const [mineralType, setMineralType] = useState("");
+  const [origin, setOrigin] = useState("");
   const [selectedCondition, setSelectedCondition] = useState({
     temperature: "In Celsius",
     storage: "Select Type",
     humidity: "Select Type",
   });
 
+  // Check if user has miner role
+  const { data: hasMinerRole, isLoading: isRoleLoading } = useScaffoldReadContract({
+    contractName: "RolesManager",
+    contractAddress: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+    functionName: "hasRole",
+    args: [MINER_ROLE, address],
+    enabled: isConnected,
+  });
+
+  const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`;
+
+  const allFieldsReady =
+    isConnected &&
+    hasMinerRole &&
+    mineralName &&
+    mineralType &&
+    origin &&
+    selectedCondition.storage !== "Select Type" &&
+    selectedCondition.humidity !== "Select Type" &&
+    quantity > 0 &&
+    purity > 80;
+
+  const { writeAsync, isLoading: isRegistering } = useScaffoldContract({
+    contractName: "RolesManager",
+    contractAddress: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+    functionName: "registerMineral",
+    args: [
+      mineralName,
+      mineralType,
+      quantity,
+      origin,
+      purity,
+      storageConditions
+    ],
+    enabled: allFieldsReady,
+    onSuccess: (mineralId) => {
+      alert(`Mineral registered successfully! Mineral ID: ${mineralId}`);
+      // Reset form after successful registration
+      setMineralName("");
+      setMineralType("");
+      setOrigin("");
+      setQuantity(0);
+      setPurity(0);
+      setSelectedCondition({
+        temperature: "In Celsius",
+        storage: "Select Type",
+        humidity: "Select Type",
+      });
+    },
+    onError: (error) => {
+      console.error("Registration failed:", error);
+      let errorMessage = "Failed to register mineral.";
+      
+      if (error.message.includes("RolesManager__MineralPurityPercentageTooLowToRegister")) {
+        errorMessage = "Purity percentage must be greater than 80%";
+      } else if (error.message.includes("RolesManager__InvalidMineralWeight")) {
+        errorMessage = "Mineral weight must be greater than 0";
+      } else if (error.message.includes("caller is missing role")) {
+        errorMessage = "Your account doesn't have miner privileges";
+      }
+      
+      alert(errorMessage);
+    },
+  });
+
   const handleQuantityChange = (value: number) => {
-    const newValue = Math.max(0, value);
-    setQuantity(newValue);
+    setQuantity(Math.max(0, value));
   };
 
   const handlePurityChange = (value: number) => {
-    const newValue = Math.max(0, Math.min(100, value));
-    setPurity(newValue);
+    setPurity(Math.max(0, Math.min(100, value)));
   };
 
+  const handleRegister = async () => {
+    if (!isConnected) {
+      alert("Please connect your wallet.");
+      return;
+    }
+
+    if (!hasMinerRole) {
+      alert("Your account doesn't have miner privileges.");
+      return;
+    }
+
+    if (!allFieldsReady) {
+      alert("Please fill in all required fields correctly.");
+      return;
+    }
+
+    try {
+      if (writeAsync) {
+        const tx = await writeAsync();
+        console.log("Transaction submitted:", tx.hash);
+      }
+    } catch (err: any) {
+      console.error("Error calling write function:", err);
+      let errorMessage = "An unexpected error occurred.";
+      
+      if (err.message.includes("user rejected transaction")) {
+        errorMessage = "Transaction was rejected";
+      }
+      
+      alert(errorMessage);
+    }
+  };
+
+  // Loading state while checking roles
+  if (isConnected && isRoleLoading) {
+    return (
+      <div className="text-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Checking permissions...</h2>
+          <p>Verifying your miner role status</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Not connected state
+  if (!isConnected) {
+    return (
+      <div className="text-white min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Wallet Not Connected</h2>
+          <p className="text-gray-400">Please connect your wallet to register minerals</p>
+        </div>
+      </div>
+    );
+  }
+
+  // No miner role state
+  if (isConnected && !hasMinerRole) {
+    return (
+      <div className="text-white min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <div className="flex justify-center mb-4">
+            <ShieldAlert size={48} className="text-red-500" />
+          </div>
+          <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>
+          <p className="text-gray-400 mb-4">
+            Your account doesn't have miner privileges to register minerals.
+          </p>
+          <p className="text-gray-500 text-sm">
+            Contact the system administrator to get miner role assigned to your address.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Main form for users with miner role
   return (
     <div className="text-white min-h-screen flex flex-col items-center p-6">
+      {/* Form Header */}
       <div className="w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-3">Register Mineral</h1>
-
         <p className="text-gray-400 text-center mb-8">
-          Reach out to us with any question or inquiry you have and we&apos;ll do our best to get back to you as soon as
-          possible.
+          Register new minerals in the system. All fields are required.
         </p>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* The form */}
+          {/* Left Form Section */}
           <div className="border border-[#323539] rounded-lg p-6 flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Mineral Name */}
+              {/* Mineral Fields */}
               <div>
                 <label className="block text-sm font-medium mb-2">Mineral Name</label>
                 <input
                   type="text"
+                  value={mineralName}
+                  onChange={e => setMineralName(e.target.value)}
                   placeholder="Valid Mineral name"
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
                 />
               </div>
-
-              {/* Type */}
               <div>
                 <label className="block text-sm font-medium mb-2">Type</label>
                 <input
                   type="text"
+                  value={mineralType}
+                  onChange={e => setMineralType(e.target.value)}
                   placeholder="Mineral type here"
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
                 />
               </div>
-
-              {/* Origin */}
               <div>
                 <label className="block text-sm font-medium mb-2">Origin</label>
                 <div className="relative">
                   <input
                     type="text"
+                    value={origin}
+                    onChange={e => setOrigin(e.target.value)}
                     placeholder="Enter Origin here"
                     className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
                   />
@@ -70,9 +231,9 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* Quantity */}
+              {/* Quantity and Purity */}
               <div>
-                <label className="block text-sm font-medium mb-2">Quantity</label>
+                <label className="block text-sm font-medium mb-2">Quantity (KG)</label>
                 <div className="bg-[#252525] flex items-center justify-between rounded-md px-4 py-3 w-full border border-[#323539]">
                   <input
                     type="number"
@@ -85,7 +246,6 @@ export default function Page() {
                     min="0"
                     step="0.1"
                   />
-                  <span className="text-[#979AA0] ml-2">KG</span>
                   <div className="flex items-center ml-4 pl-4 border-l border-[#323539] gap-2">
                     <button
                       onClick={() => handleQuantityChange(quantity - 1)}
@@ -103,9 +263,12 @@ export default function Page() {
                 </div>
               </div>
 
-              {/* Purity */}
               <div className="w-full">
-                <label className="block text-sm font-medium mb-2 text-white">Purity Percentage</label>
+                <label className="block text-sm font-medium mb-2 text-white">
+                  Purity Percentage {purity <= 80 && (
+                    <span className="text-red-500 ml-2">(Must be > 80%)</span>
+                  )}
+                </label>
                 <div className="flex items-center bg-[#1E1E1E] rounded-xl overflow-hidden border border-[#323539]">
                   <div className="flex-1 px-4 py-3">
                     <input
@@ -120,17 +283,20 @@ export default function Page() {
                       }}
                     />
                   </div>
-
                   <div className="flex items-center gap-2 px-3 py-2 bg-[#2B2D2F] min-w-[130px] justify-end">
                     <button
-                      onClick={() => handlePurityChange(Math.max(0, purity - 1))}
+                      onClick={() => handlePurityChange(purity - 1)}
                       className="w-7 h-7 flex items-center justify-center bg-[#2f3135] hover:bg-gray-600 rounded-full text-white"
                     >
                       <Minus size={14} />
                     </button>
-                    <span className="text-white text-sm w-10 text-center">{purity}%</span>
+                    <span className={`text-sm w-10 text-center ${
+                      purity <= 80 ? 'text-red-500' : 'text-white'
+                    }`}>
+                      {purity}%
+                    </span>
                     <button
-                      onClick={() => handlePurityChange(Math.min(100, purity + 1))}
+                      onClick={() => handlePurityChange(purity + 1)}
                       className="w-7 h-7 flex items-center justify-center bg-[#2f3135] hover:bg-gray-600 rounded-full text-white"
                     >
                       <Plus size={14} />
@@ -145,7 +311,7 @@ export default function Page() {
                 <div className="flex items-center bg-[#1E1E1E] border border-[#323539] rounded-xl overflow-hidden">
                   <div className="flex-1 px-4 py-3 text-white text-sm bg-[#252525]">
                     {selectedCondition.storage !== "Select Type"
-                      ? `${selectedCondition.storage} - ${selectedCondition.temperature} - ${selectedCondition.humidity}`
+                      ? `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`
                       : "No Conditions specified"}
                   </div>
                   <div className="relative">
@@ -153,8 +319,7 @@ export default function Page() {
                       onClick={() => setPortalOpen(true)}
                       className="bg-[#2B2D2F] hover:bg-gray-600 px-4 py-3 flex items-center gap-1 text-white text-sm h-full"
                     >
-                      Select
-                      <ChevronDown size={18} />
+                      Select <ChevronDown size={18} />
                     </button>
                   </div>
                 </div>
@@ -162,35 +327,95 @@ export default function Page() {
             </div>
 
             {/* Register Button */}
-            <button className="w-full bg-accentBlue hover:bg-blue-600 text-white font-medium py-3 rounded mt-8 duration-500">
-              Register Mineral
+            <button
+              onClick={handleRegister}
+              disabled={!allFieldsReady || isRegistering}
+              className={`w-full ${
+                allFieldsReady ? 'bg-accentBlue hover:bg-blue-600' : 'bg-gray-600 cursor-not-allowed'
+              } text-white font-medium py-3 rounded mt-8 duration-500 flex items-center justify-center`}
+            >
+              {isRegistering ? (
+                <>
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Processing...
+                </>
+              ) : (
+                "Register Mineral"
+              )}
             </button>
-
-            <p className="text-gray-400 text-sm text-center mt-4">Your Transaction is secure and safe</p>
+            <p className="text-gray-400 text-sm text-center mt-4">
+              {allFieldsReady 
+                ? "All required fields are complete. You can register the mineral."
+                : "Please fill all required fields to register."}
+            </p>
           </div>
 
-          {/* Checkpoints Section */}
+          {/* Right Info Panel */}
           <div className="lg:w-72">
             <div className="rounded-lg p-6">
               <h2 className="text-lg font-medium mb-4">Check-points</h2>
               <div className="space-y-3 mb-6">
-                {Array(3)
-                  .fill(0)
-                  .map((_, i) => (
-                    <div key={i} className="flex items-center gap-2">
-                      <div className="bg-green-500 rounded-full p-1">
-                        <Check size={12} />
-                      </div>
-                      <span className="text-sm">Valid mineral name</span>
-                    </div>
-                  ))}
+                <div className="flex items-center gap-2">
+                  <div className={`rounded-full p-1 ${
+                    mineralName ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {mineralName ? <Check size={12} /> : <Minus size={12} />}
+                  </div>
+                  <span className="text-sm">Valid mineral name</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`rounded-full p-1 ${
+                    mineralType ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {mineralType ? <Check size={12} /> : <Minus size={12} />}
+                  </div>
+                  <span className="text-sm">Mineral type specified</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`rounded-full p-1 ${
+                    origin ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {origin ? <Check size={12} /> : <Minus size={12} />}
+                  </div>
+                  <span className="text-sm">Origin provided</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`rounded-full p-1 ${
+                    quantity > 0 ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {quantity > 0 ? <Check size={12} /> : <Minus size={12} />}
+                  </div>
+                  <span className="text-sm">Valid quantity</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`rounded-full p-1 ${
+                    purity > 80 ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {purity > 80 ? <Check size={12} /> : <Minus size={12} />}
+                  </div>
+                  <span className="text-sm">Purity > 80%</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <div className={`rounded-full p-1 ${
+                    selectedCondition.storage !== "Select Type" && 
+                    selectedCondition.humidity !== "Select Type" 
+                      ? 'bg-green-500' : 'bg-gray-500'
+                  }`}>
+                    {selectedCondition.storage !== "Select Type" && 
+                     selectedCondition.humidity !== "Select Type" 
+                      ? <Check size={12} /> : <Minus size={12} />}
+                  </div>
+                  <span className="text-sm">Storage conditions set</span>
+                </div>
               </div>
               <h3 className="font-medium mb-2">Tips:</h3>
               <div className="flex gap-2 text-sm">
                 <AlertCircle className="min-w-5 h-5 text-white mt-0.5" />
                 <p className="text-gray-400">
-                  Ensure that the details entered are accurate and correct because you won&apos;t be able to make
-                  modifications after registration
+                  Ensure the details entered are accurate. Modifications won't be allowed post registration.
                 </p>
               </div>
             </div>
@@ -198,107 +423,87 @@ export default function Page() {
         </div>
       </div>
 
-      {/* Storage Conditions Portal */}
+      {/* Storage Conditions Modal */}
       {portalOpen && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
           <div className="bg-[#0D0D0D] border border-gray-700 rounded-xl p-8 w-[400px] relative">
             <h2 className="text-white text-lg mb-6 font-semibold">Specify Storage Conditions</h2>
-
-            {/* Temperature */}
-            <div className="mb-4">
-              <label className="block text-white text-sm mb-2">Temperature (°C):</label>
-              <div className="relative">
-                <input
-                  type="number"
-                  placeholder="Enter temperature"
-                  value={
-                    selectedCondition.temperature === "In Celsius"
-                      ? ""
-                      : selectedCondition.temperature.replace("°C", "")
-                  }
-                  onChange={e =>
-                    setSelectedCondition(prev => ({
-                      ...prev,
-                      temperature: e.target.value ? `${e.target.value}°C` : "In Celsius",
-                    }))
-                  }
-                  className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-2 focus:outline-none"
-                />
-                <Thermometer className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+            
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Storage Type</label>
+                <select
+                  value={selectedCondition.storage}
+                  onChange={e => setSelectedCondition({...selectedCondition, storage: e.target.value})}
+                  className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
+                >
+                  <option value="Select Type">Select Type</option>
+                  <option value="Dry Storage">Dry Storage</option>
+                  <option value="Climate Controlled">Climate Controlled</option>
+                  <option value="Refrigerated">Refrigerated</option>
+                  <option value="Airtight Container">Airtight Container</option>
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Temperature</label>
+                <div className="relative">
+                  <select
+                    value={selectedCondition.temperature}
+                    onChange={e => setSelectedCondition({...selectedCondition, temperature: e.target.value})}
+                    className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
+                  >
+                    <option value="In Celsius">In Celsius</option>
+                    <option value="Below 0°C">Below 0°C</option>
+                    <option value="0°C to 10°C">0°C to 10°C</option>
+                    <option value="10°C to 25°C">10°C to 25°C</option>
+                    <option value="Above 25°C">Above 25°C</option>
+                  </select>
+                  <Thermometer className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                </div>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium mb-2">Humidity</label>
+                <div className="relative">
+                  <select
+                    value={selectedCondition.humidity}
+                    onChange={e => setSelectedCondition({...selectedCondition, humidity: e.target.value})}
+                    className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
+                  >
+                    <option value="Select Type">Select Type</option>
+                    <option value="Low (<30%)">Low (&lt;30%)</option>
+                    <option value="Moderate (30-60%)">Moderate (30-60%)</option>
+                    <option value="High (>60%)">High (&gt;60%)</option>
+                  </select>
+                  <Droplet className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+                </div>
               </div>
             </div>
-
-            {/* Storage Type */}
-            <div className="mb-4">
-              <label className="block text-white text-sm mb-2">Storage Type:</label>
-              <select
-                value={selectedCondition.storage}
-                onChange={e => setSelectedCondition(prev => ({ ...prev, storage: e.target.value }))}
-                className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-2 focus:outline-none"
+            
+            <div className="flex justify-end mt-6 space-x-3">
+              <button
+                onClick={() => setPortalOpen(false)}
+                className="px-4 py-2 border border-gray-600 rounded-lg text-white hover:bg-gray-800"
               >
-                <option value="Select Type">Select Storage Type</option>
-                <option value="Cool & Dry Place">Cool & Dry Place</option>
-                <option value="Room Temperature">Room Temperature</option>
-                <option value="Refrigerated">Refrigerated</option>
-                <option value="Freezer">Freezer</option>
-                <option value="Climate Controlled">Climate Controlled</option>
-              </select>
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  if (
+                    selectedCondition.storage !== "Select Type" && 
+                    selectedCondition.humidity !== "Select Type"
+                  ) {
+                    setPortalOpen(false);
+                  } else {
+                    alert("Please select both Storage Type and Humidity");
+                  }
+                }}
+                className="px-4 py-2 bg-accentBlue rounded-lg text-white hover:bg-blue-600"
+              >
+                Confirm
+              </button>
             </div>
-
-            {/* Humidity Range */}
-            <div className="mb-6">
-              <label className="block text-white text-sm mb-2">Humidity Range (%):</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  placeholder="Min"
-                  value={selectedCondition.humidity.split("-")[0].replace("%", "")}
-                  onChange={e => {
-                    const current = selectedCondition.humidity.split("-");
-                    setSelectedCondition(prev => ({
-                      ...prev,
-                      humidity: `${e.target.value}-${current[1] || "50"}%`,
-                    }));
-                  }}
-                  className="flex-1 bg-[#252525] border border-[#323539] text-white rounded px-4 py-2 focus:outline-none"
-                  min="0"
-                  max="100"
-                />
-                <span className="text-gray-400">to</span>
-                <input
-                  type="number"
-                  placeholder="Max"
-                  value={selectedCondition.humidity.split("-")[1]?.replace("%", "") || ""}
-                  onChange={e => {
-                    const current = selectedCondition.humidity.split("-");
-                    setSelectedCondition(prev => ({
-                      ...prev,
-                      humidity: `${current[0] || "30"}-${e.target.value}%`,
-                    }));
-                  }}
-                  className="flex-1 bg-[#252525] border border-[#323539] text-white rounded px-4 py-2 focus:outline-none"
-                  min="0"
-                  max="100"
-                />
-                <Droplet className="text-gray-400" size={16} />
-              </div>
-            </div>
-
-            {/* Confirm */}
-            <button
-              onClick={() => setPortalOpen(false)}
-              className="w-full bg-accentBlue hover:bg-blue-600 text-white font-medium py-2 rounded-md"
-            >
-              Confirm
-            </button>
-
-            {/* Close */}
-            <button
-              onClick={() => setPortalOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-white"
-            >
-              ✕
-            </button>
           </div>
         </div>
       )}
