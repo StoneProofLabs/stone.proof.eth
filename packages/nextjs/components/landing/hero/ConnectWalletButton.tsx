@@ -31,7 +31,7 @@ const ConnectWalletButton: React.FC = () => {
                     onClick={openConnectModal}
                     className="relative flex items-center justify-center gap-2 px-8 py-3 font-semibold bg-[#23272F] text-white focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-[0_0_16px_2px_rgba(59,130,246,0.25)] min-h-[48px] border-0"
                   >
-                    {/* Left bracket */}
+                    {/* left border*/}
                     <div
                       className="absolute left-0 top-0 bottom-0 w-[2px] bg-white"
                       style={{ height: "calc(100% + 10px)", top: "-5px" }}
@@ -42,7 +42,7 @@ const ConnectWalletButton: React.FC = () => {
                       style={{ bottom: "-5px" }}
                     ></div>
 
-                    {/* Right bracket */}
+                    {/* right border */}
                     <div
                       className="absolute right-0 top-0 bottom-0 w-[2px] bg-white"
                       style={{ height: "calc(100% + 10px)", top: "-5px" }}
