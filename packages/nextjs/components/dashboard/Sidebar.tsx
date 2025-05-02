@@ -37,7 +37,7 @@ export default function Sidebar({ basePath }: SidebarProps) {
       )}
       <div
         className={`bg-darkBlack min-h-screen flex flex-col gap-10 transition-all duration-300 ease-in-out fixed left-0 top-0 h-full z-50 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${
-          isCollapsed ? "w-0 overflow-hidden" : "w-[85vw] md:w-[250px] max-w-[300px]"
+          isCollapsed ? "w-0 overflow-hidden" : "w-[85vw] md:w-[260px] max-w-[300px]"
         }`}
       >
         {/* Logo - Sticky at the top */}
