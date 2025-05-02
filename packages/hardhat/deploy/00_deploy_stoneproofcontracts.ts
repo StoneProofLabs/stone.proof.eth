@@ -64,8 +64,8 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
   });
   await logGasUsed("DisputeResolution", disputeResolution);
 
-  console.log("Deploying MineralTransporter...");
-  const mineralTransporter = await deploy("MineralTransporter", {
+  console.log("Deploying LogisticsManager...");
+  const logisticsManager = await deploy("LogisticsManager", {
     from: deployer,
     args: [
       /*rolesManager.address,
@@ -76,7 +76,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     log: true,
     autoMine: true,
   });
-  await logGasUsed("MineralTransporter", mineralTransporter);
+  await logGasUsed("LogisticsManager", logisticsManager);
 
   console.log("Deploying SupplychainValidator...");
   const supplychainValidator = await deploy("SupplychainValidator", {

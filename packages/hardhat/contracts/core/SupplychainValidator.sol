@@ -32,21 +32,13 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
     * @dev Events for traceability
     */
     event OperationValidated(address indexed actor, string operation, uint256 timestamp);
-    event SupplychainValidated(address indexed validator, bool isValid, uint256 mineralId);
+    event SupplychainValidated(address indexed validator, bool isValid, string mineralId);
 
 
     modifier onlyAuthorizedActor(bytes32 role) {
 
         if (!hasRole(role, msg.sender)) {
             revert InsufficientPermissionsToPerformAction(msg.sender);
-        }
-        _;
-    }
-
-    modifier onlyValidMineral(uint256 mineralId) {
-
-        if (!isMineralRegistered(mineralId) || mineralId == 0) {
-            revert InvalidMineralIdOrNotFound(mineralId);
         }
         _;
     }
@@ -82,7 +74,7 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
     * @dev validates mining operation
     * @notice Emits OperationValidated event fon successful operation validation
     */
-    function validateMiningOperation(uint256 mineralId) external onlyAuthorizedActor(MINER_ROLE) onlyValidMineral(mineralId) {
+    function validateMiningOperation(string memory mineralId) external onlyAuthorizedActor(MINER_ROLE) onlyValidMineral(mineralId) {
         transactionLog.recordOperation(msg.sender, "Mining", mineralId);
 
         emit OperationValidated(msg.sender, "Mining", block.timestamp);
@@ -97,7 +89,7 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
     * @dev validates refining operation
     * @notice Emits OperationValidated even on successful validation
     */
-    function validateRefiningOperation(uint256 mineralId) external onlyAuthorizedActor(REFINER_ROLE) onlyValidMineral(mineralId) {
+    function validateRefiningOperation(string memory mineralId) external onlyAuthorizedActor(REFINER_ROLE) onlyValidMineral(mineralId) {
         transactionLog.recordOperation(msg.sender, "Refining", mineralId);
 
         emit
@@ -114,12 +106,20 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
     * @dev validates transportation operation
     * @notice Emits OperationValidated even on successful validation
     */
-    function validateTransportationOperation(uint256 mineralId, address to) external onlyAuthorizedActor(TRANSPORTER_ROLE) onlyValidMineral(mineralId) {
-        tokenization.safeTransferFrom(msg.sender, to, mineralId);
-        transactionLog.recordOperation(msg.sender, "Transportation", mineralId);
+function validateTransportationOperation(string memory mineralId, address to) 
+    external 
+    onlyAuthorizedActor(TRANSPORTER_ROLE) 
+    onlyValidMineral(mineralId)
+{
+    uint256 tokenId = tokenization.getTokenIdByMineralId(mineralId);
 
-        emit OperationValidated(msg.sender, "Transportation", block.timestamp);
-    }
+    tokenization.safeTransferFrom(msg.sender, to, tokenId);
+
+    transactionLog.recordOperation(msg.sender, "Transportation", mineralId);
+
+    emit OperationValidated(msg.sender, "Transportation", block.timestamp);
+}
+
 
 
 
@@ -131,12 +131,18 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
     * @dev validate purchase operation
     * @notice Emits OperationValidated event on success validation
     */
-    function validatePurchaseOperation(uint256 mineralId, address buyer) external onlyAuthorizedActor(BUYER_ROLE) onlyValidMineral(mineralId) {
-        tokenization.safeTransferFrom(msg.sender, buyer, mineralId);
-        transactionLog.recordOperation(msg.sender, "Purchase", mineralId);
+function validatePurchaseOperation(string memory mineralId, address buyer) 
+    external 
+    onlyAuthorizedActor(BUYER_ROLE) 
+    onlyValidMineral(mineralId) 
+{
+    uint256 tokenId = tokenization.getTokenIdByMineralId(mineralId);
 
-        emit OperationValidated(msg.sender, "Purchase", block.timestamp);
-    }
+    tokenization.safeTransferFrom(msg.sender, buyer, tokenId);
+    transactionLog.recordOperation(msg.sender, "Purchase", mineralId);
+
+    emit OperationValidated(msg.sender, "Purchase", block.timestamp);
+}
 
 
 
@@ -148,7 +154,7 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
     * @dev validates Inspection operation
     * @notice Emits OperationValidated event on successfl validataion
     */
-    function validateInspectionOperation(uint256 mineralId, address inspector) external onlyAuthorizedActor(INSPECTOR_ROLE) onlyValidMineral(mineralId) {
+    function validateInspectionOperation(string memory mineralId, address inspector) external onlyAuthorizedActor(INSPECTOR_ROLE) onlyValidMineral(mineralId) {
         transactionLog.recordOperation(inspector, "Inspection", mineralId);
 
         emit OperationValidated(inspector, "Inspector", block.timestamp);
@@ -161,7 +167,7 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
     * @return validationReason A string describing the validation result
      */
 
-     function validateSupplychain(uint256 mineralId) public returns(bool isValid, string memory validationReason) {
+     function validateSupplychain(string memory mineralId) public returns(bool isValid, string memory validationReason) {
         MineralRegistry.MineralDetails memory details = mineralRegistry.getMineralDetails(mineralId);
 
         (bool isAudited, bool isInspected) = mineralRegistry.checkAuditAndInspectionStatus(mineralId);
@@ -206,11 +212,11 @@ contract SupplychainValidator is Errors, RolesManager, MineralRegistry {
      * @notice Emits SupplychainValidated, an event with the validation reason of the mineral supplychain
      * @param mineralId The ID of the mineral to validate 
      */
-     function logValidationResult(uint256 mineralId) public returns(bool, string memory) {
+     function logValidationResult(string memory mineralId) public returns(bool, string memory) {
 
-        if (mineralId == 0 || !isMineralRegistered(mineralId)) {
-            revert SupplychainValidator__InvalidMineralIdOrNotFound(mineralId);
-        } 
+        if (bytes(mineralId).length == 0 || !isMineralRegistered(mineralId)) {
+         revert SupplychainValidator__InvalidMineralIdOrNotFound(mineralId);
+        }
         (bool isValid, string memory validationReason) = validateSupplychain(mineralId);
 
         emit SupplychainValidated(msg.sender, isValid, mineralId);
