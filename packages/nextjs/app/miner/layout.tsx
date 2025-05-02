@@ -23,7 +23,7 @@ export default function MinerLayout({ children }: { children: React.ReactNode })
     <div className={`${inter.variable} font-sans bg-lightBlack flex text-white h-screen`}>
       <Sidebar basePath={basepath} />
       <div
-        className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${!isCollapsed ? "md:ml-[300px]" : ""}`}
+        className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${!isCollapsed ? "md:ml-[250px]" : ""}`}
       >
         <TopBar sidebarItems={sideBarItems} basePath={basepath} />
         <main className="flex-1 overflow-y-auto px-6 py-4">{children}</main>

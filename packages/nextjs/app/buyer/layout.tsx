@@ -21,7 +21,7 @@ export default function AuditorLayout({ children }: { children: React.ReactNode 
     <div className={`${inter.variable} font-sans bg-lightBlack flex text-white h-screen`}>
       <Sidebar basePath="/buyer" />
       <div
-        className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${!isCollapsed ? "md:ml-[300px]" : ""}`}
+        className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${!isCollapsed ? "md:ml-[250px]" : ""}`}
       >
         <TopBar sidebarItems={sidebarItems} basePath="/buyer" />
         <main className="flex-1 overflow-y-auto px-6 py-4">{children}</main>
