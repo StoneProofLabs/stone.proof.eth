@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -58,14 +59,21 @@ const Hero: React.FC = () => {
             securing it, empowering it, and moving it forward with trust
           </p>
           {/* Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8 relative">
             <Link
               href="/auth/signup"
-              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 z-20"
             >
               Get Started
             </Link>
-            <ConnectWalletButton />
+
+            {/* Spotlight blur effect specifically behind ConnectWalletButton */}
+            <div className="absolute right-0 sm:right-[8%] w-[200px] h-[100px] rounded-full bg-white opacity-15 blur-[50px] z-10"></div>
+
+            {/* ConnectWalletButton with higher z-index to appear above the spotlight */}
+            <div className="relative z-20">
+              <ConnectWalletButton />
+            </div>
           </div>
         </div>
         {/* Dashboard Image - direct child, centered, responsive */}
