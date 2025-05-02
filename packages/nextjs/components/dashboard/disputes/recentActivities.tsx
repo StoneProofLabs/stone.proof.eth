@@ -56,7 +56,13 @@ const StatusBadge = ({ status }: { status: string }) => {
       bgColor = "bg-gray-500";
   }
 
-  return <div className={`px-4 py-1 rounded-full ${bgColor} text-white text-sm font-medium`}>{status}</div>;
+  return (
+    <div
+      className={`px-2 sm:px-4 py-1 rounded-full ${bgColor} text-white text-xs sm:text-sm font-medium whitespace-nowrap`}
+    >
+      {status}
+    </div>
+  );
 };
 
 // Status icon component
@@ -97,8 +103,10 @@ const StatusIcon = ({ type }: StatusIconProps) => {
   }
 
   return (
-    <div className={`w-10 h-10 rounded-full ${bgColor} flex items-center justify-center text-white`}>
-      <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+    <div
+      className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full ${bgColor} flex items-center justify-center text-white flex-shrink-0`}
+    >
+      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="currentColor" viewBox="0 0 20 20">
         <path fillRule="evenodd" d={iconPath} clipRule="evenodd" />
       </svg>
     </div>
@@ -110,25 +118,27 @@ const NotificationItem = ({ notification, expanded, toggleExpanded }: Notificati
   return (
     <div className="bg-[#121212] border border-[#2a2a2a] rounded-lg mb-3">
       <div
-        className="flex items-center justify-between p-4 cursor-pointer"
+        className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 cursor-pointer gap-3 sm:gap-0"
         onClick={() => toggleExpanded(notification.id)}
       >
         <div className="flex items-center">
           <StatusIcon type={notification.type} />
-          <div className="ml-4">
-            <div className="text-white font-medium text-lg">{notification.title}</div>
-            {notification.reference && <div className="text-gray-400 text-sm">Ref: {notification.reference}</div>}
+          <div className="ml-3 sm:ml-4 min-w-0 flex-1">
+            <div className="text-white font-medium text-base sm:text-lg truncate">{notification.title}</div>
+            {notification.reference && (
+              <div className="text-gray-400 text-xs sm:text-sm">Ref: {notification.reference}</div>
+            )}
           </div>
         </div>
-        <div className="flex items-center space-x-3">
-          <span className="text-gray-400">{notification.date}</span>
+        <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 ml-11 sm:ml-0">
+          <span className="text-gray-400 text-sm order-1 sm:order-none">{notification.date}</span>
 
           {notification.secondaryStatus && <StatusBadge status={notification.secondaryStatus} />}
 
           <StatusBadge status={notification.status} />
 
           <svg
-            className={`w-6 h-6 text-gray-400 transform ${expanded ? "rotate-180" : ""} transition-transform duration-200`}
+            className={`w-5 h-5 sm:w-6 sm:h-6 text-gray-400 transform ${expanded ? "rotate-180" : ""} transition-transform duration-200 ml-auto sm:ml-0`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -139,13 +149,15 @@ const NotificationItem = ({ notification, expanded, toggleExpanded }: Notificati
       </div>
 
       {expanded && (
-        <div className="p-6 border-t border-gray-800 text-gray-400">
-          <p className="mb-3">{notification.content || "No additional details available for this notification."}</p>
+        <div className="p-4 sm:p-6 border-t border-gray-800 text-gray-400">
+          <p className="mb-3 text-sm sm:text-base">
+            {notification.content || "No additional details available for this notification."}
+          </p>
 
           <div className="flex justify-end">
-            <button className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg font-medium">
+            <button className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg font-medium text-sm sm:text-base">
               View Full Details
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
             </button>

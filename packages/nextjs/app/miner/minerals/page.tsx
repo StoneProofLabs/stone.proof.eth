@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
-import { ShieldAlert, Copy, Mail, Phone, MessageSquare, ChevronRight, Loader2 } from "lucide-react";
-import { toast } from "../../lib/toast";
 import Link from "next/link";
+import { toast } from "../../lib/toast";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
+import { useAccount } from "wagmi";
 import Icon from "~~/components/dashboard/Icon";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralListTable from "~~/components/dashboard/minerals/mineralListTable/mineralList";
@@ -14,7 +15,6 @@ import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
 import { demands, mineralsList, reports, shipments } from "~~/data/data";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export type Shipment = {
   id: string;
@@ -67,7 +67,7 @@ const AccessDeniedCard = ({
         <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Connected Wallet:</span>
-            <button 
+            <button
               onClick={copyAddress}
               className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               title="Copy address"
@@ -110,19 +110,19 @@ const AccessDeniedCard = ({
                 name: "Admin Email",
                 value: "admin@stone.proof",
                 icon: <Mail className="w-5 h-5" />,
-                action: "mailto:admin@stone.proof?subject=Miner%20Role%20Request"
+                action: "mailto:admin@stone.proof?subject=Miner%20Role%20Request",
               },
               {
                 name: "Support Phone",
                 value: "+1 (555) 123-4567",
                 icon: <Phone className="w-5 h-5" />,
-                action: "tel:+15551234567"
+                action: "tel:+15551234567",
               },
               {
                 name: "Telegram Support",
                 value: "@StoneProofSupport",
                 icon: <MessageSquare className="w-5 h-5" />,
-                action: "https://t.me/StoneProofSupport"
+                action: "https://t.me/StoneProofSupport",
               },
             ].map((contact, index) => (
               <a
