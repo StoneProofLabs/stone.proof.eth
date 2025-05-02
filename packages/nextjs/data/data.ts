@@ -1532,3 +1532,41 @@ export const sampleMinerals: MineralItem[] = [
     purity: 75,
   },
 ];
+
+export const mineralDisputesData = [
+  // 2023 Data
+  { day: "Sun", value: 8, lithium: 12, copper: 6, rareEarth: 5, cobalt: 9, nickel: 7, year: "2023" },
+  { day: "Mon", value: 20, lithium: 25, copper: 18, rareEarth: 15, cobalt: 22, nickel: 19, year: "2023" },
+  { day: "Tue", value: 85, lithium: 80, copper: 90, rareEarth: 82, cobalt: 87, nickel: 83, year: "2023" },
+  { day: "Wed", value: 70, lithium: 75, copper: 65, rareEarth: 68, cobalt: 72, nickel: 67, year: "2023" },
+  { day: "Thu", value: 22, lithium: 25, copper: 18, rareEarth: 20, cobalt: 24, nickel: 16, year: "2023" },
+  { day: "Fri", value: 55, lithium: 60, copper: 50, rareEarth: 53, cobalt: 57, nickel: 48, year: "2023" },
+  { day: "Sat", value: 30, lithium: 35, copper: 25, rareEarth: 28, cobalt: 32, nickel: 24, year: "2023" },
+
+  // 2024 Data
+  { day: "Sun", value: 9, lithium: 14, copper: 7, rareEarth: 6, cobalt: 10, nickel: 8, year: "2024" },
+  { day: "Mon", value: 22, lithium: 28, copper: 19, rareEarth: 18, cobalt: 24, nickel: 20, year: "2024" },
+  { day: "Tue", value: 88, lithium: 82, copper: 92, rareEarth: 84, cobalt: 90, nickel: 86, year: "2024" },
+  { day: "Wed", value: 72, lithium: 78, copper: 68, rareEarth: 70, cobalt: 74, nickel: 69, year: "2024" },
+  { day: "Thu", value: 24, lithium: 28, copper: 19, rareEarth: 21, cobalt: 26, nickel: 17, year: "2024" },
+  { day: "Fri", value: 58, lithium: 62, copper: 52, rareEarth: 55, cobalt: 60, nickel: 49, year: "2024" },
+  { day: "Sat", value: 32, lithium: 38, copper: 28, rareEarth: 30, cobalt: 34, nickel: 26, year: "2024" },
+
+  // 2025 Data (Matches the chart in the image)
+  { day: "Sun", value: 10, lithium: 15, copper: 5, rareEarth: 8, cobalt: 12, nickel: 7, year: "2025" },
+  { day: "Mon", value: 25, lithium: 30, copper: 20, rareEarth: 22, cobalt: 28, nickel: 18, year: "2025" },
+  { day: "Tue", value: 90, lithium: 85, copper: 95, rareEarth: 88, cobalt: 92, nickel: 80, year: "2025" },
+  { day: "Wed", value: 75, lithium: 80, copper: 70, rareEarth: 72, cobalt: 78, nickel: 65, year: "2025" },
+  { day: "Thu", value: 25, lithium: 30, copper: 20, rareEarth: 22, cobalt: 28, nickel: 18, year: "2025" },
+  { day: "Fri", value: 60, lithium: 65, copper: 55, rareEarth: 58, cobalt: 62, nickel: 50, year: "2025" },
+  { day: "Sat", value: 35, lithium: 40, copper: 30, rareEarth: 32, cobalt: 38, nickel: 28, year: "2025" },
+
+  // 2026 Data (Projected)
+  { day: "Sun", value: 12, lithium: 18, copper: 8, rareEarth: 10, cobalt: 14, nickel: 9, year: "2026" },
+  { day: "Mon", value: 28, lithium: 33, copper: 23, rareEarth: 25, cobalt: 30, nickel: 21, year: "2026" },
+  { day: "Tue", value: 92, lithium: 88, copper: 97, rareEarth: 90, cobalt: 94, nickel: 85, year: "2026" },
+  { day: "Wed", value: 78, lithium: 83, copper: 73, rareEarth: 75, cobalt: 80, nickel: 70, year: "2026" },
+  { day: "Thu", value: 28, lithium: 33, copper: 23, rareEarth: 25, cobalt: 30, nickel: 21, year: "2026" },
+  { day: "Fri", value: 65, lithium: 70, copper: 60, rareEarth: 63, cobalt: 67, nickel: 55, year: "2026" },
+  { day: "Sat", value: 40, lithium: 45, copper: 35, rareEarth: 37, cobalt: 42, nickel: 33, year: "2026" },
+];
