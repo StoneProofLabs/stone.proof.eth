@@ -1,4 +1,4 @@
- "use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -22,17 +22,17 @@ export default function Page() {
   const [activeTab, setActiveTab] = useState<"pending" | "validated">("pending");
 
   return (
-    <div className="px-4 md:px-10 flex flex-col gap-6 md:gap-10">
+    <div className="px-3 sm:px-4 md:px-6 lg:px-8 flex flex-col gap-4 sm:gap-6 md:gap-8">
       {/* the welcome message */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 md:gap-0">
         <div className="flex flex-col">
-          <p className="text-[24px] md:text-[28px] font-bold m-0 leading-tight">Minerals</p>
-          <p className="text-[14px] md:text-[16px] text-[#979AA0] m-0 leading-tight">
+          <p className="text-[24px] sm:text-[26px] md:text-[28px] font-bold m-0 leading-tight">Minerals</p>
+          <p className="text-[14px] sm:text-[15px] md:text-[16px] text-[#979AA0] m-0 leading-tight">
             Access detailed info about minerals
           </p>
         </div>
 
-        <div className="flex flex-wrap gap-2 md:gap-3">
+        <div className="flex flex-wrap gap-2 sm:gap-3">
           <button className="flex-1 md:flex-none bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <span className="flex items-center gap-2">
               <h1 className="text-sm translate-y-[7px]">Download Report</h1>
@@ -54,17 +54,10 @@ export default function Page() {
       </div>
 
       {/* the mineral activity */}
-      <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
+      <div className="flex flex-col lg:flex-row gap-4 sm:gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralActivity
-            headerBg="#060910"
-            footerBg="#060910"
-          
-            
-           
-            
-            />
+            <MineralActivity headerBg="#060910" footerBg="#060910" />
           </div>
         </div>
         <div className="w-full lg:w-1/3">
@@ -85,7 +78,7 @@ export default function Page() {
           >
             Pending Transactions (Waiting For Validation)
           </button>
-          
+
           <div className="w-full h-[1px] sm:hidden bg-white my-1"></div>
           <button
             onClick={() => setActiveTab("validated")}
@@ -112,9 +105,11 @@ export default function Page() {
       </div>
 
       {/* the other metric cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-        <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")}
-        bgColor="bg-[#060910]"
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
+        <RecentShipments
+          shipments={shipments}
+          onViewAll={() => console.log("View all shipments")}
+          bgColor="bg-[#060910]"
         />
 
         <TopDemands

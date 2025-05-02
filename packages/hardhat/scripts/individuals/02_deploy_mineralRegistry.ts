@@ -2,7 +2,7 @@ import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
 import { Contract } from "ethers";
 
-const deployMineralWarehouse: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+const deployMineralRegistry: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts, ethers } = hre;
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
@@ -15,17 +15,18 @@ const deployMineralWarehouse: DeployFunction = async function (hre: HardhatRunti
   };
 
 
-  console.log("Deploying MineralWarehouse...");
-  const mineralWarehouse = await deploy("MineralWarehouse", {
+  console.log("Deploying MineralRegistry...");
+  const mineralRegistry = await deploy("MineralRegistry", {
     from: deployer,
-    args: [],
+    args: ["0x5FbDB2315678afecb367f032d93F642f64180aa3"],
     log: true,
     autoMine: true,
   });
-  await logGasUsed("MineralWarehouse", mineralWarehouse);
+  await logGasUsed("MineralRegistry", mineralRegistry);
+
 
 console.log("🚀 Deployment complete!");
 };
 
-export default deployMineralWarehouse;
-deployMineralWarehouse.tags = ["MineralWarehouse"];
+export default deployMineralRegistry;
+deployMineralRegistry.tags = ["MineralRegistry"];

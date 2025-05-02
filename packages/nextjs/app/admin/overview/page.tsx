@@ -35,8 +35,8 @@ const stats = {
 
 export default function AdminOverviewPage() {
   return (
-    <div className="container mx-auto px-4 py-8 space-y-8">
-      <div className="px-4 sm:px-6 md:px-10 flex flex-col gap-6 sm:gap-8 md:gap-10">
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-6 md:py-8 space-y-6 sm:space-y-8">
+      <div className="px-2 sm:px-4 md:px-6 lg:px-8 flex flex-col gap-4 sm:gap-6 md:gap-8">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
           <div className="flex flex-col">
             <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Hey there, {user.name}!</p>
@@ -45,7 +45,7 @@ export default function AdminOverviewPage() {
             </p>
           </div>
 
-          <div className="flex flex-wrap gap-2 sm:gap-1">
+          <div className="flex flex-wrap gap-2 sm:gap-3">
             <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
               <span className="flex items-center gap-2">
                 <h1 className="text-sm translate-y-[7px]">Download Report</h1>
@@ -74,7 +74,7 @@ export default function AdminOverviewPage() {
         <NetworkTransactionsGraph />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
         <RecentShipments
           shipments={shipments}
           onViewAll={() => console.log("View all shipments")}

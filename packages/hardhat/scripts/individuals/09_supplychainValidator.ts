@@ -16,9 +16,6 @@ const deploySupplyChainValidator: DeployFunction = async function (hre: HardhatR
   };
 
 
-
-
-
 console.log("Deploying SupplychainValidator...");
 const supplychainValidator = await deploy("SupplychainValidator", {
   from: deployer,

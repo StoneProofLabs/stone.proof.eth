@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Droplet, Thermometer } from "lucide-react";
 import { Mineral } from "~~/components/dashboard/refiner/mineralListTable/types";
 
 type UpdateMineralFormProps = {
@@ -11,6 +12,12 @@ type UpdateMineralFormProps = {
 
 export default function Page() {
   const router = useRouter();
+  const [portalOpen, setPortalOpen] = useState(false);
+  const [selectedCondition, setSelectedCondition] = useState({
+    temperature: "In Celsius",
+    storage: "Select Type",
+    humidity: "Select Type",
+  });
   const [formData, setFormData] = useState<Partial<Mineral>>({
     name: "",
     code: "",
@@ -119,16 +126,136 @@ export default function Page() {
             </div>
           </div>
 
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <label className="block mb-2">Storage Conditions</label>
-            <div className="flex items-center justify-between bg-[#1A1B1E] border border-[#323539] rounded-md py-2 px-3">
+            <div
+              className="flex items-center justify-between bg-[#1A1B1E] border border-[#323539] rounded-md py-2 px-3 cursor-pointer"
+              onClick={() => setPortalOpen(!portalOpen)}
+            >
               <span>{formData.storageConditions}</span>
               <button type="button" className="text-white">
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg
+                  className={`w-5 h-5 transform transition-transform ${portalOpen ? "rotate-180" : ""}`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
             </div>
+            {portalOpen && (
+              <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+                <div className="bg-[#0D0D0D] border border-gray-700 rounded-xl p-8 w-[400px] relative">
+                  <h2 className="text-white text-lg mb-6 font-semibold">Specify Storage Conditions</h2>
+
+                  {/* Temperature */}
+                  <div className="mb-4">
+                    <label className="block text-white text-sm mb-2">Temperature (°C):</label>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        placeholder="Enter temperature"
+                        value={
+                          selectedCondition.temperature === "In Celsius"
+                            ? ""
+                            : selectedCondition.temperature.replace("°C", "")
+                        }
+                        onChange={e =>
+                          setSelectedCondition(prev => ({
+                            ...prev,
+                            temperature: e.target.value ? `${e.target.value}°C` : "In Celsius",
+                          }))
+                        }
+                        className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-2 focus:outline-none"
+                      />
+                      <Thermometer
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                        size={16}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Storage Type */}
+                  <div className="mb-4">
+                    <label className="block text-white text-sm mb-2">Storage Type:</label>
+                    <select
+                      value={selectedCondition.storage}
+                      onChange={e => setSelectedCondition(prev => ({ ...prev, storage: e.target.value }))}
+                      className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-2 focus:outline-none"
+                    >
+                      <option value="Select Type">Select Storage Type</option>
+                      <option value="Cool & Dry Place">Cool & Dry Place</option>
+                      <option value="Room Temperature">Room Temperature</option>
+                      <option value="Refrigerated">Refrigerated</option>
+                      <option value="Freezer">Freezer</option>
+                      <option value="Climate Controlled">Climate Controlled</option>
+                    </select>
+                  </div>
+
+                  {/* Humidity Range */}
+                  <div className="mb-6">
+                    <label className="block text-white text-sm mb-2">Humidity Range (%):</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="number"
+                        placeholder="Min"
+                        value={selectedCondition.humidity.split("-")[0].replace("%", "")}
+                        onChange={e => {
+                          const current = selectedCondition.humidity.split("-");
+                          setSelectedCondition(prev => ({
+                            ...prev,
+                            humidity: `${e.target.value}-${current[1] || "50"}%`,
+                          }));
+                        }}
+                        className="flex-1 bg-[#252525] border border-[#323539] text-white rounded px-4 py-2 focus:outline-none"
+                        min="0"
+                        max="100"
+                      />
+                      <span className="text-gray-400">to</span>
+                      <input
+                        type="number"
+                        placeholder="Max"
+                        value={selectedCondition.humidity.split("-")[1]?.replace("%", "") || ""}
+                        onChange={e => {
+                          const current = selectedCondition.humidity.split("-");
+                          setSelectedCondition(prev => ({
+                            ...prev,
+                            humidity: `${current[0] || "30"}-${e.target.value}%`,
+                          }));
+                        }}
+                        className="flex-1 bg-[#252525] border border-[#323539] text-white rounded px-4 py-2 focus:outline-none"
+                        min="0"
+                        max="100"
+                      />
+                      <Droplet className="text-gray-400" size={16} />
+                    </div>
+                  </div>
+
+                  {/* Confirm */}
+                  <button
+                    onClick={() => {
+                      setFormData(prev => ({
+                        ...prev,
+                        storageConditions: `${selectedCondition.temperature}, ${selectedCondition.storage}, ${selectedCondition.humidity}`,
+                      }));
+                      setPortalOpen(false);
+                    }}
+                    className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 rounded-md"
+                  >
+                    Confirm
+                  </button>
+
+                  {/* Close */}
+                  <button
+                    onClick={() => setPortalOpen(false)}
+                    className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="mt-8">

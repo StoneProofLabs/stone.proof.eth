@@ -23,7 +23,7 @@ contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
     
     struct MineralToken {
         uint256 tokenId;
-        uint256 mineralId;
+        string mineralId;
         string details;
         bool isMinted;
         bool isAudited;
@@ -38,11 +38,13 @@ contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
     mapping(uint256 => bool) private _tokenExists;
     mapping(uint256 => MineralToken) private mineralTokens;
 
+    // map mineralId string to tokenId
+    mapping(string => uint256) public mineralIdToTokenId;
 
         /*//////////////////////////////////////////////////////////////
                                  EVENTS
         //////////////////////////////////////////////////////////////*/
-    event MineralTokenMinted(uint256 indexed tokenId, uint256 mineralId, string metadata, address  minter, address indexed mintedTo);
+    event MineralTokenMinted(uint256 indexed tokenId, string mineralId, string metadata, address  minter, address indexed mintedTo);
     event OwnershipTransferred(uint256 indexed tokenId, address indexed oldOwner, address indexed newOwner);
     event MineralTokenUpdated(uint256 indexed tokenId, string action, address updater);
     event MineralTokenRevoked(uint256 indexed tokenId, address indexed revoker, string reason);
@@ -86,33 +88,39 @@ contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
     * MineralToken is minted to the current owner of the mineral - msg.sender
     * @notice Emits MineralTokenMinted event on successful minting 
     */
-    function mintToken(address to, uint256 mineralId, string memory details) public  onlyNonZeroAddress(to) onlySpecificRole(MINTER_ROLE) {
+    function mintToken(address to, string memory mineralId, string memory details) public  onlyNonZeroAddress(to) onlySpecificRole(MINTER_ROLE) {
         uint256 tokenId = nextTokenId++;
 
         if (_exists(tokenId))
-        revert Tokenization__TokenAlreadyExists(tokenId);
+            revert Tokenization__TokenAlreadyExists(tokenId);
         
         if (mineralTokens[tokenId].isMinted == true)
-        revert Tokenization__TokenIsAlreadyMinted(tokenId);
+            revert Tokenization__TokenIsAlreadyMinted(tokenId);
 
-        if (mineralDetails[mineralId].id != mineralId)
-        revert InvalidMineralIdOrNotFound(mineralId);
+        if (
+           bytes(mineralDetails[mineralId].id).length == 0 ||
+           keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId))
+        ) {
+            revert InvalidMineralIdOrNotFound(mineralId);
+        }
 
         _mint(to, tokenId);
-        
+
         _tokenExists[tokenId] = true;
+
         tokenData[tokenId] = MineralToken({
             tokenId: tokenId,
             mineralId: mineralId,
             details: details,
-            isMinted: false,
+            isMinted: true,
             isAudited: false,
             isInspected: false,
             isPurchased: false,
             currentOwner: msg.sender
         });
 
-        mineralTokens[tokenId].isMinted = true;
+        // ✅ NEW: store mapping from mineralId to tokenId
+        mineralIdToTokenId[mineralId] = tokenId;
 
         emit MineralTokenMinted(tokenId, mineralId, details, msg.sender, to);
     }
@@ -260,5 +268,16 @@ contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
     function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721URIStorage, AccessControl) returns(bool) {
         return super.supportsInterface(interfaceId);
 
-    }    
+    }
+
+    // utility to get tokenId from mineralId
+    function getTokenIdByMineralId(string memory mineralId) public view returns (uint256) {
+        uint256 tokenId = mineralIdToTokenId[mineralId];
+
+        if (!_exists(tokenId)) {
+            revert Tokenization__InvalidTokenIdOrNotFound(tokenId);
+        }
+
+        return tokenId;
+    }
 }
