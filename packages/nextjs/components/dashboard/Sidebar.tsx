@@ -36,12 +36,12 @@ export default function Sidebar({ basePath }: SidebarProps) {
         />
       )}
       <div
-        className={`bg-darkBlack min-h-screen flex flex-col gap-10 transition-all duration-300 ease-in-out fixed md:relative z-50 ${
-          isCollapsed ? "w-0 overflow-hidden" : "w-full md:w-[20vw] max-w-[300px]"
+        className={`bg-darkBlack min-h-screen flex flex-col gap-10 transition-all duration-300 ease-in-out fixed left-0 top-0 h-full z-50 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] ${
+          isCollapsed ? "w-0 overflow-hidden" : "w-[85vw] md:w-[250px] max-w-[300px]"
         }`}
       >
-        {/* Logo */}
-        <div className="flex justify-between px-5 py-[16px]">
+        {/* Logo - Sticky at the top */}
+        <div className="flex justify-between px-5 py-[16px] flex-shrink-0 sticky top-0 bg-darkBlack z-50">
           <StoneProof />
           <div
             className="cursor-pointer flex items-center justify-center"
@@ -51,31 +51,34 @@ export default function Sidebar({ basePath }: SidebarProps) {
           </div>
         </div>
 
-        {/* the search bar */}
-        <div className="px-5">
-          <Search />
-        </div>
+        {/* Content wrapper with padding */}
+        <div className="px-0 flex flex-col gap-10 pt-0 pb-5">
+          {/* the search bar */}
+          <div className="px-4">
+            <Search />
+          </div>
 
-        {/* the menu list */}
-        <div>
-          {sidebarItems.map((item, index) => (
-            <Link
-              className={`px-5 border-l-[3px] flex items-center gap-[10px] ${
-                isActive(item.path) ? "border-accentBlue bg-[#2B2D2F]" : "border-transparent hover:bg-[#2B2D2F]/50"
-              }`}
-              href={item.path}
-              key={index}
-            >
-              <div>
-                <Icon path={item.icon} alt={item.iconAlt} />
-              </div>
-              <p className={`text-[15px] ${isActive(item.path) ? "text-[#F9F9F9]" : "text-[#979AA0]"}`}>{item.name}</p>
-            </Link>
-          ))}
-        </div>
+          {/* the menu list */}
+          <div className="flex flex-col">
+            {sidebarItems.map((item, index) => (
+              <Link
+                className={`px-5 border-l-[3px] flex items-center gap-[10px] ${
+                  isActive(item.path) ? "border-accentBlue bg-[#2B2D2F]" : "border-transparent hover:bg-[#2B2D2F]/50"
+                }`}
+                href={item.path}
+                key={index}
+              >
+                <div>
+                  <Icon path={item.icon} alt={item.iconAlt} />
+                </div>
+                <p className={`text-[15px] ${isActive(item.path) ? "text-[#F9F9F9]" : "text-[#979AA0]"}`}>
+                  {item.name}
+                </p>
+              </Link>
+            ))}
+          </div>
 
-        {/* the subscription plan card */}
-        <div>
+          {/* the subscription plan card */}
           <SubscriptionCard />
         </div>
       </div>
