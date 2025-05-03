@@ -184,6 +184,12 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           iconAlt: "Overview icon",
         },
         {
+          name: "Roles Manager",
+          path: `${basePath}/roles`,
+          icon: "/dashboard/icon_set/roles.svg",
+          iconAlt: "Roles icon",
+        },
+        {
           name: "Minerals",
           path: `${basePath}/minerals`,
           icon: "/dashboard/icon_set/minerals.svg",
