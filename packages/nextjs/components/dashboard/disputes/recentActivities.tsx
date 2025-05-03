@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Link from "next/link";
 
 // Define types for props
 export interface Notifications {
@@ -24,6 +25,7 @@ interface NotificationItemProps {
 
 interface NotificationListProps {
   notifications: Notifications[];
+  baseUrl?: string;
 }
 
 // Status badge component
@@ -114,7 +116,12 @@ const StatusIcon = ({ type }: StatusIconProps) => {
 };
 
 // Notification item component (accordion style)
-const NotificationItem = ({ notification, expanded, toggleExpanded }: NotificationItemProps) => {
+const NotificationItem = ({
+  notification,
+  expanded,
+  toggleExpanded,
+  baseUrl = "",
+}: NotificationItemProps & { baseUrl?: string }) => {
   return (
     <div className="bg-[#121212] border border-[#2a2a2a] rounded-lg mb-3">
       <div
@@ -155,12 +162,15 @@ const NotificationItem = ({ notification, expanded, toggleExpanded }: Notificati
           </p>
 
           <div className="flex justify-end">
-            <button className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg font-medium text-sm sm:text-base">
+            <Link
+              href={`/${baseUrl}/disputes/disputeDetails/${notification.id}`}
+              className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg font-medium text-sm sm:text-base"
+            >
               View Full Details
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>
-            </button>
+            </Link>
           </div>
         </div>
       )}
@@ -169,7 +179,7 @@ const NotificationItem = ({ notification, expanded, toggleExpanded }: Notificati
 };
 
 // NotificationList component
-export const NotificationList = ({ notifications }: NotificationListProps) => {
+export const NotificationList = ({ notifications, baseUrl = "" }: NotificationListProps) => {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const toggleExpanded = (id: number) => {
@@ -184,6 +194,7 @@ export const NotificationList = ({ notifications }: NotificationListProps) => {
           notification={notification}
           expanded={expandedId === notification.id}
           toggleExpanded={toggleExpanded}
+          baseUrl={baseUrl}
         />
       ))}
     </div>
