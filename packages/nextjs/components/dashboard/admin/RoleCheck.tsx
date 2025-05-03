@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { BiSolidErrorCircle } from "react-icons/bi";
 import { HiLightningBolt } from "react-icons/hi";
 import Icon from "~~/components/dashboard/Icon";
 
@@ -11,30 +12,44 @@ interface RoleCheckProps {
 
 const RoleCheck: React.FC<RoleCheckProps> = ({ userId = "", onCheckRole, foundRole = "", hasRole = false }) => {
   const [inputUserId, setInputUserId] = useState(userId);
-  const [isChecked, setIsChecked] = useState(!!foundRole);
+  const [isChecked, setIsChecked] = useState(true); // Set to true to show the result
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    // Start animation when component mounts
+    setIsAnimating(true);
+
+    // Optional: reset animation after a delay for potential re-animation
+    const timer = setTimeout(() => {
+      setIsAnimating(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleCheckRole = () => {
     setIsChecked(true);
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 2000);
     if (onCheckRole) onCheckRole();
   };
 
   return (
-    <div className="bg-[#0A101B] border border-[#2B3548] rounded-[16px] overflow-hidden w-full">
-      <div className="rounded-t-[16px] py-6 px-5 bg-[#0E141F] border-b border-[#2B3548]">
-        <div className="flex items-center">
-          <div className="flex items-center gap-4">
-            <div className="bg-[#1C6AE4] rounded-[10px] p-3 flex-shrink-0">
-              <HiLightningBolt size={32} className="text-white" />
-            </div>
-            <div>
-              <h3 className="text-white text-2xl font-bold leading-tight">Role Check</h3>
-              <p className="text-[#979AA0] text-sm mt-1">Verify User Access</p>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div
+      className={`relative bg-gradient-to-br from-[#060B17] to-[#0A1428] border-2 border-[#007AFF] rounded-[20px] p-5 w-full max-w-[550px] shadow-lg shadow-[#007AFF]/10 ${isAnimating ? "animate-pulse" : ""}`}
+    >
+      {/* Decorative elements */}
+      <div className="absolute top-0 right-0 w-20 h-20 bg-[#007AFF]/10 rounded-full blur-xl -mr-5 -mt-5 z-0"></div>
+      <div className="absolute bottom-0 left-0 w-16 h-16 bg-[#007AFF]/10 rounded-full blur-lg -ml-4 -mb-4 z-0"></div>
 
-      <div className="p-5">
+      <div className="relative z-10">
+        <div className="flex items-center mb-5">
+          <HiLightningBolt size={28} className="text-[#007AFF] mr-3" />
+          <h3 className="text-white text-2xl font-bold bg-gradient-to-r from-white to-blue-300 bg-clip-text text-transparent">
+            Role Check
+          </h3>
+        </div>
+
         <div className="mb-4">
           <p className="text-[#979AA0] text-xs mb-1">USER_ID</p>
           <div className="relative">
@@ -42,36 +57,37 @@ const RoleCheck: React.FC<RoleCheckProps> = ({ userId = "", onCheckRole, foundRo
               type="text"
               value={inputUserId}
               onChange={e => setInputUserId(e.target.value)}
-              className="w-full bg-[#1A202C] border border-[#323539] rounded-[8px] px-3 py-2 text-white"
+              className="w-full bg-[#060B17] border border-[#323539] rounded-[8px] px-3 py-2 text-white focus:border-[#007AFF] transition-colors"
               placeholder="0xffad-ecd3-34fc-2920"
             />
-            <button className="absolute right-2 top-1/2 transform -translate-y-1/2">
+            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:scale-110 transition-transform">
               <Icon path="/dashboard/icon_set/copy.svg" alt="copy" />
             </button>
           </div>
         </div>
 
         {isChecked && (
-          <div className="flex items-center gap-3 mb-4 bg-[#1A202C] p-3 rounded-[8px]">
-            <HiLightningBolt size={20} className="text-[#1C6AE4]" />
-            <div className="flex-1">
-              <p className="text-white text-sm">Found Role:</p>
-              <div className="flex items-center gap-2">
-                <span
-                  className={`px-2 py-1 rounded-full text-xs ${hasRole ? "bg-[#F59E0B] text-black" : "bg-[#F42A46] text-white"}`}
-                >
-                  {hasRole ? foundRole : "No USER_ID Provided"}
-                </span>
+          <div className="bg-[#1A202C] p-4 rounded-[8px] border border-[#323539] shadow-inner">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center mb-3">
+              <div className="flex items-center gap-3 w-full">
+                <HiLightningBolt size={24} className="text-white" />
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 flex-1">
+                  <p className="text-white text-base font-medium">Found Role:</p>
+                  <div className="bg-[#EEA23E] px-3 py-1 rounded-full flex items-center gap-1 mt-1 sm:mt-0 shadow-md shadow-[#EEA23E]/20">
+                    <BiSolidErrorCircle size={16} className="text-white" />
+                    <span className="text-white text-sm font-medium">No USER_ID Provided</span>
+                  </div>
+                </div>
               </div>
             </div>
+
+            <p className="text-[#979AA0] text-lg ml-9 mb-4">Please provide a USER_ID above</p>
           </div>
         )}
 
-        {isChecked && !hasRole && <p className="text-[#979AA0] text-xs mb-4">Please provide a USER_ID above</p>}
-
         <button
           onClick={handleCheckRole}
-          className="w-full bg-[#1C6AE4] text-white py-2.5 rounded-[8px] font-semibold mt-6"
+          className="w-full bg-gradient-to-r from-[#007AFF] to-[#0A97FF] mt-5 text-white py-3.5 rounded-[10px] font-semibold text-lg shadow-lg shadow-[#007AFF]/20 hover:shadow-xl hover:shadow-[#007AFF]/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
         >
           Check Role
         </button>

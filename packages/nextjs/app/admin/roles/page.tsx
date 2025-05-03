@@ -8,7 +8,7 @@ import RoleCheck from "~~/components/dashboard/admin/RoleCheck";
 
 const page = () => {
   return (
-    <div className="px-4 md:px-10 flex flex-col gap-6 md:gap-10">
+    <div className="px-4 pt-2 md:px-10 flex flex-col gap-6 md:gap-10">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
         <div className="flex flex-col">
           <p className="text-[24px] md:text-[28px] font-bold m-0 leading-tight">Manage Users in The System</p>
@@ -31,7 +31,7 @@ const page = () => {
 
       <div>
         <h2 className="text-[20px] md:text-[24px] font-bold mb-4">Mineral Supply Chain Roles</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
           <RoleCard
             role="Miners"
             iconPath="/miners.svg"
@@ -73,10 +73,10 @@ const page = () => {
 
       <div>
         <h2 className="text-[20px] md:text-[24px] font-bold mb-4">Supply Chain Validators</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
           <RoleCard
             role="Auditor"
-            iconPath="/dashboard/icon_set/auditors.svg"
+            iconPath="/auditor.svg"
             activeCount={2308}
             subtitle="Chain Compliance"
             userId="0xffad-ecd3-34fc-2920"
@@ -86,7 +86,7 @@ const page = () => {
 
           <RoleCard
             role="Inspector"
-            iconPath="/dashboard/icon_set/inspectors.svg"
+            iconPath="/inspector.svg"
             activeCount={2308}
             subtitle="Quality Assurance"
             userId="0xffad-ecd3-34fc-2920"
