@@ -20,10 +20,16 @@ interface NotificationItemProps {
   notification: Notifications;
   expanded: boolean;
   toggleExpanded: (id: number) => void;
+  bgColor?: string;
+  expandedBgColor?: string;
+  borderColor?: string;
 }
 
 interface NotificationListProps {
   notifications: Notifications[];
+  bgColor?: string;
+  expandedBgColor?: string;
+  borderColor?: string;
 }
 
 // Status badge component
@@ -114,9 +120,16 @@ const StatusIcon = ({ type }: StatusIconProps) => {
 };
 
 // Notification item component (accordion style)
-const NotificationItem = ({ notification, expanded, toggleExpanded }: NotificationItemProps) => {
+const NotificationItem = ({
+  notification,
+  expanded,
+  toggleExpanded,
+  bgColor = "bg-[#121212]",
+  expandedBgColor = "bg-[#121212]",
+  borderColor = "border-[#2a2a2a]",
+}: NotificationItemProps) => {
   return (
-    <div className="bg-[#121212] border border-[#2a2a2a] rounded-lg mb-3">
+    <div className={`${bgColor} border ${borderColor} rounded-lg mb-3 shadow-sm`}>
       <div
         className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 cursor-pointer gap-3 sm:gap-0"
         onClick={() => toggleExpanded(notification.id)}
@@ -149,13 +162,15 @@ const NotificationItem = ({ notification, expanded, toggleExpanded }: Notificati
       </div>
 
       {expanded && (
-        <div className="p-4 sm:p-6 border-t border-gray-800 text-gray-400">
+        <div
+          className={`p-4 sm:p-6 border-t border-gray-800 text-gray-400 ${expandedBgColor !== bgColor ? expandedBgColor : ""}`}
+        >
           <p className="mb-3 text-sm sm:text-base">
             {notification.content || "No additional details available for this notification."}
           </p>
 
           <div className="flex justify-end">
-            <button className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg font-medium text-sm sm:text-base">
+            <button className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 transition-colors text-white rounded-lg font-medium text-sm sm:text-base">
               View Full Details
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -169,7 +184,12 @@ const NotificationItem = ({ notification, expanded, toggleExpanded }: Notificati
 };
 
 // NotificationList component
-export const NotificationList = ({ notifications }: NotificationListProps) => {
+export const NotificationList = ({
+  notifications,
+  bgColor = "bg-[#121212]",
+  expandedBgColor = "bg-[#121212]",
+  borderColor = "border-[#2a2a2a]",
+}: NotificationListProps) => {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const toggleExpanded = (id: number) => {
@@ -177,13 +197,16 @@ export const NotificationList = ({ notifications }: NotificationListProps) => {
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       {(notifications ?? []).map(notification => (
         <NotificationItem
           key={notification.id}
           notification={notification}
           expanded={expandedId === notification.id}
           toggleExpanded={toggleExpanded}
+          bgColor={bgColor}
+          expandedBgColor={expandedBgColor}
+          borderColor={borderColor}
         />
       ))}
     </div>
