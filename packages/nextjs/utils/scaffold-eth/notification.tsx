@@ -33,9 +33,6 @@ const ENUM_STATUSES = {
 const DEFAULT_DURATION = 3000;
 const DEFAULT_POSITION: ToastPosition = "top-center";
 
-/**
- * Custom Notification
- */
 const Notification = ({
   content,
   status,
