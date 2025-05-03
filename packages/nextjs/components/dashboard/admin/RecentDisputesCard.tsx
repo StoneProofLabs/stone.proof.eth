@@ -10,7 +10,7 @@ const statusColors: Record<string, string> = {
 
 export default function RecentDisputesCard() {
   return (
-    <div className="bg-[#10131A] border border-[#23262B] rounded-2xl p-4 h-full flex flex-col w-full">
+    <div className="bg-[#060910] border border-[#23262B] rounded-2xl p-4 h-full flex flex-col w-full">
       <div className="flex items-center justify-between mb-2">
         <span className="text-white text-base md:text-lg font-semibold">Your Recent Disputes</span>
         <button className="text-gray-400 hover:text-white">

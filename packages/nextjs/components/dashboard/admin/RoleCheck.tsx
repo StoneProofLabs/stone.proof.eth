@@ -8,12 +8,23 @@ interface RoleCheckProps {
   onCheckRole?: () => void;
   foundRole?: string;
   hasRole?: boolean;
+  onUserIdChange?: (userId: string) => void;
 }
 
-const RoleCheck: React.FC<RoleCheckProps> = ({ userId = "", onCheckRole, foundRole = "", hasRole = false }) => {
+const RoleCheck: React.FC<RoleCheckProps> = ({ 
+  userId = "", 
+  onCheckRole, 
+  foundRole = "", 
+  hasRole = false,
+  onUserIdChange 
+}) => {
   const [inputUserId, setInputUserId] = useState(userId);
-  const [isChecked, setIsChecked] = useState(true); // Set to true to show the result
+  const [isChecked, setIsChecked] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    setInputUserId(userId);
+  }, [userId]);
 
   useEffect(() => {
     // Start animation when component mounts
@@ -32,6 +43,11 @@ const RoleCheck: React.FC<RoleCheckProps> = ({ userId = "", onCheckRole, foundRo
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 2000);
     if (onCheckRole) onCheckRole();
+    if (onUserIdChange) onUserIdChange(inputUserId);
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(inputUserId);
   };
 
   return (
@@ -58,9 +74,12 @@ const RoleCheck: React.FC<RoleCheckProps> = ({ userId = "", onCheckRole, foundRo
               value={inputUserId}
               onChange={e => setInputUserId(e.target.value)}
               className="w-full bg-[#060B17] border border-[#323539] rounded-[8px] px-3 py-2 text-white focus:border-[#007AFF] transition-colors"
-              placeholder="0xffad-ecd3-34fc-2920"
+              placeholder="0x..."
             />
-            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:scale-110 transition-transform">
+            <button 
+              onClick={handleCopy}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:scale-110 transition-transform"
+            >
               <Icon path="/dashboard/icon_set/copy.svg" alt="copy" />
             </button>
           </div>
@@ -73,15 +92,24 @@ const RoleCheck: React.FC<RoleCheckProps> = ({ userId = "", onCheckRole, foundRo
                 <HiLightningBolt size={24} className="text-white" />
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 flex-1">
                   <p className="text-white text-base font-medium">Found Role:</p>
-                  <div className="bg-[#EEA23E] px-3 py-1 rounded-full flex items-center gap-1 mt-1 sm:mt-0 shadow-md shadow-[#EEA23E]/20">
-                    <BiSolidErrorCircle size={16} className="text-white" />
-                    <span className="text-white text-sm font-medium">No USER_ID Provided</span>
-                  </div>
+                  {foundRole ? (
+                    <div className={`px-3 py-1 rounded-full flex items-center gap-1 mt-1 sm:mt-0 shadow-md ${hasRole ? 'bg-[#4CAF50] shadow-[#4CAF50]/20' : 'bg-[#EEA23E] shadow-[#EEA23E]/20'}`}>
+                      <BiSolidErrorCircle size={16} className="text-white" />
+                      <span className="text-white text-sm font-medium">{foundRole}</span>
+                    </div>
+                  ) : (
+                    <div className="bg-[#EEA23E] px-3 py-1 rounded-full flex items-center gap-1 mt-1 sm:mt-0 shadow-md shadow-[#EEA23E]/20">
+                      <BiSolidErrorCircle size={16} className="text-white" />
+                      <span className="text-white text-sm font-medium">No USER_ID Provided</span>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
 
-            <p className="text-[#979AA0] text-lg ml-9 mb-4">Please provide a USER_ID above</p>
+            <p className="text-[#979AA0] text-lg ml-9 mb-4">
+              {foundRole ? `User has ${foundRole} role(s)` : "Please provide a valid USER_ID above"}
+            </p>
           </div>
         )}
 

@@ -64,13 +64,13 @@ contract RolesManager is AccessControl, Errors {
     event BuyerRoleAssigned(address indexed assignee, uint256 timestamp);
     event AdminRoleAssigned(address indexed assignee, uint256 timestamp);
     // For every revoked role
-    event MinerRoleRevoked(address indexed revokee, uint256 timestamp);
-    event RefinerRoleRevoked(address indexed revokee, uint256 timestamp);
-    event TransporterRoleRevoked(address indexed revokee, uint256 timestamp);
-    event AuditorRoleRevoked(address indexed revokee, uint256 timestamp);
-    event InspectorRoleRevoked(address indexed revokee, uint256 timestamp);
-    event BuyerRoleRevoked(address indexed revokee, uint256 timestamp);
-    event AdminRoleRevoked(address indexed revokee, uint256 timestamp);
+    event MinerRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event RefinerRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event TransporterRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event AuditorRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event InspectorRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event BuyerRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event AdminRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
 
     struct MineralDetails {
         string id;
@@ -106,12 +106,13 @@ contract RolesManager is AccessControl, Errors {
     // Set the deployer as the admin
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        // _setupRole(MINER_ROLE, msg.sender);
-        // _setupRole(AUDITOR_ROLE, msg.sender);
-        // _setupRole(INSPECTOR_ROLE, msg.sender);
-        // _setsupRole(BUYER_ROLE, msg.sender);
-        // _setupRole(REFINER_ROLE, msg.sender);
-        // _setupRole(TRANSPORTER_ROLE, msg.sender);
+        // _setupRole(MINER_ROLE, 0xca4d5689D0A0DdDB135F8C54FCF0a684F9463599);
+        _setupRole(MINER_ROLE, msg.sender);
+        _setupRole(AUDITOR_ROLE, msg.sender);
+        _setupRole(INSPECTOR_ROLE, msg.sender);
+        _setupRole(BUYER_ROLE, msg.sender);
+        _setupRole(REFINER_ROLE, msg.sender);
+        _setupRole(TRANSPORTER_ROLE, msg.sender);
     }
 
     /**
@@ -472,38 +473,40 @@ contract RolesManager is AccessControl, Errors {
      * @notice Emits event of the revoked role
      */
 
-    function revokeMiner(address account) external {
+    function revokeMiner(address account, string memory reason) external {
         revokeRole(MINER_ROLE, account);
 
-        emit MinerRoleRevoked(account, block.timestamp);
+        emit MinerRoleRevoked(account, reason, block.timestamp);
     }
 
-    function revokeRefiner(address account) external {
+    function revokeRefiner(address account, string memory reason) external {
         revokeRole(REFINER_ROLE, account);
 
-        emit RefinerRoleRevoked(account, block.timestamp);
+        emit RefinerRoleRevoked(account, reason, block.timestamp);
     }
 
-    function revokeTransporter(address account) external {
+    function revokeTransporter(address account, string memory reason) external {
         revokeRole(TRANSPORTER_ROLE, account);
 
-        emit TransporterRoleRevoked(account, block.timestamp);
+        emit TransporterRoleRevoked(account, reason, block.timestamp);
     }
 
-    function revokeInspector(address account) external {
+    function revokeInspector(address account, string memory reason) external {
         revokeRole(INSPECTOR_ROLE, account);
 
-        emit InspectorRoleRevoked(account, block.timestamp);
+        emit InspectorRoleRevoked(account, reason, block.timestamp);
     }
 
-    function revokeAuditor(address account) external {
+    function revokeAuditor(address account, string memory reason) external {
         revokeRole(AUDITOR_ROLE, account);
 
-        emit AuditorRoleRevoked(account, block.timestamp);
+        emit AuditorRoleRevoked(account, reason, block.timestamp);
     }
 
-    function revokeBuyer(address account) external {
+    function revokeBuyer(address account, string memory reason) external {
         revokeRole(BUYER_ROLE, account);
+
+        emit BuyerRoleRevoked(account, reason, block.timestamp);
     }
 
     /*/////////////////////////////////////////////////////
@@ -515,6 +518,62 @@ contract RolesManager is AccessControl, Errors {
     /////////////////////////////////////////////////
     //////// ROLE OWNERSHIP CHECKS //////////////////
     /////////////////////////////////////////////////
+
+
+/**
+ * @dev Returns all roles assigned to a given address
+ * @param account The address to check roles for
+ * @return roles An array of role names the address has
+ */
+function getRolesForAddress(address account) public view onlyNonZeroAddress(account) returns (string[] memory roles) {
+    // Count how many roles the address has
+    uint256 roleCount = 0;
+    
+    if (hasRole(DEFAULT_ADMIN_ROLE, account)) roleCount++;
+    if (hasRole(MINER_ROLE, account)) roleCount++;
+    if (hasRole(REFINER_ROLE, account)) roleCount++;
+    if (hasRole(TRANSPORTER_ROLE, account)) roleCount++;
+    if (hasRole(AUDITOR_ROLE, account)) roleCount++;
+    if (hasRole(INSPECTOR_ROLE, account)) roleCount++;
+    if (hasRole(BUYER_ROLE, account)) roleCount++;
+
+    // Initialize array with the counted size
+    roles = new string[](roleCount);
+    uint256 index = 0;
+
+    // Populate the array with role names
+    if (hasRole(DEFAULT_ADMIN_ROLE, account)) {
+        roles[index] = "ADMIN";
+        index++;
+    }
+    if (hasRole(MINER_ROLE, account)) {
+        roles[index] = "MINER";
+        index++;
+    }
+    if (hasRole(REFINER_ROLE, account)) {
+        roles[index] = "REFINER";
+        index++;
+    }
+    if (hasRole(TRANSPORTER_ROLE, account)) {
+        roles[index] = "TRANSPORTER";
+        index++;
+    }
+    if (hasRole(AUDITOR_ROLE, account)) {
+        roles[index] = "AUDITOR";
+        index++;
+    }
+    if (hasRole(INSPECTOR_ROLE, account)) {
+        roles[index] = "INSPECTOR";
+        index++;
+    }
+    if (hasRole(BUYER_ROLE, account)) {
+        roles[index] = "BUYER";
+        index++;
+    }
+
+    return roles;
+}
+
 
     function isAdmin(address account) external view returns (bool) {
         return hasRole(DEFAULT_ADMIN_ROLE, account);

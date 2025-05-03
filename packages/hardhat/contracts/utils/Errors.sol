@@ -135,5 +135,17 @@ contract Errors {
     error InvalidPaymentMethods();
     error InvalidMineralIdOrNotFound(string mineralId);
     error InsufficientPermissionsToPerformAction(address caller);
+
+
+
+    /////////////////////////////////////
+    // LOGISTICS MANAGER ERRORS /////////
+    /////////////////////////////////////
+    error TransportRequestAlreadyExists(string mineralId);
+    error AddressDoesNotHaveRequiredRole(address caller, bytes32 role);
+    error NotAssignedTransporter(string mineralId, address caller);
+    error InvalidTransportStateTransition(string currentStatus, string attemptedStatus);
+
+    
     
 }

@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     DisputeResolution: {
-      address: "0x9A676e781A523b5d0C0e43731313A708CB607508",
+      address: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
       abi: [
         {
           inputs: [],
@@ -33,6 +33,22 @@ const deployedContracts = {
             },
           ],
           name: "AccessControlUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "AddressDoesNotHaveRequiredRole",
           type: "error",
         },
         {
@@ -176,6 +192,22 @@ const deployedContracts = {
         {
           inputs: [],
           name: "InvalidPaymentMethods",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "attemptedStatus",
+              type: "string",
+            },
+          ],
+          name: "InvalidTransportStateTransition",
           type: "error",
         },
         {
@@ -413,6 +445,22 @@ const deployedContracts = {
             },
           ],
           name: "MineralWarehouse__UnauthorizedSeller",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "NotAssignedTransporter",
           type: "error",
         },
         {
@@ -656,6 +704,17 @@ const deployedContracts = {
           type: "error",
         },
         {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "TransportRequestAlreadyExists",
+          type: "error",
+        },
+        {
           anonymous: false,
           inputs: [
             {
@@ -682,6 +741,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -723,6 +788,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -758,6 +829,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -960,6 +1037,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -995,6 +1078,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -1277,6 +1366,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -1443,6 +1538,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -1825,6 +1926,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "getRolesForAddress",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "roles",
+              type: "string[]",
             },
           ],
           stateMutability: "view",
@@ -2358,6 +2478,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeAuditor",
           outputs: [],
@@ -2370,6 +2495,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeBuyer",
@@ -2384,6 +2514,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeInspector",
           outputs: [],
@@ -2397,6 +2532,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeMiner",
           outputs: [],
@@ -2409,6 +2549,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeRefiner",
@@ -2440,6 +2585,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeTransporter",
@@ -2557,6 +2707,7 @@ const deployedContracts = {
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
         hasAuditorRole: "contracts/core/RolesManager.sol",
@@ -2587,24 +2738,8 @@ const deployedContracts = {
       },
     },
     LogisticsManager: {
-      address: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
-      abi: [],
-      inheritedFunctions: {},
-    },
-    MineralRegistry: {
-      address: "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+      address: "0x9A676e781A523b5d0C0e43731313A708CB607508",
       abi: [
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "rolesManagerAddress",
-              type: "address",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
         {
           inputs: [],
           name: "AccessControlBadConfirmation",
@@ -2624,6 +2759,22 @@ const deployedContracts = {
             },
           ],
           name: "AccessControlUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "AddressDoesNotHaveRequiredRole",
           type: "error",
         },
         {
@@ -2767,6 +2918,22 @@ const deployedContracts = {
         {
           inputs: [],
           name: "InvalidPaymentMethods",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "attemptedStatus",
+              type: "string",
+            },
+          ],
+          name: "InvalidTransportStateTransition",
           type: "error",
         },
         {
@@ -3004,6 +3171,22 @@ const deployedContracts = {
             },
           ],
           name: "MineralWarehouse__UnauthorizedSeller",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "NotAssignedTransporter",
           type: "error",
         },
         {
@@ -3247,6 +3430,17 @@ const deployedContracts = {
           type: "error",
         },
         {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "TransportRequestAlreadyExists",
+          type: "error",
+        },
+        {
           anonymous: false,
           inputs: [
             {
@@ -3273,6 +3467,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -3314,6 +3514,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -3349,6 +3555,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -3390,6 +3602,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -3425,6 +3643,2787 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "MinerRoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "status",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "auditor",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "auditedAt",
+              type: "uint256",
+            },
+          ],
+          name: "MineralAudited",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralStatus",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "inspector",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "inspectedAt",
+              type: "uint256",
+            },
+          ],
+          name: "MineralInspected",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "buyer",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "purchasedAt",
+              type: "uint256",
+            },
+          ],
+          name: "MineralPurchased",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "ApprovedBy",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "status",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "inspectionDate",
+              type: "uint256",
+            },
+          ],
+          name: "MineralReadyToTrade",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "refiner",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "refinedAt",
+              type: "uint256",
+            },
+          ],
+          name: "MineralRefined",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralName",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralType",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "origin",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "weight",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "purityPercentage",
+              type: "uint256",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "miner",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "registeredAt",
+              type: "uint256",
+            },
+          ],
+          name: "MineralRegistered",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "transporter",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "receivingParty",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "origin",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "destination",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "transportedAt",
+              type: "uint256",
+            },
+          ],
+          name: "MineralTransported",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "assignee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "RefinerRoleAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "revokee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "RefinerRoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "previousAdminRole",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "newAdminRole",
+              type: "bytes32",
+            },
+          ],
+          name: "RoleAdminChanged",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "roleAssignedAt",
+              type: "uint256",
+            },
+          ],
+          name: "RoleAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleGranted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "sender",
+              type: "address",
+            },
+          ],
+          name: "RoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "revoker",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "roleRevokedAt",
+              type: "uint256",
+            },
+          ],
+          name: "RoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "transporter",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "assignedAt",
+              type: "uint256",
+            },
+          ],
+          name: "TransportAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "transporter",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "completedAt",
+              type: "uint256",
+            },
+          ],
+          name: "TransportCompleted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "requester",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "origin",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "destination",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "estimatedDeparture",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "requestTimestamp",
+              type: "uint256",
+            },
+          ],
+          name: "TransportRequestCreated",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "newStatus",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "updatedAt",
+              type: "uint256",
+            },
+          ],
+          name: "TransportStatusChanged",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "assignee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "TransporterRoleAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "revokee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "TransporterRoleRevoked",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "AUDITOR_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "BUYER_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "DEFAULT_ADMIN_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "INSPECTOR_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "MINER_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "REFINER_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [],
+          name: "TRANSPORTER_ROLE",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "report",
+              type: "string",
+            },
+          ],
+          name: "_auditMineral",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "assignAuditor",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "assignBuyer",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "assignInspector",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "assignMiner",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "assignRefiner",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "transporter",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "estimatedArrival",
+              type: "uint256",
+            },
+          ],
+          name: "assignTransporter",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "assignTransporter",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "checkAuditAndInspectionStatus",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "isAudited",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "isInspected",
+              type: "bool",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "completeTransport",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "origin",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "destination",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "estimatedDeparture",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "transportConditions",
+              type: "string",
+            },
+          ],
+          name: "createTransportRequest",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "getMineralHistory",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "string",
+                  name: "id",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "fieldChanged",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "newValue",
+                  type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "updatedBy",
+                  type: "address",
+                },
+                {
+                  internalType: "uint256",
+                  name: "timestamp",
+                  type: "uint256",
+                },
+              ],
+              internalType: "struct RolesManager.MineralHistory[]",
+              name: "",
+              type: "tuple[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleAdmin",
+          outputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "getRolesForAddress",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "roles",
+              type: "string[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "getTransportDetails",
+          outputs: [
+            {
+              components: [
+                {
+                  internalType: "string",
+                  name: "mineralId",
+                  type: "string",
+                },
+                {
+                  internalType: "address",
+                  name: "requester",
+                  type: "address",
+                },
+                {
+                  internalType: "address",
+                  name: "transporter",
+                  type: "address",
+                },
+                {
+                  internalType: "string",
+                  name: "origin",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "destination",
+                  type: "string",
+                },
+                {
+                  internalType: "uint256",
+                  name: "estimatedDeparture",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "actualDeparture",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "estimatedArrival",
+                  type: "uint256",
+                },
+                {
+                  internalType: "uint256",
+                  name: "actualArrival",
+                  type: "uint256",
+                },
+                {
+                  internalType: "string",
+                  name: "currentStatus",
+                  type: "string",
+                },
+                {
+                  internalType: "string",
+                  name: "transportConditions",
+                  type: "string",
+                },
+              ],
+              internalType: "struct LogisticsManager.TransportDetails",
+              name: "",
+              type: "tuple",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "getTransportStatus",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "transporter",
+              type: "address",
+            },
+          ],
+          name: "getTransporterAssignments",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "",
+              type: "string[]",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "grantRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasAdminRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasAuditorRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasBuyerRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasInspectorRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasMinerRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasRefinerRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "hasTransporterRole",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "report",
+              type: "string",
+            },
+          ],
+          name: "inspectMineral",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "isAdmin",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "isMineralRegistered",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          name: "mineralDetails",
+          outputs: [
+            {
+              internalType: "string",
+              name: "id",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "name",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "origin",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "mineralType",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "weight",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "purityPercentage",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "storageConditions",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "registeredBy",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "currentLocation",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "currentHandler",
+              type: "address",
+            },
+            {
+              internalType: "bool",
+              name: "isPurchased",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "isRefined",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "isAudited",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "isInspected",
+              type: "bool",
+            },
+            {
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "mineralHistories",
+          outputs: [
+            {
+              internalType: "string",
+              name: "id",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "fieldChanged",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "newValue",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "updatedBy",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "purchaseMineral",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "refineMineral",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "_name",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "_mineralType",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "_weight",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "_origin",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "_purityPercentage",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "_storageConditions",
+              type: "string",
+            },
+          ],
+          name: "registerMineral",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "callerConfirmation",
+              type: "address",
+            },
+          ],
+          name: "renounceRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+          ],
+          name: "revokeAuditor",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+          ],
+          name: "revokeBuyer",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+          ],
+          name: "revokeInspector",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+          ],
+          name: "revokeMiner",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+          ],
+          name: "revokeRefiner",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "revokeRole",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+          ],
+          name: "revokeTransporter",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "startTransport",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes4",
+              name: "interfaceId",
+              type: "bytes4",
+            },
+          ],
+          name: "supportsInterface",
+          outputs: [
+            {
+              internalType: "bool",
+              name: "",
+              type: "bool",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "_receivingParty",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "_origin",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "_destination",
+              type: "string",
+            },
+          ],
+          name: "transferMineral",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          name: "transportDetails",
+          outputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "requester",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "transporter",
+              type: "address",
+            },
+            {
+              internalType: "string",
+              name: "origin",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "destination",
+              type: "string",
+            },
+            {
+              internalType: "uint256",
+              name: "estimatedDeparture",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "actualDeparture",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "estimatedArrival",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "actualArrival",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "transportConditions",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "transporterAssignments",
+          outputs: [
+            {
+              internalType: "string",
+              name: "",
+              type: "string",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {
+        AUDITOR_ROLE: "contracts/core/RolesManager.sol",
+        BUYER_ROLE: "contracts/core/RolesManager.sol",
+        DEFAULT_ADMIN_ROLE: "contracts/core/RolesManager.sol",
+        INSPECTOR_ROLE: "contracts/core/RolesManager.sol",
+        MINER_ROLE: "contracts/core/RolesManager.sol",
+        REFINER_ROLE: "contracts/core/RolesManager.sol",
+        TRANSPORTER_ROLE: "contracts/core/RolesManager.sol",
+        _auditMineral: "contracts/core/RolesManager.sol",
+        assignAuditor: "contracts/core/RolesManager.sol",
+        assignBuyer: "contracts/core/RolesManager.sol",
+        assignInspector: "contracts/core/RolesManager.sol",
+        assignMiner: "contracts/core/RolesManager.sol",
+        assignRefiner: "contracts/core/RolesManager.sol",
+        assignTransporter: "contracts/core/RolesManager.sol",
+        checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
+        getMineralHistory: "contracts/core/RolesManager.sol",
+        getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRolesForAddress: "contracts/core/RolesManager.sol",
+        grantRole: "contracts/core/RolesManager.sol",
+        hasAdminRole: "contracts/core/RolesManager.sol",
+        hasAuditorRole: "contracts/core/RolesManager.sol",
+        hasBuyerRole: "contracts/core/RolesManager.sol",
+        hasInspectorRole: "contracts/core/RolesManager.sol",
+        hasMinerRole: "contracts/core/RolesManager.sol",
+        hasRefinerRole: "contracts/core/RolesManager.sol",
+        hasRole: "contracts/core/RolesManager.sol",
+        hasTransporterRole: "contracts/core/RolesManager.sol",
+        inspectMineral: "contracts/core/RolesManager.sol",
+        isAdmin: "contracts/core/RolesManager.sol",
+        isMineralRegistered: "contracts/core/RolesManager.sol",
+        mineralDetails: "contracts/core/RolesManager.sol",
+        mineralHistories: "contracts/core/RolesManager.sol",
+        purchaseMineral: "contracts/core/RolesManager.sol",
+        refineMineral: "contracts/core/RolesManager.sol",
+        registerMineral: "contracts/core/RolesManager.sol",
+        renounceRole: "contracts/core/RolesManager.sol",
+        revokeAuditor: "contracts/core/RolesManager.sol",
+        revokeBuyer: "contracts/core/RolesManager.sol",
+        revokeInspector: "contracts/core/RolesManager.sol",
+        revokeMiner: "contracts/core/RolesManager.sol",
+        revokeRefiner: "contracts/core/RolesManager.sol",
+        revokeRole: "contracts/core/RolesManager.sol",
+        revokeTransporter: "contracts/core/RolesManager.sol",
+        supportsInterface: "contracts/core/RolesManager.sol",
+        transferMineral: "contracts/core/RolesManager.sol",
+      },
+    },
+    MineralRegistry: {
+      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      abi: [
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "rolesManagerAddress",
+              type: "address",
+            },
+          ],
+          stateMutability: "nonpayable",
+          type: "constructor",
+        },
+        {
+          inputs: [],
+          name: "AccessControlBadConfirmation",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "neededRole",
+              type: "bytes32",
+            },
+          ],
+          name: "AccessControlUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "AddressDoesNotHaveRequiredRole",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "DisputeResolution__AlreadyVoted",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "disputeId",
+              type: "uint256",
+            },
+          ],
+          name: "DisputeResolution__DisputeEscalated_UnableToVote",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "disputeId",
+              type: "uint256",
+            },
+          ],
+          name: "DisputeResolution__DisputeNotEscalated",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "disputeId",
+              type: "uint256",
+            },
+          ],
+          name: "DisputeResolution__DisputeStatusNotPending",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "DisputeResolution__DisputeStatusNotPendingOrEscalated",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "DisputeResolution__InvalidDisputeDefendantAddress",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "DisputeResolution__InvalidDisputeDetails",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "DisputeResolution__InvalidDisputeEvidence",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "DisputeResolution__InvalidDisputeIdOrNotFound",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "DisputeResolution__InvalidMineralIdOrNotFound",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "DisputeResolution__InvalidResolutionDetails",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "DisputeResolution__NotEligibleToVote",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "DisputeResolution__VotingPeriodStillActive",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "token",
+              type: "address",
+            },
+            {
+              internalType: "uint256",
+              name: "tokenAmount",
+              type: "uint256",
+            },
+          ],
+          name: "ERC20TokenTransferFailed",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "InsufficientPermissionsToPerformAction",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "InvalidAccountAddress",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "InvalidMineralIdOrNotFound",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "InvalidPaymentMethods",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "attemptedStatus",
+              type: "string",
+            },
+          ],
+          name: "InvalidTransportStateTransition",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "MineralNotMarketReady",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "MineralNotReadyToTrade",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralDestination",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralDetails",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "MineralRegistry__InvalidMineralIdOrNotFound",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralLocation",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralName",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralOrigin",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralPurityPercentage",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralStatus",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralStorageConditions",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralType",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidMineralWeight",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__InvalidReceivingPartyAddress",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__MineralAlreadyAudited",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__MineralAlreadyInspected",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__MineralAlreadyPurchased",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__MineralNotAudited",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralRegistry__MineralNotInspected",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "MineralRegistry__MineralNotRegistered",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralWarehouse__ETHTransferFailed",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralWarehouse__IncorrectETHAmount",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralWarehouse__InvalidMineralPrice",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralWarehouse__InvalidNumberOfPrices",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "tokenAddress",
+              type: "address",
+            },
+          ],
+          name: "MineralWarehouse__InvalidTokenAddress",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "MineralWarehouse__InvalidTokenPrice",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "MineralWarehouse__MineralAlreadySold",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "MineralWarehouse__MineralNotFoundInWarehouse",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "MineralWarehouse__MineralNotMarketReady",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "MineralWarehouse__MineralNotRefined",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "tokenAddress",
+              type: "address",
+            },
+          ],
+          name: "MineralWarehouse__UnacceptedToken",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address[]",
+              name: "tokenAddresses",
+              type: "address[]",
+            },
+          ],
+          name: "MineralWarehouse__UnacceptedTokens",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "seller",
+              type: "address",
+            },
+          ],
+          name: "MineralWarehouse__UnauthorizedSeller",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "NotAssignedTransporter",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidAddress",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidMineralDestination",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidMineralIdOrNotFound",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidMineralName",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidMineralOrigin",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidMineralPurityPercentage",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidMineralStorageConditions",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidMineralType",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidMineralWeight",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidReceivingPartyAddress",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__InvalidRole",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "RolesManager__MineralAlreadyAudited",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "RolesManager__MineralAlreadyInspected",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "RolesManager__MineralAlreadyPurchased",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "RolesManager__MineralAlreadyRefined",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "RolesManager__MineralNotMarketReady",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "purityPercentage",
+              type: "uint256",
+            },
+          ],
+          name: "RolesManager__MineralPurityPercentageTooLowToRegister",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "RolesManager__NotTheAssignedBuyer",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "SupplychainValidator__InvalidMineralIdOrNotFound",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "SupplychainValidator__InvalidMineralOwnershipChain",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "SupplychainValidator__InvalidMineralTransactionHistory",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "Tokenization__CallerNotMineralTokenOwner",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "Tokenization__InvalidTokenId",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "Tokenization__InvalidTokenIdOrNotFound",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "Tokenization__TokenAlreadyExists",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "Tokenization__TokenIsAlreadyMinted",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "index",
+              type: "uint256",
+            },
+          ],
+          name: "TransactionLog__InvalidOperationIndex",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "TransactionLog__InvalidOperationType",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "transactionId",
+              type: "uint256",
+            },
+          ],
+          name: "TransactionLog__InvalidTransactionIdOrNotFound",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "TransportRequestAlreadyExists",
+          type: "error",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "assignee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "AdminRoleAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "revokee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "AdminRoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "assignee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "AuditorRoleAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "revokee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "AuditorRoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "assignee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "BuyerRoleAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "revokee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "BuyerRoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "assignee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "InspectorRoleAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "revokee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "InspectorRoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "assignee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "timestamp",
+              type: "uint256",
+            },
+          ],
+          name: "MinerRoleAssigned",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "address",
+              name: "revokee",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -3775,6 +6774,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -3941,6 +6946,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -4412,6 +7423,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "getRolesForAddress",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "roles",
+              type: "string[]",
             },
           ],
           stateMutability: "view",
@@ -4932,6 +7962,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeAuditor",
           outputs: [],
@@ -4944,6 +7979,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeBuyer",
@@ -4958,6 +7998,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeInspector",
           outputs: [],
@@ -4971,6 +8016,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeMiner",
           outputs: [],
@@ -4983,6 +8033,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeRefiner",
@@ -5014,6 +8069,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeTransporter",
@@ -5123,6 +8183,7 @@ const deployedContracts = {
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
         hasAuditorRole: "contracts/core/RolesManager.sol",
@@ -5153,7 +8214,7 @@ const deployedContracts = {
       },
     },
     PrivacyGuard: {
-      address: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+      address: "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
       abi: [
         {
           inputs: [],
@@ -5174,6 +8235,22 @@ const deployedContracts = {
             },
           ],
           name: "AccessControlUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "AddressDoesNotHaveRequiredRole",
           type: "error",
         },
         {
@@ -5317,6 +8394,22 @@ const deployedContracts = {
         {
           inputs: [],
           name: "InvalidPaymentMethods",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "attemptedStatus",
+              type: "string",
+            },
+          ],
+          name: "InvalidTransportStateTransition",
           type: "error",
         },
         {
@@ -5554,6 +8647,22 @@ const deployedContracts = {
             },
           ],
           name: "MineralWarehouse__UnauthorizedSeller",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "NotAssignedTransporter",
           type: "error",
         },
         {
@@ -5817,6 +8926,17 @@ const deployedContracts = {
           type: "error",
         },
         {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "TransportRequestAlreadyExists",
+          type: "error",
+        },
+        {
           anonymous: false,
           inputs: [
             {
@@ -5843,6 +8963,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -5884,6 +9010,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -5919,6 +9051,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -5985,6 +9123,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -6020,6 +9164,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -6302,6 +9452,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -6506,6 +9662,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -6819,6 +9981,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "getRolesForAddress",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "roles",
+              type: "string[]",
             },
           ],
           stateMutability: "view",
@@ -7307,6 +10488,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeAuditor",
           outputs: [],
@@ -7319,6 +10505,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeBuyer",
@@ -7333,6 +10524,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeInspector",
           outputs: [],
@@ -7346,6 +10542,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeMiner",
           outputs: [],
@@ -7358,6 +10559,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeRefiner",
@@ -7389,6 +10595,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeTransporter",
@@ -7462,6 +10673,7 @@ const deployedContracts = {
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
         hasAuditorRole: "contracts/core/RolesManager.sol",
@@ -7492,7 +10704,7 @@ const deployedContracts = {
       },
     },
     RolesManager: {
-      address: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
       abi: [
         {
           inputs: [],
@@ -7518,6 +10730,22 @@ const deployedContracts = {
             },
           ],
           name: "AccessControlUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "AddressDoesNotHaveRequiredRole",
           type: "error",
         },
         {
@@ -7661,6 +10889,22 @@ const deployedContracts = {
         {
           inputs: [],
           name: "InvalidPaymentMethods",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "attemptedStatus",
+              type: "string",
+            },
+          ],
+          name: "InvalidTransportStateTransition",
           type: "error",
         },
         {
@@ -7898,6 +11142,22 @@ const deployedContracts = {
             },
           ],
           name: "MineralWarehouse__UnauthorizedSeller",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "NotAssignedTransporter",
           type: "error",
         },
         {
@@ -8141,6 +11401,17 @@ const deployedContracts = {
           type: "error",
         },
         {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "TransportRequestAlreadyExists",
+          type: "error",
+        },
+        {
           anonymous: false,
           inputs: [
             {
@@ -8167,6 +11438,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -8208,6 +11485,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -8243,6 +11526,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -8284,6 +11573,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -8319,6 +11614,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -8601,6 +11902,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -8767,6 +12074,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -9049,6 +12362,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "getRolesForAddress",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "roles",
+              type: "string[]",
             },
           ],
           stateMutability: "view",
@@ -9518,6 +12850,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeAuditor",
           outputs: [],
@@ -9530,6 +12867,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeBuyer",
@@ -9544,6 +12886,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeInspector",
           outputs: [],
@@ -9557,6 +12904,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeMiner",
           outputs: [],
@@ -9569,6 +12921,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeRefiner",
@@ -9600,6 +12957,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeTransporter",
@@ -9666,7 +13028,7 @@ const deployedContracts = {
       },
     },
     SupplychainValidator: {
-      address: "0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1",
+      address: "0x0B306BF915C4d645ff596e518fAf3F9669b97016",
       abi: [
         {
           inputs: [
@@ -9723,6 +13085,22 @@ const deployedContracts = {
             },
           ],
           name: "AccessControlUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "AddressDoesNotHaveRequiredRole",
           type: "error",
         },
         {
@@ -9866,6 +13244,22 @@ const deployedContracts = {
         {
           inputs: [],
           name: "InvalidPaymentMethods",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "attemptedStatus",
+              type: "string",
+            },
+          ],
+          name: "InvalidTransportStateTransition",
           type: "error",
         },
         {
@@ -10103,6 +13497,22 @@ const deployedContracts = {
             },
           ],
           name: "MineralWarehouse__UnauthorizedSeller",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "NotAssignedTransporter",
           type: "error",
         },
         {
@@ -10346,6 +13756,17 @@ const deployedContracts = {
           type: "error",
         },
         {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "TransportRequestAlreadyExists",
+          type: "error",
+        },
+        {
           anonymous: false,
           inputs: [
             {
@@ -10372,6 +13793,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -10413,6 +13840,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -10448,6 +13881,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -10489,6 +13928,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -10524,6 +13969,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -10595,37 +14046,6 @@ const deployedContracts = {
             },
           ],
           name: "MineralInspected",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: false,
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "previousLocation",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "newLocation",
-              type: "string",
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "tranporter",
-              type: "address",
-            },
-          ],
-          name: "MineralLocationUpdated",
           type: "event",
         },
         {
@@ -10811,43 +14231,6 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
-              indexed: false,
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "updatedField",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "newValue",
-              type: "string",
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "updatedBy",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "updatedAt",
-              type: "uint256",
-            },
-          ],
-          name: "MineralUpdated",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
               indexed: true,
               internalType: "address",
               name: "actor",
@@ -10896,6 +14279,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -11093,6 +14482,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -11213,76 +14608,6 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-          ],
-          name: "_checkAuditAndInspectionStatus",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "isAudited",
-              type: "bool",
-            },
-            {
-              internalType: "bool",
-              name: "isInspected",
-              type: "bool",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-          ],
-          name: "_getMineralHistory",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "fieldChanged",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "newValue",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "updatedBy",
-                  type: "address",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralHistory[]",
-              name: "",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
               internalType: "address",
               name: "account",
               type: "address",
@@ -11365,24 +14690,6 @@ const deployedContracts = {
               name: "mineralId",
               type: "string",
             },
-            {
-              internalType: "string",
-              name: "report",
-              type: "string",
-            },
-          ],
-          name: "auditMineral",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
           ],
           name: "checkAuditAndInspectionStatus",
           outputs: [
@@ -11398,107 +14705,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-          ],
-          name: "getMineralDetails",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails",
-              name: "",
-              type: "tuple",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -11561,6 +14767,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "getRolesForAddress",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "roles",
+              type: "string[]",
             },
           ],
           stateMutability: "view",
@@ -11748,19 +14973,6 @@ const deployedContracts = {
               name: "mineralId",
               type: "string",
             },
-          ],
-          name: "inspectMineral",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
             {
               internalType: "string",
               name: "report",
@@ -11781,44 +14993,6 @@ const deployedContracts = {
             },
           ],
           name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-          ],
-          name: "isMineralAudited",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-          ],
-          name: "isMineralInspected",
           outputs: [
             {
               internalType: "bool",
@@ -12105,6 +15279,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeAuditor",
           outputs: [],
@@ -12117,6 +15296,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeBuyer",
@@ -12131,6 +15315,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeInspector",
           outputs: [],
@@ -12144,6 +15333,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeMiner",
           outputs: [],
@@ -12156,6 +15350,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeRefiner",
@@ -12187,6 +15386,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeTransporter",
@@ -12237,42 +15441,6 @@ const deployedContracts = {
             },
           ],
           name: "transferMineral",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-            {
-              internalType: "string",
-              name: "newLocation",
-              type: "string",
-            },
-          ],
-          name: "updateMineralLocation",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-            {
-              internalType: "string",
-              name: "newStatus",
-              type: "string",
-            },
-          ],
-          name: "updateMineralStatus",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -12382,63 +15550,10 @@ const deployedContracts = {
           type: "function",
         },
       ],
-      inheritedFunctions: {
-        AUDITOR_ROLE: "contracts/modules/MineralRegistry.sol",
-        BUYER_ROLE: "contracts/modules/MineralRegistry.sol",
-        DEFAULT_ADMIN_ROLE: "contracts/modules/MineralRegistry.sol",
-        INSPECTOR_ROLE: "contracts/modules/MineralRegistry.sol",
-        MINER_ROLE: "contracts/modules/MineralRegistry.sol",
-        REFINER_ROLE: "contracts/modules/MineralRegistry.sol",
-        TRANSPORTER_ROLE: "contracts/modules/MineralRegistry.sol",
-        _auditMineral: "contracts/modules/MineralRegistry.sol",
-        assignAuditor: "contracts/modules/MineralRegistry.sol",
-        assignBuyer: "contracts/modules/MineralRegistry.sol",
-        assignInspector: "contracts/modules/MineralRegistry.sol",
-        assignMiner: "contracts/modules/MineralRegistry.sol",
-        assignRefiner: "contracts/modules/MineralRegistry.sol",
-        assignTransporter: "contracts/modules/MineralRegistry.sol",
-        checkAuditAndInspectionStatus: "contracts/modules/MineralRegistry.sol",
-        getMineralHistory: "contracts/modules/MineralRegistry.sol",
-        getRoleAdmin: "contracts/modules/MineralRegistry.sol",
-        grantRole: "contracts/modules/MineralRegistry.sol",
-        hasAdminRole: "contracts/modules/MineralRegistry.sol",
-        hasAuditorRole: "contracts/modules/MineralRegistry.sol",
-        hasBuyerRole: "contracts/modules/MineralRegistry.sol",
-        hasInspectorRole: "contracts/modules/MineralRegistry.sol",
-        hasMinerRole: "contracts/modules/MineralRegistry.sol",
-        hasRefinerRole: "contracts/modules/MineralRegistry.sol",
-        hasRole: "contracts/modules/MineralRegistry.sol",
-        hasTransporterRole: "contracts/modules/MineralRegistry.sol",
-        inspectMineral: "contracts/modules/MineralRegistry.sol",
-        isAdmin: "contracts/modules/MineralRegistry.sol",
-        isMineralRegistered: "contracts/modules/MineralRegistry.sol",
-        mineralDetails: "contracts/modules/MineralRegistry.sol",
-        mineralHistories: "contracts/modules/MineralRegistry.sol",
-        purchaseMineral: "contracts/modules/MineralRegistry.sol",
-        refineMineral: "contracts/modules/MineralRegistry.sol",
-        registerMineral: "contracts/modules/MineralRegistry.sol",
-        renounceRole: "contracts/modules/MineralRegistry.sol",
-        revokeAuditor: "contracts/modules/MineralRegistry.sol",
-        revokeBuyer: "contracts/modules/MineralRegistry.sol",
-        revokeInspector: "contracts/modules/MineralRegistry.sol",
-        revokeMiner: "contracts/modules/MineralRegistry.sol",
-        revokeRefiner: "contracts/modules/MineralRegistry.sol",
-        revokeRole: "contracts/modules/MineralRegistry.sol",
-        revokeTransporter: "contracts/modules/MineralRegistry.sol",
-        supportsInterface: "contracts/modules/MineralRegistry.sol",
-        transferMineral: "contracts/modules/MineralRegistry.sol",
-        _checkAuditAndInspectionStatus: "contracts/modules/MineralRegistry.sol",
-        _getMineralHistory: "contracts/modules/MineralRegistry.sol",
-        auditMineral: "contracts/modules/MineralRegistry.sol",
-        getMineralDetails: "contracts/modules/MineralRegistry.sol",
-        isMineralAudited: "contracts/modules/MineralRegistry.sol",
-        isMineralInspected: "contracts/modules/MineralRegistry.sol",
-        updateMineralLocation: "contracts/modules/MineralRegistry.sol",
-        updateMineralStatus: "contracts/modules/MineralRegistry.sol",
-      },
+      inheritedFunctions: {},
     },
     Tokenization: {
-      address: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+      address: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
       abi: [
         {
           inputs: [],
@@ -12464,6 +15579,22 @@ const deployedContracts = {
             },
           ],
           name: "AccessControlUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "AddressDoesNotHaveRequiredRole",
           type: "error",
         },
         {
@@ -12716,6 +15847,22 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "attemptedStatus",
+              type: "string",
+            },
+          ],
+          name: "InvalidTransportStateTransition",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
               name: "mineralId",
               type: "string",
             },
@@ -12947,6 +16094,22 @@ const deployedContracts = {
             },
           ],
           name: "MineralWarehouse__UnauthorizedSeller",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "NotAssignedTransporter",
           type: "error",
         },
         {
@@ -13190,6 +16353,17 @@ const deployedContracts = {
           type: "error",
         },
         {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "TransportRequestAlreadyExists",
+          type: "error",
+        },
+        {
           anonymous: false,
           inputs: [
             {
@@ -13216,6 +16390,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -13307,6 +16487,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -13364,6 +16550,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -13399,6 +16591,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -13475,6 +16673,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -13869,6 +17073,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -14060,6 +17270,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -14411,6 +17627,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "getRolesForAddress",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "roles",
+              type: "string[]",
             },
           ],
           stateMutability: "view",
@@ -15058,6 +18293,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeAuditor",
           outputs: [],
@@ -15070,6 +18310,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeBuyer",
@@ -15084,6 +18329,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeInspector",
           outputs: [],
@@ -15097,6 +18347,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeMiner",
           outputs: [],
@@ -15109,6 +18364,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeRefiner",
@@ -15158,6 +18418,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeTransporter",
@@ -15446,6 +18711,7 @@ const deployedContracts = {
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
         hasAuditorRole: "contracts/core/RolesManager.sol",
@@ -15475,7 +18741,7 @@ const deployedContracts = {
       },
     },
     TransactionLog: {
-      address: "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+      address: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
       abi: [
         {
           inputs: [],
@@ -15496,6 +18762,22 @@ const deployedContracts = {
             },
           ],
           name: "AccessControlUnauthorizedAccount",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "AddressDoesNotHaveRequiredRole",
           type: "error",
         },
         {
@@ -15639,6 +18921,22 @@ const deployedContracts = {
         {
           inputs: [],
           name: "InvalidPaymentMethods",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "currentStatus",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "attemptedStatus",
+              type: "string",
+            },
+          ],
+          name: "InvalidTransportStateTransition",
           type: "error",
         },
         {
@@ -15876,6 +19174,22 @@ const deployedContracts = {
             },
           ],
           name: "MineralWarehouse__UnauthorizedSeller",
+          type: "error",
+        },
+        {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "address",
+              name: "caller",
+              type: "address",
+            },
+          ],
+          name: "NotAssignedTransporter",
           type: "error",
         },
         {
@@ -16119,6 +19433,17 @@ const deployedContracts = {
           type: "error",
         },
         {
+          inputs: [
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+          ],
+          name: "TransportRequestAlreadyExists",
+          type: "error",
+        },
+        {
           anonymous: false,
           inputs: [
             {
@@ -16145,6 +19470,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -16186,6 +19517,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -16221,6 +19558,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -16262,6 +19605,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -16297,6 +19646,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -16610,6 +19965,12 @@ const deployedContracts = {
             },
             {
               indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+            {
+              indexed: false,
               internalType: "uint256",
               name: "timestamp",
               type: "uint256",
@@ -16819,6 +20180,12 @@ const deployedContracts = {
               internalType: "address",
               name: "revokee",
               type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
             {
               indexed: false,
@@ -17148,6 +20515,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "account",
+              type: "address",
+            },
+          ],
+          name: "getRolesForAddress",
+          outputs: [
+            {
+              internalType: "string[]",
+              name: "roles",
+              type: "string[]",
             },
           ],
           stateMutability: "view",
@@ -17765,6 +21151,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeAuditor",
           outputs: [],
@@ -17777,6 +21168,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeBuyer",
@@ -17791,6 +21187,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeInspector",
           outputs: [],
@@ -17804,6 +21205,11 @@ const deployedContracts = {
               name: "account",
               type: "address",
             },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
           ],
           name: "revokeMiner",
           outputs: [],
@@ -17816,6 +21222,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeRefiner",
@@ -17847,6 +21258,11 @@ const deployedContracts = {
               internalType: "address",
               name: "account",
               type: "address",
+            },
+            {
+              internalType: "string",
+              name: "reason",
+              type: "string",
             },
           ],
           name: "revokeTransporter",
@@ -17920,6 +21336,7 @@ const deployedContracts = {
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
         hasAuditorRole: "contracts/core/RolesManager.sol",
