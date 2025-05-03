@@ -2,13 +2,14 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
+import MineralDisputesGraph from "~~/components/dashboard/disputes/mineralDisputesVariationGraph";
 import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
-import { demands, mockDisputes, myNotifications, reports, shipments } from "~~/data/data";
+import { demands, mineralDisputesData, mockDisputes, myNotifications, reports, shipments } from "~~/data/data";
 
 export default function Page() {
   return (
@@ -24,7 +25,7 @@ export default function Page() {
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
           <Link
-            href={"/miner/disputes/raiseDispute"}
+            href={"/refiner/disputes/raiseDispute"}
             className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
           >
             <h1 className="translate-y-[4px]">Raise Dispute</h1>
@@ -40,7 +41,7 @@ export default function Page() {
       <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralActivity />
+            <MineralDisputesGraph data={mineralDisputesData} />
           </div>
         </div>
         <div className="w-full lg:w-1/3">
@@ -76,7 +77,7 @@ export default function Page() {
         </div>
 
         {/* the table */}
-        <NotificationList notifications={mockDisputes} />
+        <NotificationList baseUrl="miner" notifications={mockDisputes} />
       </div>
 
       {/* the other metric cards */}
