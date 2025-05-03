@@ -1,41 +1,6 @@
 "use client";
 
-import { Inter } from "next/font/google";
-import Sidebar from "~~/components/dashboard/Sidebar";
-import TopBar from "~~/components/dashboard/topBar";
-import { useSidebarStore } from "~~/stores/useSidebarStore";
-import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const sidebarItems = getSidebarItems("/admin");
-
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { isCollapsed } = useSidebarStore();
-
-  return (
-    <div className={`${inter.variable} font-sans bg-[#060A12] flex text-white min-h-screen`}>
-      <Sidebar basePath="/admin" />
-      <div
-        className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${!isCollapsed ? "md:ml-[250px]" : ""}`}
-      >
-        <TopBar sidebarItems={sidebarItems} basePath="/admin" />
-        <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4">{children}</main>
-      </div>
-    </div>
-  );
-}
-
-
-/*
-
-"use client";
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Inter } from "next/font/google";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
@@ -47,7 +12,6 @@ import { ShieldAlert, Copy, Mail, Phone, MessageSquare, ChevronRight, Loader2, L
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { toast } from "../lib/toast";
 
-
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -56,15 +20,21 @@ const inter = Inter({
 
 const sidebarItems = getSidebarItems("/admin");
 
-const LoadingSpinner = ({ text = "Loading..." }: { text?: string }) => (
-  <div className="flex flex-col items-center justify-center min-h-screen gap-2">
-    <Loader2 className="w-12 h-12 animate-spin" />
+const LoadingSpinner = ({ size = 12, text = "Loading..." }: { size?: number; text?: string }) => (
+  <div className="flex flex-col items-center justify-center gap-2">
+    <Loader2 className={`w-${size} h-${size} animate-spin`} />
     {text && <p className="text-lg text-muted-foreground">{text}</p>}
   </div>
 );
 
+const FullPageLoader = ({ text = "Verifying admin privileges..." }: { text?: string }) => (
+  <div className="flex items-center justify-center min-h-screen bg-[#060A12]">
+    <LoadingSpinner size={12} text={text} />
+  </div>
+);
+
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
-  <div className="flex items-center justify-center min-h-screen p-4">
+  <div className="flex items-center justify-center min-h-screen p-4 bg-[#060A12]">
     <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-700">
       <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-900 rounded-full mb-4 mx-auto">
         {isLoading ? (
@@ -73,8 +43,12 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
           <ShieldAlert className="w-8 h-8 text-blue-300" />
         )}
       </div>
-      <h1 className="text-2xl font-bold text-white mb-2">{isLoading ? "Connecting..." : "Connect Admin Wallet"}</h1>
-      <p className="text-gray-400 mb-6">{isLoading ? "Verifying wallet..." : "Please connect your admin wallet"}</p>
+      <h1 className="text-2xl font-bold text-white mb-2">
+        {isLoading ? "Connecting..." : "Connect Admin Wallet"}
+      </h1>
+      <p className="text-gray-400 mb-6">
+        {isLoading ? "Verifying wallet..." : "Please connect your admin wallet"}
+      </p>
       <div className="flex justify-center">
         <ConnectButton />
       </div>
@@ -152,7 +126,7 @@ const AccessDeniedView = ({
                     <a
                       href="https://t.me/StoneProofSupport"
                       target="_blank"
-                       rel="noopener noreferrer"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300"
                     >
                       <MessageSquare className="w-4 h-4" />
@@ -202,8 +176,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { isCollapsed } = useSidebarStore();
   const { address, isConnected, isConnecting } = useAccount();
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
 
-  // Check if user has admin role
   const {
     data: hasAdminRole,
     isLoading: isRoleLoading,
@@ -230,18 +204,24 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     }
   };
 
-  // Loading state while checking roles
+  useEffect(() => {
+    if (hasAdminRole) {
+      const timer = setTimeout(() => {
+        setIsDataLoading(false);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [hasAdminRole]);
+
   if (isConnected && isRoleLoading) {
-    return <LoadingSpinner text="Verifying admin privileges..." />;
+    return <FullPageLoader text="Verifying admin privileges..." />;
   }
 
-  // Not connected state
   if (!isConnected) {
     return <ConnectWalletView isLoading={isConnecting} />;
   }
 
-  // No admin role state
-  if (isConnected && !hasAdminRole) {
+  if (!hasAdminRole) {
     return (
       <div className={`${inter.variable} font-sans bg-[#060A12] flex text-white min-h-screen`}>
         <Sidebar basePath="/admin" />
@@ -261,7 +241,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  // Main layout for admins
+  if (isDataLoading) {
+    return <FullPageLoader text="Loading admin dashboard..." />;
+  }
+
   return (
     <div className={`${inter.variable} font-sans bg-[#060A12] flex text-white min-h-screen`}>
       <Sidebar basePath="/admin" />
@@ -274,5 +257,3 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
-
-*/

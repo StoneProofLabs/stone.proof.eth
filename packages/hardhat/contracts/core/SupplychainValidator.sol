@@ -17,7 +17,7 @@ import { Tokenization } from "../tokens/Tokenization.sol";
 import { TransactionLog } from "../logs/TransactionLog.sol";
 import { LogisticsManager } from "../modules/LogisticsManager.sol";
 
-contract SupplychainValidator is RolesManager, MineralRegistry {
+contract SupplychainValidator is RolesManager/*, MineralRegistry*/ {
 
 
     RolesManager private rolesManager;
@@ -49,7 +49,7 @@ contract SupplychainValidator is RolesManager, MineralRegistry {
         address _tokenization,
         address _transactionLog,
         address _logisticsManager
-    ) MineralRegistry(_rolesManager){
+    ) RolesManager(){
         rolesManager = RolesManager(_rolesManager);
         mineralRegistry = MineralRegistry(_mineralRegistry);
         privacyGuard = PrivacyGuard(_privacyGuard);

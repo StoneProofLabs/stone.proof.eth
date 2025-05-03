@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { AlertCircle, Check, ChevronDown, ChevronRight, Copy, Loader2, Mail, MessageSquare, Minus, Phone, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
-import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { toast } from "../../lib/toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
@@ -22,7 +22,7 @@ export default function AuditMineralPage() {
 
   const allFieldsReady = mineralId && auditReport;
 
-  const { writeAsync, isLoading: isAuditing } = useScaffoldContract({
+  const { writeAsync, isLoading: isAuditing } = useScaffoldWriteContract({
     contractName: "RolesManager",
     functionName: "_auditMineral",
     args: [mineralId, auditReport],
