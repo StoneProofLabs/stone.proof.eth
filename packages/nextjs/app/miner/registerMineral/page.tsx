@@ -19,7 +19,7 @@ import {
   Thermometer
 } from "lucide-react";
 import { useAccount } from "wagmi";
-import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { toast } from "../../lib/toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
@@ -215,33 +215,23 @@ export default function MineralRegistrationPage() {
     quantity > 0 &&
     purity > 80;
 
-  const { writeAsync, isLoading: isRegistering } = useScaffoldContract({
+  const { writeAsync, isLoading: isRegistering } = useScaffoldWriteContract({
     contractName: "RolesManager",
     functionName: "registerMineral",
     args: [
       mineralName,
       mineralType,
-      quantity,
+      BigInt(quantity),
       origin,
-      purity,
+      BigInt(purity),
       storageConditions
     ],
-    enabled: allFieldsReady,
-    onSuccess: (mineralId: string) => {
-      toast.success(`Mineral registered successfully! Mineral ID: ${mineralId}`);
-      // Reset form after successful registration
-      setMineralName("");
-      setMineralType("");
-      setOrigin("");
-      setQuantity(0);
-      setPurity(0);
-      setSelectedCondition({
-        temperature: "In Celsius",
-        storage: "Select Type",
-        humidity: "Select Type",
-      });
+    onBlockConfirmation: (txnReceipt) => {
+      // You might want to parse the transaction receipt to get the mineralId
+      toast.success("✅Mineral registered successfully!");
+      resetForm();
     },
-    onError: (error: { message: string | string[]; }) => {
+    onError: (error) => {
       console.error("Registration failed:", error);
       let errorMessage = "Failed to register mineral.";
       
@@ -251,11 +241,26 @@ export default function MineralRegistrationPage() {
         errorMessage = "Mineral weight must be greater than 0";
       } else if (error.message.includes("caller is missing role")) {
         errorMessage = "Your account doesn't have miner privileges";
+      } else if (error.message.includes("user rejected transaction")) {
+        errorMessage = "Transaction was rejected";
       }
       
       toast.error(errorMessage);
     },
   });
+
+  const resetForm = () => {
+    setMineralName("");
+    setMineralType("");
+    setOrigin("");
+    setQuantity(0);
+    setPurity(0);
+    setSelectedCondition({
+      temperature: "In Celsius",
+      storage: "Select Type",
+      humidity: "Select Type",
+    });
+  };
 
   const handleRefreshAccess = async () => {
     setIsRefreshingAccess(true);
@@ -298,19 +303,12 @@ export default function MineralRegistrationPage() {
 
     try {
       if (writeAsync) {
-        const tx = await writeAsync();
-        console.log("Transaction submitted:", tx.hash);
+        await writeAsync();
         toast.info("Transaction submitted. Waiting for confirmation...");
       }
     } catch (err: any) {
       console.error("Error calling write function:", err);
-      let errorMessage = "An unexpected error occurred.";
-      
-      if (err.message.includes("user rejected transaction")) {
-        errorMessage = "Transaction was rejected";
-      }
-      
-      toast.error(errorMessage);
+      toast.error("An unexpected error occurred.");
     }
   };
 
