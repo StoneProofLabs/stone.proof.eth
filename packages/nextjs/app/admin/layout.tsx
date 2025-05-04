@@ -18,7 +18,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const { isCollapsed } = useSidebarStore();
 
   return (
-    <div className={`${inter.variable} font-sans bg-lightBlack flex text-white h-screen`}>
+    <div className={`${inter.variable} font-sans bg-[#060A12] flex text-white h-screen`}>
       <Sidebar basePath="/admin" />
       <div
         className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${!isCollapsed ? "md:ml-[250px]" : ""}`}
