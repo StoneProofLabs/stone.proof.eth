@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
+import { toast } from "../lib/toast";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ChevronRight, Copy, Loader2, Lock, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
-import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import Sidebar from "~~/components/dashboard/Sidebar";
 import TopBar from "~~/components/dashboard/topBar";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
-import { ShieldAlert, Copy, Mail, Phone, MessageSquare, ChevronRight, Loader2, Lock } from "lucide-react";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { toast } from "../lib/toast";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -43,12 +43,8 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
           <ShieldAlert className="w-8 h-8 text-blue-300" />
         )}
       </div>
-      <h1 className="text-2xl font-bold text-white mb-2">
-        {isLoading ? "Connecting..." : "Connect Admin Wallet"}
-      </h1>
-      <p className="text-gray-400 mb-6">
-        {isLoading ? "Verifying wallet..." : "Please connect your admin wallet"}
-      </p>
+      <h1 className="text-2xl font-bold text-white mb-2">{isLoading ? "Connecting..." : "Connect Admin Wallet"}</h1>
+      <p className="text-gray-400 mb-6">{isLoading ? "Verifying wallet..." : "Please connect your admin wallet"}</p>
       <div className="flex justify-center">
         <ConnectButton />
       </div>
@@ -60,7 +56,7 @@ const AccessDeniedView = ({
   address,
   isLoadingRefresh,
   onRefresh,
-}: { 
+}: {
   address: string;
   isLoadingRefresh: boolean;
   onRefresh: () => void;
@@ -230,7 +226,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         >
           <TopBar sidebarItems={sidebarItems} basePath="/admin" />
           <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4">
-            <AccessDeniedView 
+            <AccessDeniedView
               address={address || ""}
               isLoadingRefresh={isRefreshingAccess}
               onRefresh={handleRefreshAccess}

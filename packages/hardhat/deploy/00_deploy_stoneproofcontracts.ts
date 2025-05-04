@@ -14,11 +14,14 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     console.log("///////////////////////////////////////////////////////////////////");
   };
 
+
+
   console.log("Deploying RolesManager...");
   const rolesManager = await deploy("RolesManager", {
     from: deployer,
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("RolesManager", rolesManager);
 
@@ -27,6 +30,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     from: deployer,
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("TransactionLog", transactionLog);
 
@@ -36,6 +40,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     args: [rolesManager.address],
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("MineralRegistry", mineralRegistry);
 
@@ -44,16 +49,17 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     from: deployer,
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("PrivacyGuard", privacyGuard);
 
-  console.log("Deploying Tokenization...");
-  const tokenization = await deploy("Tokenization", {
-    from: deployer,
-    log: true,
-    autoMine: true,
-  });
-  await logGasUsed("Tokenization", tokenization);
+  // console.log("Deploying Tokenization...");
+  // const tokenization = await deploy("Tokenization", {
+  //   from: deployer,
+  //   log: true,
+  //   autoMine: true,
+  // });
+  // await logGasUsed("Tokenization", tokenization);
 
   console.log("Deploying DisputeResolution...");
   const disputeResolution = await deploy("DisputeResolution", {
@@ -61,6 +67,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     args: [],
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("DisputeResolution", disputeResolution);
 
@@ -75,6 +82,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     ],
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("LogisticsManager", logisticsManager);
 
@@ -85,18 +93,20 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
       rolesManager.address,
       mineralRegistry.address,
       privacyGuard.address,
-      tokenization.address,
+      // tokenization.address,
       transactionLog.address,
       /*mineralTransporter.address,*/
       disputeResolution.address,
     ],
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("SupplychainValidator", supplychainValidator);
 
   console.log("🚀 Deployment complete!");
 };
 
+console.log(Contract)
 export default deployMineralSystem;
 deployMineralSystem.tags = ["MineralSystem"];

@@ -1,9 +1,9 @@
 import { Montserrat } from "next/font/google";
+import { ToastProvider } from "./lib/toast";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Metadata } from "next";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
-import { ToastProvider } from "./lib/toast";
 import "~~/styles/globals.css";
 
 const montserrat = Montserrat({

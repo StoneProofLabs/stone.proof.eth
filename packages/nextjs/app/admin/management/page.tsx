@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -271,7 +271,11 @@ const Page = () => {
               <button className="flex-1 md:flex-none bg-[#202634] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
                 <span className="flex items-center gap-2">
                   <h1 className="text-sm translate-y-[7px]">Download Performance Report</h1>
-                  <img src="/dashboard/icon_set/download.svg" alt="Add Auditor icon" className="w-4 h-4 font-bold top-2" />
+                  <img
+                    src="/dashboard/icon_set/download.svg"
+                    alt="Add Auditor icon"
+                    className="w-4 h-4 font-bold top-2"
+                  />
                 </span>
               </button>
 

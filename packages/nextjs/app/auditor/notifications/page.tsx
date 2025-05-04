@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import RolesManagerAbi from "../../../../hardhat/artifacts/contracts/core/RolesManager.sol/RolesManager.json";
 import Icon from "~~/components/dashboard/Icon";
 import NotificationCard from "~~/components/dashboard/notifications/notificationCard";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
@@ -11,7 +12,6 @@ import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
 import { demands, mineralsData, notifications, reports, shipments, shipmentsData, transfersData } from "~~/data/data";
 
-import RolesManagerAbi from "../../../../hardhat/artifacts/contracts/core/RolesManager.sol/RolesManager.json";
 export default function Page() {
   const [notification, setNotifications] = useState(notifications);
   const handleClose = (id: number) => {

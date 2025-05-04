@@ -2,18 +2,16 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Copy, Loader2, ShieldAlert } from "lucide-react";
 import { FaChartBar, FaRegCheckSquare, FaUser } from "react-icons/fa";
 import { useAccount } from "wagmi";
-import { ShieldAlert, Copy, Loader2 } from "lucide-react";
-
 import Icon from "~~/components/dashboard/Icon";
 import AdminStatCard from "~~/components/dashboard/admin/AdminStatCard";
 import RefineryTable from "~~/components/dashboard/admin/RefineryTable";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
-
-import { refineryList, demands, reports, shipments } from "~~/data/data";
+import { demands, refineryList, reports, shipments } from "~~/data/data";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 
@@ -114,7 +112,11 @@ const Page = () => {
   const { address } = useAccount();
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  const { data: hasAccess, isLoading, refetch } = useScaffoldReadContract({
+  const {
+    data: hasAccess,
+    isLoading,
+    refetch,
+  } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasAdminRole",
     args: [address],

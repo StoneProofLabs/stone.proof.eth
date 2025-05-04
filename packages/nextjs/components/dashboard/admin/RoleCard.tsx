@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiArrowDown } from "react-icons/hi";
+import { isAddress } from "viem";
 import Icon from "~~/components/dashboard/Icon";
 
 interface RoleCardProps {
@@ -8,11 +9,13 @@ interface RoleCardProps {
   activeCount?: number;
   userId?: string;
   subtitle?: string;
-  onAssign?: () => void;
-  onRevoke?: () => void;
+  onAssign?: () => Promise<void>;
+  onRevoke?: () => Promise<void>;
   disabled?: boolean;
-  isLoading?: boolean;
-  onUserIdChange?: (userId: string) => void;
+  isAssignLoading?: boolean;
+  isRevokeLoading?: boolean;
+  onUserIdChange: (address: string) => void;
+  onReasonChange: (reason: string) => void;
 }
 
 const RoleCard: React.FC<RoleCardProps> = ({
@@ -21,24 +24,40 @@ const RoleCard: React.FC<RoleCardProps> = ({
   activeCount = 0,
   userId = "",
   subtitle = "Total Expenses",
-  onAssign = () => {},
-  onRevoke = () => {},
+  onAssign = async () => {},
+  onRevoke = async () => {},
   disabled = false,
-  isLoading = false,
+  isAssignLoading = false,
+  isRevokeLoading = false,
   onUserIdChange,
+  onReasonChange,
 }) => {
-  const [reason, setReason] = useState("");
-  const [inputUserId, setInputUserId] = useState(userId);
+  const [localReason, setLocalReason] = useState("");
+  const [displayAddress, setDisplayAddress] = useState("");
 
-  const handleUserIdChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputUserId(e.target.value);
-    if (onUserIdChange) {
-      onUserIdChange(e.target.value);
+  // Validate address
+  const isValidAddress = isAddress(userId);
+
+  // Format address for display
+  useEffect(() => {
+    if (isValidAddress) {
+      const formatted = `${userId.substring(0, 6)}...${userId.substring(38)}`;
+      setDisplayAddress(formatted);
+    } else {
+      setDisplayAddress(userId);
     }
+  }, [userId, isValidAddress]);
+
+  const handleReasonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setLocalReason(value);
+    onReasonChange(value);
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(inputUserId);
+    if (userId) {
+      navigator.clipboard.writeText(userId);
+    }
   };
 
   return (
@@ -63,62 +82,68 @@ const RoleCard: React.FC<RoleCardProps> = ({
 
       <div className="px-3">
         <div className="mb-4">
-          <p className="text-[#979AA0] text-xs mb-1">USER_ID</p>
+          <p className="text-[#979AA0] text-xs mb-1">ETHEREUM ADDRESS</p>
           <div className="relative">
             <input
               type="text"
-              value={inputUserId}
-              onChange={handleUserIdChange}
-              className="w-full bg-[#060B17] border border-[#323539] rounded-[8px] px-3 py-2 text-white focus:outline-none"
+              value={userId}
+              onChange={e => onUserIdChange(e.target.value)}
+              className={`w-full bg-[#060B17] border ${
+                userId && !isValidAddress ? "border-red-500" : "border-[#323539]"
+              } rounded-[8px] px-3 py-2 text-white focus:outline-none`}
               placeholder="0x..."
-              disabled={disabled || isLoading}
+              disabled={disabled}
             />
-            <button 
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
-              disabled={disabled || isLoading}
-              onClick={handleCopy}
-            >
-              <Icon path="/dashboard/icon_set/copy.svg" alt="copy" />
-            </button>
+            {isValidAddress && (
+              <button
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
+                disabled={disabled}
+                onClick={handleCopy}
+              >
+                <Icon path="/dashboard/icon_set/copy.svg" alt="copy" />
+              </button>
+            )}
           </div>
+          {userId && !isValidAddress && (
+            <p className="text-red-500 text-xs mt-1">Please enter a valid Ethereum address</p>
+          )}
+          {isValidAddress && <p className="text-green-500 text-xs mt-1">Valid address: {displayAddress}</p>}
         </div>
 
         <div className="mb-4">
-          <p className="text-[#979AA0] text-xs mb-1">Reason</p>
-          <div className="relative">
-            <input
-              type="text"
-              value={reason}
-              onChange={e => setReason(e.target.value)}
-              className="w-full bg-[#060B17] border border-[#323539] rounded-[8px] px-3 py-2 text-white focus:outline-none"
-              placeholder="Enter reason..."
-              disabled={disabled || isLoading}
-            />
-          </div>
-          <p className="text-[#979AA0] text-md mt-1">Reason is required for revoking a role from a user</p>
+          <p className="text-[#979AA0] text-xs mb-1">REASON (Required for revoke)</p>
+          <input
+            type="text"
+            value={localReason}
+            onChange={handleReasonChange}
+            className="w-full bg-[#060B17] border border-[#323539] rounded-[8px] px-3 py-2 text-white focus:outline-none"
+            placeholder="Enter reason..."
+            disabled={disabled}
+          />
         </div>
 
         <div className="flex flex-col sm:flex-row gap-2 mt-6 mb-3">
           <button
-            onClick={() => {
-              setReason(reason); // Ensure reason is set before revoking
-              onRevoke();
-            }}
-            disabled={disabled || isLoading || !inputUserId}
+            onClick={onRevoke}
+            disabled={disabled || !isValidAddress || !localReason.trim() || isRevokeLoading}
             className={`w-full sm:flex-1 text-white py-2.5 rounded-[8px] font-semibold focus:outline-none mb-2 sm:mb-0 ${
-              disabled || isLoading || !inputUserId ? 'bg-gray-600 cursor-not-allowed' : 'bg-[#E33B32] hover:bg-[#c03129]'
+              disabled || !isValidAddress || !localReason.trim() || isRevokeLoading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-[#E33B32] hover:bg-[#c03129]"
             }`}
           >
-            {isLoading ? 'Revoking...' : 'Revoke Role'}
+            {isRevokeLoading ? "Revoking..." : "Revoke Role"}
           </button>
           <button
             onClick={onAssign}
-            disabled={disabled || isLoading || !inputUserId}
+            disabled={disabled || !isValidAddress || isAssignLoading}
             className={`w-full sm:flex-1 text-white py-2.5 rounded-[8px] font-semibold focus:outline-none ${
-              disabled || isLoading || !inputUserId ? 'bg-gray-600 cursor-not-allowed' : 'bg-[#0A77FF] hover:bg-[#0965d9]'
+              disabled || !isValidAddress || isAssignLoading
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-[#0A77FF] hover:bg-[#0965d9]"
             }`}
           >
-            {isLoading ? 'Assigning...' : 'Assign Role'}
+            {isAssignLoading ? "Assigning..." : "Assign Role"}
           </button>
         </div>
       </div>

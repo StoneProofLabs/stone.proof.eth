@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
@@ -51,28 +51,9 @@ const AccessDeniedCard = ({
           <ShieldAlert className="w-8 h-8 text-red-600 dark:text-red-300" />
         </div>
 
-
-        <div className="flex flex-wrap gap-2 sm:gap-1">
-          <Link
-            href={"/admin/disputes/raiseDispute"}
-            className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
-          >
-            <h1 className="translate-y-[4px]">Raise Dispute</h1>
-          </Link>
-          <Link
-            href={"/admin/disputes/raiseDispute"}
-            className="w-full sm:w-auto bg-[#202634] gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
-          >
-            <h1 className="translate-y-[4px]">Ongoing Disputes</h1>
-          </Link>
-
-          <button className="w-full sm:w-auto bg-[#202634] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
-            <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
-          </button>
-
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Admin Privileges Required</h2>
         <p className="text-gray-600 dark:text-gray-300">
-          Your wallet doesn't have admin access permissions to view this activity.
+          Your wallet doesn't have admin access permissions to view this page.
         </p>
 
         <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
@@ -87,20 +68,7 @@ const AccessDeniedCard = ({
             </button>
           </div>
           <p className="font-mono text-sm break-all text-left">{address}</p>
-
         </div>
-
-
-      {/* the mineral activity */}
-      <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
-        <div className="w-full lg:w-2/3">
-          <div className="h-full">
-            <MineralDisputesGraphCard />
-          </div>
-        </div>
-        <div className="w-full lg:w-1/3">
-          <div className="h-full">
-            <RecentDisputesCard />
 
         <div className="pt-4 space-y-3">
           <h3 className="font-medium text-gray-900 dark:text-white">How to get access:</h3>
@@ -115,7 +83,7 @@ const AccessDeniedCard = ({
               <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium">
                 2
               </span>
-              Request appropriate role assignment
+              Request admin role assignment
             </li>
             <li className="flex items-start gap-3">
               <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium">
@@ -134,7 +102,7 @@ const AccessDeniedCard = ({
                 name: "Admin Email",
                 value: "admin@stone.proof",
                 icon: <Mail className="w-5 h-5" />,
-                action: "mailto:admin@stone.proof?subject=Access%20Request",
+                action: "mailto:admin@stone.proof?subject=Admin%20Access%20Request",
               },
               {
                 name: "Support Phone",
@@ -166,7 +134,6 @@ const AccessDeniedCard = ({
                 <ChevronRight className="w-4 h-4 text-gray-400" />
               </a>
             ))}
-
           </div>
         </div>
 
@@ -202,10 +169,10 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
         )}
       </div>
       <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-        {isLoading ? "Connecting..." : "Connect Your Wallet"}
+        {isLoading ? "Connecting..." : "Connect Admin Wallet"}
       </h1>
       <p className="text-gray-600 dark:text-gray-300 mb-6">
-        {isLoading ? "Verifying wallet..." : "Please connect a wallet with appropriate privileges"}
+        {isLoading ? "Verifying wallet..." : "Please connect a wallet with admin privileges"}
       </p>
       <div className="flex justify-center">
         <ConnectButton />
@@ -214,12 +181,12 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   </div>
 );
 
-export default function Page() {
+export default function AdminDisputesPage() {
   const { address, isConnected, isConnecting } = useAccount();
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  // Check if connected wallet has admin role (or other required role)
+  // Check if connected wallet has admin role
   const {
     data: isAdmin,
     isLoading: isLoadingRoleCheck,
@@ -231,71 +198,33 @@ export default function Page() {
     enabled: isConnected,
   });
 
-  // You might want to check for other roles too depending on requirements
-  const { data: hasMinerRole } = useScaffoldReadContract({
-    contractName: "RolesManager",
-    functionName: "hasMinerRole",
-    args: [address],
-    enabled: isConnected,
-  });
-
-        {/* the table */}
-        <NotificationList
-          notifications={mockDisputes}
-          bgColor="bg-[#060910]"
-          expandedBgColor="bg-[#060910]"
-          borderColor="border-[#23262B]"
-        />
-      </div>
-
-      {/* the other metric cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <RecentShipments
-          bgColor="bg-[#060910]"
-          shipments={shipments}
-          onViewAll={() => console.log("View all shipments")}
-        />
-
-        <TopDemands
-          bgColor="bg-[#060910]"
-          demands={demands}
-          onRefresh={() => console.log("Refresh demands")}
-          onAddDemand={id => console.log("Add demand", id)}
-        />
-
-        <MineralReports
-          bgColor="bg-[#060910]"
-          reports={reports}
-          onRefresh={() => console.log("Refresh reports")}
-          onViewDetails={id => console.log("View report details", id)}
-
   const handleRefreshAccess = async () => {
     setIsRefreshingAccess(true);
     try {
       const { data } = await refetchRoleCheck();
       if (!data) {
-        notification.error("Still no access. Contact administrator.");
+        notification.error("Still no admin access. Contact administrator.");
       }
     } catch (e) {
       console.error("Error refreshing access:", e);
-      notification.error("Error checking access");
+      notification.error("Error checking admin access");
     } finally {
       setIsRefreshingAccess(false);
     }
   };
 
   useEffect(() => {
-    if (isAdmin || hasMinerRole) { // Adjust role checks based on your requirements
+    if (isAdmin) {
       const timer = setTimeout(() => {
         setIsDataLoading(false);
       }, 1500);
       return () => clearTimeout(timer);
     }
-  }, [isAdmin, hasMinerRole]);
+  }, [isAdmin]);
 
   // Loading state while checking roles
   if (isConnected && isLoadingRoleCheck) {
-    return <FullPageLoader text="Checking access permissions..." />;
+    return <FullPageLoader text="Checking admin permissions..." />;
   }
 
   // Not connected state
@@ -303,8 +232,8 @@ export default function Page() {
     return <ConnectWalletView isLoading={isConnecting} />;
   }
 
-  // No required role state (adjust condition based on your requirements)
-  if (isConnected && !isAdmin && !hasMinerRole) {
+  // No admin role state
+  if (isConnected && !isAdmin) {
     return (
       <div className="flex items-center justify-center min-h-screen p-4">
         <AccessDeniedCard
@@ -320,16 +249,16 @@ export default function Page() {
     <div className="px-4 sm:px-10 flex flex-col gap-10">
       {isDataLoading ? (
         <div className="flex justify-center items-center min-h-[60vh]">
-          <LoadingSpinner size={12} text="Loading disputes resolution dashboard..." />
+          <LoadingSpinner size={12} text="Loading admin dashboard..." />
         </div>
       ) : (
         <>
-          {/* the welcome message */}
+          {/* Admin header */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-0">
             <div className="flex flex-col">
-              <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Activity</p>
+              <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Admin Dashboard</p>
               <p className="text-[14px] sm:text-[16px] text-[#979AA0] m-0 leading-tight">
-                View Your Activities & Blockchain Activities here
+                Manage disputes and view system activities
               </p>
             </div>
 
@@ -347,25 +276,25 @@ export default function Page() {
             </div>
           </div>
 
-          {/* the mineral activity */}
+          {/* Disputes overview */}
           <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
             <div className="w-full lg:w-2/3">
               <div className="h-full">
-                <MineralActivity />
+                <MineralDisputesGraphCard />
               </div>
             </div>
             <div className="w-full lg:w-1/3">
               <div className="h-full">
-                <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
+                <RecentDisputesCard />
               </div>
             </div>
           </div>
 
-          {/* the notifications */}
+          {/* Recent disputes */}
           <div className="flex flex-col gap-5">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 justify-between">
               <div>
-                <p className="text-[18px] sm:text-[20px] font-bold m-0 leading-tight">Recent Disputes in your network</p>
+                <p className="text-[18px] sm:text-[20px] font-bold m-0 leading-tight">Recent Disputes</p>
               </div>
 
               <div className="w-full sm:w-auto scale-90 origin-left sm:origin-center">
@@ -386,21 +315,31 @@ export default function Page() {
               </div>
             </div>
 
-            {/* the table */}
-            <NotificationList notifications={mockDisputes} />
+            <NotificationList
+              notifications={mockDisputes}
+              bgColor="bg-[#060910]"
+              expandedBgColor="bg-[#060910]"
+              borderColor="border-[#23262B]"
+            />
           </div>
 
-          {/* the other metric cards */}
+          {/* System metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
+            <RecentShipments
+              bgColor="bg-[#060910]"
+              shipments={shipments}
+              onViewAll={() => console.log("View all shipments")}
+            />
 
             <TopDemands
+              bgColor="bg-[#060910]"
               demands={demands}
               onRefresh={() => console.log("Refresh demands")}
               onAddDemand={id => console.log("Add demand", id)}
             />
 
             <MineralReports
+              bgColor="bg-[#060910]"
               reports={reports}
               onRefresh={() => console.log("Refresh reports")}
               onViewDetails={id => console.log("View report details", id)}

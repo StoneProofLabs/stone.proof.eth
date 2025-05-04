@@ -1,18 +1,18 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FaChartBar, FaRegCheckSquare, FaUser } from "react-icons/fa";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
+import { FaChartBar, FaRegCheckSquare, FaUser } from "react-icons/fa";
 import { useAccount } from "wagmi";
 import Icon from "~~/components/dashboard/Icon";
 import AdminStatCard from "~~/components/dashboard/admin/AdminStatCard";
 import EnterpriseTable from "~~/components/dashboard/admin/EnterpriseTable";
-import { enterpriseList } from "~~/data/data";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
+import { enterpriseList } from "~~/data/data";
 import { demands, reports, shipments } from "~~/data/data";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
@@ -331,8 +331,8 @@ const Page = () => {
           <EnterpriseTable data={enterpriseList} />
 
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
-            <RecentShipments 
-              shipments={shipments} 
+            <RecentShipments
+              shipments={shipments}
               onViewAll={() => console.log("View all shipments")}
               bgColor="bg-[#060910]"
             />

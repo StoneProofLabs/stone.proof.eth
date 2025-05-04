@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
@@ -187,7 +187,11 @@ export default function Page() {
   const [isDataLoading, setIsDataLoading] = useState(true);
 
   // Check if connected wallet has miner or admin role
-  const { data: hasMinerRole, isLoading: isLoadingMinerCheck, refetch: refetchMinerRole } = useScaffoldReadContract({
+  const {
+    data: hasMinerRole,
+    isLoading: isLoadingMinerCheck,
+    refetch: refetchMinerRole,
+  } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasMinerRole",
     args: [address],
@@ -394,8 +398,8 @@ export default function Page() {
 
           {/* the other metric cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <RecentShipments 
-              shipments={shipments} 
+            <RecentShipments
+              shipments={shipments}
               onViewAll={() => console.log("View all shipments")}
               bgColor="bg-[#060910]"
             />

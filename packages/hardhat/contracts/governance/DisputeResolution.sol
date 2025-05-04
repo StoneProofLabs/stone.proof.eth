@@ -12,9 +12,8 @@ pragma solidity ^0.8.20;
 import { MineralRegistry } from "../modules/MineralRegistry.sol";
 import { TransactionLog } from "../logs/TransactionLog.sol";
 import { RolesManager } from "../core/RolesManager.sol";
-import { Errors } from "../utils/Errors.sol";
 
-contract DisputeResolution is Errors, RolesManager {
+contract DisputeResolution is RolesManager {
 
     RolesManager private rolesManager;
 

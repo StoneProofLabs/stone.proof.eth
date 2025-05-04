@@ -13,10 +13,9 @@ import { ERC721URIStorage } from "@openzeppelin/contracts/token/ERC721/extension
 import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
 
 import { RolesManager } from "../core/RolesManager.sol";
-import { Errors } from "../utils/Errors.sol";
 
 
-contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
+abstract contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
 
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");

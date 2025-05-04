@@ -906,6 +906,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@bytecodealliance/preview2-shim@npm:0.17.2":
+  version: 0.17.2
+  resolution: "@bytecodealliance/preview2-shim@npm:0.17.2"
+  checksum: 10/24bf1698fcf8c1cd25089b46eccbdae2db5585ca1d69ec15e5ad5a095f19d710bb73071bb17ed1a4745bd2707cc68754d0c17ce13800cd1aa465cce3c6aaff88
+  languageName: node
+  linkType: hard
+
 "@chainsafe/is-ip@npm:^2.0.1":
   version: 2.1.0
   resolution: "@chainsafe/is-ip@npm:2.1.0"
@@ -3669,6 +3676,15 @@ __metadata:
   version: 0.15.11
   resolution: "@nomicfoundation/ignition-ui@npm:0.15.11"
   checksum: 10/1d330ba7320153bf17ac10f5cd6e144b02ec0bd212b1859ffc75b2875028c5e63c743c82fee8abdbef5f811556175350e15991367711ace1868bb0fb72faedba
+  languageName: node
+  linkType: hard
+
+"@nomicfoundation/slang@npm:1.1.0":
+  version: 1.1.0
+  resolution: "@nomicfoundation/slang@npm:1.1.0"
+  dependencies:
+    "@bytecodealliance/preview2-shim": "npm:0.17.2"
+  checksum: 10/7f4f24a03aec625813c6eb87390406869534896e5be90b2473b8b55abadfd48537958345629c75c4896dd38e4ad7aaaeff151be752a9ab468a6290a55e999e34
   languageName: node
   linkType: hard
 
@@ -14889,12 +14905,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.484.0":
-  version: 0.484.0
-  resolution: "lucide-react@npm:0.484.0"
+"lucide-react@npm:^0.507.0":
+  version: 0.507.0
+  resolution: "lucide-react@npm:0.507.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10/7a38cf79c9127422702651839dfae124eb77724533351608fd65af58233de25de8dd7437ed0159e611879b5c4383f9eabb965729554ae12a98bbe3da72a07f0b
+  checksum: 10/caf459d43ea04efb5cbf32a1200e61a42d958a570ca3a7512d01a4239a8825fc99943dc89c34bb59f196e1d20ebf8db6680c46e9e2e8c0810ae7a7b3323525fc
   languageName: node
   linkType: hard
 
@@ -17001,6 +17017,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prettier-plugin-solidity@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "prettier-plugin-solidity@npm:2.0.0"
+  dependencies:
+    "@nomicfoundation/slang": "npm:1.1.0"
+    "@solidity-parser/parser": "npm:^0.20.1"
+    semver: "npm:^7.7.1"
+  peerDependencies:
+    prettier: ">=3.0.0"
+  checksum: 10/b5ef1d64902b181478e3bd557a37d11c5437e9353402e43c1ef0909e596d76f1e72b0fd59726a381564d303a6bcb4f0b6b9a9310caf942b27236dc6913819de1
+  languageName: node
+  linkType: hard
+
 "prettier-plugin-solidity@npm:~1.4.1":
   version: 1.4.3
   resolution: "prettier-plugin-solidity@npm:1.4.3"
@@ -18157,10 +18186,11 @@ __metadata:
     framer-motion: "npm:^12.6.2"
     husky: "npm:~9.1.6"
     lint-staged: "npm:~13.2.2"
-    lucide-react: "npm:^0.484.0"
+    lucide-react: "npm:^0.507.0"
     next: "npm:^15.3.0"
     postcss: "npm:^8.5.3"
     prettier: "npm:^3.5.3"
+    prettier-plugin-solidity: "npm:^2.0.0"
     react-dom: "npm:^19.1.0"
     react-hot-toast: "npm:^2.5.2"
     react-icons: "npm:^5.5.0"

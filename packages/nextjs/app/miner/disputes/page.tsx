@@ -1,22 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   AlertCircle,
+  AlertTriangle,
   Check,
   ChevronDown,
   ChevronRight,
   Copy,
+  Link,
   Loader2,
   Mail,
   MessageSquare,
   Phone,
   ShieldAlert,
-  AlertTriangle,
 } from "lucide-react";
 import { useAccount } from "wagmi";
 import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
@@ -118,7 +119,7 @@ const AccessDeniedView = ({
                     <a
                       href="https://t.me/StoneProofSupport"
                       target="_blank"
-                       rel="noopener noreferrer"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300"
                     >
                       <MessageSquare className="w-4 h-4" />
@@ -199,7 +200,7 @@ export default function RaiseDisputePage() {
       setDisputeDescription("");
       setMineralId("");
     },
-    onError: (error: { message: string | string[]; }) => {
+    onError: (error: { message: string | string[] }) => {
       console.error("Dispute raising failed:", error);
       let errorMessage = "Failed to raise dispute.";
 

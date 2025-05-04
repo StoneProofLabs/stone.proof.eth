@@ -1,11 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
-import { AlertCircle, Check, ChevronDown, ChevronRight, Copy, Loader2, Mail, MessageSquare, Minus, Phone, ShieldAlert } from "lucide-react";
-import { useAccount } from "wagmi";
-import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { toast } from "../../lib/toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import {
+  AlertCircle,
+  Check,
+  ChevronDown,
+  ChevronRight,
+  Copy,
+  Loader2,
+  Mail,
+  MessageSquare,
+  Minus,
+  Phone,
+  ShieldAlert,
+} from "lucide-react";
+import { useAccount } from "wagmi";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
@@ -33,7 +45,7 @@ export default function AuditMineralPage() {
       setMineralId("");
       setAuditReport("");
     },
-    onError: (error: { message: string | string[]; }) => {
+    onError: (error: { message: string | string[] }) => {
       console.error("Audit failed:", error);
       let errorMessage = "Failed to audit mineral.";
 
@@ -98,7 +110,7 @@ export default function AuditMineralPage() {
                 <input
                   type="text"
                   value={mineralId}
-                  onChange={(e) => setMineralId(e.target.value)}
+                  onChange={e => setMineralId(e.target.value)}
                   placeholder="Enter the mineral ID to audit"
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
                 />
@@ -109,7 +121,7 @@ export default function AuditMineralPage() {
                 <label className="block text-sm font-medium mb-2">Audit Report</label>
                 <textarea
                   value={auditReport}
-                  onChange={(e) => setAuditReport(e.target.value)}
+                  onChange={e => setAuditReport(e.target.value)}
                   placeholder="Provide detailed audit report..."
                   rows={5}
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
@@ -135,7 +147,7 @@ export default function AuditMineralPage() {
               )}
             </button>
             <p className="text-gray-400 text-sm text-center mt-4">
-              {allFieldsReady 
+              {allFieldsReady
                 ? "All required fields are complete. You can submit the audit."
                 : "Please fill all required fields to submit an audit."}
             </p>
@@ -165,7 +177,8 @@ export default function AuditMineralPage() {
               <div className="flex gap-2 text-sm">
                 <AlertCircle className="min-w-5 h-5 text-white mt-0.5" />
                 <p className="text-gray-400">
-                  Ensure the audit report is accurate and complete. Once submitted, the mineral will be marked as audited and cannot be audited again.
+                  Ensure the audit report is accurate and complete. Once submitted, the mineral will be marked as
+                  audited and cannot be audited again.
                 </p>
               </div>
             </div>

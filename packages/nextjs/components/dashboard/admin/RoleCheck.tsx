@@ -11,12 +11,12 @@ interface RoleCheckProps {
   onUserIdChange?: (userId: string) => void;
 }
 
-const RoleCheck: React.FC<RoleCheckProps> = ({ 
-  userId = "", 
-  onCheckRole, 
-  foundRole = "", 
+const RoleCheck: React.FC<RoleCheckProps> = ({
+  userId = "",
+  onCheckRole,
+  foundRole = "",
   hasRole = false,
-  onUserIdChange 
+  onUserIdChange,
 }) => {
   const [inputUserId, setInputUserId] = useState(userId);
   const [isChecked, setIsChecked] = useState(false);
@@ -76,7 +76,7 @@ const RoleCheck: React.FC<RoleCheckProps> = ({
               className="w-full bg-[#060B17] border border-[#323539] rounded-[8px] px-3 py-2 text-white focus:border-[#007AFF] transition-colors"
               placeholder="0x..."
             />
-            <button 
+            <button
               onClick={handleCopy}
               className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:scale-110 transition-transform"
             >
@@ -93,7 +93,9 @@ const RoleCheck: React.FC<RoleCheckProps> = ({
                 <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 flex-1">
                   <p className="text-white text-base font-medium">Found Role:</p>
                   {foundRole ? (
-                    <div className={`px-3 py-1 rounded-full flex items-center gap-1 mt-1 sm:mt-0 shadow-md ${hasRole ? 'bg-[#4CAF50] shadow-[#4CAF50]/20' : 'bg-[#EEA23E] shadow-[#EEA23E]/20'}`}>
+                    <div
+                      className={`px-3 py-1 rounded-full flex items-center gap-1 mt-1 sm:mt-0 shadow-md ${hasRole ? "bg-[#4CAF50] shadow-[#4CAF50]/20" : "bg-[#EEA23E] shadow-[#EEA23E]/20"}`}
+                    >
                       <BiSolidErrorCircle size={16} className="text-white" />
                       <span className="text-white text-sm font-medium">{foundRole}</span>
                     </div>
