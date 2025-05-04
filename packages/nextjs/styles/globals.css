@@ -4,11 +4,14 @@
 
 :root,
 [data-theme] {
-  background: oklch(var(--b2));
+  background: black;
+  min-height: 100vh;
 }
 
 body {
   min-height: 100vh;
+  background: transparent;
+  font-family: var(--font-montserrat);
 }
 
 h1,
@@ -17,6 +20,7 @@ h3,
 h4 {
   margin-bottom: 0.5rem;
   line-height: 1;
+  font-family: var(--font-montserrat);
 }
 
 p {
@@ -29,4 +33,10 @@ p {
 
 .btn.btn-ghost {
   @apply shadow-none;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-montserrat), system-ui, sans-serif;
+  }
 }
