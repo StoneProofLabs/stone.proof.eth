@@ -1,115 +1,101 @@
 "use client";
 
-import React, { useCallback, useRef, useState } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { hardhat } from "viem/chains";
-import { Bars3Icon, BugAntIcon } from "@heroicons/react/24/outline";
-import { FaucetButton, RainbowKitCustomConnectButton } from "~~/components/scaffold-eth";
-import { useOutsideClick, useTargetNetwork } from "~~/hooks/scaffold-eth";
+import type React from "react";
+import { useEffect, useState } from "react";
+import ContactUsButton from "./landing/Header/ContactUsButton";
+import StoneProof from "./landing/Header/StoneProof";
+import { Menu, X } from "lucide-react";
 
-type HeaderMenuLink = {
-  label: string;
+interface NavLink {
+  name: string;
   href: string;
-  icon?: React.ReactNode;
-};
+}
 
-export const menuLinks: HeaderMenuLink[] = [
-  {
-    label: "Home",
-    href: "/",
-  },
-
-  {
-    label: "Debug Contracts",
-    href: "/debug",
-    icon: <BugAntIcon className="h-4 w-4" />,
-  },
+const navLinks: NavLink[] = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Services", href: "/services" },
+  { name: "Portfolio", href: "/portfolio" },
+  { name: "Blog", href: "/blog" },
 ];
 
-export const HeaderMenuLinks = () => {
-  const pathname = usePathname();
+const Header: React.FC = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 0);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
 
   return (
-    <>
-      {menuLinks.map(({ label, href, icon }) => {
-        const isActive = pathname === href;
-        return (
-          <li key={href}>
-            <Link
-              href={href}
-              passHref
-              className={`${
-                isActive ? "bg-secondary shadow-md" : ""
-              } hover:bg-secondary hover:shadow-md focus:!bg-secondary active:!text-neutral py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
-            >
-              {icon}
-              <span>{label}</span>
-            </Link>
-          </li>
-        );
-      })}
-    </>
-  );
-};
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled ? "bg-[#060910]/80 backdrop-blur-md shadow-lg" : "bg-[#060910]"
+      }`}
+    >
+      <div className="container mx-auto flex items-center justify-between py-3 px-4 md:px-6 lg:px-8">
+        {/* Logo */}
+        <StoneProof />
 
-/**
- * Site header
- */
-export const Header = () => {
-  const { targetNetwork } = useTargetNetwork();
-  const isLocalNetwork = targetNetwork.id === hardhat.id;
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex flex-1 justify-center">
+          <ul className="flex gap-2 lg:gap-10">
+            {navLinks.map(link => (
+              <li key={link.name}>
+                <a
+                  href={link.href}
+                  className="text-white text-xs lg:text-base opacity-70 hover:text-primary hover:opacity-100 transition-colors duration-200 whitespace-nowrap px-1 lg:px-0"
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const burgerMenuRef = useRef<HTMLDivElement>(null);
-  useOutsideClick(
-    burgerMenuRef,
-    useCallback(() => setIsDrawerOpen(false), []),
-  );
+        {/* Mobile menu button */}
+        <button className="lg:hidden text-white z-20" onClick={toggleMobileMenu} aria-label="Toggle menu">
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
 
-  return (
-    <div className="sticky lg:static top-0 navbar bg-base-100 min-h-0 flex-shrink-0 justify-between z-20 shadow-md shadow-secondary px-0 sm:px-2">
-      <div className="navbar-start w-auto lg:w-1/2">
-        <div className="lg:hidden dropdown" ref={burgerMenuRef}>
-          <label
-            tabIndex={0}
-            className={`ml-1 btn btn-ghost ${isDrawerOpen ? "hover:bg-secondary" : "hover:bg-transparent"}`}
-            onClick={() => {
-              setIsDrawerOpen(prevIsOpenState => !prevIsOpenState);
-            }}
-          >
-            <Bars3Icon className="h-1/2" />
-          </label>
-          {isDrawerOpen && (
-            <ul
-              tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-              onClick={() => {
-                setIsDrawerOpen(false);
-              }}
-            >
-              <HeaderMenuLinks />
-            </ul>
-          )}
+        {/* Contact Us button - hidden on mobile and small tablets */}
+        <div className="hidden lg:block">
+          <ContactUsButton />
         </div>
-        <Link href="/" passHref className="hidden lg:flex items-center gap-2 ml-4 mr-6 shrink-0">
-          <div className="flex relative w-10 h-10">
-            <Image alt="SE2 logo" className="cursor-pointer" fill src="/logo.svg" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-bold leading-tight">Scaffold-ETH</span>
-            <span className="text-xs">Ethereum dev stack</span>
-          </div>
-        </Link>
-        <ul className="hidden lg:flex lg:flex-nowrap menu menu-horizontal px-1 gap-2">
-          <HeaderMenuLinks />
-        </ul>
       </div>
-      <div className="navbar-end flex-grow mr-4">
-        <RainbowKitCustomConnectButton />
-        {isLocalNetwork && <FaucetButton />}
-      </div>
-    </div>
+
+      {/* Mobile Navigation Overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 bg-[#060910] z-10 flex flex-col items-center justify-center lg:hidden">
+          <ul className="flex flex-col gap-6 text-center">
+            {navLinks.map(link => (
+              <li key={link.name}>
+                <a
+                  href={link.href}
+                  className="text-white text-lg opacity-70 hover:opacity-100 transition-colors duration-200"
+                  onClick={toggleMobileMenu}
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))}
+            <li className="mt-4">
+              <ContactUsButton />
+            </li>
+          </ul>
+        </div>
+      )}
+    </header>
   );
 };
+
+export default Header;

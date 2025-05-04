@@ -7,27 +7,40 @@ import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
 import { useTheme } from "next-themes";
 import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
-import { Footer } from "~~/components/Footer";
-import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/scaffold-eth";
 import { useInitializeNativeCurrencyPrice } from "~~/hooks/scaffold-eth";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
+// Custom light and dark themes for RainbowKit
+const customLightTheme = lightTheme({
+  accentColor: "#0A7AFF", // StoneProof Blue
+  accentColorForeground: "white",
+  borderRadius: "large",
+  fontStack: "rounded",
+  overlayBlur: "small", // light frosted-glass effect
+});
+
+const customDarkTheme = darkTheme({
+  accentColor: "#0A7AFF", // StoneProof Blue
+  accentColorForeground: "white",
+  borderRadius: "large",
+  fontStack: "rounded",
+  overlayBlur: "small", // dark frosted-glass effect
+});
+
+// Main ScaffoldEthAppWithProviders component
 const ScaffoldEthApp = ({ children }: { children: React.ReactNode }) => {
   useInitializeNativeCurrencyPrice();
 
   return (
     <>
-      <div className={`flex flex-col min-h-screen `}>
-        <Header />
-        <main className="relative flex flex-col flex-1">{children}</main>
-        <Footer />
-      </div>
+      {children}
       <Toaster />
     </>
   );
 };
 
+// Initialize query client for React Query
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -36,6 +49,7 @@ export const queryClient = new QueryClient({
   },
 });
 
+// ScaffoldEthAppWithProviders component wrapping app with all required providers
 export const ScaffoldEthAppWithProviders = ({ children }: { children: React.ReactNode }) => {
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
@@ -49,10 +63,7 @@ export const ScaffoldEthAppWithProviders = ({ children }: { children: React.Reac
     <WagmiProvider config={wagmiConfig}>
       <QueryClientProvider client={queryClient}>
         <ProgressBar height="3px" color="#2299dd" />
-        <RainbowKitProvider
-          avatar={BlockieAvatar}
-          theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
-        >
+        <RainbowKitProvider avatar={BlockieAvatar} theme={customDarkTheme}>
           <ScaffoldEthApp>{children}</ScaffoldEthApp>
         </RainbowKitProvider>
       </QueryClientProvider>
