@@ -25,7 +25,7 @@ export default function Page() {
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
           <Link
-            href={"/warehouse/disputes/raiseDispute"}
+            href={"/refiner/disputes/raiseDispute"}
             className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
           >
             <h1 className="translate-y-[4px]">Raise Dispute</h1>
@@ -77,7 +77,7 @@ export default function Page() {
         </div>
 
         {/* the table */}
-        <NotificationList notifications={mockDisputes} />
+        <NotificationList baseUrl="warehouse" notifications={mockDisputes} />
       </div>
 
       {/* the other metric cards */}

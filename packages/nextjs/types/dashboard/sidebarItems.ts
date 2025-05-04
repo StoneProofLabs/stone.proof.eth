@@ -130,8 +130,8 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
           iconAlt: "Notifications icon",
         },
         {
-          name: "Warehouse",
-          path: `${basePath}/warehouse`,
+          name: "Refinery",
+          path: `${basePath}/refinery`,
           icon: "/dashboard/icon_set/warehouse.svg",
           iconAlt: "Warehouse icon",
         },
