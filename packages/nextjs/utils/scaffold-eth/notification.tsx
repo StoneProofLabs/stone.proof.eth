@@ -1,5 +1,5 @@
 import React from "react";
-import { Toast, ToastPosition, toast } from "react-hot-toast";
+import { ToastPosition, toast } from "react-hot-toast";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import {
   CheckCircleIcon,
@@ -33,9 +33,6 @@ const ENUM_STATUSES = {
 const DEFAULT_DURATION = 3000;
 const DEFAULT_POSITION: ToastPosition = "top-center";
 
-/**
- * Custom Notification
- */
 const Notification = ({
   content,
   status,
@@ -44,7 +41,7 @@ const Notification = ({
   position = DEFAULT_POSITION,
 }: NotificationProps) => {
   return toast.custom(
-    (t: Toast) => (
+    t => (
       <div
         className={`flex flex-row items-start justify-between max-w-sm rounded-xl shadow-center shadow-accent bg-base-200 p-4 transform-gpu relative transition-all duration-500 ease-in-out space-x-2
         ${
