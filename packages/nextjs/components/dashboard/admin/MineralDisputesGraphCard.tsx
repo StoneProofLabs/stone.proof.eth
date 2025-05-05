@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
-import { Area, AreaChart, CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 const data = [
   { name: "Sun", value: 15 },
@@ -20,9 +20,11 @@ export default function MineralDisputesGraphCard() {
   const [selectedType, setSelectedType] = useState(disputeTypes[0]);
 
   return (
-    <div className="bg-[#10131A] border border-[#23262B] rounded-2xl p-4 flex flex-col w-full max-w-full min-w-[320px]">
-      <div className="flex items-center justify-between mb-3">
-        <span className="text-white text-base md:text-lg font-semibold">Mineral Disputes Variation Graph</span>
+    <div className="bg-[#060910] border border-[#23262B] rounded-2xl p-4 md:p-5 flex flex-col w-full max-w-full min-w-[320px] shadow-lg">
+      <div className="flex items-center justify-between mb-4 md:mb-5">
+        <span className="text-white text-base md:text-lg lg:text-xl font-semibold">
+          Mineral Disputes Variation Graph
+        </span>
         <button className="text-gray-400 hover:text-white">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="2" />
@@ -31,10 +33,11 @@ export default function MineralDisputesGraphCard() {
           </svg>
         </button>
       </div>
-      <div className="flex flex-col md:flex-row gap-2 md:gap-4 mb-3 w-full">
-        <div className="relative w-full md:w-auto">
+
+      <div className="flex flex-col sm:flex-row gap-3 mb-5 w-full">
+        <div className="relative w-full sm:w-auto flex-1 sm:max-w-[250px]">
           <select
-            className="appearance-none bg-[#232A36] border border-[#23262B] rounded-lg px-4 py-2 text-white text-sm focus:outline-none w-full md:w-[220px] font-medium pr-8"
+            className="appearance-none bg-[#232A36] border border-[#23262B] rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none w-full font-medium pr-8"
             value={selectedType}
             onChange={e => setSelectedType(e.target.value)}
             style={{ WebkitAppearance: "none", MozAppearance: "none" }}
@@ -57,9 +60,10 @@ export default function MineralDisputesGraphCard() {
             </svg>
           </span>
         </div>
-        <div className="relative w-full md:w-auto">
+
+        <div className="relative w-full sm:w-auto sm:min-w-[120px]">
           <select
-            className="appearance-none bg-[#232A36] border border-[#23262B] rounded-lg px-4 py-2 text-white text-sm focus:outline-none w-full md:w-[100px] font-medium pr-8"
+            className="appearance-none bg-[#060910] border border-[#23262B] rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none w-full font-medium pr-8"
             value={selectedYear}
             onChange={e => setSelectedYear(Number(e.target.value))}
             style={{ WebkitAppearance: "none", MozAppearance: "none" }}
@@ -83,53 +87,71 @@ export default function MineralDisputesGraphCard() {
           </span>
         </div>
       </div>
-      <div className="w-full h-[220px] md:h-[260px] bg-[#181C23] rounded-b-lg overflow-hidden border-t border-[#23262B] border-b-0 border-x-0">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-            <defs>
-              <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.25} />
-                <stop offset="100%" stopColor="#3B82F6" stopOpacity={0.01} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="6 6" stroke="#fff" strokeOpacity={0.18} vertical={false} />
-            <XAxis
-              dataKey="name"
-              stroke="#9CA3AF"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#9CA3AF", fontSize: 13 }}
-            />
-            <YAxis
-              domain={[0, 100]}
-              ticks={[0, 25, 50, 75, 100]}
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: "#9CA3AF", fontSize: 13 }}
-              width={32}
-            />
-            <Tooltip
-              contentStyle={{ backgroundColor: "#181C23", borderColor: "#23262B", color: "white" }}
-              itemStyle={{ color: "white" }}
-              cursor={{ stroke: "#3B82F6", strokeWidth: 1, opacity: 0.2 }}
-            />
-            <Area
-              type="monotone"
-              dataKey="value"
-              stroke="#3B82F6"
-              strokeWidth={2.5}
-              fill="url(#blueGradient)"
-              dot={false}
-              activeDot={false}
-              isAnimationActive={true}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+
+      <div className="w-full h-[220px] md:h-[260px] lg:h-[300px] bg-[#060910] rounded-lg overflow-hidden border border-[#23262B] mb-2">
+        <div className="w-full h-full pt-5 px-2">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 5 }}>
+              <defs>
+                <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#3B82F6" stopOpacity={0.35} />
+                  <stop offset="100%" stopColor="#3B82F6" stopOpacity={0.01} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="6 6" stroke="#fff" strokeOpacity={0.15} vertical={false} />
+              <XAxis
+                dataKey="name"
+                stroke="#9CA3AF"
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#9CA3AF", fontSize: 12 }}
+                dy={5}
+              />
+              <YAxis
+                domain={[0, 100]}
+                ticks={[0, 25, 50, 75, 100]}
+                axisLine={false}
+                tickLine={false}
+                tick={{ fill: "#9CA3AF", fontSize: 12 }}
+                width={35}
+                dx={-5}
+              />
+              <Tooltip
+                contentStyle={{
+                  backgroundColor: "#181C23",
+                  borderColor: "#23262B",
+                  color: "white",
+                  borderRadius: "8px",
+                  padding: "8px 12px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                }}
+                itemStyle={{ color: "white" }}
+                cursor={{ stroke: "#3B82F6", strokeWidth: 1, opacity: 0.2 }}
+                formatter={value => [`${value}`, "Value"]}
+                labelFormatter={label => `Day: ${label}`}
+              />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#3B82F6"
+                strokeWidth={2.5}
+                fill="url(#blueGradient)"
+                dot={false}
+                activeDot={{ r: 6, stroke: "#3B82F6", strokeWidth: 2, fill: "#fff" }}
+                isAnimationActive={true}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
       </div>
-      <div className="flex items-center justify-between mt-0 px-2 py-3 border-t border-[#23262B] text-xs md:text-sm text-[#979AA0] bg-[#181C23] rounded-b-2xl">
+
+      <div className="flex items-center justify-between px-3 py-3.5 border border-[#23262B] bg-[#181C23] rounded-lg text-xs md:text-sm text-[#979AA0] mt-1">
         <span>Data in person range</span>
-        <a href="#" className="text-blue-500 hover:underline flex items-center gap-1 font-medium">
-          Open <FaExternalLinkAlt className="w-4 h-4" />
+        <a
+          href="#"
+          className="text-blue-500 hover:underline flex items-center gap-1.5 font-medium transition-colors duration-200 hover:text-blue-400"
+        >
+          Open <FaExternalLinkAlt className="w-3.5 h-3.5" />
         </a>
       </div>
     </div>
