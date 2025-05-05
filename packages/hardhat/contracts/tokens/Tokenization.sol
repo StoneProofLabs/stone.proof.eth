@@ -1,282 +1,150 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-/**
-* @title Tokenization contract
-* @author @0xJonaseb11
-* It is where the mineral tokenization operation is conducted
-* It is where tokens are created and tokens are transferred to minerals by authorized actors 
-*/
-
 import { ERC721 } from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import { ERC721URIStorage } from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
-
 import { RolesManager } from "../core/RolesManager.sol";
 
-
-abstract contract Tokenization is ERC721, ERC721URIStorage, RolesManager {
-
-
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+contract Tokenization is ERC721, RolesManager {
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER");
     
     struct MineralToken {
-        uint256 tokenId;
         string mineralId;
         string details;
-        bool isMinted;
-        bool isAudited;
-        bool isInspected;
-        bool isPurchased;
-        address currentOwner;
+        address owner;
+        uint8 flags; // bit 0: minted, 1: audited, 2: inspected, 3: purchased
     }
 
-
     uint256 private nextTokenId = 1;
-    mapping(uint256 => MineralToken) private tokenData;
-    mapping(uint256 => bool) private _tokenExists;
-    mapping(uint256 => MineralToken) private mineralTokens;
+    mapping(uint256 => MineralToken) private _tokens;
+    mapping(string => uint256) public mineralToToken;
 
-    // map mineralId string to tokenId
-    mapping(string => uint256) public mineralIdToTokenId;
-
-        /*//////////////////////////////////////////////////////////////
-                                 EVENTS
-        //////////////////////////////////////////////////////////////*/
-    event MineralTokenMinted(uint256 indexed tokenId, string mineralId, string metadata, address  minter, address indexed mintedTo);
-    event OwnershipTransferred(uint256 indexed tokenId, address indexed oldOwner, address indexed newOwner);
-    event MineralTokenUpdated(uint256 indexed tokenId, string action, address updater);
-    event MineralTokenRevoked(uint256 indexed tokenId, address indexed revoker, string reason);
-    event MetadataUpdated(uint256 indexed tokenId, string newDetails, address updater);
-
+    event Minted(uint256 indexed tokenId, string mineralId, address indexed to);
+    event Transferred(uint256 indexed tokenId, address indexed from, address indexed to);
+    event Updated(uint256 indexed tokenId);
+    event Revoked(uint256 indexed tokenId, string reason);
+    event MetadataUpdated(uint256 indexed tokenId);
 
     constructor() ERC721("MineralToken", "MTKN") {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(MINTER_ROLE, msg.sender);
     }
 
-    /**
-    * @dev restrit access to onlyAuthorized roles
-    */
-    modifier onlyAuthorizedRoles() {
-        if (
-            !hasRole(MINTER_ROLE, msg.sender) ||
-            !hasRole(AUDITOR_ROLE, msg.sender) ||
-            !hasRole(INSPECTOR_ROLE, msg.sender) ||
-            !hasRole(BUYER_ROLE, msg.sender)
-        ) 
-        revert InsufficientPermissionsToPerformAction(msg.sender);
-        _;
-    }
+    // Remove the onlyRole modifier since it's inherited from AccessControl
+    // Keep onlySpecificRole if needed from RolesManager
 
-    modifier  onlySpecificRole(bytes32 role) {
-        if (!hasRole(role, msg.sender))
-        revert InsufficientPermissionsToPerformAction(msg.sender);
-        _;
-    } 
-
-        /*/!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        !!!      ALL THE FUNCTIONS BELOW NEED VERY GOOD ATTENTION  !!!!!
-        !!!          THEY CONTAIN MANY POTENTIAL VUNERABILITIES    !!!!!
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-
-    /**
-    * @dev Mints token to a mineral with mineral ID mineralId
-    * MineralToken is minted to the current owner of the mineral - msg.sender
-    * @notice Emits MineralTokenMinted event on successful minting 
-    */
-    function mintToken(address to, string memory mineralId, string memory details) public  onlyNonZeroAddress(to) onlySpecificRole(MINTER_ROLE) {
+    function mintToken(address to, string calldata mineralId, string calldata details) external {
+        require(hasRole(MINTER_ROLE, msg.sender), "Unauthorized");
         uint256 tokenId = nextTokenId++;
-
-        if (_exists(tokenId))
-            revert Tokenization__TokenAlreadyExists(tokenId);
         
-        if (mineralTokens[tokenId].isMinted == true)
-            revert Tokenization__TokenIsAlreadyMinted(tokenId);
-
-        if (
-           bytes(mineralDetails[mineralId].id).length == 0 ||
-           keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId))
-        ) {
-            revert InvalidMineralIdOrNotFound(mineralId);
-        }
-
+        require(!_exists(tokenId), "Exists");
+        require(mineralToToken[mineralId] == 0, "MineralUsed");
+        
         _mint(to, tokenId);
-
-        _tokenExists[tokenId] = true;
-
-        tokenData[tokenId] = MineralToken({
-            tokenId: tokenId,
+        
+        _tokens[tokenId] = MineralToken({
             mineralId: mineralId,
             details: details,
-            isMinted: true,
-            isAudited: false,
-            isInspected: false,
-            isPurchased: false,
-            currentOwner: msg.sender
+            owner: msg.sender,
+            flags: 0x01
         });
 
-        // ✅ NEW: store mapping from mineralId to tokenId
-        mineralIdToTokenId[mineralId] = tokenId;
-
-        emit MineralTokenMinted(tokenId, mineralId, details, msg.sender, to);
+        mineralToToken[mineralId] = tokenId;
+        emit Minted(tokenId, mineralId, to);
     }
 
-    /**
-    * @dev updates mineralToken 
-    * Only current owner can do update the token
-    * @notice Emits MineralTokenUpdate event
-    */
-    function updateToken(uint256 tokenId, string memory action, bool isAudited, bool isInspected, bool isPurchased) public onlyAuthorizedRoles {
-
-        if (!_exists(tokenId) || tokenId == 0)
-        revert Tokenization__InvalidTokenIdOrNotFound(tokenId);
-
-        if (ownerOf(tokenId) != msg.sender)
-        revert Tokenization__CallerNotMineralTokenOwner(tokenId, msg.sender);
-
-        MineralToken storage token = tokenData[tokenId];
-        token.isAudited = isAudited;
-        token.isInspected = isInspected;
-        token.isPurchased = isPurchased;
-
-        emit MineralTokenUpdated(tokenId, action, msg.sender);
-    } 
-
-
-        /*//////////////////////////////////////////////////////////////
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                  THIS FUNCTION REQUIRES ATTENTION
-                THE WAY WE HANDLE UPDATION OF TOKEN METADATA
-        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        //////////////////////////////////////////////////////////////*/
-
-    /**
-    * @dev updates mineralToken metadata
-    * @notice Emits MetadataUpdated event on successful updation of metadata
-    */
-    function updateMetadata(uint256 tokenId, string memory newDetails) public onlyAuthorizedRoles {
-
-        if (!_exists(tokenId) || tokenId == 0)
-        revert Tokenization__InvalidTokenIdOrNotFound(tokenId);
-
-        if (
-            ownerOf(tokenId) != msg.sender ||
-            hasRole(AUDITOR_ROLE, msg.sender) ||
-            hasRole(INSPECTOR_ROLE, msg.sender) ||
-            hasRole(MINTER_ROLE, msg.sender)
-           )
-
-           revert InsufficientPermissionsToPerformAction(msg.sender);
-
-        MineralToken storage token = tokenData[tokenId];
-        token.details =  newDetails;
-
-        emit MetadataUpdated(tokenId, newDetails, msg.sender);
-    }
-
-    /**
-    * @dev transfers ownership of a mineral token - from oldOwner to newOwner
-    * @notice Emits OwnershipTransferred event on successful transfer
-    */
-    function transferOwnership(uint256 tokenId, address newOwner) public onlyNonZeroAddress(newOwner)  onlySpecificRole(BUYER_ROLE) {
-
-        if (!_exists(tokenId))
-        revert Tokenization__TokenAlreadyExists(tokenId);
+    function updateToken(uint256 tokenId, string calldata, bool audited, bool inspected, bool purchased) external {
+        address owner = ownerOf(tokenId);
+        require(
+            owner == msg.sender || 
+            getApproved(tokenId) == msg.sender || 
+            isApprovedForAll(owner, msg.sender),
+            "NotOwner"
+        );
         
-        if (ownerOf(tokenId) != msg.sender)
-        revert Tokenization__CallerNotMineralTokenOwner(tokenId, msg.sender);
+        MineralToken storage t = _tokens[tokenId];
+        t.flags = _setFlag(t.flags, 1, audited);
+        t.flags = _setFlag(t.flags, 2, inspected);
+        t.flags = _setFlag(t.flags, 3, purchased);
         
-        address oldOwner = msg.sender;
-        _transfer(oldOwner, newOwner, tokenId);
-
-        MineralToken storage token = tokenData[tokenId];
-        token.currentOwner = newOwner;
-
-        emit OwnershipTransferred(tokenId, oldOwner, newOwner);
+        emit Updated(tokenId);
     }
 
-    /**
-    * @dev user with Admin role revokes token when certain instances occur
-    * like, fraudulent minerals, invalidMineral ID, unAudited, unInspected, counterfeit, etc
-    * @notice Emits MineralToken event on successful revokation of mineral token
-    */
-    function revokeToken(uint256 tokenId, string memory _reason) public  onlySpecificRole(DEFAULT_ADMIN_ROLE) {
-
-        if (!_exists(tokenId) || tokenId == 0)
-        revert Tokenization__InvalidTokenIdOrNotFound(tokenId);
-
-       _burn(tokenId);
-        delete tokenData[tokenId];
-        _tokenExists[tokenId] = false;
-
-        emit MineralTokenRevoked(tokenId, msg.sender, _reason);
+    function updateMetadata(uint256 tokenId, string calldata newDetails) external {
+        address owner = ownerOf(tokenId);
+        require(
+            owner == msg.sender || 
+            getApproved(tokenId) == msg.sender || 
+            isApprovedForAll(owner, msg.sender),
+            "NotOwner"
+        );
+        _tokens[tokenId].details = newDetails;
+        emit MetadataUpdated(tokenId);
     }
 
-    /**
-    * @dev Retrieves token mineralToken details for a specified mineral
-    * @return tokenData[tokenId] token data of specified tokenID
-    */
-    function getTokenDetails(uint256 tokenId) public view returns(MineralToken memory) {
-        if (!_exists(tokenId) || tokenId == 0)
-        revert Tokenization__InvalidTokenIdOrNotFound(tokenId);
-       
-        return tokenData[tokenId];
+    function transferOwnership(uint256 tokenId, address newOwner) external {
+        require(hasRole(BUYER_ROLE, msg.sender), "Unauthorized");
+        address owner = ownerOf(tokenId);
+        require(
+            owner == msg.sender || 
+            getApproved(tokenId) == msg.sender || 
+            isApprovedForAll(owner, msg.sender),
+            "NotOwner"
+        );
+        
+        _transfer(owner, newOwner, tokenId);
+        _tokens[tokenId].owner = newOwner;
+        
+        emit Transferred(tokenId, owner, newOwner);
     }
 
-    /**
-    * @dev burn token after being claimed
-    * @notice deletes tokenData of a specified tokenId
-    */
-    function burn(uint256 tokenId) internal {
-
-        if (!_exists(tokenId) || tokenId == 0)
-        revert Tokenization__InvalidTokenIdOrNotFound(tokenId);
-
-        super._burn(tokenId);
-        delete tokenData[tokenId];
+    function revokeToken(uint256 tokenId, string calldata reason) external {
+        require(hasRole(DEFAULT_ADMIN_ROLE, msg.sender), "Unauthorized");
+        require(_exists(tokenId), "Invalid");
+        _burn(tokenId);
+        delete _tokens[tokenId];
+        emit Revoked(tokenId, reason);
     }
 
-    /**
-    * @dev get tokenURI of specified token
-    * @return tokenURI[tokenId] token URI of specifiec tokenId
-    */
-    function tokenURI(uint256 tokenId) public view override (ERC721, ERC721URIStorage) returns (string memory) {
-
-        if (!_exists(tokenId)|| tokenId == 0)
-        revert Tokenization__InvalidTokenIdOrNotFound(tokenId);
-
-        return super.tokenURI(tokenId);
+    function getTokenDetails(uint256 tokenId) external view returns(
+        uint256 id,
+        string memory mineralId,
+        string memory details,
+        bool isMinted,
+        bool isAudited,
+        bool isInspected,
+        bool isPurchased,
+        address owner
+    ) {
+        require(_exists(tokenId), "Invalid");
+        MineralToken memory t = _tokens[tokenId];
+        return (
+            tokenId,
+            t.mineralId,
+            t.details,
+            (t.flags & 0x01) != 0,
+            (t.flags & 0x02) != 0,
+            (t.flags & 0x04) != 0,
+            (t.flags & 0x08) != 0,
+            t.owner
+        );
     }
 
-    /**
-    * @dev checks if token with specified tokenId exists
-    */
+    function _setFlag(uint8 flags, uint8 bit, bool value) private pure returns (uint8) {
+        return value ? uint8(flags | (1 << bit)) : uint8(flags & ~(1 << bit));
+    }
+
     function _exists(uint256 tokenId) internal view returns(bool) {
-        if (tokenId == 0)
-        revert Tokenization__InvalidTokenId(tokenId);
-        return _tokenExists[tokenId];
+        return _tokens[tokenId].owner != address(0);
     }
 
-    /**
-    * @dev Override supportsInterface() explicitly to resolve ambiguity
-    * Resolves ambiguity
-    */
-    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721URIStorage, AccessControl) returns(bool) {
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721, AccessControl) returns(bool) {
         return super.supportsInterface(interfaceId);
-
     }
 
-    // utility to get tokenId from mineralId
-    function getTokenIdByMineralId(string memory mineralId) public view returns (uint256) {
-        uint256 tokenId = mineralIdToTokenId[mineralId];
-
-        if (!_exists(tokenId)) {
-            revert Tokenization__InvalidTokenIdOrNotFound(tokenId);
-        }
-
+    function getTokenIdByMineralId(string calldata mineralId) external view returns (uint256) {
+        uint256 tokenId = mineralToToken[mineralId];
+        require(_exists(tokenId), "Invalid");
         return tokenId;
     }
 }

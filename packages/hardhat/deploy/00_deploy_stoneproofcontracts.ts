@@ -1,6 +1,5 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
 
 const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts, ethers } = hre;
@@ -13,8 +12,6 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     console.log(`Gas used for ${contractName}: ${receipt.gasUsed.toString()}`);
     console.log("///////////////////////////////////////////////////////////////////");
   };
-
-
 
   console.log("Deploying RolesManager...");
   const rolesManager = await deploy("RolesManager", {
@@ -53,13 +50,13 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
   });
   await logGasUsed("PrivacyGuard", privacyGuard);
 
-  // console.log("Deploying Tokenization...");
-  // const tokenization = await deploy("Tokenization", {
-  //   from: deployer,
-  //   log: true,
-  //   autoMine: true,
-  // });
-  // await logGasUsed("Tokenization", tokenization);
+  console.log("Deploying Tokenization...");
+  const tokenization = await deploy("Tokenization", {
+    from: deployer,
+    log: true,
+    autoMine: true,
+  });
+  await logGasUsed("Tokenization", tokenization);
 
   console.log("Deploying DisputeResolution...");
   const disputeResolution = await deploy("DisputeResolution", {
@@ -93,7 +90,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
       rolesManager.address,
       mineralRegistry.address,
       privacyGuard.address,
-      // tokenization.address,
+      tokenization.address,
       transactionLog.address,
       /*mineralTransporter.address,*/
       disputeResolution.address,
@@ -107,6 +104,5 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
   console.log("🚀 Deployment complete!");
 };
 
-console.log(Contract)
 export default deployMineralSystem;
 deployMineralSystem.tags = ["MineralSystem"];

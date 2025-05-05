@@ -56,6 +56,10 @@ contract Errors {
     error RolesManager__InvalidAddress();
     error RolesManager__InvalidRole();
 
+    // Roles Assignment and revocation
+    error RolesManager__AccountAlreadyHasRole();
+    error RolesManager__AccountDoesNotHaveRole();
+
 
 
 

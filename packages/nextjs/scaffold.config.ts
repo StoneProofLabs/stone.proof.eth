@@ -1,4 +1,4 @@
-import RolesManager  from "../hardhat/artifacts/contracts/core/RolesManager.sol/RolesManager.json";
+import RolesManager from "../hardhat/artifacts/contracts/core/RolesManager.sol/RolesManager.json";
 import * as chains from "viem/chains";
 
 export type ScaffoldConfig = {
@@ -23,9 +23,9 @@ const scaffoldConfig = {
     chains.hardhat,
     chains.mainnet,
     chains.sepolia,
-    chains.polygon, // Polygon network
-    chains.optimism,// Optimism network
-    chains.arbitrum,// Arbitrum network
+    chains.polygon,
+    chains.optimism,
+    chains.arbitrum,
     chains.base,
     chains.shape,
     chains.zora,
@@ -64,7 +64,7 @@ const scaffoldConfig = {
 
   contracts: {
     RolesManager: {
-      address: "0x5fbdb2315678afecb367f032d93f642f64180aa3", // Replace with your actual contract address
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3", // Replace with your actual contract address
       abi: RolesManager.abi, // Make sure this is imported correctly
     },
   },

@@ -465,6 +465,16 @@ const deployedContracts = {
         },
         {
           inputs: [],
+          name: "RolesManager__AccountAlreadyHasRole",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountDoesNotHaveRole",
+          type: "error",
+        },
+        {
+          inputs: [],
           name: "RolesManager__InvalidAddress",
           type: "error",
         },
@@ -1867,6 +1877,44 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "getAllRoleCounts",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "minerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "refinerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "transporterCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "auditorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "inspectorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyerCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "string",
@@ -1926,6 +1974,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "count",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -2141,25 +2208,6 @@ const deployedContracts = {
           name: "inspectMineral",
           outputs: [],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -2600,6 +2648,25 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "roleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes4",
               name: "interfaceId",
               type: "bytes4",
@@ -2705,8 +2772,10 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
+        getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRoleMemberCount: "contracts/core/RolesManager.sol",
         getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
@@ -2718,7 +2787,6 @@ const deployedContracts = {
         hasRole: "contracts/core/RolesManager.sol",
         hasTransporterRole: "contracts/core/RolesManager.sol",
         inspectMineral: "contracts/core/RolesManager.sol",
-        isAdmin: "contracts/core/RolesManager.sol",
         isMineralRegistered: "contracts/core/RolesManager.sol",
         mineralDetails: "contracts/core/RolesManager.sol",
         mineralHistories: "contracts/core/RolesManager.sol",
@@ -2733,6 +2801,7 @@ const deployedContracts = {
         revokeRefiner: "contracts/core/RolesManager.sol",
         revokeRole: "contracts/core/RolesManager.sol",
         revokeTransporter: "contracts/core/RolesManager.sol",
+        roleMemberCount: "contracts/core/RolesManager.sol",
         supportsInterface: "contracts/core/RolesManager.sol",
         transferMineral: "contracts/core/RolesManager.sol",
       },
@@ -3187,6 +3256,16 @@ const deployedContracts = {
             },
           ],
           name: "NotAssignedTransporter",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountAlreadyHasRole",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountDoesNotHaveRole",
           type: "error",
         },
         {
@@ -4519,6 +4598,44 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "getAllRoleCounts",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "minerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "refinerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "transporterCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "auditorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "inspectorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyerCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "string",
@@ -4578,6 +4695,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "count",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -4907,25 +5043,6 @@ const deployedContracts = {
           name: "inspectMineral",
           outputs: [],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -5302,6 +5419,25 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "roleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "string",
               name: "mineralId",
               type: "string",
@@ -5469,8 +5605,10 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
+        getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRoleMemberCount: "contracts/core/RolesManager.sol",
         getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
@@ -5482,7 +5620,6 @@ const deployedContracts = {
         hasRole: "contracts/core/RolesManager.sol",
         hasTransporterRole: "contracts/core/RolesManager.sol",
         inspectMineral: "contracts/core/RolesManager.sol",
-        isAdmin: "contracts/core/RolesManager.sol",
         isMineralRegistered: "contracts/core/RolesManager.sol",
         mineralDetails: "contracts/core/RolesManager.sol",
         mineralHistories: "contracts/core/RolesManager.sol",
@@ -5497,6 +5634,7 @@ const deployedContracts = {
         revokeRefiner: "contracts/core/RolesManager.sol",
         revokeRole: "contracts/core/RolesManager.sol",
         revokeTransporter: "contracts/core/RolesManager.sol",
+        roleMemberCount: "contracts/core/RolesManager.sol",
         supportsInterface: "contracts/core/RolesManager.sol",
         transferMineral: "contracts/core/RolesManager.sol",
       },
@@ -5962,6 +6100,16 @@ const deployedContracts = {
             },
           ],
           name: "NotAssignedTransporter",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountAlreadyHasRole",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountDoesNotHaveRole",
           type: "error",
         },
         {
@@ -7263,6 +7411,44 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "getAllRoleCounts",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "minerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "refinerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "transporterCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "auditorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "inspectorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyerCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "string",
@@ -7423,6 +7609,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "count",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -7651,25 +7856,6 @@ const deployedContracts = {
           name: "inspectMineral",
           outputs: [],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -8084,6 +8270,25 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "roleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes4",
               name: "interfaceId",
               type: "bytes4",
@@ -8181,8 +8386,10 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
+        getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRoleMemberCount: "contracts/core/RolesManager.sol",
         getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
@@ -8194,7 +8401,6 @@ const deployedContracts = {
         hasRole: "contracts/core/RolesManager.sol",
         hasTransporterRole: "contracts/core/RolesManager.sol",
         inspectMineral: "contracts/core/RolesManager.sol",
-        isAdmin: "contracts/core/RolesManager.sol",
         isMineralRegistered: "contracts/core/RolesManager.sol",
         mineralDetails: "contracts/core/RolesManager.sol",
         mineralHistories: "contracts/core/RolesManager.sol",
@@ -8209,6 +8415,7 @@ const deployedContracts = {
         revokeRefiner: "contracts/core/RolesManager.sol",
         revokeRole: "contracts/core/RolesManager.sol",
         revokeTransporter: "contracts/core/RolesManager.sol",
+        roleMemberCount: "contracts/core/RolesManager.sol",
         supportsInterface: "contracts/core/RolesManager.sol",
         transferMineral: "contracts/core/RolesManager.sol",
       },
@@ -8683,6 +8890,16 @@ const deployedContracts = {
         {
           inputs: [],
           name: "PrivacyGuard__InvalidEncryptedContent",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountAlreadyHasRole",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountDoesNotHaveRole",
           type: "error",
         },
         {
@@ -9922,6 +10139,44 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "getAllRoleCounts",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "minerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "refinerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "transporterCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "auditorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "inspectorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyerCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "string",
@@ -9981,6 +10236,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "count",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -10215,25 +10489,6 @@ const deployedContracts = {
           name: "inspectMineral",
           outputs: [],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -10610,6 +10865,25 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "roleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes4",
               name: "interfaceId",
               type: "bytes4",
@@ -10671,8 +10945,10 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
+        getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRoleMemberCount: "contracts/core/RolesManager.sol",
         getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
@@ -10684,7 +10960,6 @@ const deployedContracts = {
         hasRole: "contracts/core/RolesManager.sol",
         hasTransporterRole: "contracts/core/RolesManager.sol",
         inspectMineral: "contracts/core/RolesManager.sol",
-        isAdmin: "contracts/core/RolesManager.sol",
         isMineralRegistered: "contracts/core/RolesManager.sol",
         mineralDetails: "contracts/core/RolesManager.sol",
         mineralHistories: "contracts/core/RolesManager.sol",
@@ -10699,6 +10974,7 @@ const deployedContracts = {
         revokeRefiner: "contracts/core/RolesManager.sol",
         revokeRole: "contracts/core/RolesManager.sol",
         revokeTransporter: "contracts/core/RolesManager.sol",
+        roleMemberCount: "contracts/core/RolesManager.sol",
         supportsInterface: "contracts/core/RolesManager.sol",
         transferMineral: "contracts/core/RolesManager.sol",
       },
@@ -11158,6 +11434,16 @@ const deployedContracts = {
             },
           ],
           name: "NotAssignedTransporter",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountAlreadyHasRole",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountDoesNotHaveRole",
           type: "error",
         },
         {
@@ -12303,6 +12589,44 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "getAllRoleCounts",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "minerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "refinerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "transporterCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "auditorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "inspectorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyerCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "string",
@@ -12362,6 +12686,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "count",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -12577,25 +12920,6 @@ const deployedContracts = {
           name: "inspectMineral",
           outputs: [],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -12967,6 +13291,25 @@ const deployedContracts = {
           name: "revokeTransporter",
           outputs: [],
           stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "roleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -13513,6 +13856,16 @@ const deployedContracts = {
             },
           ],
           name: "NotAssignedTransporter",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountAlreadyHasRole",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountDoesNotHaveRole",
           type: "error",
         },
         {
@@ -14708,6 +15061,44 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "getAllRoleCounts",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "minerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "refinerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "transporterCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "auditorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "inspectorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyerCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "string",
@@ -14767,6 +15158,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "count",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -14982,25 +15392,6 @@ const deployedContracts = {
           name: "inspectMineral",
           outputs: [],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -15396,6 +15787,25 @@ const deployedContracts = {
           name: "revokeTransporter",
           outputs: [],
           stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "roleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -16114,6 +16524,16 @@ const deployedContracts = {
         },
         {
           inputs: [],
+          name: "RolesManager__AccountAlreadyHasRole",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountDoesNotHaveRole",
+          type: "error",
+        },
+        {
+          inputs: [],
           name: "RolesManager__InvalidAddress",
           type: "error",
         },
@@ -16505,25 +16925,6 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
-              indexed: false,
-              internalType: "uint256",
-              name: "_fromTokenId",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "_toTokenId",
-              type: "uint256",
-            },
-          ],
-          name: "BatchMetadataUpdate",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
               indexed: true,
               internalType: "address",
               name: "assignee",
@@ -16612,35 +17013,10 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
-              indexed: false,
-              internalType: "uint256",
-              name: "_tokenId",
-              type: "uint256",
-            },
-          ],
-          name: "MetadataUpdate",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
               indexed: true,
               internalType: "uint256",
               name: "tokenId",
               type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "newDetails",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "address",
-              name: "updater",
-              type: "address",
             },
           ],
           name: "MetadataUpdated",
@@ -16892,93 +17268,6 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
-              indexed: true,
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "mineralId",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "metadata",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "address",
-              name: "minter",
-              type: "address",
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "mintedTo",
-              type: "address",
-            },
-          ],
-          name: "MineralTokenMinted",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "revoker",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "reason",
-              type: "string",
-            },
-          ],
-          name: "MineralTokenRevoked",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "uint256",
-              name: "tokenId",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "action",
-              type: "string",
-            },
-            {
-              indexed: false,
-              internalType: "address",
-              name: "updater",
-              type: "address",
-            },
-          ],
-          name: "MineralTokenUpdated",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
               indexed: false,
               internalType: "string",
               name: "mineralId",
@@ -17028,19 +17317,19 @@ const deployedContracts = {
               type: "uint256",
             },
             {
-              indexed: true,
-              internalType: "address",
-              name: "oldOwner",
-              type: "address",
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
             },
             {
               indexed: true,
               internalType: "address",
-              name: "newOwner",
+              name: "to",
               type: "address",
             },
           ],
-          name: "OwnershipTransferred",
+          name: "Minted",
           type: "event",
         },
         {
@@ -17085,6 +17374,25 @@ const deployedContracts = {
             },
           ],
           name: "RefinerRoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+          ],
+          name: "Revoked",
           type: "event",
         },
         {
@@ -17248,6 +17556,31 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "from",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "to",
+              type: "address",
+            },
+          ],
+          name: "Transferred",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
               internalType: "address",
               name: "assignee",
               type: "address",
@@ -17285,6 +17618,19 @@ const deployedContracts = {
             },
           ],
           name: "TransporterRoleRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "Updated",
           type: "event",
         },
         {
@@ -17549,6 +17895,44 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "getAllRoleCounts",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "minerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "refinerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "transporterCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "auditorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "inspectorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyerCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "uint256",
@@ -17635,6 +18019,25 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "count",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "address",
               name: "account",
               type: "address",
@@ -17662,51 +18065,44 @@ const deployedContracts = {
           name: "getTokenDetails",
           outputs: [
             {
-              components: [
-                {
-                  internalType: "uint256",
-                  name: "tokenId",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralId",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "details",
-                  type: "string",
-                },
-                {
-                  internalType: "bool",
-                  name: "isMinted",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "address",
-                  name: "currentOwner",
-                  type: "address",
-                },
-              ],
-              internalType: "struct Tokenization.MineralToken",
-              name: "",
-              type: "tuple",
+              internalType: "uint256",
+              name: "id",
+              type: "uint256",
+            },
+            {
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              internalType: "string",
+              name: "details",
+              type: "string",
+            },
+            {
+              internalType: "bool",
+              name: "isMinted",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "isAudited",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "isInspected",
+              type: "bool",
+            },
+            {
+              internalType: "bool",
+              name: "isPurchased",
+              type: "bool",
+            },
+            {
+              internalType: "address",
+              name: "owner",
+              type: "address",
             },
           ],
           stateMutability: "view",
@@ -17928,25 +18324,6 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
               name: "owner",
               type: "address",
             },
@@ -18132,7 +18509,7 @@ const deployedContracts = {
               type: "string",
             },
           ],
-          name: "mineralIdToTokenId",
+          name: "mineralToToken",
           outputs: [
             {
               internalType: "uint256",
@@ -18403,7 +18780,7 @@ const deployedContracts = {
             },
             {
               internalType: "string",
-              name: "_reason",
+              name: "reason",
               type: "string",
             },
           ],
@@ -18428,6 +18805,25 @@ const deployedContracts = {
           name: "revokeTransporter",
           outputs: [],
           stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "roleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
           type: "function",
         },
         {
@@ -18646,22 +19042,22 @@ const deployedContracts = {
             },
             {
               internalType: "string",
-              name: "action",
+              name: "",
               type: "string",
             },
             {
               internalType: "bool",
-              name: "isAudited",
+              name: "audited",
               type: "bool",
             },
             {
               internalType: "bool",
-              name: "isInspected",
+              name: "inspected",
               type: "bool",
             },
             {
               internalType: "bool",
-              name: "isPurchased",
+              name: "purchased",
               type: "bool",
             },
           ],
@@ -18672,28 +19068,18 @@ const deployedContracts = {
         },
       ],
       inheritedFunctions: {
-        approve:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        balanceOf:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        getApproved:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        isApprovedForAll:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        name: "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        ownerOf:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        safeTransferFrom:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        setApprovalForAll:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+        approve: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        balanceOf: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        getApproved: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        isApprovedForAll: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        name: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        ownerOf: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        safeTransferFrom: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        setApprovalForAll: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
         supportsInterface: "contracts/core/RolesManager.sol",
-        symbol:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        tokenURI:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
-        transferFrom:
-          "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol",
+        symbol: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        tokenURI: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+        transferFrom: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
         AUDITOR_ROLE: "contracts/core/RolesManager.sol",
         BUYER_ROLE: "contracts/core/RolesManager.sol",
         DEFAULT_ADMIN_ROLE: "contracts/core/RolesManager.sol",
@@ -18709,8 +19095,10 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
+        getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRoleMemberCount: "contracts/core/RolesManager.sol",
         getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
@@ -18722,7 +19110,6 @@ const deployedContracts = {
         hasRole: "contracts/core/RolesManager.sol",
         hasTransporterRole: "contracts/core/RolesManager.sol",
         inspectMineral: "contracts/core/RolesManager.sol",
-        isAdmin: "contracts/core/RolesManager.sol",
         isMineralRegistered: "contracts/core/RolesManager.sol",
         mineralDetails: "contracts/core/RolesManager.sol",
         mineralHistories: "contracts/core/RolesManager.sol",
@@ -18737,6 +19124,7 @@ const deployedContracts = {
         revokeRefiner: "contracts/core/RolesManager.sol",
         revokeRole: "contracts/core/RolesManager.sol",
         revokeTransporter: "contracts/core/RolesManager.sol",
+        roleMemberCount: "contracts/core/RolesManager.sol",
         transferMineral: "contracts/core/RolesManager.sol",
       },
     },
@@ -19190,6 +19578,16 @@ const deployedContracts = {
             },
           ],
           name: "NotAssignedTransporter",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountAlreadyHasRole",
+          type: "error",
+        },
+        {
+          inputs: [],
+          name: "RolesManager__AccountDoesNotHaveRole",
           type: "error",
         },
         {
@@ -20409,6 +20807,44 @@ const deployedContracts = {
           type: "function",
         },
         {
+          inputs: [],
+          name: "getAllRoleCounts",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "minerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "refinerCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "transporterCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "auditorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "inspectorCount",
+              type: "uint256",
+            },
+            {
+              internalType: "uint256",
+              name: "buyerCount",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
           inputs: [
             {
               internalType: "string",
@@ -20515,6 +20951,25 @@ const deployedContracts = {
               internalType: "bytes32",
               name: "",
               type: "bytes32",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "bytes32",
+              name: "role",
+              type: "bytes32",
+            },
+          ],
+          name: "getRoleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "count",
+              type: "uint256",
             },
           ],
           stateMutability: "view",
@@ -20832,25 +21287,6 @@ const deployedContracts = {
           name: "inspectMineral",
           outputs: [],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "account",
-              type: "address",
-            },
-          ],
-          name: "isAdmin",
-          outputs: [
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -21273,6 +21709,25 @@ const deployedContracts = {
         {
           inputs: [
             {
+              internalType: "bytes32",
+              name: "",
+              type: "bytes32",
+            },
+          ],
+          name: "roleMemberCount",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
               internalType: "bytes4",
               name: "interfaceId",
               type: "bytes4",
@@ -21334,8 +21789,10 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
+        getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
+        getRoleMemberCount: "contracts/core/RolesManager.sol",
         getRolesForAddress: "contracts/core/RolesManager.sol",
         grantRole: "contracts/core/RolesManager.sol",
         hasAdminRole: "contracts/core/RolesManager.sol",
@@ -21347,7 +21804,6 @@ const deployedContracts = {
         hasRole: "contracts/core/RolesManager.sol",
         hasTransporterRole: "contracts/core/RolesManager.sol",
         inspectMineral: "contracts/core/RolesManager.sol",
-        isAdmin: "contracts/core/RolesManager.sol",
         isMineralRegistered: "contracts/core/RolesManager.sol",
         mineralDetails: "contracts/core/RolesManager.sol",
         mineralHistories: "contracts/core/RolesManager.sol",
@@ -21362,6 +21818,7 @@ const deployedContracts = {
         revokeRefiner: "contracts/core/RolesManager.sol",
         revokeRole: "contracts/core/RolesManager.sol",
         revokeTransporter: "contracts/core/RolesManager.sol",
+        roleMemberCount: "contracts/core/RolesManager.sol",
         supportsInterface: "contracts/core/RolesManager.sol",
         transferMineral: "contracts/core/RolesManager.sol",
       },
