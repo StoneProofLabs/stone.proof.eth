@@ -204,7 +204,7 @@ export const getSidebarItems = (basePath: string): SidebarItem[] => {
         {
           name: "Refineries",
           path: `${basePath}/refineries`,
-          icon: "/dashboard/icon_set/miners.svg",
+          icon: "/refiner.svg",
           iconAlt: "Refineries icon",
         },
         {

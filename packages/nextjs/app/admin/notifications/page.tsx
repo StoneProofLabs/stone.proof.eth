@@ -52,7 +52,7 @@ const AccessDeniedCard = ({
 
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Access Restricted</h2>
         <p className="text-gray-600 dark:text-gray-300">
-          Your wallet doesn't have the required permissions to view notifications.
+          Your wallet doesn&apos;t have the required permissions to view notifications.
         </p>
 
         <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
@@ -181,7 +181,7 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
 );
 
 export default function Page() {
-  const [notification, setNotifications] = useState(notifications);
+  const [notificationList, setNotifications] = useState(notifications);
   const { address, isConnected, isConnecting } = useAccount();
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
@@ -195,14 +195,12 @@ export default function Page() {
     contractName: "RolesManager",
     functionName: "hasMinerRole",
     args: [address],
-    enabled: isConnected,
   });
 
   const { data: isAdmin, isLoading: isLoadingAdminCheck } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasAdminRole",
     args: [address],
-    enabled: isConnected,
   });
 
   const handleRefreshAccess = async () => {
@@ -232,7 +230,7 @@ export default function Page() {
 
   const handleClose = (id: number) => {
     setNotifications(
-      notification.map(
+      notificationList.map(
         (note: {
           id: number;
           type: "error" | "success" | "warning" | "info";
@@ -288,14 +286,14 @@ export default function Page() {
             </div>
 
             <div className="flex flex-wrap gap-2 md:gap-1">
-              <button className="flex-1 md:flex-none bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+              <button className="flex-1 md:flex-none bg-[#202634] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
                 <span className="flex items-center gap-2">
                   <h1 className="text-sm translate-y-[7px]">Download Report</h1>
                   <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" />
                 </span>
               </button>
 
-              <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+              <button className="bg-[#202634] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
                 <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
               </button>
             </div>
@@ -303,37 +301,71 @@ export default function Page() {
 
           {/* the stats cards */}
           <div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <StatsCard
-                title="Total Actions today"
-                value="3405"
-                tagName="Shipments"
-                chartData={mineralsData}
-                color="blue"
-                tagLabel="Top actions"
-                bgColor="bg-[#060910]"
-              />
+            <p className="text-[18px] md:text-[20px] font-bold m-0 leading-tight">Minerals History</p>
+          </div>
 
-              <StatsCard
-                title="Succeeded contracts"
-                value="27"
-                tagName="Refining"
-                chartData={transfersData}
-                color="green"
-                tagLabel="Top contracts"
-                bgColor="bg-[#060910]"
-              />
+          <div className="w-full md:w-auto md:scale-90">
+            <Search />
+          </div>
 
-              <StatsCard
-                title="Total issues"
-                value="27"
-                tagName="Impurities"
-                chartData={shipmentsData}
-                color="red"
-                tagLabel="Top issues"
-                bgColor="bg-[#060910]"
-              />
-            </div>
+          <div className="flex flex-wrap gap-2">
+            <button className="flex-1 md:flex-none bg-[#202634] border border-[#323539] flex items-center justify-center gap-1 font-medium px-3 py-1 rounded-[6px] text-sm">
+              <span className="flex items-center gap-1">
+                <span>Download Report</span>
+                <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" width={14} height={14} />
+              </span>
+            </button>
+
+            <Link
+              href={"#"}
+              className="flex-1 md:flex-none bg-red-500 gap-1 font-medium px-3 py-1 rounded-[6px] flex items-center justify-center text-sm"
+            >
+              Clear history
+            </Link>
+
+            <button className="bg-[#202634] border border-[#323539] flex items-center justify-center px-2 py-1 rounded-[6px]">
+              <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" width={14} height={14} />
+            </button>
+          </div>
+
+          {/* the stats cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <StatsCard
+              title="Succeeded contracts"
+              value="27"
+              tagName="Refining"
+              chartData={transfersData}
+              color="green"
+              tagLabel="Top contracts"
+              bgColor="bg-[#060910]"
+            />
+
+            <StatsCard
+              title="Total issues"
+              value="27"
+              tagName="Impurities"
+              chartData={shipmentsData}
+              color="red"
+              tagLabel="Top issues"
+              bgColor="bg-[#060910]"
+            />
+          </div>
+
+          {/* the notifications */}
+          <div className="p-4 min-h-screen">
+            {notificationList
+              .filter(note => note.visible)
+              .map(note => (
+                <NotificationCard
+                  key={note.id}
+                  bgColor="bg-[#060910]"
+                  type={note.type}
+                  title={note.title}
+                  message={note.message}
+                  onClose={() => handleClose(note.id)}
+                  onShowMore={() => console.log(`Showing more details for notification ${note.id}`)}
+                />
+              ))}
           </div>
 
           {/* the notifications */}
@@ -370,7 +402,7 @@ export default function Page() {
 
             {/* the notifications */}
             <div className="p-4 min-h-screen">
-              {notification
+              {notificationList
                 .filter(note => note.visible)
                 .map(note => (
                   <NotificationCard
