@@ -75,10 +75,10 @@ const Hero: React.FC = () => {
               Get Started
             </Link>
 
-            {/* Spotlight blur effect specifically behind ConnectWalletButton */}
-            <div className="absolute right-0 sm:right-[8%] w-[200px] h-[100px] rounded-full bg-white opacity-15 blur-[50px] z-10"></div>
+            {/* spotlight blur effect */}
+            <div className="absolute right-0 sm:right-[8%] w-[200px] h-[100px] rounded-full bg-white opacity-15 blur-[50px] z-10 hover:w-[300px] hover:h-[200px]"></div>
 
-            {/* ConnectWalletButton with higher z-index to appear above the spotlight */}
+            {/* ConnectWalletButton */}
             <div className="relative z-20">
               <ConnectWalletButton />
             </div>
@@ -87,19 +87,20 @@ const Hero: React.FC = () => {
 
         {/* Dashboard Image */}
         <div className="relative z-10 flex justify-center w-full mt-2">
-          {/* Big stone at top right of dashboard, close to center */}
+          {/* big stone at top right of dashboard */}
           <img
             src="/landing/hero_stone.svg"
             alt="Stone Top Right"
             className="hidden lg:block absolute top-[-260px] right-[1.5%] w-[480px] md:w-[580px] lg:w-[640px] pointer-events-none select-none"
             style={{ zIndex: 2 }}
           />
-          <div className="w-full max-w-6xl">
+          <div className="w-full max-w-7xl">
+            {" "}
             <Image
               src="/landing/banner-stoneproof.svg"
               alt="StoneProof Admin Dashboard"
-              width={1600}
-              height={800}
+              width={1800}
+              height={900}
               className="rounded-xl shadow-2xl w-full h-auto object-cover"
               priority
               quality={100}
