@@ -71,7 +71,7 @@ export default function LoginPage() {
         {/* Card */}
         <div className="w-full max-w-xl flex flex-col px-0 sm:px-6">
           {/* Card Body */}
-          <div className="bg-[#0A0D14] rounded-xl px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col border border-[#23272F]">
+          <div className=" rounded-xl px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col border border-[#23272F]">
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="w-full">
                 <label htmlFor="email" className="block text-sm font-medium text-white mb-2">
