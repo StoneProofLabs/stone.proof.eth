@@ -76,7 +76,7 @@ export default function Page() {
         </div>
 
         {/* the table */}
-        <NotificationList notifications={mockDisputes} />
+        <NotificationList baseUrl="auditor" notifications={mockDisputes} />
       </div>
 
       {/* the other metric cards */}

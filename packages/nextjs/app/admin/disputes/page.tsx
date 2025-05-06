@@ -88,6 +88,7 @@ export default function Page() {
           bgColor="bg-[#060910]"
           expandedBgColor="bg-[#060910]"
           borderColor="border-[#23262B]"
+          baseUrl="admin"
         />
       </div>
 
