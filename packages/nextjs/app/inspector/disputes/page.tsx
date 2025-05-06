@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
 import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
-import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
+import MineralDisputesGraphCard from "~~/components/dashboard/admin/MineralDisputesGraphCard";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
@@ -47,7 +47,7 @@ export default function Page() {
       <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralActivity />
+            <MineralDisputesGraphCard />
           </div>
         </div>
         <div className="w-full lg:w-1/3">

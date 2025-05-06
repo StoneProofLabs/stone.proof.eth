@@ -206,7 +206,7 @@ export default function InspectMinerals() {
                   </button>
                   {mineralStatusDropdownOpen && (
                     <div className="absolute z-10 mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-md shadow-lg">
-                      {["Valid Mineral name", "Verified", "Pending"].map(status => (
+                      {["Current status", "Verified", "Pending"].map(status => (
                         <button
                           type="button"
                           key={status}
