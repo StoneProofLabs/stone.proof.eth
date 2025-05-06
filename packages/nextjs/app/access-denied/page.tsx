@@ -1,9 +1,9 @@
 "use client";
 
-import { ShieldAlert } from "lucide-react";
-import { Button } from "~~/components/ui/button";
 import { useSearchParams } from "next/navigation";
+import { ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
+import { Button } from "~~/components/ui/button";
 
 export default function AccessDeniedPage() {
   const searchParams = useSearchParams();

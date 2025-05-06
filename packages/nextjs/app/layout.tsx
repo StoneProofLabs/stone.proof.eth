@@ -1,9 +1,9 @@
 import { Montserrat } from "next/font/google";
+import { ToastProvider } from "./lib/toast";
 import "@rainbow-me/rainbowkit/styles.css";
 import { Metadata } from "next";
 import { ScaffoldEthAppWithProviders } from "~~/components/ScaffoldEthAppWithProviders";
 import { ThemeProvider } from "~~/components/ThemeProvider";
-import { ToastProvider } from "./lib/toast";
 import "~~/styles/globals.css";
 
 const montserrat = Montserrat({
@@ -14,7 +14,7 @@ const montserrat = Montserrat({
 export const metadata: Metadata = {
   title: "Stone.proof | Blockchain Mineral Trading Platform",
   description: "Secure, transparent, and efficient mineral trading platform powered by blockchain technology.",
-  keywords: "blockchain, mineral trading, cryptocurrency, supply chain, stone proof",
+  keywords: "blockchain, mineral trading, cryptocurrency, supply chain, stone proof, minerals",
   openGraph: {
     title: "Stone.proof | Blockchain Mineral Trading Platform",
     description: "Secure, transparent, and efficient mineral trading platform powered by blockchain technology.",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     images: ["/og-image.jpg"],
   },
   icons: {
-    icon: "/logo.png",
+    icon: "/dashboard/stone_proof_logo.svg",
   },
 };
 

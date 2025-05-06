@@ -7,7 +7,7 @@ import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import StatsCard from "~~/components/dashboard/overview/statsCard";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
-import { mineralsData,demands, reports, shipments, shipmentsData, supplyData, transfersData } from "~~/data/data";
+import { demands, mineralsData, reports, shipments, shipmentsData, supplyData, transfersData } from "~~/data/data";
 
 // dummy user
 interface User {
@@ -55,13 +55,7 @@ export default function Page() {
       {/* the stats cards */}
       <div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          <StatsCard
-            title="Total Transactions"
-            value="30"
-            tagName="Coltan"
-            chartData={mineralsData}
-            color="blue"
-          />
+          <StatsCard title="Total Transactions" value="30" tagName="Coltan" chartData={mineralsData} color="blue" />
 
           <StatsCard title="Inspected" value="27 Tons" tagName="Gold" chartData={transfersData} color="green" />
 

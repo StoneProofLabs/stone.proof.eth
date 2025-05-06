@@ -47,7 +47,7 @@
     "eslint": "~8.57.1",
     "eslint-config-prettier": "~8.10.0",
     "eslint-plugin-prettier": "~5.2.1",
-    "ethers": "~6.13.2",
+    "ethers": "^6.13.7",
     "hardhat": "~2.22.10",
     "hardhat-deploy": "~0.12.4",
     "hardhat-deploy-ethers": "~0.4.2",

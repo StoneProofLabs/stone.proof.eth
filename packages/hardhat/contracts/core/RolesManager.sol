@@ -14,10 +14,9 @@ import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol"
 import { Errors } from "../utils/Errors.sol";
 
 contract RolesManager is AccessControl, Errors {
-    /*/////////////////////////////////////////////////////
+            /*/////////////////////////////////////////////////////
                            SUPPLYCHAIN ROLES
             /////////////////////////////////////////////////////*/
-
     bytes32 public constant MINER_ROLE = keccak256("MINER_ROLE");
     bytes32 public constant REFINER_ROLE = keccak256("REFINER_ROLE");
     bytes32 public constant TRANSPORTER_ROLE = keccak256("TRANSPORTER_ROLE");
@@ -64,13 +63,13 @@ contract RolesManager is AccessControl, Errors {
     event BuyerRoleAssigned(address indexed assignee, uint256 timestamp);
     event AdminRoleAssigned(address indexed assignee, uint256 timestamp);
     // For every revoked role
-    event MinerRoleRevoked(address indexed revokee, uint256 timestamp);
-    event RefinerRoleRevoked(address indexed revokee, uint256 timestamp);
-    event TransporterRoleRevoked(address indexed revokee, uint256 timestamp);
-    event AuditorRoleRevoked(address indexed revokee, uint256 timestamp);
-    event InspectorRoleRevoked(address indexed revokee, uint256 timestamp);
-    event BuyerRoleRevoked(address indexed revokee, uint256 timestamp);
-    event AdminRoleRevoked(address indexed revokee, uint256 timestamp);
+    event MinerRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event RefinerRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event TransporterRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event AuditorRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event InspectorRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event BuyerRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
+    event AdminRoleRevoked(address indexed revokee, string reason, uint256 timestamp);
 
     struct MineralDetails {
         string id;
@@ -102,16 +101,39 @@ contract RolesManager is AccessControl, Errors {
     uint256 private nonce = block.timestamp + block.number;
     mapping(string => MineralDetails) public mineralDetails;
     mapping(string => MineralHistory[]) public mineralHistories;
+    mapping(bytes32 => uint256) public roleMemberCount;
+
 
     // Set the deployer as the admin
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        // _setupRole(MINER_ROLE, msg.sender);
-        // _setupRole(AUDITOR_ROLE, msg.sender);
-        // _setupRole(INSPECTOR_ROLE, msg.sender);
-        // _setsupRole(BUYER_ROLE, msg.sender);
-        // _setupRole(REFINER_ROLE, msg.sender);
-        // _setupRole(TRANSPORTER_ROLE, msg.sender);
+        roleMemberCount[DEFAULT_ADMIN_ROLE] = 1;
+        emit AdminRoleAssigned(msg.sender,block.timestamp);
+        
+        _setupRole(MINER_ROLE, msg.sender);
+        roleMemberCount[MINER_ROLE] = 0;
+        emit MinerRoleAssigned(msg.sender, block.timestamp);
+
+        _setupRole(AUDITOR_ROLE, msg.sender);
+        roleMemberCount[AUDITOR_ROLE] = 0;
+        emit AuditorRoleAssigned(msg.sender, block.timestamp);
+
+        _setupRole(INSPECTOR_ROLE, msg.sender);
+        roleMemberCount[INSPECTOR_ROLE] = 0;
+        emit InspectorRoleAssigned(msg.sender, block.timestamp);
+
+        _setupRole(BUYER_ROLE, msg.sender);
+        roleMemberCount[BUYER_ROLE] = 0;
+        emit BuyerRoleAssigned(msg.sender, block.timestamp);
+
+        _setupRole(REFINER_ROLE, msg.sender);
+        roleMemberCount[REFINER_ROLE] = 0;
+        emit RefinerRoleAssigned(msg.sender, block.timestamp);
+        
+        _setupRole(TRANSPORTER_ROLE, msg.sender);
+         roleMemberCount[TRANSPORTER_ROLE] = 0;
+         emit TransporterRoleAssigned(msg.sender, block.timestamp);
+
     }
 
     /**
@@ -420,51 +442,162 @@ contract RolesManager is AccessControl, Errors {
     ////// ROLE GRANTING ////////////
     /////////////////////////////////
 
-    /**
-     * @dev assigns role to an account - only by admin
-     * @param account The address of the account to be assigned a role by admin
-     * @notice Emits event of the assigned role
-     */
+    /*////////////////////////////////////////////////////
+                  ROLE MANAGEMENT FUNCTIONS
+    ////////////////////////////////////////////////////*/
 
     function assignMiner(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
-        grantRole(MINER_ROLE, account);
-
+        if (hasMinerRole(account)) revert RolesManager__AccountAlreadyHasRole();
+        _grantRole(MINER_ROLE, account);
+        roleMemberCount[MINER_ROLE]++;
         emit MinerRoleAssigned(account, block.timestamp);
     }
 
     function assignRefiner(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
-        grantRole(REFINER_ROLE, account);
-
+        if (hasRefinerRole(account)) revert RolesManager__AccountAlreadyHasRole();
+        _grantRole(REFINER_ROLE, account);
+        roleMemberCount[REFINER_ROLE]++;
         emit RefinerRoleAssigned(account, block.timestamp);
     }
 
     function assignTransporter(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
-        grantRole(TRANSPORTER_ROLE, account);
-
+        if (hasTransporterRole(account)) revert RolesManager__AccountAlreadyHasRole();
+        _grantRole(TRANSPORTER_ROLE, account);
+        roleMemberCount[TRANSPORTER_ROLE]++;
         emit TransporterRoleAssigned(account, block.timestamp);
     }
 
     function assignAuditor(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
-        grantRole(AUDITOR_ROLE, account);
-
+        if (hasAuditorRole(account)) revert RolesManager__AccountAlreadyHasRole();
+        _grantRole(AUDITOR_ROLE, account);
+        roleMemberCount[AUDITOR_ROLE]++;
         emit AuditorRoleAssigned(account, block.timestamp);
     }
 
     function assignInspector(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
-        grantRole(INSPECTOR_ROLE, account);
-
+        if (hasInspectorRole(account)) revert RolesManager__AccountAlreadyHasRole();
+        _grantRole(INSPECTOR_ROLE, account);
+        roleMemberCount[INSPECTOR_ROLE]++;
         emit InspectorRoleAssigned(account, block.timestamp);
     }
 
     function assignBuyer(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
-        grantRole(BUYER_ROLE, account);
-
+        if (hasBuyerRole(account)) revert RolesManager__AccountAlreadyHasRole();
+        _grantRole(BUYER_ROLE, account);
+        roleMemberCount[BUYER_ROLE]++;
         emit BuyerRoleAssigned(account, block.timestamp);
     }
 
-    /////////////////////////////////
-    // ROLE REVOKATION /////////////
-    ////////////////////////////////
+
+             /////////////////////////////////
+             // ROLE REVOKATION /////////////
+             ////////////////////////////////
+
+    function revokeMiner(address account, string memory reason) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (!hasMinerRole(account)) revert RolesManager__AccountDoesNotHaveRole();
+        revokeRole(MINER_ROLE, account);
+        if (roleMemberCount[MINER_ROLE] > 0) {
+        roleMemberCount[MINER_ROLE]--;
+
+        }
+        emit MinerRoleRevoked(account, reason, block.timestamp);
+    }
+
+    function revokeRefiner(address account, string memory reason) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (!hasRefinerRole(account)) revert RolesManager__AccountDoesNotHaveRole();
+        revokeRole(REFINER_ROLE, account);
+        
+          if (roleMemberCount[REFINER_ROLE] > 0) {
+        roleMemberCount[REFINER_ROLE]--;
+
+        }
+        emit RefinerRoleRevoked(account, reason, block.timestamp);
+    }
+
+    function revokeTransporter(address account, string memory reason) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (!hasTransporterRole(account)) revert RolesManager__AccountDoesNotHaveRole();
+        revokeRole(TRANSPORTER_ROLE, account);
+        if (roleMemberCount[TRANSPORTER_ROLE] > 0) {
+            roleMemberCount[TRANSPORTER_ROLE]--;
+        }
+        emit TransporterRoleRevoked(account, reason, block.timestamp);
+    }
+
+    function revokeInspector(address account, string memory reason) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (!hasInspectorRole(account)) revert RolesManager__AccountDoesNotHaveRole();
+        revokeRole(INSPECTOR_ROLE, account);
+        if (roleMemberCount[INSPECTOR_ROLE] > 0) {
+            roleMemberCount[INSPECTOR_ROLE]--;
+        }
+        emit InspectorRoleRevoked(account, reason, block.timestamp);
+    }
+
+    function revokeAuditor(address account, string memory reason) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (!hasAuditorRole(account)) revert RolesManager__AccountDoesNotHaveRole();
+        revokeRole(AUDITOR_ROLE, account);
+        if (roleMemberCount[AUDITOR_ROLE] > 0) {
+            roleMemberCount[AUDITOR_ROLE]--;
+        }
+        emit AuditorRoleRevoked(account, reason, block.timestamp);
+    }
+
+    function revokeBuyer(address account, string memory reason) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        if (!hasBuyerRole(account)) revert RolesManager__AccountDoesNotHaveRole();
+        revokeRole(BUYER_ROLE, account);
+        if (roleMemberCount[BUYER_ROLE] > 0) {
+            roleMemberCount[BUYER_ROLE]--;
+        }
+        emit BuyerRoleRevoked(account, reason, block.timestamp);
+    }
+
+    /*/////////////////////////////////////////////////////
+                  NEW ROLE COUNT FUNCTIONS
+    /////////////////////////////////////////////////////*/
+
+    /**
+     * @dev Returns the number of accounts that have a specific role
+     * @param role The role to query member count for
+     * @return count The number of accounts with the role
+     */
+    function getRoleMemberCount(bytes32 role) public view returns (uint256 count) {
+        if (!isValidRole(role)) revert RolesManager__InvalidRole();
+        return roleMemberCount[role];
+    }
+
+    /**
+     * @dev Returns all role counts in a single call
+     * @return minerCount Number of miners
+     * @return refinerCount Number of refiners
+     * @return transporterCount Number of transporters
+     * @return auditorCount Number of auditors
+     * @return inspectorCount Number of inspectors
+     * @return buyerCount Number of buyers
+     */
+    function getAllRoleCounts() public view returns (
+        uint256 minerCount,
+        uint256 refinerCount,
+        uint256 transporterCount,
+        uint256 auditorCount,
+        uint256 inspectorCount,
+        uint256 buyerCount
+    ) {
+        return (
+            roleMemberCount[MINER_ROLE],
+            roleMemberCount[REFINER_ROLE],
+            roleMemberCount[TRANSPORTER_ROLE],
+            roleMemberCount[AUDITOR_ROLE],
+            roleMemberCount[INSPECTOR_ROLE],
+            roleMemberCount[BUYER_ROLE]
+        );
+    }
+
+    // ... (keep all your existing functions below this point) ...
+    // Only modification needed is to ensure the _setupRole function also increments counters:
+    function _setupRole(bytes32 role, address account) internal  {
+        _grantRole(role, account);
+
+        roleMemberCount[role]++;
+    }
 
     /**
      * @dev Revokes role from an account - onlydmin
@@ -472,40 +605,7 @@ contract RolesManager is AccessControl, Errors {
      * @notice Emits event of the revoked role
      */
 
-    function revokeMiner(address account) external {
-        revokeRole(MINER_ROLE, account);
-
-        emit MinerRoleRevoked(account, block.timestamp);
-    }
-
-    function revokeRefiner(address account) external {
-        revokeRole(REFINER_ROLE, account);
-
-        emit RefinerRoleRevoked(account, block.timestamp);
-    }
-
-    function revokeTransporter(address account) external {
-        revokeRole(TRANSPORTER_ROLE, account);
-
-        emit TransporterRoleRevoked(account, block.timestamp);
-    }
-
-    function revokeInspector(address account) external {
-        revokeRole(INSPECTOR_ROLE, account);
-
-        emit InspectorRoleRevoked(account, block.timestamp);
-    }
-
-    function revokeAuditor(address account) external {
-        revokeRole(AUDITOR_ROLE, account);
-
-        emit AuditorRoleRevoked(account, block.timestamp);
-    }
-
-    function revokeBuyer(address account) external {
-        revokeRole(BUYER_ROLE, account);
-    }
-
+   
     /*/////////////////////////////////////////////////////
    ====================================================
             HELPER FUNCTIONS SECTION
@@ -516,13 +616,66 @@ contract RolesManager is AccessControl, Errors {
     //////// ROLE OWNERSHIP CHECKS //////////////////
     /////////////////////////////////////////////////
 
-    function isAdmin(address account) external view returns (bool) {
-        return hasRole(DEFAULT_ADMIN_ROLE, account);
+
+/**
+ * @dev Returns all roles assigned to a given address
+ * @param account The address to check roles for
+ * @return roles An array of role names the address has
+ */
+function getRolesForAddress(address account) public view onlyNonZeroAddress(account) returns (string[] memory roles) {
+    // Count how many roles the address has
+    uint256 roleCount = 0;
+    
+    if (hasRole(DEFAULT_ADMIN_ROLE, account)) roleCount++;
+    if (hasRole(MINER_ROLE, account)) roleCount++;
+    if (hasRole(REFINER_ROLE, account)) roleCount++;
+    if (hasRole(TRANSPORTER_ROLE, account)) roleCount++;
+    if (hasRole(AUDITOR_ROLE, account)) roleCount++;
+    if (hasRole(INSPECTOR_ROLE, account)) roleCount++;
+    if (hasRole(BUYER_ROLE, account)) roleCount++;
+
+    // Initialize array with the counted size
+    roles = new string[](roleCount);
+    uint256 index = 0;
+
+    // Populate the array with role names
+    if (hasRole(DEFAULT_ADMIN_ROLE, account)) {
+        roles[index] = "ADMIN";
+        index++;
+    }
+    if (hasRole(MINER_ROLE, account)) {
+        roles[index] = "MINER";
+        index++;
+    }
+    if (hasRole(REFINER_ROLE, account)) {
+        roles[index] = "REFINER";
+        index++;
+    }
+    if (hasRole(TRANSPORTER_ROLE, account)) {
+        roles[index] = "TRANSPORTER";
+        index++;
+    }
+    if (hasRole(AUDITOR_ROLE, account)) {
+        roles[index] = "AUDITOR";
+        index++;
+    }
+    if (hasRole(INSPECTOR_ROLE, account)) {
+        roles[index] = "INSPECTOR";
+        index++;
+    }
+    if (hasRole(BUYER_ROLE, account)) {
+        roles[index] = "BUYER";
+        index++;
     }
 
-    function _setupRole(bytes32 role, address account) internal {
-        _grantRole(role, account);
-    }
+    return roles;
+}
+
+
+
+    // function _setupRole(bytes32 role, address account) internal virtual {
+    //     __grantRole(role, account);
+    // }
 
     /**
      ** @dev Roles helper functions

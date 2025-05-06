@@ -1,6 +1,5 @@
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { DeployFunction } from "hardhat-deploy/types";
-import { Contract } from "ethers";
 
 const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts, ethers } = hre;
@@ -19,6 +18,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     from: deployer,
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("RolesManager", rolesManager);
 
@@ -27,6 +27,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     from: deployer,
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("TransactionLog", transactionLog);
 
@@ -36,6 +37,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     args: [rolesManager.address],
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("MineralRegistry", mineralRegistry);
 
@@ -44,6 +46,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     from: deployer,
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("PrivacyGuard", privacyGuard);
 
@@ -61,6 +64,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     args: [],
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("DisputeResolution", disputeResolution);
 
@@ -75,6 +79,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     ],
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("LogisticsManager", logisticsManager);
 
@@ -92,6 +97,7 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
     ],
     log: true,
     autoMine: true,
+    gasLimit: 8000000,
   });
   await logGasUsed("SupplychainValidator", supplychainValidator);
 
