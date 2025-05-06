@@ -436,10 +436,10 @@ export default function SignupPage() {
                   </button>
                   <button
                     type="button"
-                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[2B2D2F] text-white font-semibold hover:bg-[#23272F] transition-colors"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F]  text-white font-semibold hover:bg-[#23272F] transition-colors"
                   >
-                    <img src="/auth/metamask.svg" alt="Metamask" className="w-6 h-6 pointer-events-none select-none" />{" "}
-                    Connect Metamask
+                    <img src="/wallet.svg" alt="Metamask" className="w-6 h-6 pointer-events-none select-none" />{" "}
+                    Connect Wallet
                   </button>
                 </div>
               </form>
