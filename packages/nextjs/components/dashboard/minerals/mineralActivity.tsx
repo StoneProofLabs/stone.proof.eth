@@ -27,8 +27,6 @@ export default function MineralActivity({
   containerBg = "#252525",
   graphBg = "#1a1a1a",
 }: MineralActivityProps) {
-  const [hoveredData, setHoveredData] = useState(null);
-
   const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
       return (
@@ -57,16 +55,7 @@ export default function MineralActivity({
       <div className="flex-grow px-6 py-4" style={{ backgroundColor: graphBg }}>
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              margin={{ top: 20, right: 10, left: -20, bottom: 5 }}
-              onMouseMove={e => {
-                if (e && e.activePayload) {
-                  setHoveredData(e.activePayload[0].payload);
-                }
-              }}
-              onMouseLeave={() => setHoveredData(null)}
-            >
+            <BarChart data={data} margin={{ top: 20, right: 10, left: -20, bottom: 5 }}>
               <CartesianGrid
                 strokeDasharray="3 3"
                 stroke="#333"
@@ -92,7 +81,7 @@ export default function MineralActivity({
                 domain={[0, 100]}
                 tick={{ fill: "#666", fontSize: 12 }}
               />
-              <Tooltip content={<CustomTooltip />} />
+              <Tooltip content={<CustomTooltip />} cursor={{ fill: "transparent" }} />
               <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={40} />
             </BarChart>
           </ResponsiveContainer>

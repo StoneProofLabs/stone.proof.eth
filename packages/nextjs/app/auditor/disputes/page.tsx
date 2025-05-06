@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
+import MineralDisputesGraphCard from "~~/components/dashboard/admin/MineralDisputesGraphCard";
 import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
@@ -40,7 +41,14 @@ export default function Page() {
       <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralActivity />
+            <MineralDisputesGraphCard
+              containerBg="#1c1c1e"
+              cardBg="#1c1c1e"
+              selectBg="#252525"
+              graphBg="#1a1a1a"
+              footerBg="#252525"
+              borderColor="#323539"
+            />
           </div>
         </div>
         <div className="w-full lg:w-1/3">

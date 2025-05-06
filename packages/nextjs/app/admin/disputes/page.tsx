@@ -47,7 +47,14 @@ export default function Page() {
       <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralDisputesGraphCard />
+            <MineralDisputesGraphCard
+              containerBg="#060910"
+              cardBg="#060910"
+              selectBg="#232A36"
+              graphBg="#060910"
+              footerBg="#181C23"
+              borderColor="#23262B"
+            />
           </div>
         </div>
         <div className="w-full lg:w-1/3">
