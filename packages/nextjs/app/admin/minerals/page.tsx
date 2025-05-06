@@ -68,22 +68,6 @@ const AccessDeniedCard = ({
           <p className="font-mono text-sm break-all text-left">{address}</p>
         </div>
 
-
-      {/* the mineral activity */}
-      <div className="flex flex-col lg:flex-row gap-4 sm:gap-5 w-full items-stretch">
-        <div className="w-full lg:w-2/3">
-          <div className="h-full">
-            <MineralActivity graphBg="#202634" headerBg="#060910" footerBg="#060910" />
-          </div>
-        </div>
-        <div className="w-full lg:w-1/3">
-          <div className="h-full">
-            <RecentShipments
-              bgColor="#060910"
-              shipments={shipments}
-              onViewAll={() => console.log("View all shipments")}
-            />
-
         <div className="pt-4 space-y-3">
           <h3 className="font-medium text-gray-900 dark:text-white">How to get access:</h3>
           <ol className="space-y-2 text-sm text-gray-600 dark:text-gray-300 text-left">
@@ -148,7 +132,6 @@ const AccessDeniedCard = ({
                 <ChevronRight className="w-4 h-4 text-gray-400" />
               </a>
             ))}
-
           </div>
         </div>
 
@@ -173,36 +156,6 @@ const AccessDeniedCard = ({
   );
 };
 
-
-        {/* Content based on active tab */}
-        <div className="pt-4">
-          {activeTab === "pending" ? (
-            <div className="overflow-x-auto">
-              <MineralListTable
-                titleBg="#060910"
-                headerBg="#060910"
-                rowsBg="#202634"
-                footerBg="#060910"
-                isAdmin={true}
-                minerals={mineralsList}
-                title="Your Stored Mineral List"
-              />
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <MineralListTable
-                titleBg="#060910"
-                headerBg="#060910"
-                rowsBg="#202634"
-                footerBg="#060910"
-                isAdmin={true}
-                minerals={mineralsList}
-                title="Your Stored Mineral List"
-              />
-            </div>
-          )}
-        </div>
-
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="flex items-center justify-center min-h-screen p-4">
     <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-200 dark:border-gray-700">
@@ -221,7 +174,6 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
       </p>
       <div className="flex justify-center">
         <ConnectButton />
-
       </div>
     </div>
   </div>
@@ -383,11 +335,11 @@ export default function Page() {
             <div className="pt-4">
               {activeTab === "pending" ? (
                 <div className="overflow-x-auto">
-                  <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
+                  <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" isAdmin={true} />
                 </div>
               ) : (
                 <div className="overflow-x-auto">
-                  <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
+                  <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" isAdmin={true} />
                 </div>
               )}
             </div>
