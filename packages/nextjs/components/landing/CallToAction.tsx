@@ -4,9 +4,8 @@ const CallToAction = () => {
   return (
     <div className="relative w-full bg-gradient-to-b from-[#10131A] to-[#0A0F1B] flex flex-col items-center justify-center py-20 px-4 overflow-hidden">
       <div className="max-w-4xl w-full flex flex-col items-center justify-center mx-auto">
-        <h1 className="text-white text-3xl md:text-5xl font-bold text-center mb-8 leading-tight">
-          Welcome to your new digital Mineral Supply Chain that
-          <br className="hidden md:block" /> will change your world.
+        <h1 className="text-white text-3xl md:text-4xl font-bold text-center mb-8 leading-tight">
+          Welcome to your new digital Mineral Supply Chain that will change your world.
         </h1>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
           <button className="bg-[#258AFF] hover:bg-[#1a6ed8] text-white font-semibold rounded-lg px-8 py-3 text-lg shadow transition-colors duration-200">
