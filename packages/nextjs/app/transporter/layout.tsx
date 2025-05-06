@@ -1,14 +1,14 @@
 "use client";
 
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import Sidebar from "~~/components/dashboard/Sidebar";
 import TopBar from "~~/components/dashboard/topBar";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 
-const inter = Inter({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -16,11 +16,11 @@ const basepath = "/transporter";
 
 const sideBarItems = getSidebarItems(basepath);
 
-export default function MinerLayout({ children }: { children: React.ReactNode }) {
+export default function TransporterLayout({ children }: { children: React.ReactNode }) {
   const { isCollapsed } = useSidebarStore();
 
   return (
-    <div className={`${inter.variable} font-sans bg-lightBlack flex text-white h-screen`}>
+    <div className={`${montserrat.variable} font-montserrat bg-lightBlack flex text-white h-screen`}>
       <Sidebar basePath={basepath} />
       <div
         className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${!isCollapsed ? "md:ml-[250px]" : ""}`}
