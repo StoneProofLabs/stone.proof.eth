@@ -8,11 +8,12 @@ type MineralRowProps = {
   mineral: Mineral;
   isSelected: boolean;
   onSelect: (id: number) => void;
+  isAdmin?: boolean;
 };
 
-export default function MineralRow({ mineral, isSelected, onSelect }: MineralRowProps) {
+export default function MineralRow({ mineral, isSelected, onSelect, isAdmin = false }: MineralRowProps) {
   return (
-    <tr key={mineral.id} className={`hover:bg-[#2B2D2F] ${isSelected ? "bg-[#2B2D2F]" : ""} transition-colors`}>
+    <tr key={mineral.id} className={`  hover:bg-[#060910] ${isSelected ? "bg-[#2B2D2F]" : ""} transition-colors`}>
       <td className="px-2 sm:px-4 py-3 sm:py-4">
         <input
           type="checkbox"
@@ -64,20 +65,39 @@ export default function MineralRow({ mineral, isSelected, onSelect }: MineralRow
         <PurityIndicator value={mineral.purity} />
       </td>
       <td className="flex justify-center items-center gap-2 px-2 sm:px-4 py-3 sm:py-4">
-        <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors">
-          <span className="hidden sm:inline">Full Details</span>
-          <span className="sm:hidden">Accept</span>
-          <Icon path="/dashboard/icon_set/minerals.svg" alt="Minerals icon" />
-        </button>
+        {isAdmin ? (
+          <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors">
+            <span>Update</span>
+            <svg
+              className="w-4 h-4 ml-1"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        ) : (
+          <>
+            <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors">
+              <span className="hidden sm:inline">Full Details</span>
+              <span className="sm:hidden">Accept</span>
+              <Icon path="/dashboard/icon_set/minerals.svg" alt="Minerals icon" />
+            </button>
 
-        <Link
-          href={"/miner/disputes/raiseDispute"}
-          className="bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors"
-        >
-          <span className="hidden sm:inline">Raise</span>
-          <span className="sm:hidden">View</span>
-          <Icon path="/dashboard/icon_set/attention.svg" alt="Attention icon" />
-        </Link>
+            <Link
+              href={"/miner/disputes/raiseDispute"}
+              className="bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors"
+            >
+              <span className="hidden sm:inline">Raise</span>
+              <span className="sm:hidden">View</span>
+              <Icon path="/dashboard/icon_set/attention.svg" alt="Attention icon" />
+            </Link>
+          </>
+        )}
       </td>
     </tr>
   );

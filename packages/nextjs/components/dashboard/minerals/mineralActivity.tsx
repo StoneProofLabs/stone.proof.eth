@@ -17,6 +17,7 @@ interface MineralActivityProps {
   headerBg?: string;
   footerBg?: string;
   containerBg?: string;
+  graphBg?: string;
 }
 
 export default function MineralActivity({
@@ -24,6 +25,7 @@ export default function MineralActivity({
   headerBg = "#252525",
   footerBg = "#252525",
   containerBg = "#252525",
+  graphBg = "#1a1a1a",
 }: MineralActivityProps) {
   const [hoveredData, setHoveredData] = useState(null);
 
@@ -52,7 +54,7 @@ export default function MineralActivity({
 
       <hr className="border-[#323539] m-0" />
 
-      <div className="flex-grow bg-[#1a1a1a] px-6 py-4">
+      <div className="flex-grow px-6 py-4" style={{ backgroundColor: graphBg }}>
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart

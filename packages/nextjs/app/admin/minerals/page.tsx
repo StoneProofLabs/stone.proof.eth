@@ -57,12 +57,15 @@ export default function Page() {
       <div className="flex flex-col lg:flex-row gap-4 sm:gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralActivity headerBg="#060910" footerBg="#060910" />
+            <MineralActivity graphBg="#202634" headerBg="#060910" footerBg="#060910" />
           </div>
         </div>
         <div className="w-full lg:w-1/3">
           <div className="h-full">
-            <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
+            <RecentShipments
+            bgColor="#060910"
+            
+            shipments={shipments} onViewAll={() => console.log("View all shipments")} />
           </div>
         </div>
       </div>
@@ -94,7 +97,13 @@ export default function Page() {
         <div className="pt-4">
           {activeTab === "pending" ? (
             <div className="overflow-x-auto">
-              <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
+              <MineralListTable 
+              titleBg="#060910"
+              headerBg="#060910"
+              rowsBg="#202634"
+              footerBg="#060910"
+              isAdmin={true}
+              minerals={mineralsList} title="Your Stored Mineral List" />
             </div>
           ) : (
             <div className="overflow-x-auto">
