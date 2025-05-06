@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+
 import {
   AlertCircle,
   Check,
@@ -12,11 +13,13 @@ import {
   MessageSquare,
   Phone,
   ShieldAlert,
+
   AlertTriangle,
+  Link,
 } from "lucide-react";
 import { useAccount } from "wagmi";
 import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+import toast from "react-hot-toast";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
@@ -118,7 +121,7 @@ const AccessDeniedView = ({
                     <a
                       href="https://t.me/StoneProofSupport"
                       target="_blank"
-                       rel="noopener noreferrer"
+                      rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300"
                     >
                       <MessageSquare className="w-4 h-4" />
@@ -199,7 +202,23 @@ export default function RaiseDisputePage() {
       setDisputeDescription("");
       setMineralId("");
     },
-    onError: (error: { message: string | string[]; }) => {
+
+/*************  ✨ Windsurf Command ⭐  *************/
+/**
+ * Handles errors that occur while raising a dispute.
+ * Logs the error and displays an appropriate error message to the user.
+ * 
+ * @param error - The error object containing a message describing the error.
+ * 
+ * Possible error messages:
+ * - "caller is missing role": Indicates the user does not have the necessary miner privileges.
+ * - "DisputeManager__InvalidMineralId": Indicates an invalid mineral ID was provided.
+
+ * 
+ * Displays a generic "Failed to raise dispute." message if the error does not match known cases.
+ */
+
+
       console.error("Dispute raising failed:", error);
       let errorMessage = "Failed to raise dispute.";
 
@@ -372,4 +391,6 @@ export default function RaiseDisputePage() {
       </div>
     </div>
   );
+
 }
+

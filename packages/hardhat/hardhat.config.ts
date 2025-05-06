@@ -13,8 +13,7 @@ import { task } from "hardhat/config";
 import generateTsAbis from "./scripts/generateTsAbis";
 
 const providerApiKey = process.env.ALCHEMY_API_KEY || "oKxs-03sij-U_N0iOlrSsZFr29-IqbuF";
-const deployerPrivateKey =
-  process.env.__RUNTIME_DEPLOYER_PRIVATE_KEY ?? "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+const deployerPrivateKey = process.env.__RUNTIME_DEPLOYER_PRIVATE_KEY ?? "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 const etherscanApiKey = process.env.ETHERSCAN_MAINNET_API_KEY || "DNXJA8RX2Q3VZ4URQIWP7Z68CJXQZSC6AW";
 const etherscanOptimisticApiKey = process.env.ETHERSCAN_OPTIMISTIC_API_KEY || "RM62RDISS1RH448ZY379NX625ASG1N633R";
 const basescanApiKey = process.env.BASESCAN_API_KEY || "ZZZEIPMT1MNJ8526VV2Y744CA7TNZR64G6";
@@ -28,7 +27,7 @@ const config: HardhatUserConfig = {
           viaIR: true,
           optimizer: {
             enabled: true,
-            runs: 100,
+            runs: 200,
           },
         },
       },
@@ -41,6 +40,7 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
+
     hardhat: {
       forking: {
         url: `https://eth-mainnet.alchemyapi.io/v2/${providerApiKey}`,
@@ -89,6 +89,7 @@ const config: HardhatUserConfig = {
     },
     polygonMumbai: {
       url: `https://polygon-mumbai.g.alchemy.com/v2/${providerApiKey}`,
+
       accounts: [deployerPrivateKey],
     },
     polygonZkEvm: {
@@ -97,6 +98,7 @@ const config: HardhatUserConfig = {
     },
     polygonZkEvmTestnet: {
       url: `https://polygonzkevm-testnet.g.alchemy.com/v2/${providerApiKey}`,
+
       accounts: [deployerPrivateKey],
     },
     gnosis: {
@@ -155,6 +157,7 @@ const config: HardhatUserConfig = {
   etherscan: {
     apiKey: `${etherscanApiKey}`,
   },
+
   verify: {
     etherscan: {
       apiKey: `${etherscanApiKey}`,
@@ -163,6 +166,7 @@ const config: HardhatUserConfig = {
   sourcify: {
     enabled: false,
   },
+
   gasReporter: {
     enabled: true,
     currency: "USD",

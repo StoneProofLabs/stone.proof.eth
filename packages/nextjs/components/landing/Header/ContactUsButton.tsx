@@ -1,5 +1,6 @@
 import { PhoneCall } from "lucide-react"
 
+
 const ContactUsButton = () => {
   return (
     <button className="flex items-center gap-2 px-4 py-2 rounded-md bg-[#202634] text-white font-semibold hover:bg-[#202634]/80 transition-colors">
@@ -12,3 +13,4 @@ const ContactUsButton = () => {
 }
 
 export default ContactUsButton
+

@@ -1,15 +1,16 @@
+
 "use client"
 
-import { useState } from "react"
-import Image from "next/image"
-import { Clock, Copy, FileText, Minus, Plus } from "lucide-react"
+import { useState } from "react";
+import Image from "next/image";
+import { Clock, Copy, FileText, Minus, Plus } from "lucide-react";
 
 export default function DisputeResolutionsPortal() {
-  const [voteCount, setVoteCount] = useState(0)
+  const [voteCount, setVoteCount] = useState(0);
 
   const handleVoteChange = (value: number) => {
-    const newValue = Math.max(0, value)
-    setVoteCount(newValue)
+    const newValue = Math.max(0, value);
+    setVoteCount(newValue);
   }
 
   return (
@@ -24,6 +25,7 @@ export default function DisputeResolutionsPortal() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Panel - Dispute Details */}
+
       <div className=" border-2 border-[#323539] rounded-lg p-2 lg:col-span-2">
       <div className="lg:col-span-2 bg-[#1c1c1e] rounded-lg p-6">
           <div className="flex items-center gap-3 mb-4">
@@ -110,11 +112,12 @@ export default function DisputeResolutionsPortal() {
         </div>
       </div>
 
+
         {/* Right Panel - Voting */}
         <div className="lg:col-span-1">
           <div className="bg-[#1c1c1e] rounded-lg p-6 h-full">
             <h3 className="text-lg font-medium mb-4">Cast Your Vote</h3>
-            
+
             <div className="mb-6">
               <div className="text-sm text-gray-400 mb-2">Select your position:</div>
               <div className="grid grid-cols-2 gap-3">
@@ -126,7 +129,7 @@ export default function DisputeResolutionsPortal() {
                 </button>
               </div>
             </div>
-            
+
             <div className="mb-6">
               <div className="text-sm text-gray-400 mb-2">Voting power:</div>
               <div className="bg-[#252525] border border-[#323539] rounded-md p-3 flex items-center justify-between">
@@ -135,13 +138,17 @@ export default function DisputeResolutionsPortal() {
                   <span className="text-sm text-gray-400">votes</span>
                 </div>
                 <div className="flex items-center gap-2">
+
                   <button 
+
                     onClick={() => handleVoteChange(voteCount - 1)}
                     className="w-8 h-8 flex items-center justify-center bg-[#323539] hover:bg-gray-600 rounded-md"
                   >
                     <Minus size={16} />
                   </button>
+
                   <button 
+
                     onClick={() => handleVoteChange(voteCount + 1)}
                     className="w-8 h-8 flex items-center justify-center bg-[#323539] hover:bg-gray-600 rounded-md"
                   >
@@ -149,16 +156,16 @@ export default function DisputeResolutionsPortal() {
                   </button>
                 </div>
               </div>
-            </div>
-            
+            </div>            
             <div className="mb-6">
               <div className="text-sm text-gray-400 mb-2">Add comment (optional):</div>
               <textarea 
+
                 className="w-full bg-[#252525] border border-[#323539] rounded-md p-3 text-sm min-h-[100px] focus:outline-none focus:border-[#0A77FF]"
                 placeholder="Enter your reasoning..."
               ></textarea>
             </div>
-            
+
             <button className="w-full bg-[#0A77FF] hover:bg-blue-600 text-white font-medium py-2 rounded-md">
               Submit Vote
             </button>
@@ -168,3 +175,4 @@ export default function DisputeResolutionsPortal() {
     </div>
   );
 }
+

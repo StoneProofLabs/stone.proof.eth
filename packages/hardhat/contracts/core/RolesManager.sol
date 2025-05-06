@@ -18,6 +18,7 @@ contract RolesManager is AccessControl, Errors {
                            SUPPLYCHAIN ROLES
             /////////////////////////////////////////////////////*/
 
+
     bytes32 public constant MINER_ROLE = keccak256("MINER_ROLE");
     bytes32 public constant REFINER_ROLE = keccak256("REFINER_ROLE");
     bytes32 public constant TRANSPORTER_ROLE = keccak256("TRANSPORTER_ROLE");
@@ -103,16 +104,30 @@ contract RolesManager is AccessControl, Errors {
     mapping(string => MineralDetails) public mineralDetails;
     mapping(string => MineralHistory[]) public mineralHistories;
 
+    // mapping(bytes32 => uint256) public roleMemberCount;
+
+
     // Set the deployer as the admin
     constructor() {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        // _setupRole(MINER_ROLE, 0xca4d5689D0A0DdDB135F8C54FCF0a684F9463599);
+
         _setupRole(MINER_ROLE, msg.sender);
         _setupRole(AUDITOR_ROLE, msg.sender);
         _setupRole(INSPECTOR_ROLE, msg.sender);
         _setupRole(BUYER_ROLE, msg.sender);
         _setupRole(REFINER_ROLE, msg.sender);
         _setupRole(TRANSPORTER_ROLE, msg.sender);
+
+
+        // // Initialize roles memember count
+        // roleMemberCount[DEFAULT_ADMIN_ROLE] = 1;
+        // roleMemberCount[MINER_ROLE] = 1;
+        // roleMemberCount[REFINER_ROLE] = 1;
+        // roleMemberCount[TRANSPORTER_ROLE] = 1;
+        // roleMemberCount[AUDITOR_ROLE] = 1;
+        // roleMemberCount[INSPECTOR_ROLE] = 1;
+        // roleMemberCount[BUYER_ROLE] = 1;
+
     }
 
     /**
@@ -430,30 +445,40 @@ contract RolesManager is AccessControl, Errors {
     function assignMiner(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
         grantRole(MINER_ROLE, account);
 
-        emit MinerRoleAssigned(account, block.timestamp);
-    }
+
+    /*////////////////////////////////////////////////////
+                  ROLE MANAGEMENT FUNCTIONS
+    ////////////////////////////////////////////////////*/
+
+    function assignMiner(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
+        grantRole(MINER_ROLE, account);
+    1
 
     function assignRefiner(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
         grantRole(REFINER_ROLE, account);
 
+        roleMemberCount[REFINER_ROLE]++;
         emit RefinerRoleAssigned(account, block.timestamp);
     }
 
     function assignTransporter(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
         grantRole(TRANSPORTER_ROLE, account);
 
+        roleMemberCount[TRANSPORTER_ROLE]++;
         emit TransporterRoleAssigned(account, block.timestamp);
     }
 
     function assignAuditor(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
         grantRole(AUDITOR_ROLE, account);
 
+        roleMemberCount[AUDITOR_ROLE]++;
         emit AuditorRoleAssigned(account, block.timestamp);
     }
 
     function assignInspector(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
         grantRole(INSPECTOR_ROLE, account);
 
+        roleMemberCount[INSPECTOR_ROLE]++;
         emit InspectorRoleAssigned(account, block.timestamp);
     }
 
@@ -466,6 +491,7 @@ contract RolesManager is AccessControl, Errors {
     /////////////////////////////////
     // ROLE REVOKATION /////////////
     ////////////////////////////////
+
 
     /**
      * @dev Revokes role from an account - onlydmin
@@ -582,6 +608,8 @@ function getRolesForAddress(address account) public view onlyNonZeroAddress(acco
     function _setupRole(bytes32 role, address account) internal {
         _grantRole(role, account);
     }
+
+
 
     /**
      ** @dev Roles helper functions
@@ -710,3 +738,4 @@ function getRolesForAddress(address account) public view onlyNonZeroAddress(acco
         return nibble < 10 ? bytes1(nibble + 0x30) : bytes1(nibble + 0x61 - 10);
     }
 }
+

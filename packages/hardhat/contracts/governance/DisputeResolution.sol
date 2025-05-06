@@ -17,13 +17,14 @@ contract DisputeResolution is RolesManager {
 
     RolesManager private rolesManager;
 
-    /*//////////////////////////////////////////////////////////////
+    /*////////////////////////////////////////////////////////////
                                  EVENTS
     //////////////////////////////////////////////////////////////*/
     
     event DisputeRaised(uint256 indexed disputeId, uint256 mineralId, address indexed complainant, address defendant, string details, uint256 raisedAt);
     event DisputeResolved(uint256 indexed disputeId, string resolutionDetails, uint256 timestamp);
     event DisputeClosedUnresolved(address indexed closedBy, uint256 indexed disputeId, uint256 mineralId, address complainant, address defendant, string details, uint256 closedUnresolvedAt);
+
     event DisputeEscalated(uint256 indexed disputeId, uint256 timestamp);
     event DisputeRejected(uint256 indexed disputeId, string reason, uint256 timestamp);
 

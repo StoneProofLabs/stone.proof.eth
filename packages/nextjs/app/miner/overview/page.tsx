@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+
 import Icon from "~~/components/dashboard/Icon";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
@@ -8,6 +9,7 @@ import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import StatsCard from "~~/components/dashboard/overview/statsCard";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
 import { demands, mineralsData, reports, shipments, shipmentsData, supplyData, transfersData } from "~~/data/data";
+
 
 // dummy user
 interface User {
@@ -23,6 +25,7 @@ export default function Page() {
   return (
     <div className="px-4 sm:px-6 md:px-10 flex flex-col gap-6 sm:gap-8 md:gap-10">
       {/* the welcome message */}
+
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 sm:gap-0">
         <div className="flex flex-col">
           <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Hey there, {user.name}!</p>
@@ -53,6 +56,7 @@ export default function Page() {
       </div>
 
       {/* the stats cards */}
+
       <div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <StatsCard
@@ -70,11 +74,13 @@ export default function Page() {
       </div>
 
       {/* the mineral supply graph */}
+
       <div className="w-full overflow-x-auto">
         <MineralSupplyGraph data={supplyData} />
       </div>
 
       {/* the other metric cards */}
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
 

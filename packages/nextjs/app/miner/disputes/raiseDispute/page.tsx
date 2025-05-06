@@ -175,4 +175,3 @@ export default function RaiseDisputePage() {
     </div>
   );
 }
-

@@ -72,6 +72,7 @@ const AccessDeniedCard = ({
 };
 
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
+
   <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-4">
     <div className="max-w-md p-8 text-center border rounded-lg shadow-lg bg-background">
       <h2 className="mb-4 text-2xl font-bold">Connect Your Wallet</h2>
@@ -81,6 +82,7 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
       <ConnectButton />
     </div>
     {isLoading && <LoadingSpinner size={8} text="Connecting wallet..." />}
+
   </div>
 );
 
@@ -115,6 +117,7 @@ const Page = () => {
     INSPECTOR: "",
     BUYER: "",
   });
+
   const [checkAddress, setCheckAddress] = useState("");
   const [revokeReason, setRevokeReason] = useState("");
   const [activeRole, setActiveRole] = useState<RoleType | null>(null);
@@ -131,7 +134,9 @@ const Page = () => {
   } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasAdminRole",
+
     args: [address],
+
     enabled: isConnected && !!address,
   });
 
@@ -231,6 +236,7 @@ const Page = () => {
 
   const handleAssign = async (role: RoleType) => {
     const trimmedAddress = roleAddresses[role].trim();
+
     if (!isAddress(trimmedAddress)) {
       notification.error("Please enter a valid Ethereum address");
       return;
@@ -247,6 +253,7 @@ const Page = () => {
 
       notification.success(`${ROLE_TYPES[role]} role assigned successfully`);
       setRoleAddresses(prev => ({ ...prev, [role]: "" }));
+
       await fetchRoleCounts();
     } catch (error: any) {
       console.error("Assignment error:", error);
@@ -258,7 +265,9 @@ const Page = () => {
   };
 
   const handleRevoke = async (role: RoleType) => {
+
     const trimmedAddress = roleAddresses[role].trim();
+
     const trimmedReason = revokeReason.trim();
 
     if (!isAddress(trimmedAddress)) {
@@ -282,6 +291,7 @@ const Page = () => {
 
       notification.success(`${ROLE_TYPES[role]} role revoked successfully`);
       setRoleAddresses(prev => ({ ...prev, [role]: "" }));
+
       setRevokeReason("");
       await fetchRoleCounts();
     } catch (error: any) {
@@ -360,6 +370,7 @@ const Page = () => {
                 isAssignLoading={isAssignLoading && activeRole === "MINER"}
                 isRevokeLoading={isRevokeLoading && activeRole === "MINER"}
                 onUserIdChange={(address) => handleRoleAddressChange("MINER", address)}
+
                 onReasonChange={setRevokeReason}
               />
 
@@ -390,6 +401,7 @@ const Page = () => {
                 isAssignLoading={isAssignLoading && activeRole === "TRANSPORTER"}
                 isRevokeLoading={isRevokeLoading && activeRole === "TRANSPORTER"}
                 onUserIdChange={(address) => handleRoleAddressChange("TRANSPORTER", address)}
+
                 onReasonChange={setRevokeReason}
               />
 
@@ -418,6 +430,7 @@ const Page = () => {
                 isAssignLoading={isAssignLoading && activeRole === "AUDITOR"}
                 isRevokeLoading={isRevokeLoading && activeRole === "AUDITOR"}
                 onUserIdChange={(address) => handleRoleAddressChange("AUDITOR", address)}
+
                 onReasonChange={setRevokeReason}
               />
 

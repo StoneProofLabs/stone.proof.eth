@@ -7,6 +7,7 @@ import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaf
 import { toast } from "../../lib/toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
+
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
     <Loader2 className={`w-${size} h-${size} animate-spin`} />
@@ -34,6 +35,7 @@ export default function AuditMineralPage() {
       setAuditReport("");
     },
     onError: (error: { message: string | string[]; }) => {
+
       console.error("Audit failed:", error);
       let errorMessage = "Failed to audit mineral.";
 
@@ -99,6 +101,7 @@ export default function AuditMineralPage() {
                   type="text"
                   value={mineralId}
                   onChange={(e) => setMineralId(e.target.value)}
+
                   placeholder="Enter the mineral ID to audit"
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
                 />
@@ -110,6 +113,7 @@ export default function AuditMineralPage() {
                 <textarea
                   value={auditReport}
                   onChange={(e) => setAuditReport(e.target.value)}
+
                   placeholder="Provide detailed audit report..."
                   rows={5}
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
@@ -136,6 +140,7 @@ export default function AuditMineralPage() {
             </button>
             <p className="text-gray-400 text-sm text-center mt-4">
               {allFieldsReady 
+
                 ? "All required fields are complete. You can submit the audit."
                 : "Please fill all required fields to submit an audit."}
             </p>
@@ -166,6 +171,7 @@ export default function AuditMineralPage() {
                 <AlertCircle className="min-w-5 h-5 text-white mt-0.5" />
                 <p className="text-gray-400">
                   Ensure the audit report is accurate and complete. Once submitted, the mineral will be marked as audited and cannot be audited again.
+
                 </p>
               </div>
             </div>

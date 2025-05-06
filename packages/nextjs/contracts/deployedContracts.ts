@@ -850,13 +850,17 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
+
               indexed: true,
+
               internalType: "address",
               name: "closedBy",
               type: "address",
             },
             {
+
               indexed: true,
+
               internalType: "uint256",
               name: "disputeId",
               type: "uint256",
@@ -16505,6 +16509,27 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
+
+              indexed: false,
+              internalType: "uint256",
+              name: "_fromTokenId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "uint256",
+              name: "_toTokenId",
+              type: "uint256",
+            },
+          ],
+          name: "BatchMetadataUpdate",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+
               indexed: true,
               internalType: "address",
               name: "assignee",
@@ -16593,11 +16618,40 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
+
+              indexed: false,
+              internalType: "uint256",
+              name: "_tokenId",
+              type: "uint256",
+            },
+          ],
+          name: "MetadataUpdate",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+
               indexed: true,
               internalType: "uint256",
               name: "tokenId",
               type: "uint256",
             },
+
+            {
+              indexed: false,
+              internalType: "string",
+              name: "newDetails",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "updater",
+              type: "address",
+            },
+
           ],
           name: "MetadataUpdated",
           type: "event",
@@ -16848,6 +16902,93 @@ const deployedContracts = {
           anonymous: false,
           inputs: [
             {
+              indexed: true,
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "mineralId",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "metadata",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "minter",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "mintedTo",
+              type: "address",
+            },
+          ],
+          name: "MineralTokenMinted",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "revoker",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "reason",
+              type: "string",
+            },
+          ],
+          name: "MineralTokenRevoked",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "uint256",
+              name: "tokenId",
+              type: "uint256",
+            },
+            {
+              indexed: false,
+              internalType: "string",
+              name: "action",
+              type: "string",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "updater",
+              type: "address",
+            },
+          ],
+          name: "MineralTokenUpdated",
+          type: "event",
+        },
+        {
+          anonymous: false,
+          inputs: [
+            {
               indexed: false,
               internalType: "string",
               name: "mineralId",
@@ -16897,19 +17038,23 @@ const deployedContracts = {
               type: "uint256",
             },
             {
+
               indexed: false,
               internalType: "string",
               name: "mineralId",
               type: "string",
+
             },
             {
               indexed: true,
               internalType: "address",
+
               name: "to",
               type: "address",
             },
           ],
           name: "Minted",
+
           type: "event",
         },
         {
@@ -16961,6 +17106,7 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
+
               internalType: "uint256",
               name: "tokenId",
               type: "uint256",
@@ -16980,6 +17126,7 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
+
               internalType: "bytes32",
               name: "role",
               type: "bytes32",
@@ -17136,6 +17283,7 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
+
               internalType: "uint256",
               name: "tokenId",
               type: "uint256",
@@ -17161,6 +17309,7 @@ const deployedContracts = {
           inputs: [
             {
               indexed: true,
+
               internalType: "address",
               name: "assignee",
               type: "address",
@@ -17214,6 +17363,7 @@ const deployedContracts = {
           type: "event",
         },
         {
+
           inputs: [],
           name: "AUDITOR_ROLE",
           outputs: [
@@ -17588,6 +17738,7 @@ const deployedContracts = {
           name: "getTokenDetails",
           outputs: [
             {
+
               internalType: "uint256",
               name: "id",
               type: "uint256",
@@ -17626,6 +17777,7 @@ const deployedContracts = {
               internalType: "address",
               name: "owner",
               type: "address",
+
             },
           ],
           stateMutability: "view",
@@ -18051,7 +18203,9 @@ const deployedContracts = {
               type: "string",
             },
           ],
+
           name: "mineralToToken",
+
           outputs: [
             {
               internalType: "uint256",
@@ -18322,7 +18476,9 @@ const deployedContracts = {
             },
             {
               internalType: "string",
+
               name: "reason",
+
               type: "string",
             },
           ],
@@ -18565,22 +18721,29 @@ const deployedContracts = {
             },
             {
               internalType: "string",
+
               name: "",
+
               type: "string",
             },
             {
               internalType: "bool",
-              name: "audited",
+ name: "audited",
+
               type: "bool",
             },
             {
               internalType: "bool",
+
               name: "inspected",
+
               type: "bool",
             },
             {
               internalType: "bool",
+
               name: "purchased",
+
               type: "bool",
             },
           ],
@@ -18603,6 +18766,7 @@ const deployedContracts = {
         symbol: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
         tokenURI: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
         transferFrom: "@openzeppelin/contracts/token/ERC721/ERC721.sol",
+
         AUDITOR_ROLE: "contracts/core/RolesManager.sol",
         BUYER_ROLE: "contracts/core/RolesManager.sol",
         DEFAULT_ADMIN_ROLE: "contracts/core/RolesManager.sol",

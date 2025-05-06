@@ -2,6 +2,7 @@
 
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
+
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
@@ -10,6 +11,7 @@ import TopBar from "~~/components/dashboard/topBar";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+
 import { notification } from "~~/utils/scaffold-eth";
 
 const inter = Inter({
@@ -53,9 +55,11 @@ const AccessDeniedCard = ({
         </div>
 
         <h2 className="text-2xl font-bold text-white">Refiner Privileges Required</h2>
+
         <p className="text-gray-300">
           Your wallet doesn't have refiner access permissions to view this dashboard.
         </p>
+
 
         <div className="bg-gray-700 p-4 rounded-lg">
           <div className="flex justify-between items-center mb-1">
@@ -65,6 +69,7 @@ const AccessDeniedCard = ({
               className="text-blue-400 hover:text-blue-300"
               title="Copy address"
             >
+
               <Copy className="w-5 h-5" />
             </button>
           </div>
@@ -169,9 +174,11 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
           <ShieldAlert className="w-8 h-8 text-blue-300" />
         )}
       </div>
+
       <h1 className="text-2xl font-bold text-white mb-2">
         {isLoading ? "Connecting..." : "Connect Your Wallet"}
       </h1>
+
       <p className="text-gray-300 mb-6">
         {isLoading ? "Verifying wallet..." : "Please connect a wallet with refiner privileges"}
       </p>
@@ -235,6 +242,7 @@ export default function RefinerLayout({ children }: { children: React.ReactNode 
 
   if (!hasRefinerRole) {
     return <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />;
+
   }
 
   if (isDataLoading) {
@@ -255,3 +263,4 @@ export default function RefinerLayout({ children }: { children: React.ReactNode 
     </div>
   );
 }
+

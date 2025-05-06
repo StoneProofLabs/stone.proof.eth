@@ -272,6 +272,7 @@ const Page = () => {
                 <span className="flex items-center gap-2">
                   <h1 className="text-sm translate-y-[7px]">Download Performance Report</h1>
                   <img src="/dashboard/icon_set/download.svg" alt="Add Auditor icon" className="w-4 h-4 font-bold top-2" />
+
                 </span>
               </button>
 
@@ -297,3 +298,4 @@ const Page = () => {
 };
 
 export default Page;
+

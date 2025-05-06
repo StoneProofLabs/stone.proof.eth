@@ -3,6 +3,7 @@ import Image from "next/image";
 import { recentDisputes } from "~~/data/data";
 import { FaChevronRight } from "react-icons/fa";
 
+
 const statusColors: Record<string, string> = {
   Defendant: "bg-[#EF4444] text-white",
   Complainant: "bg-[#22C55E] text-white",

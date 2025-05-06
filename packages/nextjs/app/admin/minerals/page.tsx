@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+
 import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
@@ -21,7 +22,6 @@ const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text
     {text && <p className="text-sm text-muted-foreground">{text}</p>}
   </div>
 );
-
 
 const FullPageLoader = ({ text = "Verifying access permissions..." }: { text?: string }) => (
   <div className="flex items-center justify-center min-h-screen">

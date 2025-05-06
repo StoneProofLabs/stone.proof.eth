@@ -12,6 +12,7 @@ interface RoleCardProps {
   onAssign?: () => Promise<void>;
   onRevoke?: () => Promise<void>;
   disabled?: boolean;
+
   isAssignLoading?: boolean;
   isRevokeLoading?: boolean;
   onUserIdChange: (address: string) => void;
@@ -78,6 +79,7 @@ const RoleCard: React.FC<RoleCardProps> = ({
             <span>{(activeCount ?? 0).toLocaleString()} Active</span>
           </div>
         </div>
+
       </div>
 
       <div className="px-3">
@@ -152,3 +154,4 @@ const RoleCard: React.FC<RoleCardProps> = ({
 };
 
 export default RoleCard;
+

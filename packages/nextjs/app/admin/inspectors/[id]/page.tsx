@@ -7,6 +7,7 @@ import { mockInspectors } from "~~/data/data";
 import RefineryActivityCard from "../../../../components/dashboard/admin/RefineryActivityCard";
 import RefineryProgressCard from "../../../../components/dashboard/admin/RefineryProgressCard";
 
+
 export default function InspectorDetailsPage() {
   const { id } = useParams();
   const searchParams = useSearchParams();
@@ -181,11 +182,11 @@ export default function InspectorDetailsPage() {
           </div>
         </div>
         <div className="flex flex-col gap-0 w-full">
-
         <div className="flex flex-col gap-0 w-full">
           <RefineryActivityCard />
           <RefineryProgressCard />
         </div>
+
           {/* You can add InspectorActivityCard and InspectorProgressCard here if needed */}
         </div>
         <div className="md:col-span-3 flex flex-row gap-4 mt-4">

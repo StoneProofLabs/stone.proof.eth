@@ -1,3 +1,4 @@
+
 'use client';
 
 import { WagmiConfig, configureChains, createConfig } from "wagmi";
@@ -9,6 +10,7 @@ const { chains, publicClient } = configureChains(
   [mainnet, polygon, optimism, arbitrum, sepolia],
   [publicProvider()]
 );
+
 
 const { connectors } = getDefaultWallets({
   appName: "StoneProof",
@@ -25,9 +27,11 @@ const wagmiConfig = createConfig({
 const ScaffoldEthProviders = ({ children }: { children: React.ReactNode }) => {
   return (
     <WagmiConfig config={wagmiConfig}>
+
       <RainbowKitProvider chains={chains}>
         {children}
       </RainbowKitProvider>
+
     </WagmiConfig>
   );
 };

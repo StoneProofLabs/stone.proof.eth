@@ -12,6 +12,7 @@ import Search from "~~/components/dashboard/search";
 import { demands, mineralsData, notifications, reports, shipments, shipmentsData, transfersData } from "~~/data/data";
 
 import RolesManagerAbi from "../../../../hardhat/artifacts/contracts/core/RolesManager.sol/RolesManager.json";
+
 export default function Page() {
   const [notification, setNotifications] = useState(notifications);
   const handleClose = (id: number) => {

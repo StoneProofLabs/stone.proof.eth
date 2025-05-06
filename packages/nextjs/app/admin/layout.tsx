@@ -12,6 +12,7 @@ import { ShieldAlert, Copy, Mail, Phone, MessageSquare, ChevronRight, Loader2, L
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { toast } from "../lib/toast";
 
+
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
@@ -61,6 +62,7 @@ const AccessDeniedView = ({
   isLoadingRefresh,
   onRefresh,
 }: { 
+
   address: string;
   isLoadingRefresh: boolean;
   onRefresh: () => void;
@@ -231,6 +233,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <TopBar sidebarItems={sidebarItems} basePath="/admin" />
           <main className="flex-1 overflow-y-auto px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4">
             <AccessDeniedView 
+
               address={address || ""}
               isLoadingRefresh={isRefreshingAccess}
               onRefresh={handleRefreshAccess}
@@ -257,3 +260,4 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     </div>
   );
 }
+

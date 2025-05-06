@@ -2,14 +2,17 @@
 
 import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
+
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
 import Sidebar from "~~/components/dashboard/Sidebar";
 import TopBar from "~~/components/dashboard/topBar";
+
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+
 import { notification } from "~~/utils/scaffold-eth";
 
 const inter = Inter({
@@ -57,6 +60,7 @@ const AccessDeniedCard = ({
           Your wallet doesn't have warehouse access permissions to view this dashboard.
         </p>
 
+
         <div className="bg-gray-700 p-4 rounded-lg">
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm font-medium text-gray-400">Connected Wallet:</span>
@@ -65,6 +69,7 @@ const AccessDeniedCard = ({
               className="text-blue-400 hover:text-blue-300"
               title="Copy address"
             >
+
               <Copy className="w-5 h-5" />
             </button>
           </div>
@@ -172,6 +177,7 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
       <h1 className="text-2xl font-bold text-white mb-2">
         {isLoading ? "Connecting..." : "Connect Your Wallet"}
       </h1>
+
       <p className="text-gray-300 mb-6">
         {isLoading ? "Verifying wallet..." : "Please connect a wallet with warehouse privileges"}
       </p>
@@ -236,7 +242,9 @@ export default function WarehouseLayout({ children }: { children: React.ReactNod
   }
 
   if (!hasWarehouseRole) {
+
     return <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />;
+
   }
 
   if (isDataLoading) {
@@ -254,4 +262,6 @@ export default function WarehouseLayout({ children }: { children: React.ReactNod
       </div>
     </div>
   );
+< HEAD
 }
+

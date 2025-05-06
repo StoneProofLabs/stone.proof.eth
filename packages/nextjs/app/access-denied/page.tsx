@@ -5,6 +5,7 @@ import { Button } from "~~/components/ui/button";
 import { useSearchParams } from "next/navigation";
 import { useAccount } from "wagmi";
 
+
 export default function AccessDeniedPage() {
   const searchParams = useSearchParams();
   const { address } = useAccount();

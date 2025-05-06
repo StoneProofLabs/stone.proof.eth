@@ -25,6 +25,7 @@ contract Tokenization is ERC721, RolesManager {
     event Revoked(uint256 indexed tokenId, string reason);
     event MetadataUpdated(uint256 indexed tokenId);
 
+
     constructor() ERC721("MineralToken", "MTKN") {
         _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _setupRole(MINTER_ROLE, msg.sender);
@@ -148,3 +149,4 @@ contract Tokenization is ERC721, RolesManager {
         return tokenId;
     }
 }
+

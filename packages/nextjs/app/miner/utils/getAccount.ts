@@ -5,10 +5,11 @@ export const getAccount = async (userId: string) => {
     where: { userId },
     select: { address: true },
   });
-  
+
   if (!account) {
     throw new Error("No connected wallet found");
   }
-  
+
   return account;
 };
+
