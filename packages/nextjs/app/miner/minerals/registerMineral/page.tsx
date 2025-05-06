@@ -19,8 +19,8 @@ import {
   Thermometer
 } from "lucide-react";
 import { useAccount } from "wagmi";
-import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { toast } from "../../lib/toast";
+import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { toast } from "../../../lib/toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
@@ -80,7 +80,6 @@ const AccessDeniedView = ({
             Your wallet doesn't have miner access to register minerals.
           </p>
 
-          {/* Wallet Address */}
           <div className="bg-gray-700 p-4 rounded-lg">
             <div className="flex justify-between items-center mb-1">
               <span className="text-sm text-gray-400">Connected Wallet:</span>
@@ -95,7 +94,6 @@ const AccessDeniedView = ({
             <p className="font-mono text-sm break-all text-left">{address}</p>
           </div>
 
-          {/* Steps to Get Access */}
           <div className="pt-4 space-y-3 text-left">
             <h3 className="font-medium">How to get miner access:</h3>
             <ol className="space-y-4 text-sm text-gray-400">
@@ -152,7 +150,6 @@ const AccessDeniedView = ({
             </ol>
           </div>
 
-          {/* Refresh Button */}
           <div className="pt-4">
             <button
               onClick={onRefresh}
@@ -189,6 +186,7 @@ export default function MineralRegistrationPage() {
     humidity: "Select Type",
   });
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
+  const [isTransactionPending, setIsTransactionPending] = useState(false);
 
   // Check if user has miner role
   const { 
@@ -204,66 +202,64 @@ export default function MineralRegistrationPage() {
 
   const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`;
 
-  const allFieldsReady =
-    isConnected &&
-    hasMinerRole &&
-    mineralName &&
-    mineralType &&
-    origin &&
-    selectedCondition.storage !== "Select Type" &&
-    selectedCondition.humidity !== "Select Type" &&
-    quantity > 0 &&
-    purity > 80;
+  const validateForm = () => {
+    if (!mineralName.trim()) {
+      toast.error("Please enter a valid mineral name");
+      return false;
+    }
+    if (!mineralType.trim()) {
+      toast.error("Please enter a valid mineral type");
+      return false;
+    }
+    if (!origin.trim()) {
+      toast.error("Please enter a valid origin");
+      return false;
+    }
+    if (quantity <= 0) {
+      toast.error("Quantity must be greater than 0");
+      return false;
+    }
+    if (purity <= 80 || purity > 100) {
+      toast.error("Purity must be greater than 80% and less than or equal to 100%");
+      return false;
+    }
+    if (selectedCondition.storage === "Select Type" || selectedCondition.humidity === "Select Type") {
+      toast.error("Please select valid storage conditions");
+      return false;
+    }
+    return true;
+  };
 
-  const { writeAsync, isLoading: isRegistering } = useScaffoldContract({
+  const { writeAsync } = useScaffoldWriteContract({
     contractName: "RolesManager",
     functionName: "registerMineral",
     args: [
       mineralName,
       mineralType,
-      quantity,
+      BigInt(quantity),
       origin,
-      purity,
+      BigInt(purity),
       storageConditions
     ],
-    enabled: allFieldsReady,
-    onSuccess: (mineralId: string) => {
-      toast.success(`Mineral registered successfully! Mineral ID: ${mineralId}`);
-      // Reset form after successful registration
-      setMineralName("");
-      setMineralType("");
-      setOrigin("");
-      setQuantity(0);
-      setPurity(0);
-      setSelectedCondition({
-        temperature: "In Celsius",
-        storage: "Select Type",
-        humidity: "Select Type",
-      });
-    },
-    onError: (error: { message: string | string[]; }) => {
-      console.error("Registration failed:", error);
-      let errorMessage = "Failed to register mineral.";
-      
-      if (error.message.includes("RolesManager__MineralPurityPercentageTooLowToRegister")) {
-        errorMessage = "Purity percentage must be greater than 80%";
-      } else if (error.message.includes("RolesManager__InvalidMineralWeight")) {
-        errorMessage = "Mineral weight must be greater than 0";
-      } else if (error.message.includes("caller is missing role")) {
-        errorMessage = "Your account doesn't have miner privileges";
-      }
-      
-      toast.error(errorMessage);
-    },
   });
+
+  const resetForm = () => {
+    setMineralName("");
+    setMineralType("");
+    setOrigin("");
+    setQuantity(0);
+    setPurity(0);
+    setSelectedCondition({
+      temperature: "In Celsius",
+      storage: "Select Type",
+      humidity: "Select Type",
+    });
+  };
 
   const handleRefreshAccess = async () => {
     setIsRefreshingAccess(true);
     try {
-      const { data } = await refetchRoleCheck();
-      if (!data) {
-        toast.error("Still no miner access. Contact administrator.");
-      }
+      await refetchRoleCheck();
     } catch (e) {
       console.error("Error refreshing access:", e);
       toast.error("Error checking access");
@@ -291,30 +287,45 @@ export default function MineralRegistrationPage() {
       return;
     }
 
-    if (!allFieldsReady) {
-      toast.error("Please fill in all required fields correctly.");
+    if (!validateForm()) {
       return;
     }
 
+    setIsTransactionPending(true);
     try {
       if (writeAsync) {
         const tx = await writeAsync();
-        console.log("Transaction submitted:", tx.hash);
         toast.info("Transaction submitted. Waiting for confirmation...");
+        
+        // Wait for transaction to be mined
+        const receipt = await tx.wait();
+        
+        if (receipt.status === 1) {
+          toast.success("✅ Mineral registered successfully!");
+          resetForm();
+        } else {
+          toast.error("Transaction failed");
+        }
       }
     } catch (err: any) {
-      console.error("Error calling write function:", err);
-      let errorMessage = "An unexpected error occurred.";
+      console.error("Transaction error:", err);
       
-      if (err.message.includes("user rejected transaction")) {
-        errorMessage = "Transaction was rejected";
+      if (err.message.includes("User rejected the request")) {
+        toast.error("Transaction rejected by user");
+      } else if (err.message.includes("RolesManager__MineralPurityPercentageTooLowToRegister")) {
+        toast.error("Purity percentage must be greater than 80%");
+      } else if (err.message.includes("RolesManager__InvalidMineralWeight")) {
+        toast.error("Mineral weight must be greater than 0");
+      } else if (err.message.includes("caller is missing role")) {
+        toast.error("Your account doesn't have miner privileges");
+      } else {
+        toast.error("Failed to register mineral. Please try again.");
       }
-      
-      toast.error(errorMessage);
+    } finally {
+      setIsTransactionPending(false);
     }
   };
 
-  // Loading state while checking roles
   if (isConnected && isRoleLoading) {
     return (
       <div className="text-white min-h-screen flex items-center justify-center">
@@ -323,12 +334,10 @@ export default function MineralRegistrationPage() {
     );
   }
 
-  // Not connected state
   if (!isConnected) {
     return <ConnectWalletView isLoading={isConnecting} />;
   }
 
-  // No miner role state
   if (isConnected && !hasMinerRole) {
     return (
       <AccessDeniedView 
@@ -339,10 +348,8 @@ export default function MineralRegistrationPage() {
     );
   }
 
-  // Main form for users with miner role
   return (
     <div className="text-white min-h-screen flex flex-col items-center p-6">
-      {/* Form Header */}
       <div className="w-full max-w-4xl">
         <h1 className="text-3xl font-bold text-center mb-3">Register Mineral</h1>
         <p className="text-gray-400 text-center mb-8">
@@ -350,10 +357,8 @@ export default function MineralRegistrationPage() {
         </p>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Form Section */}
           <div className="border border-[#323539] rounded-lg p-6 flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {/* Mineral Fields */}
               <div>
                 <label className="block text-sm font-medium mb-2">Mineral Name</label>
                 <input
@@ -388,7 +393,6 @@ export default function MineralRegistrationPage() {
                 </div>
               </div>
 
-              {/* Quantity and Purity */}
               <div>
                 <label className="block text-sm font-medium mb-2">Quantity (KG)</label>
                 <div className="bg-[#252525] flex items-center justify-between rounded-md px-4 py-3 w-full border border-[#323539]">
@@ -462,7 +466,6 @@ export default function MineralRegistrationPage() {
                 </div>
               </div>
 
-              {/* Storage Conditions */}
               <div className="w-full relative">
                 <label className="block text-sm font-medium mb-2 text-white">Storage Conditions</label>
                 <div className="flex items-center bg-[#1E1E1E] border border-[#323539] rounded-xl overflow-hidden">
@@ -483,15 +486,14 @@ export default function MineralRegistrationPage() {
               </div>
             </div>
 
-            {/* Register Button */}
             <button
               onClick={handleRegister}
-              disabled={!allFieldsReady || isRegistering}
+              disabled={isTransactionPending || !validateForm()}
               className={`w-full ${
-                allFieldsReady ? 'bg-accentBlue hover:bg-blue-600' : 'bg-gray-600 cursor-not-allowed'
+                validateForm() ? 'bg-accentBlue hover:bg-blue-600' : 'bg-gray-600 cursor-not-allowed'
               } text-white font-medium py-3 rounded mt-8 duration-500 flex items-center justify-center`}
             >
-              {isRegistering ? (
+              {isTransactionPending ? (
                 <>
                   <Loader2 className="animate-spin mr-2 h-5 w-5" />
                   Processing...
@@ -501,38 +503,37 @@ export default function MineralRegistrationPage() {
               )}
             </button>
             <p className="text-gray-400 text-sm text-center mt-4">
-              {allFieldsReady 
+              {validateForm() 
                 ? "All required fields are complete. You can register the mineral."
                 : "Please fill all required fields to register."}
             </p>
           </div>
 
-          {/* Right Info Panel */}
           <div className="lg:w-72">
             <div className="rounded-lg p-6">
               <h2 className="text-lg font-medium mb-4">Check-points</h2>
               <div className="space-y-3 mb-6">
                 <div className="flex items-center gap-2">
                   <div className={`rounded-full p-1 ${
-                    mineralName ? 'bg-green-500' : 'bg-gray-500'
+                    mineralName.trim() ? 'bg-green-500' : 'bg-gray-500'
                   }`}>
-                    {mineralName ? <Check size={12} /> : <Minus size={12} />}
+                    {mineralName.trim() ? <Check size={12} /> : <Minus size={12} />}
                   </div>
                   <span className="text-sm">Valid mineral name</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className={`rounded-full p-1 ${
-                    mineralType ? 'bg-green-500' : 'bg-gray-500'
+                    mineralType.trim() ? 'bg-green-500' : 'bg-gray-500'
                   }`}>
-                    {mineralType ? <Check size={12} /> : <Minus size={12} />}
+                    {mineralType.trim() ? <Check size={12} /> : <Minus size={12} />}
                   </div>
                   <span className="text-sm">Mineral type specified</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <div className={`rounded-full p-1 ${
-                    origin ? 'bg-green-500' : 'bg-gray-500'
+                    origin.trim() ? 'bg-green-500' : 'bg-gray-500'
                   }`}>
-                    {origin ? <Check size={12} /> : <Minus size={12} />}
+                    {origin.trim() ? <Check size={12} /> : <Minus size={12} />}
                   </div>
                   <span className="text-sm">Origin provided</span>
                 </div>
@@ -546,9 +547,9 @@ export default function MineralRegistrationPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <div className={`rounded-full p-1 ${
-                    purity > 80 ? 'bg-green-500' : 'bg-gray-500'
+                    purity > 80 && purity <= 100 ? 'bg-green-500' : 'bg-gray-500'
                   }`}>
-                    {purity > 80 ? <Check size={12} /> : <Minus size={12} />}
+                    {purity > 80 && purity <= 100 ? <Check size={12} /> : <Minus size={12} />}
                   </div>
                   <span className="text-sm">Purity > 80%</span>
                 </div>
@@ -577,7 +578,6 @@ export default function MineralRegistrationPage() {
         </div>
       </div>
 
-      {/* Storage Conditions Modal */}
       {portalOpen && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
           <div className="bg-[#0D0D0D] border border-gray-700 rounded-xl p-8 w-[400px] relative">
