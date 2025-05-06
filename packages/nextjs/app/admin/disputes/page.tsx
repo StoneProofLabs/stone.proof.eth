@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
+import MineralDisputesGraphCard from "~~/components/dashboard/admin/MineralDisputesGraphCard";
+import RecentDisputesCard from "~~/components/dashboard/admin/RecentDisputesCard";
 import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
-import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
@@ -29,8 +30,14 @@ export default function Page() {
           >
             <h1 className="translate-y-[4px]">Raise Dispute</h1>
           </Link>
+          <Link
+            href={"/admin/disputes/raiseDispute"}
+            className="w-full sm:w-auto bg-[#202634] gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
+          >
+            <h1 className="translate-y-[4px]">Ongoing Disputes</h1>
+          </Link>
 
-          <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+          <button className="w-full sm:w-auto bg-[#202634] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
           </button>
         </div>
@@ -40,12 +47,13 @@ export default function Page() {
       <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
         <div className="w-full lg:w-2/3">
           <div className="h-full">
-            <MineralActivity />
+            <MineralDisputesGraphCard />
           </div>
         </div>
+        {/* @ts-ignore */}
         <div className="w-full lg:w-1/3">
           <div className="h-full">
-            <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
+            <RecentDisputesCard />
           </div>
         </div>
       </div>
@@ -76,20 +84,32 @@ export default function Page() {
         </div>
 
         {/* the table */}
-        <NotificationList notifications={mockDisputes} />
+        <NotificationList
+          notifications={mockDisputes}
+          bgColor="bg-[#060910]"
+          expandedBgColor="bg-[#060910]"
+          borderColor="border-[#23262B]"
+          baseUrl="admin"
+        />
       </div>
 
       {/* the other metric cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <RecentShipments shipments={shipments} onViewAll={() => console.log("View all shipments")} />
+        <RecentShipments
+          bgColor="bg-[#060910]"
+          shipments={shipments}
+          onViewAll={() => console.log("View all shipments")}
+        />
 
         <TopDemands
+          bgColor="bg-[#060910]"
           demands={demands}
           onRefresh={() => console.log("Refresh demands")}
           onAddDemand={id => console.log("Add demand", id)}
         />
 
         <MineralReports
+          bgColor="bg-[#060910]"
           reports={reports}
           onRefresh={() => console.log("Refresh reports")}
           onViewDetails={id => console.log("View report details", id)}

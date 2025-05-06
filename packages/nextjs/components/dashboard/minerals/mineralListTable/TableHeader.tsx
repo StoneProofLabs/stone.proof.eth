@@ -6,11 +6,18 @@ type TableHeaderProps = {
   onSort: (key: MineralKey) => void;
   allSelected: boolean;
   onSelectAll: (checked: boolean) => void;
+  headerBg?: string;
 };
 
-export default function TableHeader({ sortConfig, onSort, allSelected, onSelectAll }: TableHeaderProps) {
+export default function TableHeader({
+  sortConfig,
+  onSort,
+  allSelected,
+  onSelectAll,
+  headerBg = "#2B2D2F",
+}: TableHeaderProps) {
   return (
-    <thead className="bg-[#2B2D2F]">
+    <thead style={{ backgroundColor: headerBg }}>
       <tr>
         <th className="px-2 sm:px-4 py-2 sm:py-3 w-8 sm:w-12">
           <input

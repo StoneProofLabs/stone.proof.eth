@@ -77,10 +77,12 @@ const Hero: React.FC = () => {
 
             <div className="relative z-20 group">
               {/* blurred spotlight */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[120px] rounded-full bg-white opacity-15 blur-[50px] z-10 transition-all duration-300 group-hover:w-[360px] group-hover:h-[150px]"></div>
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[120px] rounded-full bg-white opacity-15 blur-[50px] -z-10 transition-all duration-300 group-hover:w-[360px] group-hover:h-[150px]"></div>
 
               {/* ConnectWalletButton */}
-              <ConnectWalletButton />
+              <div className="">
+                <ConnectWalletButton />
+              </div>
             </div>
           </div>
         </div>

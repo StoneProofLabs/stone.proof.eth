@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import Icon from "~~/components/dashboard/Icon";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralListTable from "~~/components/dashboard/minerals/mineralListTable/mineralList";
@@ -19,6 +20,7 @@ export type Shipment = {
 };
 
 export default function Page() {
+  const [activeTab, setActiveTab] = useState("pending");
   return (
     <div className="px-4 md:px-10 flex flex-col gap-6 md:gap-10">
       {/* the welcome message */}
@@ -39,10 +41,10 @@ export default function Page() {
           </button>
 
           <Link
-            href={"/inspector/verifyMineral"}
+            href={""}
             className="flex-1 md:flex-none bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center md:justify-start"
           >
-            <h1 className="translate-y-[4px]">Verify Mineral</h1>
+            <h1 className="translate-y-[4px]">View Pending Transactions</h1>
           </Link>
 
           <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
@@ -67,38 +69,39 @@ export default function Page() {
 
       {/* the history table */}
       <div className="flex flex-col gap-5">
-        <div className="flex flex-col md:flex-row items-start md:items-center gap-3 justify-between">
-          <div>
-            <p className="text-[18px] md:text-[20px] font-bold m-0 leading-tight">Minerals History</p>
-          </div>
-
-          <div className="w-full md:w-auto md:scale-90">
-            <Search />
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            <button className="flex-1 md:flex-none bg-[#252525] border border-[#323539] flex items-center justify-center gap-1 font-medium px-3 py-1 rounded-[6px] text-sm">
-              <span className="flex items-center gap-1">
-                <span>Download Report</span>
-                <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" width={14} height={14} />
-              </span>
-            </button>
-
-            <Link
-              href={"#"}
-              className="flex-1 md:flex-none bg-red-500 gap-1 font-medium px-3 py-1 rounded-[6px] flex items-center justify-center text-sm"
-            >
-              Clear history
-            </Link>
-
-            <button className="bg-[#252525] border border-[#323539] flex items-center justify-center px-2 py-1 rounded-[6px]">
-              <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" width={14} height={14} />
-            </button>
-          </div>
+      <div className="bg-[#252525] rounded-2xl flex flex-col sm:flex-row items-center">
+          <button
+            onClick={() => setActiveTab("pending")}
+            className={`w-full sm:flex-1 py-2 sm:py-3 px-3 sm:px-6 text-base sm:text-lg transition-colors ${
+              activeTab === "pending" ? "text-white font-semibold" : "text-[#71727A]"
+            }`}
+          >
+            Pending Transactions (Waiting For Inpection)
+          </button>
+          <div className="hidden sm:block w-[3px] h-4 bg-white"></div>
+          <div className="w-full h-[1px] sm:hidden bg-white my-1"></div>
+          <button
+            onClick={() => setActiveTab("validated")}
+            className={`w-full sm:flex-1 py-2 sm:py-3 px-3 sm:px-6 text-base sm:text-lg transition-colors ${
+              activeTab === "validated" ? "text-white font-semibold" : "text-[#71727A]"
+            }`}
+          >
+            Inspected Transactions
+          </button>
         </div>
 
         {/* the table */}
-        <MineralListTable minerals={mineralsList} />
+        <div className="pt-4">
+          {activeTab === "pending" ? (
+            <div className="overflow-x-auto">
+              <MineralListTable minerals={mineralsList} isInspector={true} title="Your Stored Mineral List" />
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <MineralListTable minerals={mineralsList} isInspector={true} title="Your Stored Mineral List" />
+            </div>
+          )}
+        </div>
       </div>
 
       {/* the other metric cards */}

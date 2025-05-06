@@ -1299,6 +1299,8 @@ export const mockDisputes: Notifications[] = [
     status: "Pending",
     secondaryStatus: "High Priority",
     reference: "ORD-58231",
+    bgColor: "bg-amber-900/30",
+    expandedBgColor: "bg-amber-900/10"
   },
   {
     id: 2,
@@ -1309,6 +1311,8 @@ export const mockDisputes: Notifications[] = [
     status: "Escalated",
     secondaryStatus: "Complainant",
     reference: "ORD-58345",
+    bgColor: "bg-red-900/30", 
+    expandedBgColor: "bg-red-900/10"
   },
   {
     id: 3,

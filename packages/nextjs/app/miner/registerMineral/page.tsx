@@ -5,21 +5,178 @@ import {
   AlertCircle,
   Check,
   ChevronDown,
+  ChevronRight,
+  Copy,
   Droplet,
+  Loader2,
+  Mail,
   MapPin,
+  MessageSquare,
   Minus,
+  Phone,
   Plus,
-  Thermometer,
   ShieldAlert,
+  Thermometer
 } from "lucide-react";
 import { useAccount } from "wagmi";
 import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { toast } from "../../lib/toast";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
-// Define the MINER_ROLE constant (should match your contract's MINER_ROLE)
-const MINER_ROLE = "0x241ecf16d79d0f8dbfb92cbc07fe17840425976cf0667f022fe9877caa831b08";
+const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
+  <div className="flex flex-col items-center justify-center gap-2">
+    <Loader2 className={`w-${size} h-${size} animate-spin`} />
+    {text && <p className="text-sm text-muted-foreground">{text}</p>}
+  </div>
+);
 
-export default function Page() {
-  const { address, isConnected } = useAccount();
+const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
+  <div className="text-white min-h-screen flex items-center justify-center">
+    <div className="text-center max-w-md p-6 bg-gray-800 rounded-xl border border-gray-700">
+      <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto">
+        {isLoading ? (
+          <Loader2 className="w-8 h-8 text-blue-600 dark:text-blue-300 animate-spin" />
+        ) : (
+          <ShieldAlert className="w-8 h-8 text-blue-600 dark:text-blue-300" />
+        )}
+      </div>
+      <h2 className="text-2xl font-bold mb-4">
+        {isLoading ? "Connecting..." : "Wallet Not Connected"}
+      </h2>
+      <p className="text-gray-400 mb-6">
+        {isLoading ? "Verifying wallet..." : "Please connect your wallet to register minerals"}
+      </p>
+      <div className="flex justify-center">
+        <ConnectButton />
+      </div>
+    </div>
+  </div>
+);
+
+const AccessDeniedView = ({ 
+  address, 
+  isLoadingRefresh, 
+  onRefresh 
+}: { 
+  address: string; 
+  isLoadingRefresh: boolean;
+  onRefresh: () => void;
+}) => {
+  const copyAddress = () => {
+    navigator.clipboard.writeText(address);
+    toast.success("Wallet address copied!");
+  };
+
+  return (
+    <div className="text-white min-h-screen flex items-center justify-center p-4">
+      <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-lg border border-gray-700 p-6">
+        <div className="text-center space-y-4">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-red-900 rounded-full mx-auto">
+            <ShieldAlert className="w-8 h-8 text-red-300" />
+          </div>
+
+          <h2 className="text-2xl font-bold">Miner Privileges Required</h2>
+          <p className="text-gray-400">
+            Your wallet doesn't have miner access to register minerals.
+          </p>
+
+          {/* Wallet Address */}
+          <div className="bg-gray-700 p-4 rounded-lg">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-sm text-gray-400">Connected Wallet:</span>
+              <button 
+                onClick={copyAddress}
+                className="text-blue-400 hover:text-blue-300"
+                title="Copy address"
+              >
+                <Copy className="w-5 h-5" />
+              </button>
+            </div>
+            <p className="font-mono text-sm break-all text-left">{address}</p>
+          </div>
+
+          {/* Steps to Get Access */}
+          <div className="pt-4 space-y-3 text-left">
+            <h3 className="font-medium">How to get miner access:</h3>
+            <ol className="space-y-4 text-sm text-gray-400">
+              <li className="flex items-start gap-3">
+                <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+                  1
+                </span>
+                <div>
+                  <p>Contact system administrator at:</p>
+                  <div className="mt-1 space-y-2 pl-2">
+                    <a href="mailto:admin@stone.proof?subject=Miner%20Role%20Request" 
+                       className="flex items-center gap-2 text-blue-400 hover:text-blue-300">
+                      <Mail className="w-4 h-4" />
+                      admin@stone.proof
+                    </a>
+                    <a href="tel:+250795107436" 
+                       className="flex items-center gap-2 text-blue-400 hover:text-blue-300">
+                      <Phone className="w-4 h-4" />
+                      +(250) 795 107 436
+                    </a>
+                  </div>
+                </div>
+              </li>
+              
+              <li className="flex items-start gap-3">
+                <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+                  2
+                </span>
+                <div>
+                  <p>Request miner role assignment through:</p>
+                  <div className="mt-1 pl-2">
+                    <a href="https://t.me/StoneProofSupport" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300">
+                      <MessageSquare className="w-4 h-4" />
+                      @StoneProofSupport
+                    </a>
+                  </div>
+                </div>
+              </li>
+
+              <li className="flex items-start gap-3">
+                <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+                  3
+                </span>
+                <div>
+                  <p>Refresh this page after approval</p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    If access isn't granted immediately, wait a few minutes then refresh
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          {/* Refresh Button */}
+          <div className="pt-4">
+            <button
+              onClick={onRefresh}
+              disabled={isLoadingRefresh}
+              className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex items-center justify-center gap-2"
+            >
+              {isLoadingRefresh ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <>
+                  Check Access Again
+                  <ChevronRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function MineralRegistrationPage() {
+  const { address, isConnected, isConnecting } = useAccount();
   const [quantity, setQuantity] = useState(0);
   const [purity, setPurity] = useState(0);
   const [portalOpen, setPortalOpen] = useState(false);
@@ -31,13 +188,17 @@ export default function Page() {
     storage: "Select Type",
     humidity: "Select Type",
   });
+  const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
 
   // Check if user has miner role
-  const { data: hasMinerRole, isLoading: isRoleLoading } = useScaffoldReadContract({
+  const { 
+    data: hasMinerRole, 
+    isLoading: isRoleLoading, 
+    refetch: refetchRoleCheck 
+  } = useScaffoldReadContract({
     contractName: "RolesManager",
-    contractAddress: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
-    functionName: "hasRole",
-    args: [MINER_ROLE, address],
+    functionName: "hasMinerRole",
+    args: [address],
     enabled: isConnected,
   });
 
@@ -56,7 +217,6 @@ export default function Page() {
 
   const { writeAsync, isLoading: isRegistering } = useScaffoldContract({
     contractName: "RolesManager",
-    contractAddress: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
     functionName: "registerMineral",
     args: [
       mineralName,
@@ -67,8 +227,8 @@ export default function Page() {
       storageConditions
     ],
     enabled: allFieldsReady,
-    onSuccess: (mineralId) => {
-      alert(`Mineral registered successfully! Mineral ID: ${mineralId}`);
+    onSuccess: (mineralId: string) => {
+      toast.success(`Mineral registered successfully! Mineral ID: ${mineralId}`);
       // Reset form after successful registration
       setMineralName("");
       setMineralType("");
@@ -81,7 +241,7 @@ export default function Page() {
         humidity: "Select Type",
       });
     },
-    onError: (error) => {
+    onError: (error: { message: string | string[]; }) => {
       console.error("Registration failed:", error);
       let errorMessage = "Failed to register mineral.";
       
@@ -93,9 +253,24 @@ export default function Page() {
         errorMessage = "Your account doesn't have miner privileges";
       }
       
-      alert(errorMessage);
+      toast.error(errorMessage);
     },
   });
+
+  const handleRefreshAccess = async () => {
+    setIsRefreshingAccess(true);
+    try {
+      const { data } = await refetchRoleCheck();
+      if (!data) {
+        toast.error("Still no miner access. Contact administrator.");
+      }
+    } catch (e) {
+      console.error("Error refreshing access:", e);
+      toast.error("Error checking access");
+    } finally {
+      setIsRefreshingAccess(false);
+    }
+  };
 
   const handleQuantityChange = (value: number) => {
     setQuantity(Math.max(0, value));
@@ -107,17 +282,17 @@ export default function Page() {
 
   const handleRegister = async () => {
     if (!isConnected) {
-      alert("Please connect your wallet.");
+      toast.error("Please connect your wallet.");
       return;
     }
 
     if (!hasMinerRole) {
-      alert("Your account doesn't have miner privileges.");
+      toast.error("Your account doesn't have miner privileges.");
       return;
     }
 
     if (!allFieldsReady) {
-      alert("Please fill in all required fields correctly.");
+      toast.error("Please fill in all required fields correctly.");
       return;
     }
 
@@ -125,6 +300,7 @@ export default function Page() {
       if (writeAsync) {
         const tx = await writeAsync();
         console.log("Transaction submitted:", tx.hash);
+        toast.info("Transaction submitted. Waiting for confirmation...");
       }
     } catch (err: any) {
       console.error("Error calling write function:", err);
@@ -134,7 +310,7 @@ export default function Page() {
         errorMessage = "Transaction was rejected";
       }
       
-      alert(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
@@ -142,43 +318,24 @@ export default function Page() {
   if (isConnected && isRoleLoading) {
     return (
       <div className="text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Checking permissions...</h2>
-          <p>Verifying your miner role status</p>
-        </div>
+        <LoadingSpinner size={12} text="Checking access permissions..." />
       </div>
     );
   }
 
   // Not connected state
   if (!isConnected) {
-    return (
-      <div className="text-white min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Wallet Not Connected</h2>
-          <p className="text-gray-400">Please connect your wallet to register minerals</p>
-        </div>
-      </div>
-    );
+    return <ConnectWalletView isLoading={isConnecting} />;
   }
 
   // No miner role state
   if (isConnected && !hasMinerRole) {
     return (
-      <div className="text-white min-h-screen flex items-center justify-center">
-        <div className="text-center max-w-md">
-          <div className="flex justify-center mb-4">
-            <ShieldAlert size={48} className="text-red-500" />
-          </div>
-          <h2 className="text-2xl font-bold mb-4">Access Restricted</h2>
-          <p className="text-gray-400 mb-4">
-            Your account doesn't have miner privileges to register minerals.
-          </p>
-          <p className="text-gray-500 text-sm">
-            Contact the system administrator to get miner role assigned to your address.
-          </p>
-        </div>
-      </div>
+      <AccessDeniedView 
+        address={address || ""} 
+        isLoadingRefresh={isRefreshingAccess}
+        onRefresh={handleRefreshAccess}
+      />
     );
   }
 
@@ -336,10 +493,7 @@ export default function Page() {
             >
               {isRegistering ? (
                 <>
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
+                  <Loader2 className="animate-spin mr-2 h-5 w-5" />
                   Processing...
                 </>
               ) : (
@@ -496,7 +650,7 @@ export default function Page() {
                   ) {
                     setPortalOpen(false);
                   } else {
-                    alert("Please select both Storage Type and Humidity");
+                    toast.error("Please select both Storage Type and Humidity");
                   }
                 }}
                 className="px-4 py-2 bg-accentBlue rounded-lg text-white hover:bg-blue-600"

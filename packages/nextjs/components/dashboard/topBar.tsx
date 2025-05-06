@@ -38,7 +38,6 @@ export default function TopBar({ sidebarItems, basePath }: BreadcrumbProps) {
       case "transporter":
         return "Transporter Portal";
       default:
-
         return "";
     }
   }, [pathname]);

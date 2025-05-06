@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
+import { ChevronRight, Loader2 } from "lucide-react";
 import Icon from "~~/components/dashboard/Icon";
 import MineralDisputesGraph from "~~/components/dashboard/disputes/mineralDisputesVariationGraph";
 import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
@@ -12,6 +14,16 @@ import Search from "~~/components/dashboard/search";
 import { demands, mineralDisputesData, mockDisputes, myNotifications, reports, shipments } from "~~/data/data";
 
 export default function Page() {
+  const [isLoadingRefresh, setIsLoadingRefresh] = useState(false);
+
+  const onRefresh = () => {
+    setIsLoadingRefresh(true);
+    // Simulating an API call or data refresh
+    setTimeout(() => {
+      setIsLoadingRefresh(false);
+    }, 1500);
+  };
+
   return (
     <div className="px-4 sm:px-10 flex flex-col gap-10">
       {/* the welcome message */}
@@ -19,13 +31,13 @@ export default function Page() {
         <div className="flex flex-col">
           <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Disputes resolutions</p>
           <p className="text-[14px] sm:text-[16px] text-[#979AA0] m-0 leading-tight">
-            View all On-goint disputes in the network
+            View all On-going disputes in the network
           </p>
         </div>
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
           <Link
-            href={"/refiner/disputes/raiseDispute"}
+            href={"/miner/disputes/raiseDispute"}
             className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
           >
             <h1 className="translate-y-[4px]">Raise Dispute</h1>
@@ -62,16 +74,21 @@ export default function Page() {
             <Search />
           </div>
 
-          <div className="flex w-full sm:w-auto gap-2">
-            <Link
-              href={"#"}
-              className="w-full sm:w-auto bg-red-500 gap-1 font-medium px-3 py-1 rounded-[6px] flex items-center justify-center text-sm"
+          {/* Refresh Button */}
+          <div className="pt-4">
+            <button
+              onClick={onRefresh}
+              disabled={isLoadingRefresh}
+              className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
-              Clear Activity
-            </Link>
-
-            <button className="bg-[#252525] border border-[#323539] flex items-center justify-center px-2 py-1 rounded-[6px]">
-              <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" width={14} height={14} />
+              {isLoadingRefresh ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <>
+                  Check Access Again
+                  <ChevronRight className="w-4 h-4" />
+                </>
+              )}
             </button>
           </div>
         </div>

@@ -11,6 +11,9 @@ export interface Notifications {
   status: "Resolved" | "Escalated" | "Pending" | "Complainant" | "In Progress" | "Rejected";
   secondaryStatus?: "Complainant" | "Escalated" | "Pending" | "High Priority";
   reference?: string;
+  bgColor?: string;
+  expandedBgColor?: string;
+  borderColor?: string;
 }
 
 interface StatusIconProps {
@@ -26,6 +29,9 @@ interface NotificationItemProps {
 interface NotificationListProps {
   notifications: Notifications[];
   baseUrl?: string;
+  bgColor?: string;
+  expandedBgColor?: string;
+  borderColor?: string;
 }
 
 // Status badge component
@@ -123,7 +129,9 @@ const NotificationItem = ({
   baseUrl = "",
 }: NotificationItemProps & { baseUrl?: string }) => {
   return (
-    <div className="bg-[#121212] border border-[#2a2a2a] rounded-lg mb-3">
+    <div
+      className={`${notification.bgColor || "bg-[#121212]"} border ${notification.borderColor || "border-[#2a2a2a]"} rounded-lg mb-3`}
+    >
       <div
         className="flex flex-col sm:flex-row sm:items-center justify-between p-3 sm:p-4 cursor-pointer gap-3 sm:gap-0"
         onClick={() => toggleExpanded(notification.id)}
@@ -156,7 +164,7 @@ const NotificationItem = ({
       </div>
 
       {expanded && (
-        <div className="p-4 sm:p-6 border-t border-gray-800 text-gray-400">
+        <div className={`p-4 sm:p-6 border-t border-gray-800 text-gray-400 ${notification.expandedBgColor || ""}`}>
           <p className="mb-3 text-sm sm:text-base">
             {notification.content || "No additional details available for this notification."}
           </p>
@@ -179,7 +187,13 @@ const NotificationItem = ({
 };
 
 // NotificationList component
-export const NotificationList = ({ notifications, baseUrl = "" }: NotificationListProps) => {
+export const NotificationList = ({
+  notifications,
+  baseUrl = "",
+  bgColor,
+  expandedBgColor,
+  borderColor,
+}: NotificationListProps) => {
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const toggleExpanded = (id: number) => {
@@ -188,15 +202,25 @@ export const NotificationList = ({ notifications, baseUrl = "" }: NotificationLi
 
   return (
     <div className="">
-      {(notifications ?? []).map(notification => (
-        <NotificationItem
-          key={notification.id}
-          notification={notification}
-          expanded={expandedId === notification.id}
-          toggleExpanded={toggleExpanded}
-          baseUrl={baseUrl}
-        />
-      ))}
+      {(notifications ?? []).map(notification => {
+        // Apply global bgColor and expandedBgColor if provided in props
+        const notificationWithStyles = {
+          ...notification,
+          bgColor: notification.bgColor || bgColor,
+          expandedBgColor: notification.expandedBgColor || expandedBgColor,
+          borderColor: notification.borderColor || borderColor,
+        };
+
+        return (
+          <NotificationItem
+            key={notification.id}
+            notification={notificationWithStyles}
+            expanded={expandedId === notification.id}
+            toggleExpanded={toggleExpanded}
+            baseUrl={baseUrl}
+          />
+        );
+      })}
     </div>
   );
 };
