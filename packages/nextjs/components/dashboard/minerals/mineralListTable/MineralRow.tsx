@@ -96,15 +96,13 @@ export default function MineralRow({
             className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors"
           >
             <span>Inspect Mineral</span>
-            <Icon path="/dashboard/icon_set/minerals.svg" alt="Inspect icon" />
           </button>
         ) : isAuditor ? (
           <button
             onClick={() => router.push(`/auditor/minerals`)}
-            className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm flex items-center transition-colors"
+            className="bg-blue-700 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm flex items-center transition-colors"
           >
             <span>Audit Mineral</span>
-           
           </button>
         ) : (
           <>
