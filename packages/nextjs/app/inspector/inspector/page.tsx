@@ -24,9 +24,9 @@ export default function InspectMinerals() {
   return (
     <div className="min-h-screen text-white p-4 sm:p-6 md:p-8">
       <div className="text-center mb-4 sm:mb-6">
-        <h1 className="text-2xl sm:text-3xl font-bold">Inspect Minerals</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold">Mineral Inspection</h1>
         <p className="text-sm text-gray-400 max-w-xl mx-auto mt-2 px-2 sm:px-0">
-          Verify and inspect minerals to ensure compliance with quality standards and regulations.
+        Reach out to us with any question or inquiry you have and we'll do our best to get back to you as soon as possible.
         </p>
       </div>
 

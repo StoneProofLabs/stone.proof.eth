@@ -95,11 +95,11 @@ export default function Page() {
         <div className="pt-4">
           {activeTab === "pending" ? (
             <div className="overflow-x-auto">
-              <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
+              <MineralListTable minerals={mineralsList} isAuditor={true} title="Your Stored Mineral List" />
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
+              <MineralListTable minerals={mineralsList} isAuditor={true} title="Your Stored Mineral List" />
             </div>
           )}
         </div>

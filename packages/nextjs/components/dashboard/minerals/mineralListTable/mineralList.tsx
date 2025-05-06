@@ -10,6 +10,8 @@ type MineralListTableProps = {
   minerals: Mineral[];
   title?: string;
   isAdmin?: boolean;
+  isInspector?: boolean;
+  isAuditor?: boolean;
   titleBg?: string;
   headerBg?: string;
   rowsBg?: string;
@@ -23,6 +25,8 @@ export default function MineralListTable({
   minerals,
   title,
   isAdmin = false,
+  isInspector = false,
+  isAuditor = false,
   titleBg = "#252525",
   headerBg = "#252525",
   rowsBg = "#252525",
@@ -117,6 +121,8 @@ export default function MineralListTable({
                   isSelected={selected.includes(mineral.id)}
                   onSelect={handleSelect}
                   isAdmin={isAdmin}
+                  isInspector={isInspector}
+                  isAuditor={isAuditor}
                 />
               ))}
             </tbody>

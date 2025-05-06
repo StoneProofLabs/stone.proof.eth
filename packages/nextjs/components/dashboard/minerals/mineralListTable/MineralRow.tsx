@@ -1,4 +1,5 @@
 import Link from "next/link";
+import router from "next/router";
 import Icon from "../../Icon";
 import PurityIndicator from "./PurityIndicator";
 import StatusBadge from "./StatusBadge";
@@ -9,11 +10,20 @@ type MineralRowProps = {
   isSelected: boolean;
   onSelect: (id: number) => void;
   isAdmin?: boolean;
+  isInspector?: boolean;
+  isAuditor?: boolean;
 };
 
-export default function MineralRow({ mineral, isSelected, onSelect, isAdmin = false }: MineralRowProps) {
+export default function MineralRow({
+  mineral,
+  isSelected,
+  onSelect,
+  isAdmin = false,
+  isInspector = false,
+  isAuditor = false,
+}: MineralRowProps) {
   return (
-    <tr key={mineral.id} className={`  hover:bg-[#060910] ${isSelected ? "bg-[#2B2D2F]" : ""} transition-colors`}>
+    <tr key={mineral.id} className={`  hover:bg-[#2B2D2F] ${isSelected ? "bg-[#2B2D2F]" : ""} transition-colors`}>
       <td className="px-2 sm:px-4 py-3 sm:py-4">
         <input
           type="checkbox"
@@ -79,6 +89,22 @@ export default function MineralRow({ mineral, isSelected, onSelect, isAdmin = fa
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
+          </button>
+        ) : isInspector ? (
+          <button
+            onClick={() => router.push(`/inspector/inspector`)}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors"
+          >
+            <span>Inspect Mineral</span>
+            <Icon path="/dashboard/icon_set/minerals.svg" alt="Inspect icon" />
+          </button>
+        ) : isAuditor ? (
+          <button
+            onClick={() => router.push(`/auditor/minerals`)}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg text-sm flex items-center transition-colors"
+          >
+            <span>Audit Mineral</span>
+           
           </button>
         ) : (
           <>
