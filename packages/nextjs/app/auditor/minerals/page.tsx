@@ -42,7 +42,7 @@ export default function Page() {
           </button>
 
           <Link
-            href={"/auditor/registerMineral"}
+            href={""}
             className="flex-1 md:flex-none bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center md:justify-start"
           >
             <h1 className="translate-y-[4px]">View Pending Transactions</h1>
@@ -95,11 +95,11 @@ export default function Page() {
         <div className="pt-4">
           {activeTab === "pending" ? (
             <div className="overflow-x-auto">
-              <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
+              <MineralListTable minerals={mineralsList} isAuditor={true} title="Your Stored Mineral List" />
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <MineralListTable minerals={mineralsList} title="Your Stored Mineral List" />
+              <MineralListTable minerals={mineralsList} isAuditor={true} title="Your Stored Mineral List" />
             </div>
           )}
         </div>

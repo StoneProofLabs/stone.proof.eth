@@ -51,6 +51,25 @@ const AccessDeniedCard = ({
           <ShieldAlert className="w-8 h-8 text-red-600 dark:text-red-300" />
         </div>
 
+
+        <div className="flex flex-wrap gap-2 sm:gap-1">
+          <Link
+            href={"/admin/disputes/raiseDispute"}
+            className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
+          >
+            <h1 className="translate-y-[4px]">Raise Dispute</h1>
+          </Link>
+          <Link
+            href={"/admin/disputes/raiseDispute"}
+            className="w-full sm:w-auto bg-[#202634] gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"
+          >
+            <h1 className="translate-y-[4px]">Ongoing Disputes</h1>
+          </Link>
+
+          <button className="w-full sm:w-auto bg-[#202634] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+            <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
+          </button>
+
         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Admin Privileges Required</h2>
         <p className="text-gray-600 dark:text-gray-300">
           Your wallet doesn't have admin access permissions to view this page.
@@ -70,6 +89,18 @@ const AccessDeniedCard = ({
           <p className="font-mono text-sm break-all text-left">{address}</p>
         </div>
 
+
+      {/* the mineral activity */}
+      <div className="flex flex-col lg:flex-row gap-5 w-full items-stretch">
+        <div className="w-full lg:w-2/3">
+          <div className="h-full">
+            <MineralDisputesGraphCard />
+          </div>
+        </div>
+        {/* @ts-ignore */}
+        <div className="w-full lg:w-1/3">
+          <div className="h-full">
+            <RecentDisputesCard />
         <div className="pt-4 space-y-3">
           <h3 className="font-medium text-gray-900 dark:text-white">How to get access:</h3>
           <ol className="space-y-2 text-sm text-gray-600 dark:text-gray-300 text-left">
@@ -134,6 +165,7 @@ const AccessDeniedCard = ({
                 <ChevronRight className="w-4 h-4 text-gray-400" />
               </a>
             ))}
+
           </div>
         </div>
 
@@ -211,8 +243,37 @@ export default function AdminDisputesPage() {
     } finally {
       setIsRefreshingAccess(false);
     }
-  };
+  }
+        {/* the table */}
+        <NotificationList
+          notifications={mockDisputes}
+          bgColor="bg-[#060910]"
+          expandedBgColor="bg-[#060910]"
+          borderColor="border-[#23262B]"
+          baseUrl="admin"
+        />
+      </div>
 
+      {/* the other metric cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <RecentShipments
+          bgColor="bg-[#060910]"
+          shipments={shipments}
+          onViewAll={() => console.log("View all shipments")}
+        />
+
+        <TopDemands
+          bgColor="bg-[#060910]"
+          demands={demands}
+          onRefresh={() => console.log("Refresh demands")}
+          onAddDemand={id => console.log("Add demand", id)}
+        />
+
+        <MineralReports
+          bgColor="bg-[#060910]"
+          reports={reports}
+          onRefresh={() => console.log("Refresh reports")}
+          onViewDetails={id => console.log("View report details", id)}
   useEffect(() => {
     if (isAdmin) {
       const timer = setTimeout(() => {
@@ -240,6 +301,7 @@ export default function AdminDisputesPage() {
           address={address || ""}
           isLoadingRefresh={isRefreshingAccess}
           onRefresh={handleRefreshAccess}
+
         />
       </div>
     );

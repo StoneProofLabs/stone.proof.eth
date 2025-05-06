@@ -52,11 +52,12 @@ const FeatureCard = ({ title, desc, icon }: { title: string; desc: string; icon:
     >
       {/* Top highlight line */}
       <div
-        className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[2px] bg-white opacity-0 group-hover:opacity-70 transition-opacity duration-300 z-10"
+        className="absolute top-0 left-1/2 transform -translate-x-1/2 h-[7px] bg-white opacity-0 group-hover:opacity-70 transition-opacity duration-300 z-10"
         style={{
-          width: "30%",
+          width: "15%",
           boxShadow: "0 0 15px 2px rgba(255, 255, 255, 0.7)",
           transition: "all 0.3s ease",
+          borderRadius: 10,
         }}
       />
 

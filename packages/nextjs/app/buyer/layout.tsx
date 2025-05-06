@@ -1,5 +1,7 @@
 "use client";
 
+import { Montserrat } from "next/font/google";
+
 import { useEffect, useState } from "react";
 import { Inter } from "next/font/google";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -12,9 +14,9 @@ import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
 
-const inter = Inter({
+const montserrat = Montserrat({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -24,6 +26,7 @@ const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text
     {text && <p className="text-sm text-muted-foreground">{text}</p>}
   </div>
 );
+
 
 const FullPageLoader = ({ text = "Verifying buyer permissions..." }: { text?: string }) => (
   <div className="flex items-center justify-center min-h-screen bg-lightBlack">
@@ -236,7 +239,7 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
   }
 
   return (
-    <div className={`${inter.variable} font-sans bg-lightBlack flex text-white h-screen`}>
+    <div className={`${montserrat.variable} font-montserrat bg-lightBlack flex text-white h-screen`}>
       <Sidebar basePath="/buyer" />
       <div
         className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${

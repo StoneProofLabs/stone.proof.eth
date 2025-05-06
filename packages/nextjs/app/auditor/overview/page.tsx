@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import AuditionWorkrateGraph from "../../../components/auditor/AuditionWorkrateGraph";
 import Icon from "~~/components/dashboard/Icon";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import MineralSupplyGraph from "~~/components/dashboard/overview/mineralSupply";
@@ -65,7 +66,7 @@ export default function Page() {
 
       {/* the mineral supply graph */}
       <div className="w-full overflow-x-auto">
-        <MineralSupplyGraph data={supplyData} />
+        <AuditionWorkrateGraph />
       </div>
 
       {/* the other metric cards */}

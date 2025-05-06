@@ -19,7 +19,7 @@ export default function Page() {
         <div className="flex flex-col">
           <p className="text-[24px] sm:text-[28px] font-bold m-0 leading-tight">Disputes resolutions</p>
           <p className="text-[14px] sm:text-[16px] text-[#979AA0] m-0 leading-tight">
-            View all On-goint disputes in the network
+            View all On-going disputes in the network
           </p>
         </div>
 
