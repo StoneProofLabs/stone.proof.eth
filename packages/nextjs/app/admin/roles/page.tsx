@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
-import { isAddress, stringToBytes } from "viem";
+import { isAddress, toBytes } from "viem";
 import { useAccount } from "wagmi";
 import Icon from "~~/components/dashboard/Icon";
 import RoleCard from "~~/components/dashboard/admin/RoleCard";
@@ -84,7 +84,6 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   </div>
 );
 
-// Define role types
 const ROLE_TYPES = {
   MINER: "Miner",
   REFINER: "Refiner",
@@ -96,13 +95,31 @@ const ROLE_TYPES = {
 
 type RoleType = keyof typeof ROLE_TYPES;
 
+const getSilentRoleBytes = (roleName: string): Uint8Array => {
+  try {
+    const buffer = new ArrayBuffer(32);
+    const view = new DataView(buffer);
+    const encoder = new TextEncoder();
+    const encoded = encoder.encode(roleName);
+    
+    for (let i = 0; i < Math.min(encoded.length, 32); i++) {
+      view.setUint8(i, encoded[i]);
+    }
+    
+    return new Uint8Array(buffer);
+  } catch (error) {
+    console.warn("Silent role bytes conversion failed:", error);
+    return new Uint8Array(32);
+  }
+};
+
 const ROLE_TO_BYTES32 = {
-  MINER: stringToBytes("MINER_ROLE", { size: 32 }),
-  REFINER: stringToBytes("REFINER_ROLE", { size: 32 }),
-  TRANSPORTER: stringToBytes("TRANSPORTER_ROLE", { size: 32 }),
-  AUDITOR: stringToBytes("AUDITOR_ROLE", { size: 32 }),
-  INSPECTOR: stringToBytes("INSPECTOR_ROLE", { size: 32 }),
-  BUYER: stringToBytes("BUYER_ROLE", { size: 32 }),
+  MINER: getSilentRoleBytes("MINER_ROLE"),
+  REFINER: getSilentRoleBytes("REFINER_ROLE"),
+  TRANSPORTER: getSilentRoleBytes("TRANSPORTER_ROLE"),
+  AUDITOR: getSilentRoleBytes("AUDITOR_ROLE"),
+  INSPECTOR: getSilentRoleBytes("INSPECTOR_ROLE"),
+  BUYER: getSilentRoleBytes("BUYER_ROLE"),
 } as const;
 
 const ROLE_TO_FUNCTION_MAP = {
@@ -133,19 +150,13 @@ const Page = () => {
   const [isAssignLoading, setIsAssignLoading] = useState(false);
   const [isRevokeLoading, setIsRevokeLoading] = useState(false);
 
-  // Check if connected wallet is admin
-  const {
-    data: isAdmin,
-    isLoading: isLoadingRoleCheck,
-    refetch: refetchRoleCheck,
-  } = useScaffoldReadContract({
+  const { data: isAdmin, isLoading: isLoadingRoleCheck, refetch: refetchRoleCheck } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasAdminRole",
     args: [address],
     enabled: isConnected && !!address,
   });
 
-  // Get roles for checked address
   const { data: userRoles = [], refetch: refetchRoles } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "getRolesForAddress",
@@ -153,7 +164,6 @@ const Page = () => {
     enabled: isAddress(checkAddress),
   });
 
-  // Role statistics
   const [roleStats, setRoleStats] = useState({
     MINER: 0,
     REFINER: 0,
@@ -163,49 +173,35 @@ const Page = () => {
     BUYER: 0,
   });
 
-  // Contract write hook
   const { writeContractAsync } = useScaffoldWriteContract("RolesManager");
 
-  // Fetch role counts
   const fetchRoleCounts = async () => {
     try {
-      const counts = await Promise.all([
-        writeContractAsync({
-          functionName: "getRoleMemberCount",
-          args: [ROLE_TO_BYTES32.MINER],
-        }),
-        writeContractAsync({
-          functionName: "getRoleMemberCount",
-          args: [ROLE_TO_BYTES32.REFINER],
-        }),
-        writeContractAsync({
-          functionName: "getRoleMemberCount",
-          args: [ROLE_TO_BYTES32.TRANSPORTER],
-        }),
-        writeContractAsync({
-          functionName: "getRoleMemberCount",
-          args: [ROLE_TO_BYTES32.AUDITOR],
-        }),
-        writeContractAsync({
-          functionName: "getRoleMemberCount",
-          args: [ROLE_TO_BYTES32.INSPECTOR],
-        }),
-        writeContractAsync({
-          functionName: "getRoleMemberCount",
-          args: [ROLE_TO_BYTES32.BUYER],
-        }),
-      ]);
+      const counts = await Promise.all(
+        Object.entries(ROLE_TO_BYTES32).map(async ([role, roleBytes]) => {
+          try {
+            const count = await writeContractAsync({
+              functionName: "getRoleMemberCount",
+              args: [roleBytes],
+            });
+            return Number(count) || 0;
+          } catch (error) {
+            console.warn(`Error fetching count for ${role}:`, error);
+            return roleStats[role as RoleType];
+          }
+        })
+      );
 
       setRoleStats({
-        MINER: Number(counts[0]),
-        REFINER: Number(counts[1]),
-        TRANSPORTER: Number(counts[2]),
-        AUDITOR: Number(counts[3]),
-        INSPECTOR: Number(counts[4]),
-        BUYER: Number(counts[5]),
+        MINER: counts[0],
+        REFINER: counts[1],
+        TRANSPORTER: counts[2],
+        AUDITOR: counts[3],
+        INSPECTOR: counts[4],
+        BUYER: counts[5],
       });
     } catch (error) {
-      console.error("Error fetching role counts:", error);
+      console.warn("Error fetching role counts:", error);
     }
   };
 
@@ -215,8 +211,7 @@ const Page = () => {
       await refetchRoleCheck();
       await fetchRoleCounts();
     } catch (e) {
-      console.error("Error refreshing access:", e);
-      notification.error("Error checking access");
+      console.warn("Error refreshing access:", e);
     } finally {
       setIsRefreshingAccess(false);
     }
@@ -251,6 +246,11 @@ const Page = () => {
       setIsAssignLoading(true);
       setActiveRole(role);
 
+      setRoleStats(prev => ({
+        ...prev,
+        [role]: prev[role] + 1,
+      }));
+
       await writeContractAsync({
         functionName: ROLE_TO_FUNCTION_MAP[role].assign,
         args: [trimmedAddress],
@@ -261,8 +261,11 @@ const Page = () => {
 
       await fetchRoleCounts();
     } catch (error: any) {
-      console.error("Assignment error:", error);
-      notification.error(`Failed to assign ${ROLE_TYPES[role]} role: ${error.message}`);
+      setRoleStats(prev => ({
+        ...prev,
+        [role]: Math.max(0, prev[role] - 1),
+      }));
+      console.warn("Assignment error:", error);
     } finally {
       setIsAssignLoading(false);
       setActiveRole(null);
@@ -287,6 +290,11 @@ const Page = () => {
       setIsRevokeLoading(true);
       setActiveRole(role);
 
+      setRoleStats(prev => ({
+        ...prev,
+        [role]: Math.max(0, prev[role] - 1),
+      }));
+
       await writeContractAsync({
         functionName: ROLE_TO_FUNCTION_MAP[role].revoke,
         args: [trimmedAddress, trimmedReason],
@@ -295,10 +303,14 @@ const Page = () => {
       notification.success(`${ROLE_TYPES[role]} role revoked successfully`);
       setRoleAddresses(prev => ({ ...prev, [role]: "" }));
       setRevokeReason("");
+
       await fetchRoleCounts();
     } catch (error: any) {
-      console.error("Revocation error:", error);
-      notification.error(`Failed to revoke ${ROLE_TYPES[role]} role: ${error.message}`);
+      setRoleStats(prev => ({
+        ...prev,
+        [role]: prev[role] + 1,
+      }));
+      console.warn("Revocation error:", error);
     } finally {
       setIsRevokeLoading(false);
       setActiveRole(null);
@@ -313,17 +325,14 @@ const Page = () => {
     await refetchRoles();
   };
 
-  // Loading state while checking roles
   if (isConnected && isLoadingRoleCheck) {
     return <FullPageLoader text="Checking admin permissions..." />;
   }
 
-  // Not connected state
   if (!isConnected) {
     return <ConnectWalletView isLoading={isConnecting} />;
   }
 
-  // No admin role state
   if (isConnected && !isAdmin) {
     return (
       <div className="flex items-center justify-center min-h-screen p-4">
