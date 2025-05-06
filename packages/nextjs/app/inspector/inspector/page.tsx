@@ -123,6 +123,15 @@ export default function InspectMinerals() {
 
   return (
     <div className="min-h-screen text-white p-4 sm:p-6 md:p-8">
+      {/* Mineral Inspection Header */}
+      <div className="mb-8 text-center">
+        <h1 className="text-4xl font-bold mb-4">Mineral Inspection</h1>
+        <p className="text-gray-300 max-w-3xl mx-auto">
+          Reach out to us with any question or inquiry you have and we&apos;ll do our best to get back to you as soon as
+          possible.
+        </p>
+      </div>
+
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left Side - Pending Minerals - Now scrollable */}
         <div className="w-full md:w-1/3">
@@ -318,9 +327,6 @@ export default function InspectMinerals() {
                 )}
               </div>
             </div>
-
-           
-          
 
             {/* Action Buttons */}
             <div className="grid grid-cols-2 gap-4 pt-4">
