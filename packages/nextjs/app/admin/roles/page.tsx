@@ -1,60 +1,41 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
-import {
-  AlertCircle,
-  Check,
-  ChevronDown,
-  ChevronRight,
-  Copy,
-  Droplet,
-  Loader2,
-  Mail,
-  MapPin,
-  MessageSquare,
-  Minus,
-  Phone,
-  Plus,
-  ShieldAlert,
-  Thermometer
-} from "lucide-react";
-import { useAccount } from "wagmi";
-import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { notification } from "~~/utils/scaffold-eth";
+import { useEffect, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
+import { isAddress, toBytes } from "viem";
+import { useAccount } from "wagmi";
+import Icon from "~~/components/dashboard/Icon";
+import RoleCard from "~~/components/dashboard/admin/RoleCard";
+import RoleCheck from "~~/components/dashboard/admin/RoleCheck";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
 
-const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
+const LoadingSpinner = ({
+  size = 8,
+  text = "Loading roles management Dashboard...",
+}: {
+  size?: number;
+  text?: string;
+}) => (
   <div className="flex flex-col items-center justify-center gap-2">
     <Loader2 className={`w-${size} h-${size} animate-spin`} />
     {text && <p className="text-sm text-muted-foreground">{text}</p>}
   </div>
 );
 
-const FullPageLoader = ({ text = "Verifying miner access..." }: { text?: string }) => (
+const FullPageLoader = ({ text = "Verifying admin access permissions..." }: { text?: string }) => (
   <div className="flex items-center justify-center min-h-screen">
     <LoadingSpinner size={12} text={text} />
   </div>
 );
 
-const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
-  <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-4">
-    <div className="max-w-md p-8 text-center border rounded-lg shadow-lg bg-background">
-      <h2 className="mb-4 text-2xl font-bold">Connect Your Wallet</h2>
-      <p className="mb-6 text-muted-foreground">
-        Please connect your wallet to register minerals
-      </p>
-      <ConnectButton />
-    </div>
-    {isLoading && <LoadingSpinner size={8} text="Connecting wallet..." />}
-  </div>
-);
-
-const AccessDeniedView = ({ 
-  address, 
-  isLoadingRefresh, 
-  onRefresh 
-}: { 
-  address: string; 
+const AccessDeniedCard = ({
+  address,
+  isLoadingRefresh,
+  onRefresh,
+}: {
+  address: string;
   isLoadingRefresh: boolean;
   onRefresh: () => void;
 }) => {
@@ -69,68 +50,13 @@ const AccessDeniedView = ({
         <ShieldAlert className="w-12 h-12 text-red-500" />
         <h3 className="text-2xl font-bold">Access Denied</h3>
         <p className="text-muted-foreground">
-          The connected wallet doesn't have miner privileges to register minerals.
+          The connected wallet doesn't have admin privileges for this dashboard.
         </p>
         <div className="flex items-center gap-2 p-2 px-4 mt-2 border rounded-lg">
           <span className="font-mono text-sm">{address}</span>
           <button onClick={copyAddress} className="p-1 rounded-md hover:bg-accent">
             <Copy className="w-4 h-4" />
           </button>
-        </div>
-        <div className="pt-4 space-y-3 text-left">
-          <h3 className="font-medium">How to get miner access:</h3>
-          <ol className="space-y-4 text-sm text-muted-foreground">
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
-                1
-              </span>
-              <div>
-                <p>Contact system administrator at:</p>
-                <div className="mt-1 space-y-2 pl-2">
-                  <a href="mailto:admin@stone.proof?subject=Miner%20Role%20Request" 
-                     className="flex items-center gap-2 text-blue-400 hover:text-blue-300">
-                    <Mail className="w-4 h-4" />
-                    admin@stone.proof
-                  </a>
-                  <a href="tel:+250795107436" 
-                     className="flex items-center gap-2 text-blue-400 hover:text-blue-300">
-                    <Phone className="w-4 h-4" />
-                    +(250) 795 107 436
-                  </a>
-                </div>
-              </div>
-            </li>
-            
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
-                2
-              </span>
-              <div>
-                <p>Request miner role assignment through:</p>
-                <div className="mt-1 pl-2">
-                  <a href="https://t.me/StoneProofSupport" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300">
-                    <MessageSquare className="w-4 h-4" />
-                    @StoneProofSupport
-                  </a>
-                </div>
-              </div>
-            </li>
-
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
-                3
-              </span>
-              <div>
-                <p>Refresh this page after approval</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  If access isn't granted immediately, wait a few minutes then refresh
-                </p>
-              </div>
-            </li>
-          </ol>
         </div>
         <button
           onClick={onRefresh}
@@ -145,142 +71,273 @@ const AccessDeniedView = ({
   );
 };
 
-export default function MineralRegistrationPage() {
+const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
+  <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-4">
+    <div className="max-w-md p-8 text-center border rounded-lg shadow-lg bg-background">
+      <h2 className="mb-4 text-2xl font-bold">Connect Your Wallet</h2>
+      <p className="mb-6 text-muted-foreground">
+        Please connect your admin wallet to access the roles management dashboard
+      </p>
+      <ConnectButton />
+    </div>
+    {isLoading && <LoadingSpinner size={8} text="Connecting wallet..." />}
+  </div>
+);
+
+const ROLE_TYPES = {
+  MINER: "Miner",
+  REFINER: "Refiner",
+  TRANSPORTER: "Transporter",
+  AUDITOR: "Auditor",
+  INSPECTOR: "Inspector",
+  BUYER: "Buyer",
+} as const;
+
+type RoleType = keyof typeof ROLE_TYPES;
+
+const getSilentRoleBytes = (roleName: string): Uint8Array => {
+  try {
+    const buffer = new ArrayBuffer(32);
+    const view = new DataView(buffer);
+    const encoder = new TextEncoder();
+    const encoded = encoder.encode(roleName);
+    
+    for (let i = 0; i < Math.min(encoded.length, 32); i++) {
+      view.setUint8(i, encoded[i]);
+    }
+    
+    return new Uint8Array(buffer);
+  } catch (error) {
+    console.warn("Silent role bytes conversion failed:", error);
+    return new Uint8Array(32);
+  }
+};
+
+const ROLE_TO_BYTES32 = {
+  MINER: getSilentRoleBytes("MINER_ROLE"),
+  REFINER: getSilentRoleBytes("REFINER_ROLE"),
+  TRANSPORTER: getSilentRoleBytes("TRANSPORTER_ROLE"),
+  AUDITOR: getSilentRoleBytes("AUDITOR_ROLE"),
+  INSPECTOR: getSilentRoleBytes("INSPECTOR_ROLE"),
+  BUYER: getSilentRoleBytes("BUYER_ROLE"),
+} as const;
+
+const ROLE_TO_FUNCTION_MAP = {
+  MINER: { assign: "assignMiner", revoke: "revokeMiner" },
+  REFINER: { assign: "assignRefiner", revoke: "revokeRefiner" },
+  TRANSPORTER: { assign: "assignTransporter", revoke: "revokeTransporter" },
+  AUDITOR: { assign: "assignAuditor", revoke: "revokeAuditor" },
+  INSPECTOR: { assign: "assignInspector", revoke: "revokeInspector" },
+  BUYER: { assign: "assignBuyer", revoke: "revokeBuyer" },
+} as const;
+
+const Page = () => {
   const { address, isConnected, isConnecting } = useAccount();
-  const [quantity, setQuantity] = useState(0);
-  const [purity, setPurity] = useState(0);
-  const [portalOpen, setPortalOpen] = useState(false);
-  const [mineralName, setMineralName] = useState("");
-  const [mineralType, setMineralType] = useState("");
-  const [origin, setOrigin] = useState("");
-  const [selectedCondition, setSelectedCondition] = useState({
-    temperature: "In Celsius",
-    storage: "Select Type",
-    humidity: "Select Type",
+  const [roleAddresses, setRoleAddresses] = useState({
+    MINER: "",
+    REFINER: "",
+    TRANSPORTER: "",
+    AUDITOR: "",
+    INSPECTOR: "",
+    BUYER: "",
   });
+
+  const [checkAddress, setCheckAddress] = useState("");
+  const [revokeReason, setRevokeReason] = useState("");
+  const [activeRole, setActiveRole] = useState<RoleType | null>(null);
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
-  const [isTransactionPending, setIsTransactionPending] = useState(false);
+  const [isDataLoading, setIsDataLoading] = useState(true);
+  const [isAssignLoading, setIsAssignLoading] = useState(false);
+  const [isRevokeLoading, setIsRevokeLoading] = useState(false);
 
-  // Check if user has miner role
-  const { 
-    data: hasMinerRole, 
-    isLoading: isRoleLoading, 
-    refetch: refetchRoleCheck 
-  } = useScaffoldReadContract({
+  const { data: isAdmin, isLoading: isLoadingRoleCheck, refetch: refetchRoleCheck } = useScaffoldReadContract({
     contractName: "RolesManager",
-    functionName: "hasMinerRole",
+    functionName: "hasAdminRole",
     args: [address],
-    enabled: isConnected,
+    enabled: isConnected && !!address,
   });
 
-  const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`;
+  const { data: userRoles = [], refetch: refetchRoles } = useScaffoldReadContract({
+    contractName: "RolesManager",
+    functionName: "getRolesForAddress",
+    args: [checkAddress],
+    enabled: isAddress(checkAddress),
+  });
 
-  const validateForm = useCallback(() => {
-    return (
-      isConnected &&
-      hasMinerRole &&
-      mineralName.trim() &&
-      mineralType.trim() &&
-      origin.trim() &&
-      selectedCondition.storage !== "Select Type" &&
-      selectedCondition.humidity !== "Select Type" &&
-      quantity > 0 &&
-      purity > 80 &&
-      purity <= 100
-    );
-  }, [isConnected, hasMinerRole, mineralName, mineralType, origin, selectedCondition, quantity, purity]);
+  const [roleStats, setRoleStats] = useState({
+    MINER: 0,
+    REFINER: 0,
+    TRANSPORTER: 0,
+    AUDITOR: 0,
+    INSPECTOR: 0,
+    BUYER: 0,
+  });
 
   const { writeContractAsync } = useScaffoldWriteContract("RolesManager");
 
-  const resetForm = () => {
-    setMineralName("");
-    setMineralType("");
-    setOrigin("");
-    setQuantity(0);
-    setPurity(0);
-    setSelectedCondition({
-      temperature: "In Celsius",
-      storage: "Select Type",
-      humidity: "Select Type",
-    });
+  const fetchRoleCounts = async () => {
+    try {
+      const counts = await Promise.all(
+        Object.entries(ROLE_TO_BYTES32).map(async ([role, roleBytes]) => {
+          try {
+            const count = await writeContractAsync({
+              functionName: "getRoleMemberCount",
+              args: [roleBytes],
+            });
+            return Number(count) || 0;
+          } catch (error) {
+            console.warn(`Error fetching count for ${role}:`, error);
+            return roleStats[role as RoleType];
+          }
+        })
+      );
+
+      setRoleStats({
+        MINER: counts[0],
+        REFINER: counts[1],
+        TRANSPORTER: counts[2],
+        AUDITOR: counts[3],
+        INSPECTOR: counts[4],
+        BUYER: counts[5],
+      });
+    } catch (error) {
+      console.warn("Error fetching role counts:", error);
+    }
   };
 
   const handleRefreshAccess = async () => {
     setIsRefreshingAccess(true);
     try {
       await refetchRoleCheck();
+      await fetchRoleCounts();
     } catch (e) {
-      console.error("Error refreshing access:", e);
+      console.warn("Error refreshing access:", e);
     } finally {
       setIsRefreshingAccess(false);
     }
   };
 
-  const handleQuantityChange = (value: number) => {
-    setQuantity(Math.max(0, value));
+  useEffect(() => {
+    if (isAdmin) {
+      const timer = setTimeout(() => {
+        setIsDataLoading(false);
+        fetchRoleCounts();
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, [isAdmin]);
+
+  const handleRoleAddressChange = (role: RoleType, address: string) => {
+    setRoleAddresses(prev => ({
+      ...prev,
+      [role]: address,
+    }));
   };
 
-  const handlePurityChange = (value: number) => {
-    setPurity(Math.max(0, Math.min(100, value)));
-  };
+  const handleAssign = async (role: RoleType) => {
+    const trimmedAddress = roleAddresses[role].trim();
 
-  const handleRegister = async () => {
-    if (!isConnected || !hasMinerRole || !validateForm()) return;
+    if (!isAddress(trimmedAddress)) {
+      notification.error("Please enter a valid Ethereum address");
+      return;
+    }
 
-    setIsTransactionPending(true);
     try {
-      const tx = await writeContractAsync({
-        functionName: "registerMineral",
-        args: [
-          mineralName,
-          mineralType,
-          BigInt(quantity),
-          origin,
-          BigInt(purity),
-          storageConditions
-        ],
+      setIsAssignLoading(true);
+      setActiveRole(role);
+
+      setRoleStats(prev => ({
+        ...prev,
+        [role]: prev[role] + 1,
+      }));
+
+      await writeContractAsync({
+        functionName: ROLE_TO_FUNCTION_MAP[role].assign,
+        args: [trimmedAddress],
       });
-      
-      notification.info("Transaction submitted. Waiting for confirmation...");
-      console.log("Transaction submitted:", tx);
-      
-      // You might want to wait for transaction confirmation here
-      const receipt = await publicClient.waitForTransactionReceipt({ hash: tx });
-      
-      notification.success("Mineral registered successfully!");
-      resetForm();
-    } catch (err: any) {
-      console.error("Transaction error:", err);
-      
-      if (err.message.includes("User rejected the request")) {
-        notification.error("Transaction rejected by user");
-      } else if (err.message.includes("RolesManager__MineralPurityPercentageTooLowToRegister")) {
-        notification.error("Purity must be greater than 80%");
-      } else if (err.message.includes("RolesManager__InvalidMineralWeight")) {
-        notification.error("Quantity must be greater than 0");
-      } else if (err.message.includes("caller is missing role")) {
-        notification.error("No miner privileges");
-      } else {
-        notification.error("Transaction failed. See console for details.");
-      }
+
+      notification.success(`${ROLE_TYPES[role]} role assigned successfully`);
+      setRoleAddresses(prev => ({ ...prev, [role]: "" }));
+
+      await fetchRoleCounts();
+    } catch (error: any) {
+      setRoleStats(prev => ({
+        ...prev,
+        [role]: Math.max(0, prev[role] - 1),
+      }));
+      console.warn("Assignment error:", error);
     } finally {
-      setIsTransactionPending(false);
+      setIsAssignLoading(false);
+      setActiveRole(null);
     }
   };
 
-  if (isConnected && isRoleLoading) {
-    return <FullPageLoader text="Checking miner permissions..." />;
+  const handleRevoke = async (role: RoleType) => {
+    const trimmedAddress = roleAddresses[role].trim();
+    const trimmedReason = revokeReason.trim();
+
+    if (!isAddress(trimmedAddress)) {
+      notification.error("Please enter a valid Ethereum address");
+      return;
+    }
+
+    if (!trimmedReason) {
+      notification.error("Please provide a revocation reason");
+      return;
+    }
+
+    try {
+      setIsRevokeLoading(true);
+      setActiveRole(role);
+
+      setRoleStats(prev => ({
+        ...prev,
+        [role]: Math.max(0, prev[role] - 1),
+      }));
+
+      await writeContractAsync({
+        functionName: ROLE_TO_FUNCTION_MAP[role].revoke,
+        args: [trimmedAddress, trimmedReason],
+      });
+
+      notification.success(`${ROLE_TYPES[role]} role revoked successfully`);
+      setRoleAddresses(prev => ({ ...prev, [role]: "" }));
+      setRevokeReason("");
+
+      await fetchRoleCounts();
+    } catch (error: any) {
+      setRoleStats(prev => ({
+        ...prev,
+        [role]: prev[role] + 1,
+      }));
+      console.warn("Revocation error:", error);
+    } finally {
+      setIsRevokeLoading(false);
+      setActiveRole(null);
+    }
+  };
+
+  const handleCheckRole = async () => {
+    if (!isAddress(checkAddress)) {
+      notification.error("Please enter a valid Ethereum address");
+      return;
+    }
+    await refetchRoles();
+  };
+
+  if (isConnected && isLoadingRoleCheck) {
+    return <FullPageLoader text="Checking admin permissions..." />;
   }
 
   if (!isConnected) {
     return <ConnectWalletView isLoading={isConnecting} />;
   }
 
-  if (isConnected && !hasMinerRole) {
+  if (isConnected && !isAdmin) {
     return (
       <div className="flex items-center justify-center min-h-screen p-4">
-        <AccessDeniedView 
-          address={address || ""} 
+        <AccessDeniedCard
+          address={address || ""}
           isLoadingRefresh={isRefreshingAccess}
           onRefresh={handleRefreshAccess}
         />
@@ -289,316 +346,138 @@ export default function MineralRegistrationPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-6">
-      <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-3">Register Mineral</h1>
-        <p className="text-muted-foreground text-center mb-8">
-          Register new minerals in the system. All fields are required.
-        </p>
-
-        <div className="flex flex-col lg:flex-row gap-8">
-          <div className="border rounded-lg p-6 flex-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">Mineral Name</label>
-                <input
-                  type="text"
-                  value={mineralName}
-                  onChange={e => setMineralName(e.target.value)}
-                  placeholder="Valid Mineral name"
-                  className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Type</label>
-                <input
-                  type="text"
-                  value={mineralType}
-                  onChange={e => setMineralType(e.target.value)}
-                  placeholder="Mineral type here"
-                  className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Origin</label>
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={origin}
-                    onChange={e => setOrigin(e.target.value)}
-                    placeholder="Enter Origin here"
-                    className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
-                  />
-                  <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-2">Quantity (KG)</label>
-                <div className="bg-background flex items-center justify-between rounded-md px-4 py-3 w-full border border-input">
-                  <input
-                    type="number"
-                    value={quantity}
-                    onChange={e => {
-                      const value = parseFloat(e.target.value);
-                      handleQuantityChange(isNaN(value) ? 0 : value);
-                    }}
-                    className="bg-background focus:outline-none text-foreground text-[14px] w-full"
-                    min="0"
-                    step="0.1"
-                  />
-                  <div className="flex items-center ml-4 pl-4 border-l border-input gap-2">
-                    <button
-                      onClick={() => handleQuantityChange(quantity - 1)}
-                      className="w-8 h-8 flex items-center justify-center bg-accent hover:bg-accent/90 rounded-full"
-                    >
-                      <Minus size={16} />
-                    </button>
-                    <button
-                      onClick={() => handleQuantityChange(quantity + 1)}
-                      className="w-8 h-8 flex items-center justify-center bg-accent hover:bg-accent/90 rounded-full"
-                    >
-                      <Plus size={16} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full">
-                <label className="block text-sm font-medium mb-2">
-                  Purity Percentage {purity <= 80 && (
-                    <span className="text-red-500 ml-2">(Must be > 80%)</span>
-                  )}
-                </label>
-                <div className="flex items-center bg-background rounded-xl overflow-hidden border border-input">
-                  <div className="flex-1 px-4 py-3">
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={purity}
-                      onChange={e => handlePurityChange(Number(e.target.value))}
-                      className="w-full h-2 rounded-full appearance-none bg-muted"
-                      style={{
-                        background: `linear-gradient(to right, #007BFF 0%, #007BFF ${purity}%, #e5e5ee ${purity}%, #e5e5ee 100%)`,
-                      }}
-                    />
-                  </div>
-                  <div className="flex items-center gap-2 px-3 py-2 bg-accent min-w-[130px] justify-end">
-                    <button
-                      onClick={() => handlePurityChange(purity - 1)}
-                      className="w-7 h-7 flex items-center justify-center bg-accent/90 hover:bg-accent rounded-full text-foreground"
-                    >
-                      <Minus size={14} />
-                    </button>
-                    <span className={`text-sm w-10 text-center ${
-                      purity <= 80 ? 'text-red-500' : 'text-foreground'
-                    }`}>
-                      {purity}%
-                    </span>
-                    <button
-                      onClick={() => handlePurityChange(purity + 1)}
-                      className="w-7 h-7 flex items-center justify-center bg-accent/90 hover:bg-accent rounded-full text-foreground"
-                    >
-                      <Plus size={14} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="w-full relative">
-                <label className="block text-sm font-medium mb-2">Storage Conditions</label>
-                <div className="flex items-center bg-background border border-input rounded-xl overflow-hidden">
-                  <div className="flex-1 px-4 py-3 text-sm">
-                    {selectedCondition.storage !== "Select Type"
-                      ? `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`
-                      : "No Conditions specified"}
-                  </div>
-                  <div className="relative">
-                    <button
-                      onClick={() => setPortalOpen(true)}
-                      className="bg-accent hover:bg-accent/90 px-4 py-3 flex items-center gap-1 text-foreground text-sm h-full"
-                    >
-                      Select <ChevronDown size={18} />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <button
-              onClick={handleRegister}
-              disabled={isTransactionPending || !validateForm()}
-              className={`w-full ${
-                validateForm() ? 'bg-primary hover:bg-primary/90' : 'bg-muted cursor-not-allowed'
-              } text-primary-foreground font-medium py-3 rounded mt-8 duration-500 flex items-center justify-center`}
-            >
-              {isTransactionPending ? (
-                <>
-                  <Loader2 className="animate-spin mr-2 h-5 w-5" />
-                  Processing...
-                </>
-              ) : (
-                "Register Mineral"
-              )}
-            </button>
-            <p className="text-muted-foreground text-sm text-center mt-4">
-              {validateForm() 
-                ? "All required fields are complete. You can register the mineral."
-                : "Please fill all required fields to register."}
-            </p>
-          </div>
-
-          <div className="lg:w-72">
-            <div className="rounded-lg p-6">
-              <h2 className="text-lg font-medium mb-4">Check-points</h2>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    mineralName.trim() ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {mineralName.trim() ? <Check size={12} /> : <Minus size={12} />}
-                  </div>
-                  <span className="text-sm">Valid mineral name</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    mineralType.trim() ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {mineralType.trim() ? <Check size={12} /> : <Minus size={12} />}
-                  </div>
-                  <span className="text-sm">Mineral type specified</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    origin.trim() ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {origin.trim() ? <Check size={12} /> : <Minus size={12} />}
-                  </div>
-                  <span className="text-sm">Origin provided</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    quantity > 0 ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {quantity > 0 ? <Check size={12} /> : <Minus size={12} />}
-                  </div>
-                  <span className="text-sm">Valid quantity</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    purity > 80 && purity <= 100 ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {purity > 80 && purity <= 100 ? <Check size={12} /> : <Minus size={12} />}
-                  </div>
-                  <span className="text-sm">Purity > 80%</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    selectedCondition.storage !== "Select Type" && 
-                    selectedCondition.humidity !== "Select Type" 
-                      ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {selectedCondition.storage !== "Select Type" && 
-                     selectedCondition.humidity !== "Select Type" 
-                      ? <Check size={12} /> : <Minus size={12} />}
-                  </div>
-                  <span className="text-sm">Storage conditions set</span>
-                </div>
-              </div>
-              <h3 className="font-medium mb-2">Tips:</h3>
-              <div className="flex gap-2 text-sm">
-                <AlertCircle className="min-w-5 h-5 mt-0.5" />
-                <p className="text-muted-foreground">
-                  Ensure the details entered are accurate. Modifications won't be allowed post registration.
-                </p>
-              </div>
-            </div>
-          </div>
+    <div className="px-4 pt-2 md:px-10 flex flex-col gap-6 md:gap-10">
+      {isDataLoading ? (
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <LoadingSpinner size={12} text="Loading roles dashboard..." />
         </div>
-      </div>
-
-      {portalOpen && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
-          <div className="bg-background border rounded-xl p-8 w-[400px] relative">
-            <h2 className="text-lg mb-6 font-semibold">Specify Storage Conditions</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Storage Type</label>
-                <select
-                  value={selectedCondition.storage}
-                  onChange={e => setSelectedCondition({...selectedCondition, storage: e.target.value})}
-                  className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
-                >
-                  <option value="Select Type">Select Type</option>
-                  <option value="Dry Storage">Dry Storage</option>
-                  <option value="Climate Controlled">Climate Controlled</option>
-                  <option value="Refrigerated">Refrigerated</option>
-                  <option value="Airtight Container">Airtight Container</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2">Temperature</label>
-                <div className="relative">
-                  <select
-                    value={selectedCondition.temperature}
-                    onChange={e => setSelectedCondition({...selectedCondition, temperature: e.target.value})}
-                    className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
-                  >
-                    <option value="In Celsius">In Celsius</option>
-                    <option value="Below 0°C">Below 0°C</option>
-                    <option value="0°C to 10°C">0°C to 10°C</option>
-                    <option value="10°C to 25°C">10°C to 25°C</option>
-                    <option value="Above 25°C">Above 25°C</option>
-                  </select>
-                  <Thermometer className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-                </div>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2">Humidity</label>
-                <div className="relative">
-                  <select
-                    value={selectedCondition.humidity}
-                    onChange={e => setSelectedCondition({...selectedCondition, humidity: e.target.value})}
-                    className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
-                  >
-                    <option value="Select Type">Select Type</option>
-                    <option value="Low (<30%)">Low (&lt;30%)</option>
-                    <option value="Moderate (30-60%)">Moderate (30-60%)</option>
-                    <option value="High (>60%)">High (&gt;60%)</option>
-                  </select>
-                  <Droplet className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-                </div>
-              </div>
+      ) : (
+        <>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 md:gap-0">
+            <div className="flex flex-col">
+              <p className="text-[24px] md:text-[28px] font-bold m-0 leading-tight">Manage Users in The System</p>
+              <p className="text-[14px] md:text-[16px] text-[#979AA0] m-0 leading-tight">All the users at fingertips</p>
             </div>
-            
-            <div className="flex justify-end mt-6 space-x-3">
-              <button
-                onClick={() => setPortalOpen(false)}
-                className="px-4 py-2 border rounded-lg hover:bg-accent"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => {
-                  if (
-                    selectedCondition.storage !== "Select Type" && 
-                    selectedCondition.humidity !== "Select Type"
-                  ) {
-                    setPortalOpen(false);
-                  }
-                }}
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
-              >
-                Confirm
+
+            <div className="flex flex-wrap gap-2 md:gap-3">
+              
+              <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
+               View Revoked Users
               </button>
             </div>
           </div>
-        </div>
+
+          <div>
+            <h2 className="text-[20px] md:text-[24px] font-bold mb-4">Mineral Supply Chain Roles</h2>
+            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <RoleCard
+                role={ROLE_TYPES.MINER}
+                iconPath="/miners.svg"
+                activeCount={roleStats.MINER}
+                subtitle="Mining Operations"
+                userId={roleAddresses.MINER}
+                onAssign={() => handleAssign("MINER")}
+                onRevoke={() => handleRevoke("MINER")}
+                disabled={!isConnected || !isAdmin}
+                isAssignLoading={isAssignLoading && activeRole === "MINER"}
+                isRevokeLoading={isRevokeLoading && activeRole === "MINER"}
+                onUserIdChange={(address) => handleRoleAddressChange("MINER", address)}
+                onReasonChange={setRevokeReason}
+              />
+
+              <RoleCard
+                role={ROLE_TYPES.REFINER}
+                iconPath="/refiner.svg"
+                activeCount={roleStats.REFINER}
+                subtitle="Refining Operations"
+                userId={roleAddresses.REFINER}
+                onAssign={() => handleAssign("REFINER")}
+                onRevoke={() => handleRevoke("REFINER")}
+                disabled={!isConnected || !isAdmin}
+                isAssignLoading={isAssignLoading && activeRole === "REFINER"}
+                isRevokeLoading={isRevokeLoading && activeRole === "REFINER"}
+                onUserIdChange={(address) => handleRoleAddressChange("REFINER", address)}
+                onReasonChange={setRevokeReason}
+              />
+
+              <RoleCard
+                role={ROLE_TYPES.TRANSPORTER}
+                iconPath="/dashboard/icon_set/mineTruckWhite.svg"
+                activeCount={roleStats.TRANSPORTER}
+                subtitle="Transportation"
+                userId={roleAddresses.TRANSPORTER}
+                onAssign={() => handleAssign("TRANSPORTER")}
+                onRevoke={() => handleRevoke("TRANSPORTER")}
+                disabled={!isConnected || !isAdmin}
+                isAssignLoading={isAssignLoading && activeRole === "TRANSPORTER"}
+                isRevokeLoading={isRevokeLoading && activeRole === "TRANSPORTER"}
+                onUserIdChange={(address) => handleRoleAddressChange("TRANSPORTER", address)}
+                onReasonChange={setRevokeReason}
+              />
+
+              <RoleCheck
+                userId={checkAddress}
+                onCheckRole={handleCheckRole}
+                foundRole={userRoles.join(", ") || "No roles found"}
+                hasRole={userRoles.length > 0}
+                onUserIdChange={setCheckAddress}
+              />
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-[20px] md:text-[24px] font-bold mb-4">Supply Chain Validators</h2>
+            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-4">
+              <RoleCard
+                role={ROLE_TYPES.AUDITOR}
+                iconPath="/auditor.svg"
+                activeCount={roleStats.AUDITOR}
+                subtitle="Chain Compliance"
+                userId={roleAddresses.AUDITOR}
+                onAssign={() => handleAssign("AUDITOR")}
+                onRevoke={() => handleRevoke("AUDITOR")}
+                disabled={!isConnected || !isAdmin}
+                isAssignLoading={isAssignLoading && activeRole === "AUDITOR"}
+                isRevokeLoading={isRevokeLoading && activeRole === "AUDITOR"}
+                onUserIdChange={(address) => handleRoleAddressChange("AUDITOR", address)}
+                onReasonChange={setRevokeReason}
+              />
+
+              <RoleCard
+                role={ROLE_TYPES.INSPECTOR}
+                iconPath="/inspector.svg"
+                activeCount={roleStats.INSPECTOR}
+                subtitle="Quality Assurance"
+                userId={roleAddresses.INSPECTOR}
+                onAssign={() => handleAssign("INSPECTOR")}
+                onRevoke={() => handleRevoke("INSPECTOR")}
+                disabled={!isConnected || !isAdmin}
+                isAssignLoading={isAssignLoading && activeRole === "INSPECTOR"}
+                isRevokeLoading={isRevokeLoading && activeRole === "INSPECTOR"}
+                onUserIdChange={(address) => handleRoleAddressChange("INSPECTOR", address)}
+                onReasonChange={setRevokeReason}
+              />
+
+              <RoleCard
+                role={ROLE_TYPES.BUYER}
+                iconPath="/buyer.svg"
+                activeCount={roleStats.BUYER}
+                subtitle="Purchasing"
+                userId={roleAddresses.BUYER}
+                onAssign={() => handleAssign("BUYER")}
+                onRevoke={() => handleRevoke("BUYER")}
+                disabled={!isConnected || !isAdmin}
+                isAssignLoading={isAssignLoading && activeRole === "BUYER"}
+                isRevokeLoading={isRevokeLoading && activeRole === "BUYER"}
+                onUserIdChange={(address) => handleRoleAddressChange("BUYER", address)}
+                onReasonChange={setRevokeReason}
+              />
+            </div>
+          </div>
+        </>
       )}
     </div>
   );
-}
+};
+
+export default Page;

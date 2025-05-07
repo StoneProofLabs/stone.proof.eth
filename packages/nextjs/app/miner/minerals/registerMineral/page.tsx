@@ -1,11 +1,10 @@
-"use client";
+"use client"
 
-import React, { useState, useCallback } from "react";
+import { useState, useCallback } from "react"
 import {
   AlertCircle,
   Check,
   ChevronDown,
-  ChevronRight,
   Copy,
   Droplet,
   Loader2,
@@ -16,102 +15,109 @@ import {
   Phone,
   Plus,
   ShieldAlert,
-  Thermometer
-} from "lucide-react";
-import { useAccount } from "wagmi";
-import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { notification } from "~~/utils/scaffold-eth";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+  Thermometer,
+} from "lucide-react"
+import { useAccount } from "wagmi"
+import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth"
+import { notification } from "~~/utils/scaffold-eth"
+import { ConnectButton } from "@rainbow-me/rainbowkit"
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
-    <Loader2 className={`w-${size} h-${size} animate-spin`} />
-    {text && <p className="text-sm text-muted-foreground">{text}</p>}
+    <Loader2 className={`w-${size} h-${size} animate-spin text-emerald-500`} />
+    {text && <p className="text-sm text-gray-400">{text}</p>}
   </div>
-);
+)
 
 const FullPageLoader = ({ text = "Verifying miner access..." }: { text?: string }) => (
-  <div className="flex items-center justify-center min-h-screen">
+  <div className="flex items-center justify-center min-h-screen bg-gray-900">
     <LoadingSpinner size={12} text={text} />
   </div>
-);
+)
 
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
-  <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-4">
-    <div className="max-w-md p-8 text-center border rounded-lg shadow-lg bg-background">
-      <h2 className="mb-4 text-2xl font-bold">Connect Your Wallet</h2>
-      <p className="mb-6 text-muted-foreground">
-        Please connect your wallet to register minerals
-      </p>
-      <ConnectButton />
+  <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-4 bg-gray-900">
+    <div className="max-w-md w-full p-8 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
+      <h2 className="text-2xl font-bold text-white text-center mb-4">Connect Your Wallet</h2>
+      <p className="text-gray-400 text-center mb-6">Please connect your wallet to register minerals</p>
+      <div className="flex justify-center">
+        <ConnectButton />
+      </div>
     </div>
     {isLoading && <LoadingSpinner size={8} text="Connecting wallet..." />}
   </div>
-);
+)
 
-const AccessDeniedView = ({ 
-  address, 
-  isLoadingRefresh, 
-  onRefresh 
-}: { 
-  address: string; 
-  isLoadingRefresh: boolean;
-  onRefresh: () => void;
+const AccessDeniedView = ({
+  address,
+  isLoadingRefresh,
+  onRefresh,
+}: {
+  address: string
+  isLoadingRefresh: boolean
+  onRefresh: () => void
 }) => {
   const copyAddress = () => {
-    navigator.clipboard.writeText(address);
-    notification.success("Wallet address copied!");
-  };
+    navigator.clipboard.writeText(address)
+    notification.success("Wallet address copied!")
+  }
 
   return (
-    <div className="max-w-md p-6 border rounded-lg shadow-lg bg-background">
+    <div className="max-w-md w-full p-8 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
       <div className="flex flex-col items-center gap-4 text-center">
-        <ShieldAlert className="w-12 h-12 text-red-500" />
-        <h3 className="text-2xl font-bold">Access Denied</h3>
-        <p className="text-muted-foreground">
-          The connected wallet doesn't have miner privileges to register minerals.
-        </p>
-        <div className="flex items-center gap-2 p-2 px-4 mt-2 border rounded-lg">
-          <span className="font-mono text-sm">{address}</span>
-          <button onClick={copyAddress} className="p-1 rounded-md hover:bg-accent">
+        <div className="h-16 w-16 rounded-full bg-red-900/30 flex items-center justify-center">
+          <ShieldAlert className="w-8 h-8 text-red-500" />
+        </div>
+        <h3 className="text-2xl font-bold text-white">Access Denied</h3>
+        <p className="text-gray-400">The connected wallet doesn't have miner privileges to register minerals.</p>
+        <div className="flex items-center gap-2 p-2 px-4 mt-2 border border-gray-700 rounded-lg bg-gray-900/50 w-full">
+          <span className="font-mono text-sm text-gray-300 truncate">{address}</span>
+          <button onClick={copyAddress} className="p-1 rounded-md hover:bg-gray-700 text-gray-400">
             <Copy className="w-4 h-4" />
           </button>
         </div>
-        <div className="pt-4 space-y-3 text-left">
-          <h3 className="font-medium">How to get miner access:</h3>
-          <ol className="space-y-4 text-sm text-muted-foreground">
+
+        <div className="w-full mt-4 p-4 rounded-lg border border-gray-700 bg-gray-900/30">
+          <h3 className="text-base font-medium text-white mb-4">How to get miner access:</h3>
+          <ol className="space-y-4 text-sm text-gray-400">
             <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-900/50 text-emerald-400 text-xs font-medium">
                 1
               </span>
               <div>
                 <p>Contact system administrator at:</p>
                 <div className="mt-1 space-y-2 pl-2">
-                  <a href="mailto:admin@stone.proof?subject=Miner%20Role%20Request" 
-                     className="flex items-center gap-2 text-blue-400 hover:text-blue-300">
+                  <a
+                    href="mailto:admin@stone.proof?subject=Miner%20Role%20Request"
+                    className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300"
+                  >
                     <Mail className="w-4 h-4" />
                     admin@stone.proof
                   </a>
-                  <a href="tel:+250795107436" 
-                     className="flex items-center gap-2 text-blue-400 hover:text-blue-300">
+                  <a
+                    href="tel:+250795107436"
+                    className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300"
+                  >
                     <Phone className="w-4 h-4" />
                     +(250) 795 107 436
                   </a>
                 </div>
               </div>
             </li>
-            
+
             <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-900/50 text-emerald-400 text-xs font-medium">
                 2
               </span>
               <div>
                 <p>Request miner role assignment through:</p>
                 <div className="mt-1 pl-2">
-                  <a href="https://t.me/StoneProofSupport" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300">
+                  <a
+                    href="https://t.me/StoneProofSupport"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300"
+                  >
                     <MessageSquare className="w-4 h-4" />
                     @StoneProofSupport
                   </a>
@@ -120,7 +126,7 @@ const AccessDeniedView = ({
             </li>
 
             <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-900/50 text-emerald-400 text-xs font-medium">
                 3
               </span>
               <div>
@@ -132,48 +138,59 @@ const AccessDeniedView = ({
             </li>
           </ol>
         </div>
+
         <button
           onClick={onRefresh}
           disabled={isLoadingRefresh}
-          className="flex items-center gap-2 px-4 py-2 mt-4 text-sm font-medium transition-colors rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+          className={`w-full mt-4 py-3 px-4 rounded-lg font-medium transition-colors ${
+            isLoadingRefresh
+              ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+              : "bg-emerald-600 hover:bg-emerald-700 text-white"
+          }`}
         >
-          {isLoadingRefresh && <Loader2 className="w-4 h-4 animate-spin" />}
-          Refresh Access
+          {isLoadingRefresh ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin mr-2 inline" />
+              Refreshing...
+            </>
+          ) : (
+            "Refresh Access"
+          )}
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default function MineralRegistrationPage() {
-  const { address, isConnected, isConnecting } = useAccount();
-  const [quantity, setQuantity] = useState(0);
-  const [purity, setPurity] = useState(0);
-  const [portalOpen, setPortalOpen] = useState(false);
-  const [mineralName, setMineralName] = useState("");
-  const [mineralType, setMineralType] = useState("");
-  const [origin, setOrigin] = useState("");
+  const { address, isConnected, isConnecting } = useAccount()
+  const [quantity, setQuantity] = useState(0)
+  const [purity, setPurity] = useState(0)
+  const [portalOpen, setPortalOpen] = useState(false)
+  const [mineralName, setMineralName] = useState("")
+  const [mineralType, setMineralType] = useState("")
+  const [origin, setOrigin] = useState("")
   const [selectedCondition, setSelectedCondition] = useState({
     temperature: "In Celsius",
     storage: "Select Type",
     humidity: "Select Type",
-  });
-  const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
-  const [isTransactionPending, setIsTransactionPending] = useState(false);
+  })
+  const [isRefreshingAccess, setIsRefreshingAccess] = useState(false)
+  const [isTransactionPending, setIsTransactionPending] = useState(false)
 
   // Check if user has miner role
-  const { 
-    data: hasMinerRole, 
-    isLoading: isRoleLoading, 
-    refetch: refetchRoleCheck 
+  const {
+    data: hasMinerRole,
+    isLoading: isRoleLoading,
+    refetch: refetchRoleCheck,
   } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasMinerRole",
     args: [address],
     enabled: isConnected,
-  });
+  })
 
-  const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`;
+  const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`
 
   const validateForm = useCallback(() => {
     return (
@@ -187,173 +204,180 @@ export default function MineralRegistrationPage() {
       quantity > 0 &&
       purity > 80 &&
       purity <= 100
-    );
-  }, [isConnected, hasMinerRole, mineralName, mineralType, origin, selectedCondition, quantity, purity]);
+    )
+  }, [isConnected, hasMinerRole, mineralName, mineralType, origin, selectedCondition, quantity, purity])
 
-  const { writeContractAsync } = useScaffoldWriteContract("RolesManager");
+  const { writeContractAsync } = useScaffoldWriteContract("RolesManager")
 
   const resetForm = () => {
-    setMineralName("");
-    setMineralType("");
-    setOrigin("");
-    setQuantity(0);
-    setPurity(0);
+    setMineralName("")
+    setMineralType("")
+    setOrigin("")
+    setQuantity(0)
+    setPurity(0)
     setSelectedCondition({
       temperature: "In Celsius",
       storage: "Select Type",
       humidity: "Select Type",
-    });
-  };
+    })
+  }
 
   const handleRefreshAccess = async () => {
-    setIsRefreshingAccess(true);
+    setIsRefreshingAccess(true)
     try {
-      await refetchRoleCheck();
+      await refetchRoleCheck()
     } catch (e) {
-      console.error("Error refreshing access:", e);
+      console.error("Error refreshing access:", e)
     } finally {
-      setIsRefreshingAccess(false);
+      setIsRefreshingAccess(false)
     }
-  };
+  }
 
   const handleQuantityChange = (value: number) => {
-    setQuantity(Math.max(0, value));
-  };
+    setQuantity(Math.max(0, value))
+  }
 
   const handlePurityChange = (value: number) => {
-    setPurity(Math.max(0, Math.min(100, value)));
-  };
+    setPurity(Math.max(0, Math.min(100, value)))
+  }
 
   const handleRegister = async () => {
-    if (!isConnected || !hasMinerRole || !validateForm()) return;
+    if (!isConnected || !hasMinerRole || !validateForm()) return
 
-    setIsTransactionPending(true);
+    setIsTransactionPending(true)
     try {
       const tx = await writeContractAsync({
         functionName: "registerMineral",
-        args: [
-          mineralName,
-          mineralType,
-          BigInt(quantity),
-          origin,
-          BigInt(purity),
-          storageConditions
-        ],
-      });
-      
-      notification.info("Transaction submitted. Waiting for confirmation...");
-      console.log("Transaction submitted:", tx);
-      
-      notification.success("Mineral registered successfully!");
-      resetForm();
+        args: [mineralName, mineralType, BigInt(quantity), origin, BigInt(purity), storageConditions],
+      })
+
+      notification.info("Transaction submitted. Waiting for confirmation...")
+      console.log("Transaction submitted:", tx)
+
+      notification.success("Mineral registered successfully!")
+      resetForm()
     } catch (err: any) {
-      console.error("Transaction error:", err);
-      
+      console.error("Transaction error:", err)
+
       if (err.message.includes("User rejected the request")) {
-        notification.error("Transaction rejected by user");
+        notification.error("Transaction rejected by user")
       } else if (err.message.includes("RolesManager__MineralPurityPercentageTooLowToRegister")) {
-        notification.error("Purity must be greater than 80%");
+        notification.error("Purity must be greater than 80%")
       } else if (err.message.includes("RolesManager__InvalidMineralWeight")) {
-        notification.error("Quantity must be greater than 0");
+        notification.error("Quantity must be greater than 0")
       } else if (err.message.includes("caller is missing role")) {
-        notification.error("No miner privileges");
+        notification.error("No miner privileges")
       } else {
-        notification.error("Transaction failed. See console for details.");
+        notification.error("Transaction failed. See console for details.")
       }
     } finally {
-      setIsTransactionPending(false);
+      setIsTransactionPending(false)
     }
-  };
+  }
 
   if (isConnected && isRoleLoading) {
-    return <FullPageLoader text="Checking miner permissions..." />;
+    return <FullPageLoader text="Checking miner permissions..." />
   }
 
   if (!isConnected) {
-    return <ConnectWalletView isLoading={isConnecting} />;
+    return <ConnectWalletView isLoading={isConnecting} />
   }
 
   if (isConnected && !hasMinerRole) {
     return (
-      <div className="flex items-center justify-center min-h-screen p-4">
-        <AccessDeniedView 
-          address={address || ""} 
+      <div className="flex items-center justify-center min-h-screen p-4 bg-gray-900">
+        <AccessDeniedView
+          address={address || ""}
           isLoadingRefresh={isRefreshingAccess}
           onRefresh={handleRefreshAccess}
         />
       </div>
-    );
+    )
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-6">
+    <div className="min-h-screen flex flex-col items-center p-6  text-white">
       <div className="w-full max-w-4xl">
-        <h1 className="text-3xl font-bold text-center mb-3">Register Mineral</h1>
-        <p className="text-muted-foreground text-center mb-8">
-          Register new minerals in the system. All fields are required.
-        </p>
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold mb-3">Register Mineral</h1>
+          <p className="text-gray-400">Register new minerals in the system. All fields are required.</p>
+        </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          <div className="border rounded-lg p-6 flex-1">
+          <div className="flex-1 p-6 rounded-xl  border border-gray-700 shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label className="block text-sm font-medium mb-2">Mineral Name</label>
+              <div className="space-y-2">
+                <label htmlFor="mineral-name" className="block text-sm font-medium text-gray-300">
+                  Mineral Name
+                </label>
                 <input
+                  id="mineral-name"
                   type="text"
                   value={mineralName}
-                  onChange={e => setMineralName(e.target.value)}
+                  onChange={(e) => setMineralName(e.target.value)}
                   placeholder="Valid Mineral name"
-                  className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Type</label>
+
+              <div className="space-y-2">
+                <label htmlFor="mineral-type" className="block text-sm font-medium text-gray-300">
+                  Type
+                </label>
                 <input
+                  id="mineral-type"
                   type="text"
                   value={mineralType}
-                  onChange={e => setMineralType(e.target.value)}
+                  onChange={(e) => setMineralType(e.target.value)}
                   placeholder="Mineral type here"
-                  className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium mb-2">Origin</label>
+
+              <div className="space-y-2">
+                <label htmlFor="origin" className="block text-sm font-medium text-gray-300">
+                  Origin
+                </label>
                 <div className="relative">
                   <input
+                    id="origin"
                     type="text"
                     value={origin}
-                    onChange={e => setOrigin(e.target.value)}
+                    onChange={(e) => setOrigin(e.target.value)}
                     placeholder="Enter Origin here"
-                    className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent pr-10"
                   />
-                  <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
+                  <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Quantity (KG)</label>
-                <div className="bg-background flex items-center justify-between rounded-md px-4 py-3 w-full border border-input">
+              <div className="space-y-2">
+                <label htmlFor="quantity" className="block text-sm font-medium text-gray-300">
+                  Quantity (KG)
+                </label>
+                <div className="flex items-center space-x-2">
                   <input
+                    id="quantity"
                     type="number"
                     value={quantity}
-                    onChange={e => {
-                      const value = parseFloat(e.target.value);
-                      handleQuantityChange(isNaN(value) ? 0 : value);
+                    onChange={(e) => {
+                      const value = Number.parseFloat(e.target.value)
+                      handleQuantityChange(isNaN(value) ? 0 : value)
                     }}
-                    className="bg-background focus:outline-none text-foreground text-[14px] w-full"
+                    className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     min="0"
                     step="0.1"
                   />
-                  <div className="flex items-center ml-4 pl-4 border-l border-input gap-2">
+                  <div className="flex items-center gap-1">
                     <button
                       onClick={() => handleQuantityChange(quantity - 1)}
-                      className="w-8 h-8 flex items-center justify-center bg-accent hover:bg-accent/90 rounded-full"
+                      className="h-10 w-10 rounded-full bg-gray-700 hover:bg-gray-600 border border-gray-600 flex items-center justify-center text-white"
                     >
                       <Minus size={16} />
                     </button>
                     <button
                       onClick={() => handleQuantityChange(quantity + 1)}
-                      className="w-8 h-8 flex items-center justify-center bg-accent hover:bg-accent/90 rounded-full"
+                      className="h-10 w-10 rounded-full bg-gray-700 hover:bg-gray-600 border border-gray-600 flex items-center justify-center text-white"
                     >
                       <Plus size={16} />
                     </button>
@@ -361,154 +385,189 @@ export default function MineralRegistrationPage() {
                 </div>
               </div>
 
-              <div className="w-full">
-                <label className="block text-sm font-medium mb-2">
-                  Purity Percentage {purity <= 80 && (
-                    <span className="text-red-500 ml-2">(Must be > 80%)</span>
-                  )}
-                </label>
-                <div className="flex items-center bg-background rounded-xl overflow-hidden border border-input">
-                  <div className="flex-1 px-4 py-3">
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={purity}
-                      onChange={e => handlePurityChange(Number(e.target.value))}
-                      className="w-full h-2 rounded-full appearance-none bg-muted"
-                      style={{
-                        background: `linear-gradient(to right, #007BFF 0%, #007BFF ${purity}%, #e5e5ee ${purity}%, #e5e5ee 100%)`,
-                      }}
-                    />
+              <div className="space-y-2 col-span-full">
+                <div className="flex items-center justify-between">
+                  <label htmlFor="purity" className="block text-sm font-medium text-gray-300">
+                    Purity Percentage
+                    {purity <= 80 && (
+                      <span className="ml-2 px-2 py-0.5 text-xs rounded-full bg-red-900/50 text-red-300">
+                        Must be &gt; 80%
+                      </span>
+                    )}
+                  </label>
+                  <span className={`text-sm font-medium ${purity <= 80 ? "text-red-400" : "text-emerald-400"}`}>
+                    {purity}%
+                  </span>
+                </div>
+                <div className="pt-2">
+                  <input
+                    id="purity"
+                    type="range"
+                    min="0"
+                    max="100"
+                    step="1"
+                    value={purity}
+                    onChange={(e) => handlePurityChange(Number.parseInt(e.target.value))}
+                    className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-700"
+                    style={{
+                      background: `linear-gradient(to right, ${
+                        purity <= 80 ? "#ef4444" : "#10b981"
+                      } 0%, ${purity <= 80 ? "#ef4444" : "#10b981"} ${purity}%, #374151 ${purity}%, #374151 100%)`,
+                    }}
+                  />
+                </div>
+                <div className="flex justify-between items-center pt-1">
+                  <button
+                    onClick={() => handlePurityChange(purity - 1)}
+                    className="h-8 w-8 p-0 rounded-full bg-gray-700 hover:bg-gray-600 border border-gray-600 flex items-center justify-center text-white"
+                  >
+                    <Minus size={12} />
+                  </button>
+                  <div className="flex-1 mx-4">
+                    <div className="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
+                      <div
+                        className={`h-full ${purity <= 80 ? "bg-red-500/70" : "bg-emerald-500/70"}`}
+                        style={{ width: `${purity}%` }}
+                      />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 px-3 py-2 bg-accent min-w-[130px] justify-end">
-                    <button
-                      onClick={() => handlePurityChange(purity - 1)}
-                      className="w-7 h-7 flex items-center justify-center bg-accent/90 hover:bg-accent rounded-full text-foreground"
-                    >
-                      <Minus size={14} />
-                    </button>
-                    <span className={`text-sm w-10 text-center ${
-                      purity <= 80 ? 'text-red-500' : 'text-foreground'
-                    }`}>
-                      {purity}%
-                    </span>
-                    <button
-                      onClick={() => handlePurityChange(purity + 1)}
-                      className="w-7 h-7 flex items-center justify-center bg-accent/90 hover:bg-accent rounded-full text-foreground"
-                    >
-                      <Plus size={14} />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => handlePurityChange(purity + 1)}
+                    className="h-8 w-8 p-0 rounded-full bg-gray-700 hover:bg-gray-600 border border-gray-600 flex items-center justify-center text-white"
+                  >
+                    <Plus size={12} />
+                  </button>
                 </div>
               </div>
 
-              <div className="w-full relative">
-                <label className="block text-sm font-medium mb-2">Storage Conditions</label>
-                <div className="flex items-center bg-background border border-input rounded-xl overflow-hidden">
-                  <div className="flex-1 px-4 py-3 text-sm">
+              <div className="space-y-2 col-span-full">
+                <label htmlFor="storage-conditions" className="block text-sm font-medium text-gray-300">
+                  Storage Conditions
+                </label>
+                <button
+                  onClick={() => setPortalOpen(true)}
+                  className="w-full flex justify-between items-center py-3 px-4 rounded-lg bg-gray-700 border border-gray-600 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                >
+                  <span className="text-sm">
                     {selectedCondition.storage !== "Select Type"
                       ? `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`
                       : "No Conditions specified"}
-                  </div>
-                  <div className="relative">
-                    <button
-                      onClick={() => setPortalOpen(true)}
-                      className="bg-accent hover:bg-accent/90 px-4 py-3 flex items-center gap-1 text-foreground text-sm h-full"
-                    >
-                      Select <ChevronDown size={18} />
-                    </button>
-                  </div>
-                </div>
+                  </span>
+                  <ChevronDown size={16} />
+                </button>
               </div>
             </div>
+
+            <div className="my-8 border-t border-gray-700"></div>
 
             <button
               onClick={handleRegister}
               disabled={isTransactionPending || !validateForm()}
-              className={`w-full ${
-                validateForm() ? 'bg-primary hover:bg-primary/90' : 'bg-muted cursor-not-allowed'
-              } text-primary-foreground font-medium py-3 rounded mt-8 duration-500 flex items-center justify-center`}
+              className={`w-full h-12 rounded-lg font-medium text-white ${
+                validateForm() && !isTransactionPending
+                  ? "bg-emerald-600 hover:bg-emerald-700"
+                  : "bg-gray-700 cursor-not-allowed"
+              } transition-colors duration-200`}
             >
               {isTransactionPending ? (
-                <>
+                <div className="flex items-center justify-center">
                   <Loader2 className="animate-spin mr-2 h-5 w-5" />
                   Processing...
-                </>
+                </div>
               ) : (
                 "Register Mineral"
               )}
             </button>
-            <p className="text-muted-foreground text-sm text-center mt-4">
-              {validateForm() 
+
+            <p className="text-gray-400 text-sm text-center mt-4">
+              {validateForm()
                 ? "All required fields are complete. You can register the mineral."
                 : "Please fill all required fields to register."}
             </p>
           </div>
 
-          <div className="lg:w-72">
-            <div className="rounded-lg p-6">
-              <h2 className="text-lg font-medium mb-4">Check-points</h2>
-              <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    mineralName.trim() ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {mineralName.trim() ? <Check size={12} /> : <Minus size={12} />}
+          <div className="lg:w-80">
+            <div className="p-6 rounded-xl  border border-gray-700 shadow-lg h-full">
+              <h2 className="text-lg font-medium mb-6 text-white">Validation Status</h2>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`h-6 w-6 rounded-full flex items-center justify-center ${
+                      mineralName.trim() ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                    }`}
+                  >
+                    {mineralName.trim() ? <Check size={14} /> : <Minus size={14} />}
                   </div>
-                  <span className="text-sm">Valid mineral name</span>
+                  <span className="text-sm text-gray-300">Valid mineral name</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    mineralType.trim() ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {mineralType.trim() ? <Check size={12} /> : <Minus size={12} />}
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`h-6 w-6 rounded-full flex items-center justify-center ${
+                      mineralType.trim() ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                    }`}
+                  >
+                    {mineralType.trim() ? <Check size={14} /> : <Minus size={14} />}
                   </div>
-                  <span className="text-sm">Mineral type specified</span>
+                  <span className="text-sm text-gray-300">Mineral type specified</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    origin.trim() ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {origin.trim() ? <Check size={12} /> : <Minus size={12} />}
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`h-6 w-6 rounded-full flex items-center justify-center ${
+                      origin.trim() ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                    }`}
+                  >
+                    {origin.trim() ? <Check size={14} /> : <Minus size={14} />}
                   </div>
-                  <span className="text-sm">Origin provided</span>
+                  <span className="text-sm text-gray-300">Origin provided</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    quantity > 0 ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {quantity > 0 ? <Check size={12} /> : <Minus size={12} />}
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`h-6 w-6 rounded-full flex items-center justify-center ${
+                      quantity > 0 ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                    }`}
+                  >
+                    {quantity > 0 ? <Check size={14} /> : <Minus size={14} />}
                   </div>
-                  <span className="text-sm">Valid quantity</span>
+                  <span className="text-sm text-gray-300">Valid quantity</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    purity > 80 && purity <= 100 ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {purity > 80 && purity <= 100 ? <Check size={12} /> : <Minus size={12} />}
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`h-6 w-6 rounded-full flex items-center justify-center ${
+                      purity > 80 && purity <= 100 ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                    }`}
+                  >
+                    {purity > 80 && purity <= 100 ? <Check size={14} /> : <Minus size={14} />}
                   </div>
-                  <span className="text-sm">Purity > 80%</span>
+                  <span className="text-sm text-gray-300">Purity &gt; 80%</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className={`rounded-full p-1 ${
-                    selectedCondition.storage !== "Select Type" && 
-                    selectedCondition.humidity !== "Select Type" 
-                      ? 'bg-green-500' : 'bg-muted'
-                  }`}>
-                    {selectedCondition.storage !== "Select Type" && 
-                     selectedCondition.humidity !== "Select Type" 
-                      ? <Check size={12} /> : <Minus size={12} />}
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`h-6 w-6 rounded-full flex items-center justify-center ${
+                      selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type"
+                        ? "bg-emerald-900/50 text-emerald-400"
+                        : "bg-gray-700 text-gray-500"
+                    }`}
+                  >
+                    {selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type" ? (
+                      <Check size={14} />
+                    ) : (
+                      <Minus size={14} />
+                    )}
                   </div>
-                  <span className="text-sm">Storage conditions set</span>
+                  <span className="text-sm text-gray-300">Storage conditions set</span>
                 </div>
               </div>
-              <h3 className="font-medium mb-2">Tips:</h3>
-              <div className="flex gap-2 text-sm">
-                <AlertCircle className="min-w-5 h-5 mt-0.5" />
-                <p className="text-muted-foreground">
-                  Ensure the details entered are accurate. Modifications won't be allowed post registration.
-                </p>
+
+              <div className="my-6 border-t border-gray-700"></div>
+
+              <div className="space-y-3">
+                <h3 className="font-medium text-sm text-white">Important Notes:</h3>
+                <div className="flex gap-3 text-sm bg-gray-700/50 p-4 rounded-lg">
+                  <AlertCircle className="min-w-5 h-5 mt-0.5 text-amber-400" />
+                  <p className="text-gray-300">
+                    Ensure the details entered are accurate. Modifications won't be allowed post registration.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -516,17 +575,23 @@ export default function MineralRegistrationPage() {
       </div>
 
       {portalOpen && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
-          <div className="bg-background border rounded-xl p-8 w-[400px] relative">
-            <h2 className="text-lg mb-6 font-semibold">Specify Storage Conditions</h2>
-            
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="w-[450px] p-6 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
+            <div className="mb-6">
+              <h2 className="text-xl font-semibold text-white">Specify Storage Conditions</h2>
+              <p className="text-gray-400 text-sm mt-1">Set the required storage parameters for this mineral</p>
+            </div>
+
             <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium mb-2">Storage Type</label>
+              <div className="space-y-2">
+                <label htmlFor="storage-type" className="block text-sm font-medium text-gray-300">
+                  Storage Type
+                </label>
                 <select
+                  id="storage-type"
                   value={selectedCondition.storage}
-                  onChange={e => setSelectedCondition({...selectedCondition, storage: e.target.value})}
-                  className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
+                  onChange={(e) => setSelectedCondition({ ...selectedCondition, storage: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 appearance-none"
                 >
                   <option value="Select Type">Select Type</option>
                   <option value="Dry Storage">Dry Storage</option>
@@ -535,60 +600,62 @@ export default function MineralRegistrationPage() {
                   <option value="Airtight Container">Airtight Container</option>
                 </select>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2">Temperature</label>
-                <div className="relative">
-                  <select
-                    value={selectedCondition.temperature}
-                    onChange={e => setSelectedCondition({...selectedCondition, temperature: e.target.value})}
-                    className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
-                  >
-                    <option value="In Celsius">In Celsius</option>
-                    <option value="Below 0°C">Below 0°C</option>
-                    <option value="0°C to 10°C">0°C to 10°C</option>
-                    <option value="10°C to 25°C">10°C to 25°C</option>
-                    <option value="Above 25°C">Above 25°C</option>
-                  </select>
-                  <Thermometer className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-                </div>
+
+              <div className="space-y-2">
+                <label htmlFor="temperature" className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                  Temperature <Thermometer className="h-4 w-4 text-gray-400" />
+                </label>
+                <select
+                  id="temperature"
+                  value={selectedCondition.temperature}
+                  onChange={(e) => setSelectedCondition({ ...selectedCondition, temperature: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 appearance-none"
+                >
+                  <option value="In Celsius">In Celsius</option>
+                  <option value="Below 0°C">Below 0°C</option>
+                  <option value="0°C to 10°C">0°C to 10°C</option>
+                  <option value="10°C to 25°C">10°C to 25°C</option>
+                  <option value="Above 25°C">Above 25°C</option>
+                </select>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium mb-2">Humidity</label>
-                <div className="relative">
-                  <select
-                    value={selectedCondition.humidity}
-                    onChange={e => setSelectedCondition({...selectedCondition, humidity: e.target.value})}
-                    className="w-full bg-background border border-input text-foreground rounded px-4 py-3 focus:outline-none"
-                  >
-                    <option value="Select Type">Select Type</option>
-                    <option value="Low (<30%)">Low (&lt;30%)</option>
-                    <option value="Moderate (30-60%)">Moderate (30-60%)</option>
-                    <option value="High (>60%)">High (&gt;60%)</option>
-                  </select>
-                  <Droplet className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-                </div>
+
+              <div className="space-y-2">
+                <label htmlFor="humidity" className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                  Humidity <Droplet className="h-4 w-4 text-gray-400" />
+                </label>
+                <select
+                  id="humidity"
+                  value={selectedCondition.humidity}
+                  onChange={(e) => setSelectedCondition({ ...selectedCondition, humidity: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 appearance-none"
+                >
+                  <option value="Select Type">Select Type</option>
+                  <option value="Low (<30%)">Low (&lt;30%)</option>
+                  <option value="Moderate (30-60%)">Moderate (30-60%)</option>
+                  <option value="High (>60%)">High (&gt;60%)</option>
+                </select>
               </div>
             </div>
-            
-            <div className="flex justify-end mt-6 space-x-3">
+
+            <div className="flex justify-between gap-3 mt-6">
               <button
                 onClick={() => setPortalOpen(false)}
-                className="px-4 py-2 border rounded-lg hover:bg-accent"
+                className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
               >
                 Cancel
               </button>
               <button
                 onClick={() => {
-                  if (
-                    selectedCondition.storage !== "Select Type" && 
-                    selectedCondition.humidity !== "Select Type"
-                  ) {
-                    setPortalOpen(false);
+                  if (selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type") {
+                    setPortalOpen(false)
                   }
                 }}
-                className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
+                disabled={selectedCondition.storage === "Select Type" || selectedCondition.humidity === "Select Type"}
+                className={`px-4 py-2 rounded-lg text-white ${
+                  selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type"
+                    ? "bg-emerald-600 hover:bg-emerald-700"
+                    : "bg-gray-700 cursor-not-allowed"
+                }`}
               >
                 Confirm
               </button>
@@ -597,5 +664,5 @@ export default function MineralRegistrationPage() {
         </div>
       )}
     </div>
-  );
+  )
 }
