@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useAccount } from "wagmi";
 import { useRouter } from "next/navigation";
-import { ShieldAlert, Copy, Mail, Phone, MessageSquare, ChevronRight, HardHat, Loader2 } from "lucide-react";
 import { toast } from "../lib/toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { ChevronRight, Copy, HardHat, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
+import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
@@ -27,7 +27,7 @@ const AdminContactSection = () => {
       name: "Admin Email",
       value: "admin@stone.proof",
       icon: <Mail className="w-5 h-5" />,
-      action: "mailto:admin@stone.proof?subject=Miner%20Role%20Request"
+      action: "mailto:admin@stone.proof?subject=Miner%20Role%20Request",
     },
     {
       name: "Support Phone",
@@ -39,7 +39,7 @@ const AdminContactSection = () => {
       name: "Telegram Support",
       value: "@StoneProofSupport",
       icon: <MessageSquare className="w-5 h-5" />,
-      action: "https://t.me/StoneProofSupport"
+      action: "https://t.me/StoneProofSupport",
     },
   ];
 
@@ -97,7 +97,7 @@ const AccessDeniedCard = ({
         <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
           <div className="flex justify-between items-center mb-1">
             <span className="text-sm font-medium text-gray-500 dark:text-gray-400">Connected Wallet:</span>
-            <button 
+            <button
               onClick={copyAddress}
               className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
               title="Copy address"
@@ -234,11 +234,8 @@ export default function MinerPortalEntry() {
     refetch: refetchRoleCheck,
   } = useScaffoldReadContract({
     contractName: "RolesManager",
-    functionName: "hasRole",
-    args: [
-      "0x241ecf16d79d0f8dbfb92cbc07fe17840425976cf0667f022fe9877caa831b08",
-      address
-    ],
+    functionName: "hasMinerRole",
+    args: [/*"0x241ecf16d79d0f8dbfb92cbc07fe17840425976cf0667f022fe9877caa831b08",*/ address],
     enabled: isConnected,
   });
 
@@ -259,7 +256,7 @@ export default function MinerPortalEntry() {
 
   // Loading state while checking roles
   if (isConnected && isLoadingRoleCheck) {
-    return <FullPageLoader text="Checking permissions..." />;
+    return <FullPageLoader text="Checking miner access permissions..." />;
   }
 
   // Not connected state
@@ -271,8 +268,8 @@ export default function MinerPortalEntry() {
   if (isConnected && !hasMinerRole) {
     return (
       <div className="flex items-center justify-center min-h-screen p-4">
-        <AccessDeniedCard 
-          address={address || ""} 
+        <AccessDeniedCard
+          address={address || ""}
           isLoadingRefresh={isRefreshingAccess}
           onRefresh={handleRefreshAccess}
         />

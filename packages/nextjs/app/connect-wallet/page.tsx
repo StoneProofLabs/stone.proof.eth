@@ -10,18 +10,12 @@ export default function ConnectWalletPage() {
         <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full mb-4 mx-auto">
           <Lock className="w-8 h-8 text-blue-600 dark:text-blue-300" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-          Connect Your Wallet
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Connect Your Wallet</h1>
         <p className="text-gray-600 dark:text-gray-300 mb-6">
           Please connect a wallet with miner privileges to continue
         </p>
         <div className="flex justify-center">
-          <ConnectButton 
-            showBalance={true}
-            accountStatus="address"
-            chainStatus="none"
-          />
+          <ConnectButton showBalance={true} accountStatus="address" chainStatus="none" />
         </div>
       </div>
     </div>
