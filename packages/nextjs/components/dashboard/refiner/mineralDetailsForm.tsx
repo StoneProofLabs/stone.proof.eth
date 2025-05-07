@@ -32,7 +32,7 @@ const MineralDetailsForm = ({ onSubmit, isSubmitting }: MineralDetailsFormProps)
 
   return (
     <div className="bg-[#252525] border border-[#323539] rounded-lg p-6 w-full">
-      <h2 className="text-white text-xl font-medium mb-4">Refine Minerals</h2>
+      <h2 className="text-white text-xl font-medium mb-4">Refine Mineral</h2>
 
       <form onSubmit={handleSubmit(handleFormSubmit)}>
         {/* Mineral ID  Field */}
@@ -67,7 +67,7 @@ const MineralDetailsForm = ({ onSubmit, isSubmitting }: MineralDetailsFormProps)
             isSubmitting ? "opacity-50 cursor-not-allowed" : ""
           }`}
         >
-          {isSubmitting ? "Processing..." : "Refine Minerals"}
+          {isSubmitting ? "Processing..." : "Refine Mineral"}
         </button>
 
         <p className="text-gray-500 text-sm text-center mt-4">Notification will be given to all members</p>

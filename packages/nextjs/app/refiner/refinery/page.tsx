@@ -51,7 +51,7 @@ export default function Page() {
         <h2 className="text-2xl font-semibold mb-4">Un-Refined Minerals</h2>
 
         <div className="flex flex-col lg:flex-row gap-6">
-          <div className="w-full lg:w-2/3">
+          <div className="w-[50%]">
             <UnrefinedMineralsTable
               minerals={minerals}
               selectedMineral={selectedMineral}
@@ -59,7 +59,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="w-full lg:w-1/3">
+          <div className="w-[50%]">
             <MineralDetailsForm onSubmit={handleSubmit} isSubmitting={false} />
           </div>
         </div>
