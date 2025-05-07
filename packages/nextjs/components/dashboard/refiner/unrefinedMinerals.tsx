@@ -2,7 +2,7 @@ import { SetStateAction, useState } from "react";
 import { ArrowDown, ChevronLeft, ChevronRight, Copy, MoreVertical, Search } from "lucide-react";
 
 // @ts-ignore
-export default function UnrefinedMineralsTable({ minerals, selectedMineral, onSelectMineral, onPurchase }) {
+export default function UnrefinedMineralsTable({ minerals, selectedMineral, onSelectMineral }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [sortField, setSortField] = useState("name");
