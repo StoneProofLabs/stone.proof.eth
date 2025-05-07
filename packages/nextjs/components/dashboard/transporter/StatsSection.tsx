@@ -1,5 +1,5 @@
-import StatsCard from "../admin/StatsCard";
 import StatsIcon from "../admin/StatsIcon";
+import StatsCard from "./StatsCard";
 import { ChartPieIcon, ClockIcon, DocumentCheckIcon, ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 export interface AdminStats {
