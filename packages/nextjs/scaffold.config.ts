@@ -64,8 +64,8 @@ const scaffoldConfig = {
 
   contracts: {
     RolesManager: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3", // Replace with your actual contract address
-      abi: RolesManager.abi, // Make sure this is imported correctly
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      abi: RolesManager.abi,
     },
   },
 } as const satisfies ScaffoldConfig;
