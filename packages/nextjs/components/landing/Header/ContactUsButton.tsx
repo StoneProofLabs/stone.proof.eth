@@ -1,4 +1,4 @@
-import { PhoneCall } from "lucide-react"
+import { PhoneCall } from "lucide-react";
 
 const ContactUsButton = () => {
   return (
@@ -8,7 +8,7 @@ const ContactUsButton = () => {
       </span>
       <span className="text-sm md:text-base">Contact Us</span>
     </button>
-  )
-}
+  );
+};
 
-export default ContactUsButton
+export default ContactUsButton;

@@ -3,7 +3,7 @@ import { getContract } from "~~/utils/getContract";
 
 export const checkMinerRole = async (address: string): Promise<boolean> => {
   const rolesManager = await getContract("RolesManager");
-  
+
   try {
     // eslint-disable-next-line prettier/prettier
     const MINER_ROLE = ethers.utils.keccak256(
