@@ -31,7 +31,7 @@ const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text
   </div>
 );
 
-const FullPageLoader = ({ text = "Verifying access permissions..." }: { text?: string }) => (
+const FullPageLoader = ({ text = "Verifying miner access permissions..." }: { text?: string }) => (
   <div className="flex items-center justify-center min-h-screen">
     <LoadingSpinner size={12} text={text} />
   </div>
