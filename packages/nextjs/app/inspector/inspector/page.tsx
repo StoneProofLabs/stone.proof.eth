@@ -204,15 +204,9 @@ export default function InspectMinerals() {
                     <span>{formData.mineralStatus}</span>
                     <ChevronDown size={18} />
                   </button>
-
                   {mineralStatusDropdownOpen && (
                     <div className="absolute z-10 mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-md shadow-lg">
                       {["Current status", "Verified", "Pending"].map(status => (
-
-                  {dropdownOpen && (
-                    <div className="absolute z-10 mt-1 w-full bg-[#252525] border border-[#323539] rounded-md shadow-lg">
-                      {["Cobalt", "Gold", "Copper", "Lithium"].map(mineral => (
-
                         <button
                           type="button"
                           key={status}
@@ -272,7 +266,6 @@ export default function InspectMinerals() {
                   readOnly
                   className="flex-grow bg-transparent border-none px-4 py-3 focus:outline-none"
                 />
-
                 <div className="flex items-center px-3">
                   <button
                     type="button"
@@ -290,22 +283,6 @@ export default function InspectMinerals() {
                   >
                     <Plus size={12} />
                   </button>
-
-              </div>
-
-              <div>
-                <label className="text-sm text-gray-400 block mb-2">Condition</label>
-                <div className="grid grid-cols-3 gap-2">
-                  {["Good", "Average", "Poor"].map(condition => (
-                    <button
-                      key={condition}
-                      className={`py-2 rounded-md text-sm font-medium ${selectedCondition === condition ? "bg-[#0A77FF] text-white" : "bg-[#252525] border border-[#323539] hover:bg-[#323539]"}`}
-                      onClick={() => setSelectedCondition(condition)}
-                    >
-                      {condition}
-                    </button>
-                  ))}
-
                 </div>
               </div>
             </div>
