@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FaChartBar } from "react-icons/fa";
 import { FaRegCheckSquare } from "react-icons/fa";
@@ -32,6 +33,13 @@ const Page = () => {
               <Icon path="/dashboard/icon_set/download.svg" alt="Download icon" />
             </span>
           </button>
+
+          <Link
+            href={"/buyer/buyMineral"}
+            className="flex-1 md:flex-none bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center md:justify-start"
+          >
+            <h1 className="translate-y-[4px]">Buy Mineral</h1>
+          </Link>
 
           <button className="w-full sm:w-auto bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
             <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
