@@ -5,7 +5,7 @@ const CARDS = [
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic1.svg", // Replace with your icon
+    icon: "/landing/pic4.svg", // Replace with your icon
   },
   {
     title: "Blockchain-based Supply Chain",
@@ -20,17 +20,17 @@ const CARDS = [
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic4.svg", // Replace with your icon
+    icon: "/landing/pic1.svg", // Replace with your icon
   },
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic4.svg", // Replace with your icon
+    icon: "/landing/verified.png", // Replace with your icon
   },
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/icon5.svg", // Replace with your icon
+    icon: "/landing/wallet.png", // Replace with your icon
   },
 ];
 

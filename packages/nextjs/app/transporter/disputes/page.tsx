@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
+import { DisputeButton } from "~~/components/dashboard/disputes/disputesButton";
 import MineralDisputesGraph from "~~/components/dashboard/disputes/mineralDisputesVariationGraph";
 import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
@@ -24,6 +25,7 @@ export default function Page() {
         </div>
 
         <div className="flex flex-wrap gap-2 sm:gap-1">
+          <DisputeButton count={9} />
           <Link
             href={"/refiner/disputes/raiseDispute"}
             className="w-full sm:w-auto bg-red-600 gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center sm:justify-start"

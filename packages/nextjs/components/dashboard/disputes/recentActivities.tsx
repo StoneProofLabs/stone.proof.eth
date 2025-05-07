@@ -27,14 +27,12 @@ interface NotificationItemProps {
   bgColor?: string;
   expandedBgColor?: string;
   borderColor?: string;
+  baseUrl?: string;
 }
 
 interface NotificationListProps {
   notifications: Notifications[];
-
   baseUrl?: string;
-
-
   bgColor?: string;
   expandedBgColor?: string;
   borderColor?: string;
@@ -133,12 +131,6 @@ const NotificationItem = ({
   expanded,
   toggleExpanded,
   baseUrl = "",
-}: NotificationItemProps & { baseUrl?: string }) => {
-  return (
-    <div
-      className={`${notification.bgColor || "bg-[#121212]"} border ${notification.borderColor || "border-[#2a2a2a]"} rounded-lg mb-3`}
-    >
-
   bgColor = "bg-[#121212]",
   expandedBgColor = "bg-[#121212]",
   borderColor = "border-[#2a2a2a]",
@@ -160,11 +152,8 @@ const NotificationItem = ({
         </div>
         <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 ml-11 sm:ml-0">
           <span className="text-gray-400 text-sm order-1 sm:order-none">{notification.date}</span>
-
           {notification.secondaryStatus && <StatusBadge status={notification.secondaryStatus} />}
-
           <StatusBadge status={notification.status} />
-
           <svg
             className={`w-5 h-5 sm:w-6 sm:h-6 text-gray-400 transform ${expanded ? "rotate-180" : ""} transition-transform duration-200 ml-auto sm:ml-0`}
             fill="none"
@@ -177,23 +166,15 @@ const NotificationItem = ({
       </div>
 
       {expanded && (
-        <div className={`p-4 sm:p-6 border-t border-gray-800 text-gray-400 ${notification.expandedBgColor || ""}`}>
-
-        <div
-          className={`p-4 sm:p-6 border-t border-gray-800 text-gray-400 ${expandedBgColor !== bgColor ? expandedBgColor : ""}`}
-        >
-
+        <div className={`p-4 sm:p-6 border-t border-gray-800 text-gray-400 ${expandedBgColor}`}>
           <p className="mb-3 text-sm sm:text-base">
             {notification.content || "No additional details available for this notification."}
           </p>
-
           <div className="flex justify-end">
             <Link
               href={`/${baseUrl}/disputes/disputeDetails/${notification.id}`}
-              className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg font-medium text-sm sm:text-base"
+              className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 transition-colors text-white rounded-lg font-medium text-sm sm:text-base"
             >
-            <button className="flex items-center px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 hover:bg-blue-700 transition-colors text-white rounded-lg font-medium text-sm sm:text-base">
-
               View Full Details
               <svg className="w-4 h-4 sm:w-5 sm:h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -210,9 +191,6 @@ const NotificationItem = ({
 export const NotificationList = ({
   notifications,
   baseUrl = "",
-  bgColor,
-  expandedBgColor,
-  borderColor,
   bgColor = "bg-[#121212]",
   expandedBgColor = "bg-[#121212]",
   borderColor = "border-[#2a2a2a]",
@@ -224,10 +202,8 @@ export const NotificationList = ({
   };
 
   return (
-
-    <div className="">
+    <div className="w-full">
       {(notifications ?? []).map(notification => {
-        // Apply global bgColor and expandedBgColor if provided in props
         const notificationWithStyles = {
           ...notification,
           bgColor: notification.bgColor || bgColor,
@@ -245,20 +221,6 @@ export const NotificationList = ({
           />
         );
       })}
-
-    <div className="w-full">
-      {(notifications ?? []).map(notification => (
-        <NotificationItem
-          key={notification.id}
-          notification={notification}
-          expanded={expandedId === notification.id}
-          toggleExpanded={toggleExpanded}
-          bgColor={bgColor}
-          expandedBgColor={expandedBgColor}
-          borderColor={borderColor}
-        />
-      ))}
-
     </div>
   );
 };
