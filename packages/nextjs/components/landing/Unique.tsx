@@ -1,11 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 
 const CARDS = [
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic1.svg", // Replace with your icon
+    icon: "/landing/pic4.svg", // Replace with your icon
   },
   {
     title: "Blockchain-based Supply Chain",
@@ -20,17 +19,17 @@ const CARDS = [
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic4.svg", // Replace with your icon
+    icon: "/landing/pic1.svg", // Replace with your icon
   },
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic4.svg", // Replace with your icon
+    icon: "/verified.svg", // Replace with your icon
   },
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/icon5.svg", // Replace with your icon
+    icon: "/wallets.svg", // Replace with your icon
   },
 ];
 
@@ -41,7 +40,7 @@ const FeatureCard = ({ title, desc, icon }: { title: string; desc: string; icon:
 
   return (
     <div
-      className="rounded-2xl border border-[#23262F] shadow-xl flex flex-col items-center justify-between px-6 pt-6 pb-0 min-h-[250px] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl relative overflow-hidden group"
+      className="rounded-2xl border border-[#23262F] shadow-xl flex flex-col items-center justify-between px-6 pt-6 pb-0 min-h-[250px] transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl relative group "
       style={{
         backdropFilter: "blur(2px)",
         minHeight: 250,
@@ -77,7 +76,7 @@ const FeatureCard = ({ title, desc, icon }: { title: string; desc: string; icon:
       </div>
 
       {/* Icon container with spotlight effect */}
-      <div className="w-full flex justify-center relative" style={{ marginBottom: "-32px" }}>
+      <div className="w-full flex justify-center relative " style={{ marginBottom: "-32px" }}>
         {/* Icon spotlight (only visible on hover) */}
         <div
           className="absolute w-[120px] h-[120px] rounded-full opacity-0 group-hover:opacity-30 transition-opacity duration-300"
@@ -95,7 +94,7 @@ const FeatureCard = ({ title, desc, icon }: { title: string; desc: string; icon:
         <img
           src={icon}
           alt={title}
-          className="w-36 h-36 md:w-40 md:h-40 object-contain drop-shadow-2xl relative z-20 transition-transform duration-300"
+          className="w-40 h-40 select-none pointer-events-none md:w-40 md:h-40 object-contain drop-shadow-2xl z-20 transition-transform duration-300 "
           style={{
             transform: isHovered ? "scale(1.05)" : "scale(1)",
           }}

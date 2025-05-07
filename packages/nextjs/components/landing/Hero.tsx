@@ -4,32 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ConnectWalletButton from "./hero/ConnectWalletButton";
 
-// Decorative stone component (for reuse)
-// const DecorativeStone = ({
-//   src,
-//   alt,
-//   className,
-//   size = 220,
-//   glowColor = "#fff",
-// }: {
-//   src: string;
-//   alt: string;
-//   className?: string;
-//   size?: number;
-//   glowColor?: string;
-// }) => (
-//   <div
-//     className={`absolute z-10 pointer-events-none ${className} hidden sm:block`}
-//     style={{ width: size, height: size }}
-//   >
-//     {/* Glow */}
-//     <div
-//       className="absolute inset-0 rounded-full blur-3xl opacity-60"
-//       style={{ background: `radial-gradient(circle, ${glowColor} 0%, transparent 70%)` }}
-//     />
-//     <Image src={src} alt={alt} width={size} height={size} className="object-contain" draggable={false} priority />
-//   </div>
-// );
+
 
 const Hero: React.FC = () => {
   return (
@@ -39,7 +14,7 @@ const Hero: React.FC = () => {
         <img
           src="/landing/hero_ring.svg"
           alt="Stone Bottom Left"
-          className="hidden lg:block absolute left-[20px] bottom-[-22%] z-[100] w-32 md:w-48 lg:w-56 pointer-events-none select-none"
+          className="hidden lg:block absolute left-[20px] bottom-[-22%] ` w-32 md:w-48 lg:w-56 pointer-events-none select-none"
         />
 
         {/* Yellow spotlight at far left of hero banner */}
