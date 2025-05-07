@@ -24,8 +24,6 @@ type Mineral = {
 export default function Page() {
   const [minerals, setMinerals] = useState<Mineral[]>(warehouseMineralData);
   const [selectedMineral, setSelectedMineral] = useState<Mineral | null>(null);
-  // Remove unused state or use it in your component
-  const [pendingRequests] = useState(9);
 
   // Select first mineral by default if available
   useEffect(() => {
@@ -38,14 +36,9 @@ export default function Page() {
     setSelectedMineral(mineral);
   };
 
-  const handlePurchase = (updatedMineral: Mineral) => {
-    // Update the mineral in the list
-    const updatedMinerals = minerals.map(mineral => (mineral.id === updatedMineral.id ? updatedMineral : mineral));
-
-    setMinerals(updatedMinerals);
-    setSelectedMineral(updatedMineral);
-
-    alert(`Mineral ${updatedMineral.name} marked as purchased!`);
+  const handleSubmit = (data: any) => {
+    // some submission logic here
+    console.log(data);
   };
 
   return (
@@ -63,12 +56,11 @@ export default function Page() {
               minerals={minerals}
               selectedMineral={selectedMineral}
               onSelectMineral={handleSelectMineral}
-              onPurchase={handlePurchase}
             />
           </div>
 
           <div className="w-full lg:w-1/3">
-            <MineralDetailsForm selectedMineral={selectedMineral} onPurchase={handlePurchase} />
+            <MineralDetailsForm onSubmit={handleSubmit} isSubmitting={false} />
           </div>
         </div>
       </div>

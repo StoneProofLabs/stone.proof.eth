@@ -61,7 +61,7 @@ export default function MineralRow({ mineral, isSelected, onSelect }: MineralRow
         <PurityIndicator value={mineral.purity} />
       </td>
       <td className="px-2 sm:px-4 py-3 sm:py-4">
-        <Link href={`/refiner/minerals/${mineral.id}/refine`}>
+        <Link href={`/refiner/refinery`}>
           <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded text-sm flex items-center transition-colors">
             <span className="hidden sm:inline">Refine mineral</span>
             <span className="sm:hidden">Refine mineral</span>
