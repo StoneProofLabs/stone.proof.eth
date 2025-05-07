@@ -5,7 +5,6 @@ import Link from "next/link";
 import ConnectWalletButton from "./hero/ConnectWalletButton";
 
 
-
 const Hero: React.FC = () => {
   return (
     <section className="relative overflow-visible bg-[#060910] pt-16 pb-8 sm:pb-16 min-h-[80vh] flex flex-col justify-center items-center">

@@ -152,11 +152,8 @@ const NotificationItem = ({
         </div>
         <div className="flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-3 ml-11 sm:ml-0">
           <span className="text-gray-400 text-sm order-1 sm:order-none">{notification.date}</span>
-
           {notification.secondaryStatus && <StatusBadge status={notification.secondaryStatus} />}
-
           <StatusBadge status={notification.status} />
-
           <svg
             className={`w-5 h-5 sm:w-6 sm:h-6 text-gray-400 transform ${expanded ? "rotate-180" : ""} transition-transform duration-200 ml-auto sm:ml-0`}
             fill="none"
@@ -173,7 +170,6 @@ const NotificationItem = ({
           <p className="mb-3 text-sm sm:text-base">
             {notification.content || "No additional details available for this notification."}
           </p>
-
           <div className="flex justify-end">
             <Link
               href={`/${baseUrl}/disputes/disputeDetails/${notification.id}`}
@@ -208,7 +204,6 @@ export const NotificationList = ({
   return (
     <div className="w-full">
       {(notifications ?? []).map(notification => {
-        // Apply global bgColor and expandedBgColor if provided in props
         const notificationWithStyles = {
           ...notification,
           bgColor: notification.bgColor || bgColor,

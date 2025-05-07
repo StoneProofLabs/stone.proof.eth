@@ -24,12 +24,16 @@ const CARDS = [
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/verified.svg", // Replace with your icon
+
+    icon: "/landing/verified.png", // Replace with your icon
+
   },
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/wallets.svg", // Replace with your icon
+
+    icon: "/landing/wallet.png", // Replace with your icon
+
   },
 ];
 
