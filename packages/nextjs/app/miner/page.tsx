@@ -235,7 +235,7 @@ export default function MinerPortalEntry() {
   } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasMinerRole",
-    args: [/*"0x241ecf16d79d0f8dbfb92cbc07fe17840425976cf0667f022fe9877caa831b08",*/ address],
+    args: [address],
     enabled: isConnected,
   });
 

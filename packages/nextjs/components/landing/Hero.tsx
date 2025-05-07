@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import ConnectWalletButton from "./hero/ConnectWalletButton";
 
+
 const Hero: React.FC = () => {
   return (
     <section className="relative overflow-visible bg-[#060910] pt-16 pb-8 sm:pb-16 min-h-[80vh] flex flex-col justify-center items-center">
@@ -12,7 +13,7 @@ const Hero: React.FC = () => {
         <img
           src="/landing/hero_ring.svg"
           alt="Stone Bottom Left"
-          className="hidden lg:block absolute left-[20px] bottom-[-22%] z-[100] w-32 md:w-48 lg:w-56 pointer-events-none select-none"
+          className="hidden lg:block absolute left-[20px] bottom-[-22%] ` w-32 md:w-48 lg:w-56 pointer-events-none select-none"
         />
 
         {/* Yellow spotlight at far left of hero banner */}

@@ -218,6 +218,9 @@ export const NotificationList = ({
             expanded={expandedId === notification.id}
             toggleExpanded={toggleExpanded}
             baseUrl={baseUrl}
+            bgColor={bgColor}
+            expandedBgColor={expandedBgColor}
+            borderColor={borderColor}
           />
         );
       })}

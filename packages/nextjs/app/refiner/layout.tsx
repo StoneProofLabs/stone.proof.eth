@@ -21,6 +21,9 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
   display: "swap",
 });
+const basepath = "/refiner";
+  const sidebarItems = getSidebarItems(basepath);
+  
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
@@ -185,7 +188,6 @@ export default function RefinerLayout({ children }: { children: React.ReactNode 
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const sidebarItems = getSidebarItems("/refiner");
 
   const {
     data: hasRefinerRole,

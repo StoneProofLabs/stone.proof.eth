@@ -222,7 +222,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   if (!hasAdminRole) {
     return (
-      <div className={`${inter.variable} font-sans bg-[#060A12] flex text-white min-h-screen`}>
+      <div className={`${montserrat.variable} font-montserrat bg-[#060A12] flex text-white min-h-screen`}>
         <Sidebar basePath="/admin" />
         <div
           className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${!isCollapsed ? "md:ml-[250px]" : ""}`}

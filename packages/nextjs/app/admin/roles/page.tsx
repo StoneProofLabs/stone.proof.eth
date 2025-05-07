@@ -360,8 +360,9 @@ const Page = () => {
             </div>
 
             <div className="flex flex-wrap gap-2 md:gap-3">
+              
               <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
-                <Icon path="/dashboard/icon_set/menu.svg" alt="menu icon" />
+               View Revoked Users
               </button>
             </div>
           </div>
@@ -401,7 +402,7 @@ const Page = () => {
 
               <RoleCard
                 role={ROLE_TYPES.TRANSPORTER}
-                iconPath="/transporter.svg"
+                iconPath="/dashboard/icon_set/mineTruckWhite.svg"
                 activeCount={roleStats.TRANSPORTER}
                 subtitle="Transportation"
                 userId={roleAddresses.TRANSPORTER}
