@@ -63,7 +63,11 @@ const Header: React.FC = () => {
         </nav>
 
         {/* Mobile menu button */}
-        <button className="lg:hidden text-white z-20" onClick={toggleMobileMenu} aria-label="Toggle menu">
+        <button
+          className="lg:hidden text-white fixed top-4 right-4 z-50"
+          onClick={toggleMobileMenu}
+          aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+        >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
 
@@ -75,7 +79,7 @@ const Header: React.FC = () => {
 
       {/* Mobile Navigation Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 bg-[#060910] z-10 flex flex-col items-center justify-center lg:hidden">
+        <div className="fixed inset-0 bg-[#060910] z-40 flex flex-col items-center justify-center lg:hidden">
           <ul className="flex flex-col gap-6 text-center">
             {navLinks.map(link => (
               <li key={link.name}>

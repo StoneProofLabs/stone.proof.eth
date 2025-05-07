@@ -1,11 +1,10 @@
-/* eslint-disable @next/next/no-img-element */
 import React, { useState } from "react";
 
 const CARDS = [
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic1.svg", // Replace with your icon
+    icon: "/landing/pic4.svg", // Replace with your icon
   },
   {
     title: "Blockchain-based Supply Chain",
@@ -20,17 +19,17 @@ const CARDS = [
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic4.svg", // Replace with your icon
+    icon: "/landing/pic1.svg", // Replace with your icon
   },
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/pic4.svg", // Replace with your icon
+    icon: "/verified.svg", // Replace with your icon
   },
   {
     title: "Advanced Data Encryption",
     desc: "Immutable and traceable transactions for complete trust.",
-    icon: "/landing/icon5.svg", // Replace with your icon
+    icon: "/wallets.svg", // Replace with your icon
   },
 ];
 
@@ -95,7 +94,7 @@ const FeatureCard = ({ title, desc, icon }: { title: string; desc: string; icon:
         <img
           src={icon}
           alt={title}
-          className="w-36 h-36 md:w-40 md:h-40 object-contain drop-shadow-2xl z-20 transition-transform duration-300 "
+          className="w-40 h-40 select-none pointer-events-none md:w-40 md:h-40 object-contain drop-shadow-2xl z-20 transition-transform duration-300 "
           style={{
             transform: isHovered ? "scale(1.05)" : "scale(1)",
           }}
