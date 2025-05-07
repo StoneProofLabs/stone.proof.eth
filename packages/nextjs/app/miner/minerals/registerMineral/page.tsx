@@ -1,6 +1,7 @@
-"use client"
+"use client";
 
-import { useState, useCallback } from "react"
+import { useCallback, useState } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   AlertCircle,
   Check,
@@ -16,24 +17,23 @@ import {
   Plus,
   ShieldAlert,
   Thermometer,
-} from "lucide-react"
-import { useAccount } from "wagmi"
-import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth"
-import { notification } from "~~/utils/scaffold-eth"
-import { ConnectButton } from "@rainbow-me/rainbowkit"
+} from "lucide-react";
+import { useAccount } from "wagmi";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
     <Loader2 className={`w-${size} h-${size} animate-spin text-emerald-500`} />
     {text && <p className="text-sm text-gray-400">{text}</p>}
   </div>
-)
+);
 
 const FullPageLoader = ({ text = "Verifying miner access..." }: { text?: string }) => (
   <div className="flex items-center justify-center min-h-screen bg-gray-900">
     <LoadingSpinner size={12} text={text} />
   </div>
-)
+);
 
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-4 bg-gray-900">
@@ -46,21 +46,21 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
     </div>
     {isLoading && <LoadingSpinner size={8} text="Connecting wallet..." />}
   </div>
-)
+);
 
 const AccessDeniedView = ({
   address,
   isLoadingRefresh,
   onRefresh,
 }: {
-  address: string
-  isLoadingRefresh: boolean
-  onRefresh: () => void
+  address: string;
+  isLoadingRefresh: boolean;
+  onRefresh: () => void;
 }) => {
   const copyAddress = () => {
-    navigator.clipboard.writeText(address)
-    notification.success("Wallet address copied!")
-  }
+    navigator.clipboard.writeText(address);
+    notification.success("Wallet address copied!");
+  };
 
   return (
     <div className="max-w-md w-full p-8 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
@@ -69,7 +69,7 @@ const AccessDeniedView = ({
           <ShieldAlert className="w-8 h-8 text-red-500" />
         </div>
         <h3 className="text-2xl font-bold text-white">Access Denied</h3>
-        <p className="text-gray-400">The connected wallet doesn't have miner privileges to register minerals.</p>
+        <p className="text-gray-400">The connected wallet doesn&apos;t have miner privileges to register minerals.</p>
         <div className="flex items-center gap-2 p-2 px-4 mt-2 border border-gray-700 rounded-lg bg-gray-900/50 w-full">
           <span className="font-mono text-sm text-gray-300 truncate">{address}</span>
           <button onClick={copyAddress} className="p-1 rounded-md hover:bg-gray-700 text-gray-400">
@@ -132,7 +132,7 @@ const AccessDeniedView = ({
               <div>
                 <p>Refresh this page after approval</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  If access isn't granted immediately, wait a few minutes then refresh
+                  If access isn&apos;t granted immediately, wait a few minutes then refresh
                 </p>
               </div>
             </li>
@@ -159,24 +159,24 @@ const AccessDeniedView = ({
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default function MineralRegistrationPage() {
-  const { address, isConnected, isConnecting } = useAccount()
-  const [quantity, setQuantity] = useState(0)
-  const [purity, setPurity] = useState(0)
-  const [portalOpen, setPortalOpen] = useState(false)
-  const [mineralName, setMineralName] = useState("")
-  const [mineralType, setMineralType] = useState("")
-  const [origin, setOrigin] = useState("")
+  const { address, isConnected, isConnecting } = useAccount();
+  const [quantity, setQuantity] = useState(0);
+  const [purity, setPurity] = useState(0);
+  const [portalOpen, setPortalOpen] = useState(false);
+  const [mineralName, setMineralName] = useState("");
+  const [mineralType, setMineralType] = useState("");
+  const [origin, setOrigin] = useState("");
   const [selectedCondition, setSelectedCondition] = useState({
     temperature: "In Celsius",
     storage: "Select Type",
     humidity: "Select Type",
-  })
-  const [isRefreshingAccess, setIsRefreshingAccess] = useState(false)
-  const [isTransactionPending, setIsTransactionPending] = useState(false)
+  });
+  const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
+  const [isTransactionPending, setIsTransactionPending] = useState(false);
 
   // Check if user has miner role
   const {
@@ -188,9 +188,9 @@ export default function MineralRegistrationPage() {
     functionName: "hasMinerRole",
     args: [address],
     enabled: isConnected,
-  })
+  });
 
-  const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`
+  const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`;
 
   const validateForm = useCallback(() => {
     return (
@@ -204,83 +204,83 @@ export default function MineralRegistrationPage() {
       quantity > 0 &&
       purity > 80 &&
       purity <= 100
-    )
-  }, [isConnected, hasMinerRole, mineralName, mineralType, origin, selectedCondition, quantity, purity])
+    );
+  }, [isConnected, hasMinerRole, mineralName, mineralType, origin, selectedCondition, quantity, purity]);
 
-  const { writeContractAsync } = useScaffoldWriteContract("RolesManager")
+  const { writeContractAsync } = useScaffoldWriteContract("RolesManager");
 
   const resetForm = () => {
-    setMineralName("")
-    setMineralType("")
-    setOrigin("")
-    setQuantity(0)
-    setPurity(0)
+    setMineralName("");
+    setMineralType("");
+    setOrigin("");
+    setQuantity(0);
+    setPurity(0);
     setSelectedCondition({
       temperature: "In Celsius",
       storage: "Select Type",
       humidity: "Select Type",
-    })
-  }
+    });
+  };
 
   const handleRefreshAccess = async () => {
-    setIsRefreshingAccess(true)
+    setIsRefreshingAccess(true);
     try {
-      await refetchRoleCheck()
+      await refetchRoleCheck();
     } catch (e) {
-      console.error("Error refreshing access:", e)
+      console.error("Error refreshing access:", e);
     } finally {
-      setIsRefreshingAccess(false)
+      setIsRefreshingAccess(false);
     }
-  }
+  };
 
   const handleQuantityChange = (value: number) => {
-    setQuantity(Math.max(0, value))
-  }
+    setQuantity(Math.max(0, value));
+  };
 
   const handlePurityChange = (value: number) => {
-    setPurity(Math.max(0, Math.min(100, value)))
-  }
+    setPurity(Math.max(0, Math.min(100, value)));
+  };
 
   const handleRegister = async () => {
-    if (!isConnected || !hasMinerRole || !validateForm()) return
+    if (!isConnected || !hasMinerRole || !validateForm()) return;
 
-    setIsTransactionPending(true)
+    setIsTransactionPending(true);
     try {
       const tx = await writeContractAsync({
         functionName: "registerMineral",
         args: [mineralName, mineralType, BigInt(quantity), origin, BigInt(purity), storageConditions],
-      })
+      });
 
-      notification.info("Transaction submitted. Waiting for confirmation...")
-      console.log("Transaction submitted:", tx)
+      notification.info("Transaction submitted. Waiting for confirmation...");
+      console.log("Transaction submitted:", tx);
 
-      notification.success("Mineral registered successfully!")
-      resetForm()
+      notification.success("Mineral registered successfully!");
+      resetForm();
     } catch (err: any) {
-      console.error("Transaction error:", err)
+      console.error("Transaction error:", err);
 
       if (err.message.includes("User rejected the request")) {
-        notification.error("Transaction rejected by user")
+        notification.error("Transaction rejected by user");
       } else if (err.message.includes("RolesManager__MineralPurityPercentageTooLowToRegister")) {
-        notification.error("Purity must be greater than 80%")
+        notification.error("Purity must be greater than 80%");
       } else if (err.message.includes("RolesManager__InvalidMineralWeight")) {
-        notification.error("Quantity must be greater than 0")
+        notification.error("Quantity must be greater than 0");
       } else if (err.message.includes("caller is missing role")) {
-        notification.error("No miner privileges")
+        notification.error("No miner privileges");
       } else {
-        notification.error("Transaction failed. See console for details.")
+        notification.error("Transaction failed. See console for details.");
       }
     } finally {
-      setIsTransactionPending(false)
+      setIsTransactionPending(false);
     }
-  }
+  };
 
   if (isConnected && isRoleLoading) {
-    return <FullPageLoader text="Checking miner permissions..." />
+    return <FullPageLoader text="Checking miner permissions..." />;
   }
 
   if (!isConnected) {
-    return <ConnectWalletView isLoading={isConnecting} />
+    return <ConnectWalletView isLoading={isConnecting} />;
   }
 
   if (isConnected && !hasMinerRole) {
@@ -292,7 +292,7 @@ export default function MineralRegistrationPage() {
           onRefresh={handleRefreshAccess}
         />
       </div>
-    )
+    );
   }
 
   return (
@@ -314,9 +314,9 @@ export default function MineralRegistrationPage() {
                   id="mineral-name"
                   type="text"
                   value={mineralName}
-                  onChange={(e) => setMineralName(e.target.value)}
+                  onChange={e => setMineralName(e.target.value)}
                   placeholder="Valid Mineral name"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
@@ -328,9 +328,9 @@ export default function MineralRegistrationPage() {
                   id="mineral-type"
                   type="text"
                   value={mineralType}
-                  onChange={(e) => setMineralType(e.target.value)}
+                  onChange={e => setMineralType(e.target.value)}
                   placeholder="Mineral type here"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                  className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
@@ -343,9 +343,9 @@ export default function MineralRegistrationPage() {
                     id="origin"
                     type="text"
                     value={origin}
-                    onChange={(e) => setOrigin(e.target.value)}
+                    onChange={e => setOrigin(e.target.value)}
                     placeholder="Enter Origin here"
-                    className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent pr-10"
+                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
                   />
                   <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
                 </div>
@@ -360,11 +360,11 @@ export default function MineralRegistrationPage() {
                     id="quantity"
                     type="number"
                     value={quantity}
-                    onChange={(e) => {
-                      const value = Number.parseFloat(e.target.value)
-                      handleQuantityChange(isNaN(value) ? 0 : value)
+                    onChange={e => {
+                      const value = Number.parseFloat(e.target.value);
+                      handleQuantityChange(isNaN(value) ? 0 : value);
                     }}
-                    className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                    className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     min="0"
                     step="0.1"
                   />
@@ -395,7 +395,7 @@ export default function MineralRegistrationPage() {
                       </span>
                     )}
                   </label>
-                  <span className={`text-sm font-medium ${purity <= 80 ? "text-red-400" : "text-emerald-400"}`}>
+                  <span className={`text-sm font-medium ${purity <= 80 ? "text-red-400" : "text-blue-400"}`}>
                     {purity}%
                   </span>
                 </div>
@@ -407,33 +407,26 @@ export default function MineralRegistrationPage() {
                     max="100"
                     step="1"
                     value={purity}
-                    onChange={(e) => handlePurityChange(Number.parseInt(e.target.value))}
-                    className="w-full h-2 rounded-lg appearance-none cursor-pointer bg-gray-700"
+                    onChange={e => handlePurityChange(Number.parseInt(e.target.value))}
+                    className={`w-full h-2 rounded-lg appearance-none cursor-pointer bg-white/5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                      ${purity <= 80 ? "slider-red" : "slider-blue"}`}
                     style={{
                       background: `linear-gradient(to right, ${
-                        purity <= 80 ? "#ef4444" : "#10b981"
-                      } 0%, ${purity <= 80 ? "#ef4444" : "#10b981"} ${purity}%, #374151 ${purity}%, #374151 100%)`,
+                        purity <= 80 ? "#ef4444" : "#3b82f6"
+                      } 0%, ${purity <= 80 ? "#ef4444" : "#3b82f6"} ${purity}%, #374151 ${purity}%, #374151 100%)`,
                     }}
                   />
                 </div>
                 <div className="flex justify-between items-center pt-1">
                   <button
                     onClick={() => handlePurityChange(purity - 1)}
-                    className="h-8 w-8 p-0 rounded-full bg-gray-700 hover:bg-gray-600 border border-gray-600 flex items-center justify-center text-white"
+                    className="h-8 w-8 p-0 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white"
                   >
                     <Minus size={12} />
                   </button>
-                  <div className="flex-1 mx-4">
-                    <div className="h-2 w-full bg-gray-700 rounded-full overflow-hidden">
-                      <div
-                        className={`h-full ${purity <= 80 ? "bg-red-500/70" : "bg-emerald-500/70"}`}
-                        style={{ width: `${purity}%` }}
-                      />
-                    </div>
-                  </div>
                   <button
                     onClick={() => handlePurityChange(purity + 1)}
-                    className="h-8 w-8 p-0 rounded-full bg-gray-700 hover:bg-gray-600 border border-gray-600 flex items-center justify-center text-white"
+                    className="h-8 w-8 p-0 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-white"
                   >
                     <Plus size={12} />
                   </button>
@@ -465,8 +458,8 @@ export default function MineralRegistrationPage() {
               disabled={isTransactionPending || !validateForm()}
               className={`w-full h-12 rounded-lg font-medium text-white ${
                 validateForm() && !isTransactionPending
-                  ? "bg-emerald-600 hover:bg-emerald-700"
-                  : "bg-gray-700 cursor-not-allowed"
+                  ? "bg-blue-600 hover:bg-blue-700"
+                  : "bg-white/5 cursor-not-allowed"
               } transition-colors duration-200`}
             >
               {isTransactionPending ? (
@@ -493,7 +486,7 @@ export default function MineralRegistrationPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`h-6 w-6 rounded-full flex items-center justify-center ${
-                      mineralName.trim() ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                      mineralName.trim() ? "bg-green-900/50 text-green-400" : "bg-white/5 text-gray-500"
                     }`}
                   >
                     {mineralName.trim() ? <Check size={14} /> : <Minus size={14} />}
@@ -503,7 +496,7 @@ export default function MineralRegistrationPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`h-6 w-6 rounded-full flex items-center justify-center ${
-                      mineralType.trim() ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                      mineralType.trim() ? "bg-green-900/50 text-green-400" : "bg-white/5 text-gray-500"
                     }`}
                   >
                     {mineralType.trim() ? <Check size={14} /> : <Minus size={14} />}
@@ -513,7 +506,7 @@ export default function MineralRegistrationPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`h-6 w-6 rounded-full flex items-center justify-center ${
-                      origin.trim() ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                      origin.trim() ? "bg-green-900/50 text-green-400" : "bg-white/5 text-gray-500"
                     }`}
                   >
                     {origin.trim() ? <Check size={14} /> : <Minus size={14} />}
@@ -523,7 +516,7 @@ export default function MineralRegistrationPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`h-6 w-6 rounded-full flex items-center justify-center ${
-                      quantity > 0 ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                      quantity > 0 ? "bg-green-900/50 text-green-400" : "bg-white/5 text-gray-500"
                     }`}
                   >
                     {quantity > 0 ? <Check size={14} /> : <Minus size={14} />}
@@ -533,7 +526,7 @@ export default function MineralRegistrationPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`h-6 w-6 rounded-full flex items-center justify-center ${
-                      purity > 80 && purity <= 100 ? "bg-emerald-900/50 text-emerald-400" : "bg-gray-700 text-gray-500"
+                      purity > 80 && purity <= 100 ? "bg-green-900/50 text-green-400" : "bg-white/5 text-gray-500"
                     }`}
                   >
                     {purity > 80 && purity <= 100 ? <Check size={14} /> : <Minus size={14} />}
@@ -544,8 +537,8 @@ export default function MineralRegistrationPage() {
                   <div
                     className={`h-6 w-6 rounded-full flex items-center justify-center ${
                       selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type"
-                        ? "bg-emerald-900/50 text-emerald-400"
-                        : "bg-gray-700 text-gray-500"
+                        ? "bg-green-900/50 text-green-400"
+                        : "bg-white/5 text-gray-500"
                     }`}
                   >
                     {selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type" ? (
@@ -565,7 +558,7 @@ export default function MineralRegistrationPage() {
                 <div className="flex gap-3 text-sm bg-gray-700/50 p-4 rounded-lg">
                   <AlertCircle className="min-w-5 h-5 mt-0.5 text-amber-400" />
                   <p className="text-gray-300">
-                    Ensure the details entered are accurate. Modifications won't be allowed post registration.
+                    Ensure the details entered are accurate. Modifications won&apos;t be allowed post registration.
                   </p>
                 </div>
               </div>
@@ -575,8 +568,8 @@ export default function MineralRegistrationPage() {
       </div>
 
       {portalOpen && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="w-[450px] p-6 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center">
+          <div className="w-[450px] p-6 rounded-2xl bg-gray-900/95 border border-gray-800 shadow-2xl">
             <div className="mb-6">
               <h2 className="text-xl font-semibold text-white">Specify Storage Conditions</h2>
               <p className="text-gray-400 text-sm mt-1">Set the required storage parameters for this mineral</p>
@@ -590,8 +583,8 @@ export default function MineralRegistrationPage() {
                 <select
                   id="storage-type"
                   value={selectedCondition.storage}
-                  onChange={(e) => setSelectedCondition({ ...selectedCondition, storage: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 appearance-none"
+                  onChange={e => setSelectedCondition({ ...selectedCondition, storage: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                 >
                   <option value="Select Type">Select Type</option>
                   <option value="Dry Storage">Dry Storage</option>
@@ -608,8 +601,8 @@ export default function MineralRegistrationPage() {
                 <select
                   id="temperature"
                   value={selectedCondition.temperature}
-                  onChange={(e) => setSelectedCondition({ ...selectedCondition, temperature: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 appearance-none"
+                  onChange={e => setSelectedCondition({ ...selectedCondition, temperature: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                 >
                   <option value="In Celsius">In Celsius</option>
                   <option value="Below 0°C">Below 0°C</option>
@@ -626,8 +619,8 @@ export default function MineralRegistrationPage() {
                 <select
                   id="humidity"
                   value={selectedCondition.humidity}
-                  onChange={(e) => setSelectedCondition({ ...selectedCondition, humidity: e.target.value })}
-                  className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 appearance-none"
+                  onChange={e => setSelectedCondition({ ...selectedCondition, humidity: e.target.value })}
+                  className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none"
                 >
                   <option value="Select Type">Select Type</option>
                   <option value="Low (<30%)">Low (&lt;30%)</option>
@@ -640,21 +633,21 @@ export default function MineralRegistrationPage() {
             <div className="flex justify-between gap-3 mt-6">
               <button
                 onClick={() => setPortalOpen(false)}
-                className="px-4 py-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white border border-gray-600"
+                className="px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white border border-gray-700"
               >
                 Cancel
               </button>
               <button
                 onClick={() => {
                   if (selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type") {
-                    setPortalOpen(false)
+                    setPortalOpen(false);
                   }
                 }}
                 disabled={selectedCondition.storage === "Select Type" || selectedCondition.humidity === "Select Type"}
                 className={`px-4 py-2 rounded-lg text-white ${
                   selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type"
-                    ? "bg-emerald-600 hover:bg-emerald-700"
-                    : "bg-gray-700 cursor-not-allowed"
+                    ? "bg-blue-600 hover:bg-blue-700"
+                    : "bg-gray-800 cursor-not-allowed"
                 }`}
               >
                 Confirm
@@ -664,5 +657,5 @@ export default function MineralRegistrationPage() {
         </div>
       )}
     </div>
-  )
+  );
 }
