@@ -4,33 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import ConnectWalletButton from "./hero/ConnectWalletButton";
 
-// Decorative stone component (for reuse)
-// const DecorativeStone = ({
-//   src,
-//   alt,
-//   className,
-//   size = 220,
-//   glowColor = "#fff",
-// }: {
-//   src: string;
-//   alt: string;
-//   className?: string;
-//   size?: number;
-//   glowColor?: string;
-// }) => (
-//   <div
-//     className={`absolute z-10 pointer-events-none ${className} hidden sm:block`}
-//     style={{ width: size, height: size }}
-//   >
-//     {/* Glow */}
-//     <div
-//       className="absolute inset-0 rounded-full blur-3xl opacity-60"
-//       style={{ background: `radial-gradient(circle, ${glowColor} 0%, transparent 70%)` }}
-//     />
-//     <Image src={src} alt={alt} width={size} height={size} className="object-contain" draggable={false} priority />
-//   </div>
-// );
-
 const Hero: React.FC = () => {
   return (
     <section className="relative overflow-visible bg-[#060910] pt-16 pb-8 sm:pb-16 min-h-[80vh] flex flex-col justify-center items-center">

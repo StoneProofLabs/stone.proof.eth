@@ -1,35 +1,58 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 import { MoreVertical, Search } from "lucide-react";
 
-// Note: In a real implementation, you would need to:
-// 1. Install and import a maps library like react-leaflet or react-google-maps
-// 2. Set up proper API keys
-// This is a visual mockup that demonstrates the UI functionality
+declare global {
+  interface Window {
+    google: typeof google;
+  }
+}
 
 export default function LocationMap() {
   const [searchTerm, setSearchTerm] = useState("");
   const [locationEnabled, setLocationEnabled] = useState(false);
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [userPosition, setUserPosition] = useState<google.maps.LatLngLiteral | null>(null);
 
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "";
+
+  // Handle geolocation
   useEffect(() => {
-    // Simulate map loading
-    const timer = setTimeout(() => {
-      setIsMapLoaded(true);
-    }, 500);
+    if (!locationEnabled) return;
 
-    return () => clearTimeout(timer);
-  }, []);
+    const successCallback = (position: GeolocationPosition) => {
+      const pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude,
+      };
+      setUserPosition(pos);
+    };
 
-  // Toggle location tracking
+    const errorCallback = (error: GeolocationPositionError) => {
+      console.error("Error getting location:", error);
+      setUserPosition(null);
+    };
+
+    const watchId = navigator.geolocation.watchPosition(successCallback, errorCallback, {
+      enableHighAccuracy: true,
+    });
+
+    return () => navigator.geolocation.clearWatch(watchId);
+  }, [locationEnabled]);
+
   const toggleLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
     setLocationEnabled(!locationEnabled);
   };
 
   return (
-    <div className=" text-white min-h-screen">
+    <div className="text-white min-h-screen flex flex-col">
       {/* Header */}
-      <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center">
+      <div className="p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-gray-900 z-10">
         <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-0">Find a location</h1>
         <div className="flex w-full sm:w-auto justify-between gap-2">
           <div className="relative flex-grow max-w-md">
@@ -49,10 +72,14 @@ export default function LocationMap() {
             <span className="text-sm whitespace-nowrap">Enable location</span>
             <button
               onClick={toggleLocation}
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 ${locationEnabled ? "bg-blue-600" : "bg-gray-700"}`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                locationEnabled ? "bg-blue-600" : "bg-gray-700"
+              }`}
             >
               <span
-                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${locationEnabled ? "translate-x-6" : "translate-x-1"}`}
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  locationEnabled ? "translate-x-6" : "translate-x-1"
+                }`}
               />
             </button>
 
@@ -63,9 +90,25 @@ export default function LocationMap() {
         </div>
       </div>
 
-      {/* Map Container */}
-      <div>
-        <Image src={"/map.svg"} height={400} width={800} alt="Maps svg" />
+      {/* Google Map */}
+      <div className="flex-1 relative">
+        {apiKey ? (
+          <APIProvider apiKey={apiKey}>
+            <Map
+              defaultCenter={userPosition || { lat: 0, lng: 0 }}
+              center={userPosition || undefined}
+              defaultZoom={userPosition ? 14 : 2}
+              zoom={userPosition ? 14 : undefined}
+              gestureHandling={"greedy"}
+              disableDefaultUI={true}
+              style={{ width: "100%", height: "calc(100vh - 100px)" }}
+            >
+              {userPosition && <Marker position={userPosition} />}
+            </Map>
+          </APIProvider>
+        ) : (
+          <div className="text-red-500 p-4">Google Maps API key is required</div>
+        )}
       </div>
     </div>
   );
