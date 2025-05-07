@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { ChevronDown, Minus, Plus } from "lucide-react";
 
@@ -15,70 +15,39 @@ interface FormData {
 }
 
 export default function InspectMinerals() {
-  // Dropdown states
-  const [mineralNameDropdownOpen, setMineralNameDropdownOpen] = useState(false);
-  const [mineralStatusDropdownOpen, setMineralStatusDropdownOpen] = useState(false);
-  const [conditionsDropdownOpen, setConditionsDropdownOpen] = useState(false);
+  // Form state for mineralId and report
+  const [form, setForm] = useState({ mineralId: "", report: "" });
+  const [errors, setErrors] = useState<{ mineralId?: string; report?: string }>({});
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  // Form state as a single object for easier backend integration
-  const [formData, setFormData] = useState<FormData>({
-    warehouseName: "Valid Mineral name",
-    mineralStatus: "Valid Mineral name",
-    mineralType: "Top Mineral",
-    inspectionReport: "",
-    quantity: 0,
-    conditions: [],
-  });
-
-  // Form submission state
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionMessage, setSubmissionMessage] = useState("");
-
-  // Handle form field changes
-  const handleFieldChange = (field: keyof FormData, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value,
-    }));
+  const validate = () => {
+    const newErrors: { mineralId?: string; report?: string } = {};
+    if (!form.mineralId.trim()) newErrors.mineralId = "Mineral ID is required.";
+    if (!form.report.trim()) newErrors.report = "Report is required.";
+    return newErrors;
   };
 
-  // Handle quantity changes with validation
-  const handleQuantityChange = (value: number) => {
-    const newValue = Math.max(0, value);
-    handleFieldChange("quantity", newValue);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    if (submitAttempted) setErrors(validate());
   };
 
-  // Handle condition toggle
-  const handleConditionToggle = (condition: string) => {
-    setFormData(prev => {
-      const exists = prev.conditions.includes(condition);
-      return {
-        ...prev,
-        conditions: exists ? prev.conditions.filter(c => c !== condition) : [...prev.conditions, condition],
-      };
-    });
-    setConditionsDropdownOpen(false);
-  };
-
-  // Handle form submission
-  const handleSubmit = async (action: "report" | "dispute") => {
-    setIsSubmitting(true);
-    setSubmissionMessage("");
-
-    try {
-      // Simulate API call - replace with your actual API integration
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      // Show success message based on action
-      setSubmissionMessage(action === "report" ? "Report submitted successfully!" : "Dispute raised successfully!");
-
-      // Reset form or redirect as needed
-      // For demo purposes, we're just showing a message
-    } catch (error) {
-      setSubmissionMessage("There was an error submitting the form. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitAttempted(true);
+    const validationErrors = validate();
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) return;
+    // Prepare data for backend submission
+    const submissionData = {
+      mineralId: form.mineralId.trim(),
+      report: form.report.trim(),
+    };
+    // In a real app, you would send this to your backend
+    console.log("Submitting inspection:", submissionData);
+    alert("Inspection report submitted successfully!");
+    setForm({ mineralId: "", report: "" });
+    setSubmitAttempted(false);
   };
 
   // Mock data for multiple mineral items
@@ -122,236 +91,55 @@ export default function InspectMinerals() {
   const availableConditions = ["Temperature Controlled", "Humidity Controlled", "High Security"];
 
   return (
-    <div className="min-h-screen text-white p-4 sm:p-6 md:p-8">
-      {/* Mineral Inspection Header */}
-      <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold mb-4">Mineral Inspection</h1>
-        <p className="text-gray-300 max-w-3xl mx-auto">
-          Reach out to us with any question or inquiry you have and we&apos;ll do our best to get back to you as soon as
-          possible.
+    <div className="min-h-screen flex items-center justify-center bg-[#18181b] p-4">
+      <div className="w-full max-w-lg bg-[#232326] rounded-2xl shadow-lg p-6 sm:p-10 border border-[#232326]">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center text-white mb-2">Inspect Mineral</h1>
+        <p className="text-sm text-gray-400 text-center mb-6">
+          Fill out the form below to submit your inspection report for a mineral.
         </p>
-      </div>
-
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Left Side - Pending Minerals - Now scrollable */}
-        <div className="w-full md:w-1/3">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-medium">Pending In Warehouse</h2>
-            <button className="flex items-center gap-2 bg-zinc-800 rounded-full px-4 py-2">
-              <span className="hidden sm:inline">Filter</span>
-              <span className="bg-[#0A77FF] text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                2
-              </span>
-            </button>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Mineral ID */}
+          <div>
+            <label htmlFor="mineralId" className="block text-base text-white mb-2">
+              Mineral ID <span className="text-red-500">*</span>
+            </label>
+            <input
+              id="mineralId"
+              name="mineralId"
+              type="text"
+              value={form.mineralId}
+              onChange={handleChange}
+              placeholder="Enter Mineral ID"
+              className={`w-full bg-[#252525] border ${errors.mineralId ? "border-red-500" : "border-[#323539]"} text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0A77FF] transition min-h-[48px]`}
+              autoComplete="off"
+            />
+            {errors.mineralId && <div className="text-red-500 text-xs mt-1">{errors.mineralId}</div>}
           </div>
-
-          {/* Scrollable container for mineral items */}
-          <div className="space-y-4 pr-1 max-h-[calc(100vh-150px)] overflow-y-auto">{mineralItems}</div>
-        </div>
-
-        {/* Right Side - Warehouse Form */}
-        <div className="w-full md:w-2/3 bg-zinc-900 rounded-lg p-6">
-          <form className="space-y-4" onSubmit={e => e.preventDefault()}>
-            {/* Warehouse Name and Mineral Status in a row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Warehouse Name */}
-              <div>
-                <label htmlFor="warehouseName" className="block text-sm font-medium mb-2">
-                  Warehouse Name
-                </label>
-                <div className="relative">
-                  <button
-                    type="button"
-                    id="warehouseName"
-                    onClick={() => setMineralNameDropdownOpen(!mineralNameDropdownOpen)}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-3 text-left flex items-center justify-between"
-                  >
-                    <span>{formData.warehouseName}</span>
-                    <ChevronDown size={18} />
-                  </button>
-                  {mineralNameDropdownOpen && (
-                    <div className="absolute z-10 mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-md shadow-lg">
-                      {["Valid Mineral name", "Another Mineral", "Third Option"].map(name => (
-                        <button
-                          type="button"
-                          key={name}
-                          className="block w-full text-left px-4 py-2 hover:bg-zinc-700"
-                          onClick={() => {
-                            handleFieldChange("warehouseName", name);
-                            setMineralNameDropdownOpen(false);
-                          }}
-                        >
-                          {name}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Mineral Status */}
-              <div>
-                <label htmlFor="mineralStatus" className="block text-sm font-medium mb-2">
-                  Mineral Status
-                </label>
-                <div className="relative">
-                  <button
-                    type="button"
-                    id="mineralStatus"
-                    onClick={() => setMineralStatusDropdownOpen(!mineralStatusDropdownOpen)}
-                    className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-3 text-left flex items-center justify-between"
-                  >
-                    <span>{formData.mineralStatus}</span>
-                    <ChevronDown size={18} />
-                  </button>
-                  {mineralStatusDropdownOpen && (
-                    <div className="absolute z-10 mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-md shadow-lg">
-                      {["Current status", "Verified", "Pending"].map(status => (
-                        <button
-                          type="button"
-                          key={status}
-                          className="block w-full text-left px-4 py-2 hover:bg-zinc-700"
-                          onClick={() => {
-                            handleFieldChange("mineralStatus", status);
-                            setMineralStatusDropdownOpen(false);
-                          }}
-                        >
-                          {status}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Type */}
-            <div>
-              <label htmlFor="mineralType" className="block text-sm font-medium mb-2">
-                Type
-              </label>
-              <button
-                type="button"
-                id="mineralType"
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-3 text-left text-gray-400"
-              >
-                {formData.mineralType}
-              </button>
-            </div>
-
-            {/* Inspection Report */}
-            <div>
-              <label htmlFor="inspectionReport" className="block text-sm font-medium mb-2">
-                Inspection Report
-              </label>
-              <textarea
-                id="inspectionReport"
-                placeholder="Enter Inspection Report"
-                value={formData.inspectionReport}
-                onChange={e => handleFieldChange("inspectionReport", e.target.value)}
-                className="w-full bg-zinc-800 border border-zinc-700 rounded-md px-4 py-3 text-white h-24 focus:outline-none focus:border-blue-500"
-              />
-            </div>
-
-            {/* Quantity */}
-            <div>
-              <label htmlFor="quantity" className="block text-sm font-medium mb-2">
-                Quantity
-              </label>
-              <div className="flex items-center bg-zinc-800 border border-zinc-700 rounded-md">
-                <input
-                  type="text"
-                  id="quantity"
-                  value={`${formData.quantity} KG`}
-                  readOnly
-                  className="flex-grow bg-transparent border-none px-4 py-3 focus:outline-none"
-                />
-                <div className="flex items-center px-3">
-                  <button
-                    type="button"
-                    onClick={() => handleQuantityChange(formData.quantity - 1)}
-                    className="w-6 h-6 flex items-center justify-center rounded-full border border-zinc-600 mr-2"
-                    aria-label="Decrease quantity"
-                  >
-                    <Minus size={12} />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleQuantityChange(formData.quantity + 1)}
-                    className="w-6 h-6 flex items-center justify-center rounded-full border border-zinc-600"
-                    aria-label="Increase quantity"
-                  >
-                    <Plus size={12} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Available Storing Conditions */}
-            <div>
-              <label htmlFor="conditions" className="block text-sm font-medium mb-2">
-                Available Storing Conditions
-              </label>
-              <div className="relative">
-                <div className="flex justify-between items-center">
-                  <div className="bg-zinc-800 border border-zinc-700 rounded-md px-4 py-3 w-full text-left">
-                    {formData.conditions.length > 0 ? formData.conditions.join(", ") : "No Conditions specified"}
-                  </div>
-                  <button
-                    type="button"
-                    id="conditions"
-                    onClick={() => setConditionsDropdownOpen(!conditionsDropdownOpen)}
-                    className="bg-zinc-800 border border-zinc-700 rounded-md p-3 ml-2 flex items-center"
-                  >
-                    View <ChevronDown size={16} className="ml-1" />
-                  </button>
-                </div>
-                {conditionsDropdownOpen && (
-                  <div className="absolute right-0 z-10 mt-1 w-60 bg-zinc-800 border border-zinc-700 rounded-md shadow-lg">
-                    {availableConditions.map(condition => (
-                      <div
-                        key={condition}
-                        className="flex items-center px-4 py-2 hover:bg-zinc-700 cursor-pointer"
-                        onClick={() => handleConditionToggle(condition)}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={formData.conditions.includes(condition)}
-                          readOnly
-                          className="mr-2"
-                        />
-                        <span>{condition}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="grid grid-cols-2 gap-4 pt-4">
-              <button
-                type="button"
-                disabled={isSubmitting}
-                onClick={() => handleSubmit("dispute")}
-                className="bg-red-500 hover:bg-red-600 disabled:bg-red-800 disabled:opacity-70 text-white font-medium py-3 rounded-lg flex justify-center items-center"
-              >
-                {isSubmitting ? "Processing..." : "Raise Dispute"}
-              </button>
-              <button
-                type="button"
-                disabled={isSubmitting}
-                onClick={() => handleSubmit("report")}
-                className="bg-[#0A77FF] hover:bg-blue-600 disabled:bg-blue-800 disabled:opacity-70 text-white font-medium py-3 rounded-lg flex justify-center items-center"
-              >
-                {isSubmitting ? "Processing..." : "Send Report"}
-              </button>
-            </div>
-
-            {/* Security Message */}
-            <div className="text-center text-sm text-gray-400 pt-2">Your Transaction is secure and safe</div>
-          </form>
-        </div>
+          {/* Report */}
+          <div>
+            <label htmlFor="report" className="block text-base text-white mb-2">
+              Report <span className="text-red-500">*</span>
+            </label>
+            <textarea
+              id="report"
+              name="report"
+              value={form.report}
+              onChange={handleChange}
+              placeholder="Enter Inspection Report"
+              className={`w-full bg-[#252525] border ${errors.report ? "border-red-500" : "border-[#323539]"} text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0A77FF] transition min-h-[100px] resize-none`}
+            />
+            {errors.report && <div className="text-red-500 text-xs mt-1">{errors.report}</div>}
+          </div>
+          {/* Action Button */}
+          <button
+            type="submit"
+            className={`w-full bg-[#0A77FF] hover:bg-blue-700 text-white font-medium py-3 rounded-xl transition-colors ${!form.mineralId.trim() || !form.report.trim() ? "opacity-50 cursor-not-allowed" : ""}`}
+            disabled={!form.mineralId.trim() || !form.report.trim()}
+          >
+            Send Inspection Report
+          </button>
+        </form>
+        <p className="text-gray-500 text-center mt-6">Your Transaction is secure and safe</p>
       </div>
     </div>
   );
