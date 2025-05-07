@@ -33,7 +33,7 @@ const FullPageLoader = ({ text = "Verifying miner access..." }: { text?: string 
   <div className="flex items-center justify-center min-h-screen bg-gray-900">
     <LoadingSpinner size={12} text={text} />
   </div>
-)
+);
 
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-4 bg-gray-900">
@@ -46,7 +46,7 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
     </div>
     {isLoading && <LoadingSpinner size={8} text="Connecting wallet..." />}
   </div>
-)
+);
 
 const AccessDeniedView = ({
   address,
@@ -60,7 +60,7 @@ const AccessDeniedView = ({
   const copyAddress = () => {
     navigator.clipboard.writeText(address)
     notification.success("Wallet address copied!")
-  }
+  };
 
   return (
     <div className="max-w-md w-full p-8 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
@@ -174,7 +174,7 @@ export default function MineralRegistrationPage() {
     temperature: "In Celsius",
     storage: "Select Type",
     humidity: "Select Type",
-  })
+  });
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false)
   const [isTransactionPending, setIsTransactionPending] = useState(false)
 
@@ -188,7 +188,7 @@ export default function MineralRegistrationPage() {
     functionName: "hasMinerRole",
     args: [address],
     enabled: isConnected,
-  })
+  });
 
   const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`
 
@@ -210,41 +210,41 @@ export default function MineralRegistrationPage() {
   const { writeContractAsync } = useScaffoldWriteContract("RolesManager")
 
   const resetForm = () => {
-    setMineralName("")
-    setMineralType("")
-    setOrigin("")
-    setQuantity(0)
-    setPurity(0)
+    setMineralName("");
+    setMineralType("");
+    setOrigin("");
+    setQuantity(0);
+    setPurity(0);
     setSelectedCondition({
       temperature: "In Celsius",
       storage: "Select Type",
       humidity: "Select Type",
-    })
-  }
+    });
+  };
 
   const handleRefreshAccess = async () => {
-    setIsRefreshingAccess(true)
+    setIsRefreshingAccess(true);
     try {
-      await refetchRoleCheck()
+      await refetchRoleCheck();
     } catch (e) {
-      console.error("Error refreshing access:", e)
+      console.error("Error refreshing access:", e);
     } finally {
-      setIsRefreshingAccess(false)
+      setIsRefreshingAccess(false);
     }
-  }
+  };
 
   const handleQuantityChange = (value: number) => {
-    setQuantity(Math.max(0, value))
-  }
+    setQuantity(Math.max(0, value));
+  };
 
   const handlePurityChange = (value: number) => {
-    setPurity(Math.max(0, Math.min(100, value)))
-  }
+    setPurity(Math.max(0, Math.min(100, value)));
+  };
 
   const handleRegister = async () => {
     if (!isConnected || !hasMinerRole || !validateForm()) return
 
-    setIsTransactionPending(true)
+    setIsTransactionPending(true);
     try {
       const tx = await writeContractAsync({
         functionName: "registerMineral",
