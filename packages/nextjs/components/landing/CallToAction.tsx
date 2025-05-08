@@ -26,7 +26,7 @@ const CallToAction = () => {
           <img
             src="/landing/mockup.svg" // User to provide
             alt="Dashboard mockup"
-            className="w-full max-w-5xl  object-contain"
+            className="w-full max-w-5xl select-none pointer-events-none  object-contain"
             style={{ marginTop: "-30px" }}
           />
         </div>
