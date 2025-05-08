@@ -104,10 +104,10 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
         uint256 amount
     ) public payable restrictedToRole(BUYER_ROLE) {
         StoredMineral storage mineral = warehouse[_mineralId];
-        require(mineral.isStored, "Mineral not found");
+        // require(mineral.isStored, "Mineral not found");
         require(!mineral.isSold, "Already sold");
-        require(mineral.isForSale, "Not for sale");
-        require(mineral.isMarketReady, "Not market ready");
+        // require(mineral.isForSale, "Not for sale");
+        // require(mineral.isMarketReady, "Not market ready");
 
         if (method == PaymentMethod.ETH) {
             require(msg.value == mineral.saleInfo.priceETH, "Incorrect ETH amount");
