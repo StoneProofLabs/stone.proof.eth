@@ -11,9 +11,8 @@ import { RolesManager } from "../core/RolesManager.sol";
 import { MineralRegistry } from "../modules/MineralRegistry.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
-import { Errors } from "../utils/Errors.sol";
 
-contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
+contract MineralWarehouse is RolesManager, MineralRegistry {
 
 
     RolesManager private rolesManager;
@@ -147,7 +146,7 @@ contract MineralWarehouse is Errors, RolesManager, MineralRegistry {
       /**
     * @dev Allows buyers to purchase minerals with ETH or an accepted ERC-20 token
     */
-    function purhase_mineral(string memory _mineralId, PaymentMethod method, address token) public payable  restrictedToRole(BUYER_ROLE) {
+    function purchase_mineral(string memory _mineralId, PaymentMethod method, address token) public payable  restrictedToRole(BUYER_ROLE) {
         StoredMineral storage mineral = warehouse[_mineralId];
         address seller = mineral.refiner;
         // address buyer = mineral.buyer;

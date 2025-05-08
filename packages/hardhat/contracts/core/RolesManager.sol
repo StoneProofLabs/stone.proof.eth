@@ -40,7 +40,7 @@ contract RolesManager is AccessControl, Errors {
         address indexed miner,
         uint256 registeredAt
     );
-    event MineralRefined(string mineralId, address indexed refiner, uint256 refinedAt);
+    event MineralRefined(string mineralId, string refineryReport, address indexed refiner, uint256 refinedAt);
     event MineralTransported(
         string mineralId,
         address indexed transporter,
@@ -277,19 +277,19 @@ contract RolesManager is AccessControl, Errors {
      * @param mineralId The ID of the mineral under refinery
      * @notice Emits MineralRefined event on successfl refining process
      */
-    function refineMineral(string memory mineralId) public restrictedToRole(REFINER_ROLE) {
-        if (
-            keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
-            bytes(mineralId).length == 0
-        ) {
-            revert RolesManager__InvalidMineralIdOrNotFound();
-        }
+    function refineMineral(string memory mineralId, string memory report) public restrictedToRole(REFINER_ROLE) {
+        // if (
+        //     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        //     bytes(mineralId).length == 0
+        // ) {
+        //     revert RolesManager__InvalidMineralIdOrNotFound();
+        // }
 
         if (mineralDetails[mineralId].isRefined == true) revert RolesManager__MineralAlreadyRefined(mineralId);
 
         mineralDetails[mineralId].isRefined = true;
 
-        emit MineralRefined(mineralId, msg.sender, block.timestamp);
+        emit MineralRefined(mineralId, report,msg.sender, block.timestamp);
     }
 
     /*////////////////////////////////////////////////
@@ -310,12 +310,12 @@ contract RolesManager is AccessControl, Errors {
         string memory _origin,
         string memory _destination
     ) public virtual restrictedToRole(TRANSPORTER_ROLE) {
-        if (
-            keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
-            bytes(mineralId).length == 0
-        ) {
-            revert RolesManager__InvalidMineralIdOrNotFound();
-        }
+        // if (
+        //     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        //     bytes(mineralId).length == 0
+        // ) {
+        //     revert RolesManager__InvalidMineralIdOrNotFound();
+        // }
 
         if (_receivingParty == address(0)) revert RolesManager__InvalidReceivingPartyAddress();
 
@@ -348,12 +348,12 @@ contract RolesManager is AccessControl, Errors {
      * @dev Logs audit report on every successful inspection
      */
     function inspectMineral(string memory mineralId, string memory report) public restrictedToRole(INSPECTOR_ROLE) {
-        if (
-            keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
-            bytes(mineralId).length == 0
-        ) {
-            revert RolesManager__InvalidMineralIdOrNotFound();
-        }
+        // if (
+        //     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        //     bytes(mineralId).length == 0
+        // ) {
+        //     revert RolesManager__InvalidMineralIdOrNotFound();
+        // }
 
         if (mineralDetails[mineralId].isInspected == true) revert RolesManager__MineralAlreadyInspected(mineralId);
 
@@ -381,12 +381,12 @@ contract RolesManager is AccessControl, Errors {
         string memory mineralId,
         string memory report
     ) public /*virtual*/ restrictedToRole(AUDITOR_ROLE) {
-        if (
-            keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
-            bytes(mineralId).length == 0
-        ) {
-            revert RolesManager__InvalidMineralIdOrNotFound();
-        }
+        // if (
+        //     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        //     bytes(mineralId).length == 0
+        // ) {
+        //     revert RolesManager__InvalidMineralIdOrNotFound();
+        // }
 
         if (mineralDetails[mineralId].isAudited == true) revert RolesManager__MineralAlreadyAudited(mineralId);
 
@@ -405,12 +405,12 @@ contract RolesManager is AccessControl, Errors {
      * @notice Emits MineralPurchased event on successful purchase
      */
     function purchaseMineral(string memory mineralId) public restrictedToRole(BUYER_ROLE) {
-        if (
-            keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
-            bytes(mineralId).length == 0
-        ) {
-            revert RolesManager__InvalidMineralIdOrNotFound();
-        }
+        // if (
+        //     keccak256(bytes(mineralDetails[mineralId].id)) != keccak256(bytes(mineralId)) ||
+        //     bytes(mineralId).length == 0
+        // ) {
+        //     revert RolesManager__InvalidMineralIdOrNotFound();
+        // }
 
         if (mineralDetails[mineralId].isPurchased == true) revert RolesManager__MineralAlreadyPurchased(mineralId);
 

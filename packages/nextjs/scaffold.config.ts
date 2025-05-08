@@ -1,4 +1,5 @@
 import RolesManager from "../hardhat/artifacts/contracts/core/RolesManager.sol/RolesManager.json";
+import MineralWarehouse from "../hardhat/artifacts/contracts/modules/MineralWarehouse.sol/MineralWarehouse.json";
 import * as chains from "viem/chains";
 
 export type ScaffoldConfig = {
@@ -9,6 +10,10 @@ export type ScaffoldConfig = {
   onlyLocalBurnerWallet: boolean;
   contracts: {
     RolesManager: {
+      address: string;
+      abi: any;
+    };
+    MineralWarehouse: {
       address: string;
       abi: any;
     };
@@ -66,6 +71,10 @@ const scaffoldConfig = {
     RolesManager: {
       address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       abi: RolesManager.abi,
+    },
+    MineralWarehouse: {
+      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+      abi: MineralWarehouse.abi,
     },
   },
 } as const satisfies ScaffoldConfig;

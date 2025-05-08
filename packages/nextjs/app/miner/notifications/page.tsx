@@ -289,7 +289,7 @@ export default function NotificationsPage() {
               </button>
 
               <Link
-                href={"/miner/registerMineral"}
+                href={"/miner/minerals/registerMineral"}
                 className="flex-1 md:flex-none bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center md:justify-start"
               >
                 <h1 className="translate-y-[4px]">Register Mineral</h1>

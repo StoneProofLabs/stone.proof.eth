@@ -101,6 +101,24 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
   });
   await logGasUsed("SupplychainValidator", supplychainValidator);
 
+  console.log("Deploying MineralWarehouse...");
+  const mineralWarehouse = await deploy("MineralWarehouse", {
+    from: deployer,
+    args: [
+      rolesManager.address,
+      mineralRegistry.address,
+      // privacyGuard.address,
+      // tokenization.address,
+      // transactionLog.address,
+      // /*mineralTransporter.address,*/
+      // disputeResolution.address,
+    ],
+    log: true,
+    autoMine: true,
+    gasLimit: 8000000,
+  });
+  await logGasUsed("MineralWarehouse", mineralWarehouse);
+
   console.log("🚀 Deployment complete!");
 };
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+                                                                                                                                                                              import { useState, useCallback, useEffect } from "react";
 import {
   AlertCircle,
   Check,
@@ -17,7 +17,7 @@ import {
   ShieldAlert,
   Thermometer,
 } from "lucide-react";
-import { useAccount } from "wagmi";
+import { useAccount, useWaitForTransactionReceipt } from "wagmi";
 import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
@@ -53,14 +53,14 @@ const AccessDeniedView = ({
   isLoadingRefresh,
   onRefresh,
 }: {
-  address: string
-  isLoadingRefresh: boolean
-  onRefresh: () => void
+  address: string;
+  isLoadingRefresh: boolean;
+  onRefresh: () => void;
 }) => {
   const copyAddress = () => {
-    navigator.clipboard.writeText(address)
-    notification.success("Wallet address copied!")
-  }
+    navigator.clipboard.writeText(address);
+    notification.success("Wallet address copied!");
+  };
 
   return (
     <div className="max-w-md w-full p-8 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
@@ -159,8 +159,8 @@ const AccessDeniedView = ({
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default function MineralRegistrationPage() {
   const { address, isConnected, isConnecting } = useAccount();
@@ -177,6 +177,7 @@ export default function MineralRegistrationPage() {
   });
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
   const [isTransactionPending, setIsTransactionPending] = useState(false);
+  const [txHash, setTxHash] = useState<`0x${string}` | undefined>();
 
   // Check if user has miner role
   const {
@@ -188,6 +189,11 @@ export default function MineralRegistrationPage() {
     functionName: "hasMinerRole",
     args: [address],
     enabled: isConnected,
+  });
+
+  // Wait for transaction receipt to get the event
+  const { data: receipt } = useWaitForTransactionReceipt({
+    hash: txHash,
   });
 
   const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`;
@@ -204,7 +210,7 @@ export default function MineralRegistrationPage() {
       quantity > 0 &&
       purity > 80 &&
       purity <= 100
-    )
+    );
   }, [isConnected, hasMinerRole, mineralName, mineralType, origin, selectedCondition, quantity, purity]);
 
   const { writeContractAsync } = useScaffoldWriteContract("RolesManager");
@@ -220,6 +226,47 @@ export default function MineralRegistrationPage() {
       storage: "Select Type",
       humidity: "Select Type",
     });
+  };
+
+  // Watch for receipt and extract MineralRegistered event
+  useEffect(() => {
+    if (receipt) {
+      // Find the MineralRegistered event log
+      const mineralRegisteredEvent = receipt.logs?.find(log => 
+        log.topics[0] === "0x9d9af8e38d66c62e2c12f0225249fd9d721c54b83f48d935e334ee611aab5a5e" // Event signature
+      );
+      
+      if (mineralRegisteredEvent) {
+        // Decode the event data to get mineralId (first parameter in event)
+        const mineralIdHex = mineralRegisteredEvent.data.slice(0, 66); // Get first 32 bytes (64 chars + 0x)
+        const mineralId = hexToString(mineralIdHex);
+        
+        console.log("Mineral Registered with ID:", mineralId);
+        notification.success(
+          `Mineral Registered Successfully!`,
+          {
+            icon: "🎉",
+            description: `Mineral ID: ${mineralId}`,
+            duration: 10000
+          }
+        );
+      }
+    }
+  }, [receipt]);
+
+  // Helper function to convert hex to string
+  const hexToString = (hex: string) => {
+    try {
+      let str = "";
+      for (let i = 2; i < hex.length; i += 2) {
+        const byte = parseInt(hex.substr(i, 2), 16);
+        if (byte) str += String.fromCharCode(byte);
+      }
+      return str;
+    } catch (e) {
+      console.error("Error decoding hex:", e);
+      return hex; // Return raw hex if decoding fails
+    }
   };
 
   const handleRefreshAccess = async () => {
@@ -253,25 +300,8 @@ export default function MineralRegistrationPage() {
         args: [mineralName, mineralType, BigInt(quantity), origin, BigInt(purity), storageConditions],
       });
 
+      setTxHash(tx);
       notification.info("Transaction submitted. Waiting for confirmation...");
-      console.log("Transaction submitted:", tx);
-
-      // Wait for transaction receipt to get the mineral ID
-      const receipt = await tx.wait();
-      console.log("Transaction receipt:", receipt);
-
-      // Parse the MineralRegistered event to get the mineral ID
-      const mineralRegisteredEvent = receipt.events?.find((e: any) => e.event === "MineralRegistered");
-      if (mineralRegisteredEvent) {
-        const mineralId = mineralRegisteredEvent.args.mineralId;
-        console.log("Successfully registered mineral with ID:", mineralId);
-        notification.success(`Mineral registered successfully! ID: ${mineralId}`);
-      } else {
-        console.log("Could not find MineralRegistered event in receipt");
-        notification.success("Mineral registered successfully!");
-      }
-
-      resetForm();
     } catch (err: any) {
       console.error("Transaction error:", err);
 
@@ -312,7 +342,7 @@ export default function MineralRegistrationPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-6  text-white">
+    <div className="min-h-screen flex flex-col items-center p-6 text-white">
       <div className="w-full max-w-4xl">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-3">Register Mineral</h1>
@@ -320,7 +350,7 @@ export default function MineralRegistrationPage() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 p-6 rounded-xl  border border-gray-700 shadow-lg">
+          <div className="flex-1 p-6 rounded-xl border border-gray-700 shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label htmlFor="mineral-name" className="block text-sm font-medium text-gray-300">
@@ -377,8 +407,8 @@ export default function MineralRegistrationPage() {
                     type="number"
                     value={quantity}
                     onChange={(e) => {
-                      const value = Number.parseFloat(e.target.value)
-                      handleQuantityChange(isNaN(value) ? 0 : value)
+                      const value = Number.parseFloat(e.target.value);
+                      handleQuantityChange(isNaN(value) ? 0 : value);
                     }}
                     className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                     min="0"
@@ -503,7 +533,7 @@ export default function MineralRegistrationPage() {
           </div>
 
           <div className="lg:w-80">
-            <div className="p-6 rounded-xl  border border-gray-700 shadow-lg h-full">
+            <div className="p-6 rounded-xl border border-gray-700 shadow-lg h-full">
               <h2 className="text-lg font-medium mb-6 text-white">Validation Status</h2>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
@@ -663,7 +693,7 @@ export default function MineralRegistrationPage() {
               <button
                 onClick={() => {
                   if (selectedCondition.storage !== "Select Type" && selectedCondition.humidity !== "Select Type") {
-                    setPortalOpen(false)
+                    setPortalOpen(false);
                   }
                 }}
                 disabled={selectedCondition.storage === "Select Type" || selectedCondition.humidity === "Select Type"}

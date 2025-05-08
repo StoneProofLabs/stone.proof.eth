@@ -65,7 +65,19 @@ export default function BuyMineralPage() {
   });
 
   const paymentMethod = watch("paymentMethod");
-  const { writeContractAsync } = useScaffoldWriteContract("Marketplace");
+  const { writeContractAsync } = useScaffoldWriteContract("MineralWarehouse");
+
+  const parseTokenAmount = (amount: string): bigint => {
+    try {
+      // Convert decimal string to integer in wei units
+      const decimalAmount = parseFloat(amount);
+      const weiAmount = decimalAmount * 10 ** 18;
+      return BigInt(Math.floor(weiAmount));
+    } catch (error) {
+      console.error("Error parsing token amount:", error);
+      return BigInt(0);
+    }
+  };
 
   const onSubmit = async (data: BuyMineralFormData) => {
     if (!isConnected) return;
@@ -74,13 +86,16 @@ export default function BuyMineralPage() {
     try {
       notification.info("Preparing transaction...");
 
+      const amountInWei = parseTokenAmount(data.tokenAmount);
+
       await writeContractAsync({
-        functionName: "buyMineral",
+        functionName: "purchase_mineral",
         args: [
           data.mineralId,
           data.paymentMethod,
-          BigInt(Math.floor(parseFloat(data.tokenAmount) * 10 ** 18)), // Convert to wei
+          amountInWei
         ],
+        value: data.paymentMethod === "eth" ? amountInWei : undefined,
       });
 
       notification.success("Mineral purchased successfully!");

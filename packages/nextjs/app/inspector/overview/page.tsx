@@ -40,7 +40,7 @@ export default function Page() {
           </button>
 
           <Link
-            href={"/inspector/inspector"}
+            href={"/inspector/inspection"}
             className="w-full sm:w-auto bg-accentBlue gap-2 font-semibold px-4 py-1.5 rounded-[8px] flex items-center justify-center"
           >
             <h1 className="translate-y-[4px]">Inspect Mineral</h1>
