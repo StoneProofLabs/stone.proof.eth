@@ -8454,7 +8454,7 @@ const deployedContracts = {
       },
     },
     MineralWarehouse: {
-      address: "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+      address: "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
       abi: [
         {
           inputs: [
@@ -9690,7 +9690,7 @@ const deployedContracts = {
               type: "uint256",
             },
           ],
-          name: "MineralSold__Purchase",
+          name: "MineralSold",
           type: "event",
         },
         {
@@ -10617,70 +10617,6 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "string",
-              name: "_mineralId",
-              type: "string",
-            },
-          ],
-          name: "get_stored_mineral_by_Id",
-          outputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-            {
-              internalType: "bool",
-              name: "",
-              type: "bool",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
               internalType: "bytes32",
               name: "role",
               type: "bytes32",
@@ -11146,6 +11082,11 @@ const deployedContracts = {
               name: "token",
               type: "address",
             },
+            {
+              internalType: "uint256",
+              name: "amount",
+              type: "uint256",
+            },
           ],
           name: "purchase_mineral",
           outputs: [],
@@ -11419,30 +11360,6 @@ const deployedContracts = {
               internalType: "bool",
               name: "",
               type: "bool",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "string",
-              name: "",
-              type: "string",
-            },
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "tokenPrices",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
             },
           ],
           stateMutability: "view",
