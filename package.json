@@ -77,6 +77,8 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
+    "@mantine/core": "^8.0.0",
+    "@mantine/hooks": "^8.0.0",
     "@openzeppelin/contracts": "^5.2.0",
     "@radix-ui/react-progress": "^1.1.6",
     "@reown/appkit": "^1.7.3",
