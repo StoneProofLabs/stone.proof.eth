@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loading } from "../../components/ui/loading";
 import { toast } from "../lib/toast";
 import { FiArrowLeft } from "react-icons/fi";
 
@@ -25,6 +26,7 @@ const Page = () => {
   const router = useRouter();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -96,7 +98,7 @@ const Page = () => {
       toast.error("Missing credentials for logout.");
       return;
     }
-    const loadingToast = toast.loading("Logging out...");
+    setIsLoggingOut(true);
     try {
       const response = await fetch("/api/auth/logout", {
         method: "POST",
@@ -104,7 +106,6 @@ const Page = () => {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      toast.dismiss(loadingToast);
       if (response.ok) {
         toast.success("Successfully logged out!");
         localStorage.removeItem("email");
@@ -115,17 +116,36 @@ const Page = () => {
         }, 1500);
       } else {
         toast.error(data.message || "Logout failed.");
+        setIsLoggingOut(false);
       }
     } catch (err) {
-      toast.dismiss(loadingToast);
       toast.error("An error occurred during logout.");
+      setIsLoggingOut(false);
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#060910] flex items-center justify-center">
-        <div className="text-xl text-white">Loading...</div>
+      <div className="min-h-screen bg-[#060910]">
+        <Loading
+          title="Loading Profile"
+          description="Please wait while we fetch your profile information..."
+          progressValue={75}
+          progressText="Almost there..."
+        />
+      </div>
+    );
+  }
+
+  if (isLoggingOut) {
+    return (
+      <div className="min-h-screen bg-[#060910]">
+        <Loading
+          title="Logging Out"
+          description="Please wait while we securely log you out..."
+          progressValue={85}
+          progressText="Clearing your session..."
+        />
       </div>
     );
   }
@@ -133,7 +153,6 @@ const Page = () => {
   return (
     <div className="min-h-screen bg-[#060910]">
       {/* Back Button */}
-    
 
       <div className="max-w-4xl mx-auto p-6 pt-20">
         <div className="bg-[#181c27] rounded-xl border border-[#23272F] p-6">
