@@ -217,9 +217,10 @@ export default function LoginPage() {
                 <button
                   type="button"
                   className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#2B2D2F] text-white font-semibold hover:bg-[#23272F] transition-colors"
+                  onClick={() => (window.location.href = "https://stoneproofbackend.onrender.com/api/v1/auth/google")}
                 >
                   <img src="/auth/google.svg" alt="Google" className="w-6 h-6 pointer-events-none select-none" /> Sign
-                  up with Google
+                  in with Google
                 </button>
                 <button
                   type="button"

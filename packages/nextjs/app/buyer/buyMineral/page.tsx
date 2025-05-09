@@ -1,13 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { AlertCircle, Check, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useAccount, useBalance } from "wagmi";
 import { z } from "zod";
-import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+
+import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+
 import { notification } from "~~/utils/scaffold-eth";
 
 // Token list for Sepolia testnet
@@ -16,20 +19,26 @@ const ACCEPTED_TOKENS = [
     name: "USDC",
     address: "0xda9d4f9b69ac6C22e444eD9aF0CfC043b7a7f53f",
     decimals: 6,
-    logo: "/usdc-logo.png",
+
+    logo: "/usdc-logo.png"
+
   },
   {
     name: "DAI",
     address: "0x68194a729C2450ad26072b3D33ADaCbcef39D574",
     decimals: 18,
-    logo: "/dai-logo.png",
+
+    logo: "/dai-logo.png"
+
   },
   {
     name: "WETH",
     address: "0x7b79995e5f793A07Bc00c21412e50Ecae098E7f9",
     decimals: 18,
-    logo: "/weth-logo.png",
-  },
+
+    logo: "/weth-logo.png"
+  }
+
 ];
 
 const formSchema = z.object({
@@ -38,11 +47,12 @@ const formSchema = z.object({
     required_error: "Payment method is required",
   }),
   tokenAddress: z.string().optional(),
-  amount: z
-    .string()
+
+  amount: z.string()
     .min(1, "Amount is required")
     .regex(/^\d+(\.\d+)?$/, "Must be a valid number")
-    .refine(val => parseFloat(val) > 0, "Amount must be greater than 0"),
+    .refine(val => parseFloat(val) > 0, "Amount must be greater than 0")
+
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -52,6 +62,7 @@ export default function BuyMineralPage() {
   const [isTransactionPending, setIsTransactionPending] = useState(false);
   const [userBalance, setUserBalance] = useState<string>("0");
   const [selectedToken, setSelectedToken] = useState(ACCEPTED_TOKENS[0]);
+
 
   const {
     register,
@@ -65,6 +76,7 @@ export default function BuyMineralPage() {
       paymentMethod: "ETH",
       tokenAddress: ACCEPTED_TOKENS[0].address,
     },
+
   });
 
   const paymentMethod = watch("paymentMethod");
@@ -73,11 +85,12 @@ export default function BuyMineralPage() {
   // Get ETH balance
   const { data: ethBalance } = useBalance({ address });
 
+  
   // Get ERC20 balance when token is selected
   const { data: tokenBalance } = useBalance({
     address,
-    token: paymentMethod === "TOKEN" ? (watch("tokenAddress") as `0x${string}`) : undefined,
-    enabled: paymentMethod === "TOKEN" && isConnected,
+    token: paymentMethod === "TOKEN" ? watch("tokenAddress") as `0x${string}` : undefined,
+    enabled: paymentMethod === "TOKEN" && isConnected
   });
 
   const { writeContractAsync } = useScaffoldWriteContract("MineralWarehouse");
@@ -106,6 +119,7 @@ export default function BuyMineralPage() {
     return BigInt(amountFloat * 10 ** decimals);
   };
 
+
   const onSubmit = async (data: FormData) => {
     if (!isConnected || !address) {
       notification.error("Please connect your wallet");
@@ -121,7 +135,9 @@ export default function BuyMineralPage() {
         data.mineralId,
         paymentMethod === "ETH" ? 0 : 1, // 0 for ETH, 1 for TOKEN
         paymentMethod === "ETH" ? "0x0000000000000000000000000000000000000000" : data.tokenAddress,
+
         amountInUnits,
+
       ];
 
       notification.info("Processing transaction...");
@@ -129,7 +145,9 @@ export default function BuyMineralPage() {
       await writeContractAsync({
         functionName: "purchase_mineral",
         args: txArgs,
+
         value: paymentMethod === "ETH" ? amountInUnits : undefined,
+
       });
 
       notification.success("Mineral purchased successfully!");
@@ -179,7 +197,9 @@ export default function BuyMineralPage() {
               placeholder="Enter mineral ID"
               className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+
             {errors.mineralId && <p className="mt-1 text-sm text-red-400">{errors.mineralId.message}</p>}
+
           </div>
 
           {/* Payment Method */}
@@ -200,7 +220,9 @@ export default function BuyMineralPage() {
               <label className="block text-sm font-medium mb-1">Select Token *</label>
               <select
                 {...register("tokenAddress")}
+
                 onChange={e => handleTokenChange(e.target.value)}
+
                 className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {ACCEPTED_TOKENS.map(token => (
@@ -211,9 +233,9 @@ export default function BuyMineralPage() {
               </select>
               {selectedToken && (
                 <div className="flex items-center mt-2 text-sm text-gray-300">
-                  <span>
-                    Balance: {userBalance} {selectedToken.name}
-                  </span>
+
+                  <span>Balance: {userBalance} {selectedToken.name}</span>
+
                 </div>
               )}
             </div>
@@ -231,7 +253,11 @@ export default function BuyMineralPage() {
               placeholder={`0.00 ${paymentMethod === "ETH" ? "ETH" : selectedToken?.name}`}
               className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-            {errors.amount && <p className="mt-1 text-sm text-red-400">{errors.amount.message}</p>}
+
+            {errors.amount && (
+              <p className="mt-1 text-sm text-red-400">{errors.amount.message}</p>
+            )}
+
             {paymentMethod === "ETH" && ethBalance && (
               <div className="flex justify-between mt-1 text-sm text-gray-300">
                 <span>Balance: {userBalance} ETH</span>
@@ -251,7 +277,11 @@ export default function BuyMineralPage() {
             type="submit"
             disabled={isTransactionPending}
             className={`w-full py-2 px-4 rounded-md font-medium text-white ${
-              isTransactionPending ? "bg-gray-600 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+
+              isTransactionPending
+                ? "bg-gray-600 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+
             } transition-colors`}
           >
             {isTransactionPending ? (
