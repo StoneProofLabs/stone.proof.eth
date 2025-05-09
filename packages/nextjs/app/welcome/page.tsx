@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "../lib/toast";
+import { Loading } from "../../components/ui/loading";
 import { FiArrowLeft } from "react-icons/fi";
 
 interface UserData {
@@ -124,8 +125,13 @@ const Page = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#060910] flex items-center justify-center">
-        <div className="text-xl text-white">Loading...</div>
+      <div className="min-h-screen bg-[#060910]">
+        <Loading
+          title="Loading Profile"
+          description="Please wait while we fetch your profile information..."
+          progressValue={75}
+          progressText="Almost there..."
+        />
       </div>
     );
   }
@@ -133,7 +139,6 @@ const Page = () => {
   return (
     <div className="min-h-screen bg-[#060910]">
       {/* Back Button */}
-    
 
       <div className="max-w-4xl mx-auto p-6 pt-20">
         <div className="bg-[#181c27] rounded-xl border border-[#23272F] p-6">

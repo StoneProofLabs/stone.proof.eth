@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import ConnectWalletButton from "./hero/ConnectWalletButton";
 
-
 const Hero: React.FC = () => {
   return (
     <section className="relative overflow-visible bg-[#060910] pt-16 pb-8 sm:pb-16 min-h-[80vh] flex flex-col justify-center items-center">
@@ -43,7 +42,7 @@ const Hero: React.FC = () => {
           {/* Buttons */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-8 relative">
             <Link
-              href="/auth/signup"
+              href="/auth/login"
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400 z-20"
             >
               Get Started
