@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import StoneProof from "../../../components/landing/Header/StoneProof";
+import { toast } from "../../lib/toast";
 import { FiArrowLeft, FiInfo } from "react-icons/fi";
 
 export default function LoginPage() {
@@ -15,8 +16,29 @@ export default function LoginPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement login logic
-    console.log("Login form submitted:", formData);
+    try {
+      const loadingToast = toast.loading("Logging in...");
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+      const data = await response.json();
+      toast.dismiss(loadingToast);
+      if (response.ok && data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("email", formData.email);
+        localStorage.setItem("password", formData.password);
+        toast.success("Login successful! Redirecting...");
+        setTimeout(() => {
+          router.push("/welcome");
+        }, 2000);
+      } else {
+        toast.error(data.message || "Login failed. Please check your credentials.");
+      }
+    } catch (err) {
+      toast.error("An error occurred during login.");
+    }
   };
 
   return (
@@ -203,8 +225,8 @@ export default function LoginPage() {
                   type="button"
                   className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#202634] text-white font-semibold hover:bg-[#23272F] transition-colors"
                 >
-                  <img src="/wallet.svg" alt="Wallet" className="w-10 h-10 pointer-events-none select-none" />{" "}
-                  Sign in with Wallet
+                  <img src="/wallet.svg" alt="Wallet" className="w-10 h-10 pointer-events-none select-none" /> Sign in
+                  with Wallet
                 </button>
               </div>
             </form>
