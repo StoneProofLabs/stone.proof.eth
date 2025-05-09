@@ -2,8 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "../lib/toast";
 import { Loading } from "../../components/ui/loading";
+import { toast } from "../lib/toast";
 import { FiArrowLeft } from "react-icons/fi";
 
 interface UserData {
@@ -26,6 +26,7 @@ const Page = () => {
   const router = useRouter();
   const [userData, setUserData] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -97,7 +98,7 @@ const Page = () => {
       toast.error("Missing credentials for logout.");
       return;
     }
-    const loadingToast = toast.loading("Logging out...");
+    setIsLoggingOut(true);
     try {
       const response = await fetch("/api/auth/logout", {
         method: "POST",
@@ -105,7 +106,6 @@ const Page = () => {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
-      toast.dismiss(loadingToast);
       if (response.ok) {
         toast.success("Successfully logged out!");
         localStorage.removeItem("email");
@@ -116,10 +116,11 @@ const Page = () => {
         }, 1500);
       } else {
         toast.error(data.message || "Logout failed.");
+        setIsLoggingOut(false);
       }
     } catch (err) {
-      toast.dismiss(loadingToast);
       toast.error("An error occurred during logout.");
+      setIsLoggingOut(false);
     }
   };
 
@@ -131,6 +132,19 @@ const Page = () => {
           description="Please wait while we fetch your profile information..."
           progressValue={75}
           progressText="Almost there..."
+        />
+      </div>
+    );
+  }
+
+  if (isLoggingOut) {
+    return (
+      <div className="min-h-screen bg-[#060910]">
+        <Loading
+          title="Logging Out"
+          description="Please wait while we securely log you out..."
+          progressValue={85}
+          progressText="Clearing your session..."
         />
       </div>
     );
