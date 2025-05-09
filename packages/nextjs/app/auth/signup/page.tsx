@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import StoneProof from "../../../components/landing/Header/StoneProof";
-import { FiArrowLeft, FiChevronDown, FiInfo } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiChevronDown, FiDownload, FiInfo } from "react-icons/fi";
 
 const mineralsList = ["Coltan", "Cobalt", "Gold", "Copper", "Tin", "Tungsten"];
 
@@ -267,20 +267,22 @@ export default function SignupPage() {
         style={{ scrollbarWidth: "none" }}
       >
         {/* Title and Subtitle outside the card */}
-        <div className="w-full max-w-xl mx-auto pt-8 md:pt-12 pb-2 md:pb-4 px-4 sm:px-6">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-2">
-            {step === 1
-              ? "Create Account"
-              : step === 2
-                ? formData.companyRole === "refiner"
-                  ? "Tell us about your refinery"
-                  : "Tell us about your company"
-                : "Upload Your License"}
-          </h2>
-          <p className="text-gray-400 text-center text-base sm:text-lg">
-            Create you first account here to enter our system
-          </p>
-        </div>
+        {!signupSuccess && (
+          <div className="w-full max-w-xl mx-auto pt-8 md:pt-12 pb-2 md:pb-4 px-4 sm:px-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-2">
+              {step === 1
+                ? "Create Account"
+                : step === 2
+                  ? formData.companyRole === "refiner"
+                    ? "Tell us about your refinery"
+                    : "Tell us about your company"
+                  : "Upload Your License"}
+            </h2>
+            <p className="text-gray-400 text-center text-base sm:text-lg">
+              Create you first account here to enter our system
+            </p>
+          </div>
+        )}
         {/* Card */}
         <div className="w-full max-w-xl flex flex-col px-0 sm:px-6">
           {/* Card Header */}
@@ -560,7 +562,8 @@ export default function SignupPage() {
                     </>
                   ) : (
                     <>
-                      {formData.companyRole === "buyer" ? "Submit" : "Continue"} <span className="text-xl">→</span>
+                      {formData.companyRole === "buyer" ? "Submit" : "Continue"}{" "}
+                      <FiArrowRight className="text-xl inline ml-1" />
                     </>
                   )}
                 </button>
@@ -585,6 +588,9 @@ export default function SignupPage() {
                   <button
                     type="button"
                     className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#2B2D2F] text-white font-semibold hover:bg-[#23272F] transition-colors"
+                    onClick={() =>
+                      (window.location.href = "https://stoneproofbackend.onrender.com/api/v1/auth/google")
+                    }
                   >
                     <img src="/auth/google.svg" alt="Google" className="w-6 h-6 pointer-events-none select-none" /> Sign
                     up with Google
@@ -749,7 +755,7 @@ export default function SignupPage() {
                     type="submit"
                     className="w-1/2 py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors shadow-none border-none flex items-center justify-center gap-2"
                   >
-                    Continue <span className="text-xl">→</span>
+                    Continue <FiArrowRight className="text-xl inline ml-1" />
                   </button>
                 </div>
               </form>
@@ -853,7 +859,7 @@ export default function SignupPage() {
                             </>
                           ) : (
                             <>
-                              Submit <span className="text-xl">⭳</span>
+                              Submit <FiDownload className="text-xl inline ml-1" />
                             </>
                           )}
                         </button>
