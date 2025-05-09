@@ -562,8 +562,12 @@ export default function SignupPage() {
                     </>
                   ) : (
                     <>
+
+<!--                       {formData.companyRole === "buyer" ? "Submit" : "Continue"} <span className="text-xl">→</span> -->
+
                       {formData.companyRole === "buyer" ? "Submit" : "Continue"}{" "}
                       <FiArrowRight className="text-xl inline ml-1" />
+
                     </>
                   )}
                 </button>
@@ -859,7 +863,10 @@ export default function SignupPage() {
                             </>
                           ) : (
                             <>
+
+
                               Submit <FiDownload className="text-xl inline ml-1" />
+
                             </>
                           )}
                         </button>

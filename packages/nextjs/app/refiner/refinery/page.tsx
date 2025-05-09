@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, AlertCircle } from "lucide-react";
+import { AlertCircle, Check } from "lucide-react";
 import UnrefinedMineralsTable from "~~/components/dashboard/refiner/unrefinedMinerals";
 import { warehouseMineralData } from "~~/data/data";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
@@ -77,7 +77,7 @@ export default function Page() {
                 <input
                   type="text"
                   value={mineralId}
-                  onChange={(e) => setMineralId(e.target.value)}
+                  onChange={e => setMineralId(e.target.value)}
                   placeholder="Enter mineral ID"
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
                 />
@@ -87,7 +87,7 @@ export default function Page() {
                 <label className="block text-sm font-medium mb-2">Refinement Report</label>
                 <textarea
                   value={report}
-                  onChange={(e) => setReport(e.target.value)}
+                  onChange={e => setReport(e.target.value)}
                   placeholder="Enter refinement details..."
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 h-32 focus:outline-none"
                 />
