@@ -30,41 +30,147 @@ export default function SignupPage() {
     licenseFile: null as File | null,
   });
   const [signupSuccess, setSignupSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleContinue = (e: React.FormEvent) => {
+  const validateStep = (currentStep: number) => {
+    switch (currentStep) {
+      case 1:
+        if (!formData.firstName.trim()) {
+          setError("First name is required");
+          return false;
+        }
+        if (!formData.lastName.trim()) {
+          setError("Last name is required");
+          return false;
+        }
+        if (!formData.email.trim()) {
+          setError("Email is required");
+          return false;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+          setError("Please enter a valid email address");
+          return false;
+        }
+        if (!formData.companyRole) {
+          setError("Please select your company role");
+          return false;
+        }
+        if (!formData.password) {
+          setError("Password is required");
+          return false;
+        }
+        if (formData.password.length < 8) {
+          setError("Password must be at least 8 characters long");
+          return false;
+        }
+        if (formData.password !== formData.confirmPassword) {
+          setError("Passwords do not match");
+          return false;
+        }
+        if (!formData.acceptTerms) {
+          setError("Please accept the terms and conditions");
+          return false;
+        }
+        return true;
+
+      case 2:
+        if (!formData.companyName.trim()) {
+          setError("Company name is required");
+          return false;
+        }
+        if (!formData.phoneNumber.trim()) {
+          setError("Phone number is required");
+          return false;
+        }
+        if (!formData.mineralsMined.length) {
+          setError("Please select at least one mineral");
+          return false;
+        }
+        if (!formData.location.trim()) {
+          setError("Location is required");
+          return false;
+        }
+        if (!formData.employees.trim()) {
+          setError("Number of employees is required");
+          return false;
+        }
+        return true;
+
+      case 3:
+        if (!formData.licenseFile) {
+          setError("Please upload your license file");
+          return false;
+        }
+        return true;
+
+      default:
+        return true;
+    }
+  };
+
+  const handleContinue = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Step 1 validation
-    if (step === 1) {
-      if (!formData.companyRole) {
-        alert("Please select your company role.");
-        return;
-      }
+    setError(null);
 
-      // Role-specific flow logic
-      if (formData.companyRole === "buyer") {
-        setSignupSuccess(true);
-        return;
-      }
+    if (!validateStep(step)) {
+      return;
     }
 
-    // Step 3 validation
     if (step === 3) {
-      if (!formData.licenseFile) {
-        alert("Please upload your license file.");
-        return;
-      }
+      await handleSignup(e);
+      return;
     }
 
     setAnimating(true);
     setTimeout(() => {
-      // Role-specific step progression
-      if (formData.companyRole === "transporter" && step === 1) {
-        setStep(3); // Skip step 2 for transporters
-      } else {
-        setStep(step + 1);
-      }
+      setStep(step + 1);
       setAnimating(false);
     }, 300);
+  };
+
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    try {
+      if (formData.password !== formData.confirmPassword) {
+        setError("Passwords do not match");
+        setLoading(false);
+        return;
+      }
+
+      const formDataToSend = new FormData();
+      formDataToSend.append("license", formData.licenseFile as File);
+      formDataToSend.append("firstName", formData.firstName);
+      formDataToSend.append("lastName", formData.lastName);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("password", formData.password);
+      formDataToSend.append("phoneNumber", formData.phoneNumber);
+      formDataToSend.append("role", formData.companyRole);
+      formDataToSend.append("mineralsMined", formData.mineralsMined.join(","));
+      formDataToSend.append("companyName", formData.companyName);
+      formDataToSend.append("companyPhoneNumber", formData.phoneNumber);
+      formDataToSend.append("location", formData.location);
+      formDataToSend.append("numberOfEmployees", String(Number(formData.employees)));
+
+      const response = await fetch("/api/auth/signup", {
+        method: "POST",
+        body: formDataToSend,
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || "Failed to sign up");
+      }
+
+      router.push("/welcome");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred during signup");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // Multi-select handler for minerals
@@ -173,7 +279,7 @@ export default function SignupPage() {
               <div
                 className={`absolute left-0 top-0 h-2 bg-blue-600 rounded-tl-xl transition-all duration-300`}
                 style={{
-                  width: formData.companyRole === "buyer" ? "100%" : step === 1 ? "33%" : step === 2 ? "66%" : "100%",
+                  width: step === 1 ? "33%" : step === 2 ? "66%" : "100%",
                 }}
               />
             </div>
@@ -223,6 +329,14 @@ export default function SignupPage() {
           <div
             className={`bg-[#060910] rounded-b-xl px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col border-t-0 border border-[#23272F] transition-all duration-300 ${animating ? "opacity-0 translate-x-8" : "opacity-100 translate-x-0"}`}
           >
+            {error && (
+              <div
+                className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded relative mb-4"
+                role="alert"
+              >
+                <span className="block sm:inline">{error}</span>
+              </div>
+            )}
             {signupSuccess ? (
               // Success Page
               <div className="flex flex-col items-center justify-center min-h-[60vh] w-full">
@@ -405,9 +519,38 @@ export default function SignupPage() {
                 </div>
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors mb-2 shadow-none border-none flex items-center justify-center gap-2"
+                  disabled={loading}
+                  className={`w-full py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors mb-2 shadow-none border-none flex items-center justify-center gap-2 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
-                  {formData.companyRole === "buyer" ? "Submit" : "Continue"} <span className="text-xl">→</span>
+                  {loading ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      {formData.companyRole === "buyer" ? "Submit" : "Continue"} <span className="text-xl">→</span>
+                    </>
+                  )}
                 </button>
                 <div className="text-center mb-2">
                   <span className="text-gray-400 text-sm">Already have an account? </span>
@@ -438,8 +581,8 @@ export default function SignupPage() {
                     type="button"
                     className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F]  text-white font-semibold hover:bg-[#23272F] transition-colors"
                   >
-                    <img src="/wallet.svg" alt="Wallet" className="w-10 h-10 pointer-events-none select-none" />{" "}
-                    Sign in with Wallet
+                    <img src="/wallet.svg" alt="Wallet" className="w-10 h-10 pointer-events-none select-none" /> Sign in
+                    with Wallet
                   </button>
                 </div>
               </form>
@@ -600,13 +743,7 @@ export default function SignupPage() {
               </form>
             ) : (
               // Step 3: License Upload
-              <form
-                className="space-y-6"
-                onSubmit={e => {
-                  e.preventDefault();
-                  setSignupSuccess(true);
-                }}
-              >
+              <form className="space-y-6" onSubmit={handleSignup}>
                 <div className="flex flex-col items-center justify-center w-full">
                   <div className="w-full bg-[#181c27] rounded-xl p-6 sm:p-8 flex flex-col items-center border border-[#23272F] max-w-full sm:max-w-lg mx-auto">
                     <div className="w-full max-w-md">
@@ -675,9 +812,38 @@ export default function SignupPage() {
                         </button>
                         <button
                           type="submit"
-                          className="w-full sm:w-1/2 py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors shadow-none border-none flex items-center justify-center gap-2"
+                          disabled={loading}
+                          className={`w-full sm:w-1/2 py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors shadow-none border-none flex items-center justify-center gap-2 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
                         >
-                          Submit <span className="text-xl">⭳</span>
+                          {loading ? (
+                            <>
+                              <svg
+                                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                              </svg>
+                              Processing...
+                            </>
+                          ) : (
+                            <>
+                              Submit <span className="text-xl">⭳</span>
+                            </>
+                          )}
                         </button>
                       </div>
                     </div>
