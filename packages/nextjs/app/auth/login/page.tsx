@@ -26,6 +26,9 @@ export default function LoginPage() {
       const data = await response.json();
       toast.dismiss(loadingToast);
       if (response.ok && data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("email", formData.email);
+        localStorage.setItem("password", formData.password);
         toast.success("Login successful! Redirecting...");
         setTimeout(() => {
           router.push("/welcome");

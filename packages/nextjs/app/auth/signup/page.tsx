@@ -213,12 +213,12 @@ export default function SignupPage() {
     setFormData(prev => ({ ...prev, licenseFile: file }));
   }
 
-  // Redirect to /welcome after 3 seconds when signupSuccess is true
+  // Redirect to /auth/login after 3 seconds when signupSuccess is true
   useEffect(() => {
     if (signupSuccess) {
-      setSuccessMessage("Signup successful! Redirecting to your account...");
+      setSuccessMessage("Signup successful! Redirecting to login...");
       const timer = setTimeout(() => {
-        router.push("/welcome");
+        router.push("/auth/login");
       }, 3000);
       return () => clearTimeout(timer);
     }
