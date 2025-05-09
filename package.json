@@ -1,0 +1,114 @@
+{
+  "name": "se-2",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "scripts": {
+    "start": "yarn workspace @se-2/nextjs dev",
+    "test": "yarn hardhat:test",
+    "account": "yarn hardhat:account",
+    "account:generate": "yarn workspace @se-2/hardhat account:generate",
+    "account:import": "yarn workspace @se-2/hardhat account:import",
+    "chain": "yarn hardhat:chain",
+    "compile": "yarn hardhat:compile",
+    "deploy": "yarn hardhat:deploy",
+    "fork": "yarn hardhat:fork",
+    "format": "yarn next:format && yarn hardhat:format",
+    "generate": "yarn account:generate",
+    "hardhat:account": "yarn workspace @se-2/hardhat account",
+    "hardhat:chain": "yarn workspace @se-2/hardhat chain",
+    "hardhat:check-types": "yarn workspace @se-2/hardhat check-types",
+    "hardhat:clean": "yarn workspace @se-2/hardhat clean",
+    "hardhat:compile": "yarn workspace @se-2/hardhat compile",
+    "hardhat:deploy": "yarn workspace @se-2/hardhat deploy",
+    "hardhat:flatten": "yarn workspace @se-2/hardhat flatten",
+    "hardhat:fork": "yarn workspace @se-2/hardhat fork",
+    "hardhat:format": "yarn workspace @se-2/hardhat format",
+    "hardhat:generate": "yarn workspace @se-2/hardhat generate",
+    "hardhat:hardhat-verify": "yarn workspace @se-2/hardhat hardhat-verify",
+    "hardhat:lint": "yarn workspace @se-2/hardhat lint",
+    "hardhat:lint-staged": "yarn workspace @se-2/hardhat lint-staged",
+    "hardhat:test": "yarn workspace @se-2/hardhat test",
+    "hardhat:verify": "yarn workspace @se-2/hardhat verify",
+    "ipfs": "yarn workspace @se-2/nextjs ipfs",
+    "lint": "yarn next:lint && yarn hardhat:lint",
+    "next:build": "yarn workspace @se-2/nextjs build",
+    "next:check-types": "yarn workspace @se-2/nextjs check-types",
+    "next:format": "yarn workspace @se-2/nextjs format",
+    "next:lint": "yarn workspace @se-2/nextjs lint",
+    "next:serve": "yarn workspace @se-2/nextjs serve",
+    "vercel": "yarn workspace @se-2/nextjs vercel",
+    "vercel:login": "yarn workspace @se-2/nextjs vercel:login",
+    "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
+    "verify": "yarn hardhat:verify",
+    "precommit": "lint-staged",
+    "postinstall": "husky install"
+  },
+  "lint-staged": {
+    "*.sol": [
+      "prettier --write"
+    ],
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "^0.15.11",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/geojson": "^7946.0.16",
+    "@types/react-simple-maps": "^3.0.6",
+    "eslint": "^9.22.0",
+    "husky": "~9.1.6",
+    "lint-staged": "~13.2.2",
+    "prettier": "^3.5.3",
+    "prettier-plugin-solidity": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=18.18.3"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
+    "@openzeppelin/contracts": "^5.2.0",
+    "@reown/appkit": "^1.7.3",
+    "@reown/appkit-adapter-wagmi": "^1.7.3",
+    "@tanstack/react-query": "^5.74.8",
+    "@vis.gl/react-google-maps": "^1.5.2",
+    "chalk": "4.1.2",
+    "clsx": "^2.1.1",
+    "dotenv": "^16.5.0",
+    "ethers": "^5.7.2",
+    "framer-motion": "^12.6.2",
+    "lucide-react": "^0.507.0",
+    "next": "^14.2.28",
+    "postcss": "^8.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-hook-form": "^7.56.2",
+    "react-hot-toast": "^2.5.2",
+    "react-icons": "^5.5.0",
+    "react-simple-maps": "^3.0.0",
+    "react-spinners": "^0.17.0",
+    "recharts": "^2.15.3",
+    "tailwind-merge": "^3.2.0",
+    "vercel": "^41.6.2",
+    "viem": "^2.28.1",
+    "wagmi": "^2.15.0",
+    "zod": "^3.24.4",
+    "zustand": "^5.0.3"
+  },
+  "dependenciesMeta": {
+    "chalk@4.1.2": {
+      "unplugged": true
+    }
+  },
+  "packageManager": "yarn@4.9.1"
+}
