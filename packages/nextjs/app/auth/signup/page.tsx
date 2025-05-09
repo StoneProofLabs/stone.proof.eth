@@ -32,6 +32,7 @@ export default function SignupPage() {
   const [signupSuccess, setSignupSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const validateStep = (currentStep: number) => {
     switch (currentStep) {
@@ -165,7 +166,7 @@ export default function SignupPage() {
         throw new Error(data.message || "Failed to sign up");
       }
 
-      router.push("/welcome");
+      setSignupSuccess(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred during signup");
     } finally {
@@ -211,6 +212,17 @@ export default function SignupPage() {
     }
     setFormData(prev => ({ ...prev, licenseFile: file }));
   }
+
+  // Redirect to /welcome after 3 seconds when signupSuccess is true
+  useEffect(() => {
+    if (signupSuccess) {
+      setSuccessMessage("Signup successful! Redirecting to your account...");
+      const timer = setTimeout(() => {
+        router.push("/welcome");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [signupSuccess, router]);
 
   return (
     <div className="min-h-screen w-full bg-[#060910] flex flex-col md:flex-row items-stretch px-2 sm:px-4 md:px-8 lg:px-12 xl:px-20 py-0 gap-0">
@@ -356,7 +368,7 @@ export default function SignupPage() {
                     You Successfully Signed Up!
                   </h3>
                   <p className="text-gray-400 text-center text-base sm:text-lg mb-6">
-                    You will shortly receive an email with the activation link for your account
+                    {successMessage || "You will shortly receive an email with the activation link for your account"}
                   </p>
                   <button
                     className="w-full py-3 rounded-md bg-[#0A77FF] hover:bg-[#0A77FF]/80 text-white font-semibold text-lg transition-colors shadow-none border-none flex items-center justify-center gap-2"

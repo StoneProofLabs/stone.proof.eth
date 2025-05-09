@@ -3,26 +3,22 @@ import { NextResponse } from "next/server";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    
-    // TODO: Add your API endpoint here
-    // For now, we'll just return a mock response
-    return NextResponse.json(
-      { 
-        success: true,
-        message: "Login successful",
-        data: {
-          id: "mock-user-id",
-          email: body.email,
-          token: "mock-jwt-token",
-          role: "mock-role"
-        }
+
+    // Forward the request to the real backend
+    const backendResponse = await fetch("https://stoneproofbackend.onrender.com/api/v1/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      { status: 200 }
-    );
+      body: JSON.stringify(body),
+    });
+
+    const data = await backendResponse.json();
+    return NextResponse.json(data, { status: backendResponse.status });
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(
-      { 
+      {
         success: false,
         message: "Failed to login",
         error: error instanceof Error ? error.message : "Unknown error"
