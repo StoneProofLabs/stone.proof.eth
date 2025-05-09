@@ -21,9 +21,9 @@ contract DisputeResolution is RolesManager {
                                  EVENTS
     //////////////////////////////////////////////////////////////*/
     
-    event DisputeRaised(uint256 indexed disputeId, uint256 mineralId, address indexed complainant, address defendant, string details, uint256 raisedAt);
+    event DisputeRaised(uint256 indexed disputeId, string mineralId, address indexed complainant, address defendant, string details, uint256 raisedAt);
     event DisputeResolved(uint256 indexed disputeId, string resolutionDetails, uint256 timestamp);
-    event DisputeClosedUnresolved(address closedBy, uint256 disputeId, uint256 mineralId, address complainant, address defendant, string details, uint256 closedUnresolvedAt);
+    event DisputeClosedUnresolved(address closedBy, uint256 disputeId, string mineralId, address complainant, address defendant, string details, uint256 closedUnresolvedAt);
     event DisputeEscalated(uint256 indexed disputeId, uint256 timestamp);
     event DisputeRejected(uint256 indexed disputeId, string reason, uint256 timestamp);
 
@@ -34,7 +34,7 @@ contract DisputeResolution is RolesManager {
 
     struct Dispute {
         uint256 disputeId;
-        uint256 mineralId;
+        string mineralId;
         address complainant;
         address defendant;
         string details;
@@ -73,12 +73,12 @@ contract DisputeResolution is RolesManager {
     * @param evidence Evidence supporting the dispute
     */
     function raiseDispute(
-        uint256 mineralId,
+        string memory mineralId,
         address defendant,
         string calldata details,
         string calldata evidence
     ) external {
-        if (mineralId == 0) revert DisputeResolution__InvalidMineralIdOrNotFound();
+        if (bytes(mineralId).length == 0) revert DisputeResolution__InvalidMineralIdOrNotFound();
         if (defendant == address(0)) revert DisputeResolution__InvalidDisputeDefendantAddress();
         if (bytes(details).length == 0) revert DisputeResolution__InvalidDisputeDetails();
         if (bytes(evidence).length == 0) revert DisputeResolution__InvalidDisputeEvidence();

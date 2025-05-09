@@ -803,4 +803,13 @@ function getRolesForAddress(address account) public view onlyNonZeroAddress(acco
     function _nibbleToHexChar(uint8 nibble) internal pure returns (bytes1) {
         return nibble < 10 ? bytes1(nibble + 0x30) : bytes1(nibble + 0x61 - 10);
     }
+
+
+    ///////////////////////////////////////////////
+    //////// getting all registered minerals /////
+    //////////////////////////////////////////////
+    function getAllRegisteredMineral() public view returns(MineralDetails[] memory mineralDetails) {
+        return mineralDetails;
+
+    }
 }
