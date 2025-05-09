@@ -1,8 +1,7 @@
 "use client";
 
-
-import { Montserrat } from "next/font/google";
 import { useEffect, useState } from "react";
+import { Montserrat } from "next/font/google";
 import { Inter } from "next/font/google";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
