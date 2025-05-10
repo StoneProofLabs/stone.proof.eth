@@ -17,13 +17,10 @@ import {
   Plus,
   ShieldAlert,
   Thermometer,
-  X,
 } from "lucide-react";
-import { useAccount, usePublicClient } from "wagmi";
+import { useAccount } from "wagmi";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
-import { decodeEventLog } from "viem";
-import RolesManagerABI from "../../../../../hardhat/artifacts/contracts/core/RolesManager.sol/RolesManager.json";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
@@ -61,8 +58,9 @@ const AccessDeniedView = ({
   onRefresh: () => void;
 }) => {
   const copyAddress = () => {
-    navigator.clipboard.writeText(address);
-    notification.success("Wallet address copied!");
+    navigator.clipboard.writeText(address)
+    notification.success("Wallet address copied!")
+
   };
 
   return (
@@ -72,13 +70,14 @@ const AccessDeniedView = ({
           <ShieldAlert className="w-8 h-8 text-red-500" />
         </div>
         <h3 className="text-2xl font-bold text-white">Access Denied</h3>
-        <p className="text-gray-400">The connected wallet doesn't have miner privileges to register minerals.</p>
+        <p className="text-gray-400">The connected wallet doesn&apos;t have miner privileges to register minerals.</p>
         <div className="flex items-center gap-2 p-2 px-4 mt-2 border border-gray-700 rounded-lg bg-gray-900/50 w-full">
           <span className="font-mono text-sm text-gray-300 truncate">{address}</span>
           <button onClick={copyAddress} className="p-1 rounded-md hover:bg-gray-700 text-gray-400">
             <Copy className="w-4 h-4" />
           </button>
         </div>
+
         <div className="w-full mt-4 p-4 rounded-lg border border-gray-700 bg-gray-900/30">
           <h3 className="text-base font-medium text-white mb-4">How to get miner access:</h3>
           <ol className="space-y-4 text-sm text-gray-400">
@@ -106,6 +105,7 @@ const AccessDeniedView = ({
                 </div>
               </div>
             </li>
+
             <li className="flex items-start gap-3">
               <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-900/50 text-emerald-400 text-xs font-medium">
                 2
@@ -125,6 +125,7 @@ const AccessDeniedView = ({
                 </div>
               </div>
             </li>
+
             <li className="flex items-start gap-3">
               <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-900/50 text-emerald-400 text-xs font-medium">
                 3
@@ -132,12 +133,13 @@ const AccessDeniedView = ({
               <div>
                 <p>Refresh this page after approval</p>
                 <p className="text-xs text-gray-500 mt-1">
-                  If access isn't granted immediately, wait a few minutes then refresh
+                  If access isn&apos;t granted immediately, wait a few minutes then refresh
                 </p>
               </div>
             </li>
           </ol>
         </div>
+
         <button
           onClick={onRefresh}
           disabled={isLoadingRefresh}
@@ -163,7 +165,6 @@ const AccessDeniedView = ({
 
 export default function MineralRegistrationPage() {
   const { address, isConnected, isConnecting } = useAccount();
-  const publicClient = usePublicClient();
   const [quantity, setQuantity] = useState(0);
   const [purity, setPurity] = useState(0);
   const [portalOpen, setPortalOpen] = useState(false);
@@ -175,11 +176,12 @@ export default function MineralRegistrationPage() {
     storage: "Select Type",
     humidity: "Select Type",
   });
-  const [generatedMineralId, setGeneratedMineralId] = useState("");
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
-  const [isTransactionPending, setIsTransactionPending] = useState(false);
 
+  const [isRefreshingAccess, setIsRefreshingAccess] = useState(false)
+  const [isTransactionPending, setIsTransactionPending] = useState(false)
+
+
+  // Check if user has miner role
   const {
     data: hasMinerRole,
     isLoading: isRoleLoading,
@@ -242,92 +244,23 @@ export default function MineralRegistrationPage() {
     setPurity(Math.max(0, Math.min(100, value)));
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    notification.success("Mineral ID copied to clipboard!");
-  };
-
   const handleRegister = async () => {
     if (!isConnected || !hasMinerRole || !validateForm()) return;
 
     setIsTransactionPending(true);
     try {
-      console.group("[MINERAL REGISTRATION] Starting registration process");
-      console.log("Form data:", {
-        mineralName,
-        mineralType,
-        quantity,
-        origin,
-        purity,
-        storageConditions
-      });
-
-      // Step 1: Send transaction
-      console.log("Sending transaction...");
-      const txHash = await writeContractAsync({
+      const tx = await writeContractAsync({
         functionName: "registerMineral",
         args: [mineralName, mineralType, BigInt(quantity), origin, BigInt(purity), storageConditions],
       });
-      console.log("Transaction hash:", txHash);
+
       notification.info("Transaction submitted. Waiting for confirmation...");
+      console.log("Transaction submitted:", tx);
 
-      // Step 2: Wait for transaction receipt
-      console.log("Waiting for transaction receipt...");
-      const receipt = await publicClient.waitForTransactionReceipt({
-        hash: txHash,
-      });
-      console.log("Transaction receipt:", receipt);
-
-      // Step 3: Try to get return value directly
-      console.log("Attempting to get direct return value...");
-      try {
-        const returnValue = await publicClient.call({
-          to: receipt.to,
-          data: receipt.input,
-        });
-        console.log("Direct call return value:", returnValue);
-      } catch (e) {
-        console.log("Direct call failed (expected for some clients):", e);
-      }
-
-      // Step 4: Parse logs for MineralRegistered event
-      console.log("Parsing transaction logs for MineralRegistered event...");
-      const mineralRegisteredLog = receipt.logs.find(log => {
-        try {
-          const event = decodeEventLog({
-            abi: RolesManagerABI,
-            data: log.data,
-            topics: log.topics,
-          });
-          return event.eventName === "MineralRegistered";
-        } catch (e) {
-          return false;
-        }
-      });
-
-      if (mineralRegisteredLog) {
-        const event = decodeEventLog({
-          abi: RolesManagerABI,
-          data: mineralRegisteredLog.data,
-          topics: mineralRegisteredLog.topics,
-        });
-        const mineralId = (event.args as any).mineralId;
-        console.log("Mineral ID from event:", mineralId);
-        
-        setGeneratedMineralId(mineralId);
-        setShowSuccessModal(true);
-        resetForm();
-        
-        notification.success(`Mineral registered! ID: ${mineralId}`);
-      } else {
-        console.error("MineralRegistered event not found in logs");
-        notification.error("Registration succeeded but couldn't retrieve mineral ID");
-      }
-
-      console.groupEnd();
+      notification.success("Mineral registered successfully!");
+      resetForm();
     } catch (err: any) {
-      console.groupEnd();
-      console.error("Registration error:", err);
+      console.error("Transaction error:", err);
 
       if (err.message.includes("User rejected the request")) {
         notification.error("Transaction rejected by user");
@@ -366,7 +299,7 @@ export default function MineralRegistrationPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-6 text-white">
+    <div className="min-h-screen flex flex-col items-center p-6  text-white">
       <div className="w-full max-w-4xl">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold mb-3">Register Mineral</h1>
@@ -374,7 +307,7 @@ export default function MineralRegistrationPage() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          <div className="flex-1 p-6 rounded-xl border border-gray-700 shadow-lg">
+          <div className="flex-1 p-6 rounded-xl  border border-gray-700 shadow-lg">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
                 <label htmlFor="mineral-name" className="block text-sm font-medium text-gray-300">
@@ -385,21 +318,21 @@ export default function MineralRegistrationPage() {
                   type="text"
                   value={mineralName}
                   onChange={e => setMineralName(e.target.value)}
-                  placeholder="e.g. Gold, Coltan, Diamond"
+                  placeholder="Valid Mineral name"
                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
 
               <div className="space-y-2">
                 <label htmlFor="mineral-type" className="block text-sm font-medium text-gray-300">
-                  Mineral Type
+                  Type
                 </label>
                 <input
                   id="mineral-type"
                   type="text"
                   value={mineralType}
                   onChange={e => setMineralType(e.target.value)}
-                  placeholder="e.g. 3T, Gold-24K, Diamond-1A"
+                  placeholder="Mineral type here"
                   className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 />
               </div>
@@ -414,7 +347,7 @@ export default function MineralRegistrationPage() {
                     type="text"
                     value={origin}
                     onChange={e => setOrigin(e.target.value)}
-                    placeholder="Mine location or country"
+                    placeholder="Enter Origin here"
                     className="w-full px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pr-10"
                   />
                   <MapPin className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
@@ -550,7 +483,7 @@ export default function MineralRegistrationPage() {
           </div>
 
           <div className="lg:w-80">
-            <div className="p-6 rounded-xl border border-gray-700 shadow-lg h-full">
+            <div className="p-6 rounded-xl  border border-gray-700 shadow-lg h-full">
               <h2 className="text-lg font-medium mb-6 text-white">Validation Status</h2>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
@@ -628,7 +561,7 @@ export default function MineralRegistrationPage() {
                 <div className="flex gap-3 text-sm bg-gray-700/50 p-4 rounded-lg">
                   <AlertCircle className="min-w-5 h-5 mt-0.5 text-amber-400" />
                   <p className="text-gray-300">
-                    Ensure the details entered are accurate. Modifications won't be allowed post registration.
+                    Ensure the details entered are accurate. Modifications won&apos;t be allowed post registration.
                   </p>
                 </div>
               </div>
@@ -721,64 +654,6 @@ export default function MineralRegistrationPage() {
                 }`}
               >
                 Confirm
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {showSuccessModal && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="w-full max-w-md p-6 rounded-2xl bg-gray-900 border border-gray-800 shadow-2xl">
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h2 className="text-2xl font-bold text-white">Mineral Registered Successfully!</h2>
-                <p className="text-gray-400 mt-1">
-                  ID: <span className="font-mono text-emerald-400">{generatedMineralId}</span>
-                </p>
-              </div>
-              <button
-                onClick={() => setShowSuccessModal(false)}
-                className="p-1 rounded-full hover:bg-gray-800 text-gray-400"
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="mt-6 p-4 rounded-lg bg-gray-800/50 border border-gray-700">
-              <h3 className="text-sm font-medium text-gray-300 mb-2">Mineral ID Details</h3>
-              <div className="flex items-center justify-between p-3 bg-gray-900 rounded-lg">
-                <span className="font-mono text-sm text-emerald-400 break-all">{generatedMineralId}</span>
-                <button
-                  onClick={() => copyToClipboard(generatedMineralId)}
-                  className="ml-2 p-1 rounded-md hover:bg-gray-700 text-gray-400"
-                >
-                  <Copy className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="text-xs text-gray-500 mt-2">
-                <p>Format: {mineralType}-0x...</p>
-                <p>This ID was generated using your mineral type and unique hash</p>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <div className="flex flex-col gap-3 text-sm text-gray-400 mb-4">
-                <p>This ID is your permanent reference for:</p>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Tracking through the supply chain</li>
-                  <li>Future transactions and transfers</li>
-                  <li>Verification and auditing</li>
-                </ul>
-              </div>
-              <button
-                onClick={() => {
-                  setShowSuccessModal(false);
-                  setGeneratedMineralId("");
-                }}
-                className="w-full py-2 px-4 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-medium"
-              >
-                Continue
               </button>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { AlertCircle, Check, ChevronDown, Copy, Loader2, Minus, Plus, ShieldAlert } from "lucide-react";
+import { AlertCircle, Check, ChevronDown, ChevronRight, Copy, Loader2, Mail, MessageSquare, Minus, Phone, Plus, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";

@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-The following versions of the **stone.proof** project are actively supported with security updates. Please ensure you are using a supported version to receive updates and patches.
+The following versions of the **Stone.proof** project are actively supported with security updates. Please ensure you are using a supported version to receive updates and patches.
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -50,4 +50,7 @@ We take security issues in **stone.proof** seriously. If you discover a vulnerab
 
 For additional security questions or concerns, contact us at **support@stoneprooflabs.com**.
 -------------------------------
+
+Brought to you by - _**Stone.proof Labs**_
+
 **NOTE :: THE ABOVE WAYS OF COMMUNICATION AND LINKS ARE NOT YET ESTABLISHED BUT SOON WILL BE. Thank you!!**
