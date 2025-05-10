@@ -11,6 +11,7 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
+import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -233,7 +234,12 @@ export default function TransporterLayout({ children }: { children: React.ReactN
   }, [hasTransporterRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return <FullPageLoader text="Checking transporter permissions..." />;
+    return  <Loading
+    title="Verifying Transporter Access"
+    description="Please wait while we verify your transporter access..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   if (!isConnected) {
@@ -251,7 +257,12 @@ export default function TransporterLayout({ children }: { children: React.ReactN
   }
 
   if (isDataLoading) {
-    return <FullPageLoader text="Loading transporter dashboard..." />;
+    return  <Loading
+    title="Loading Transporter Dashboard"
+    description="Please wait while we load the transporter dashboard..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   return (

@@ -9,24 +9,41 @@ export const ToastProvider: React.FC = () => {
       position="top-center"
       toastOptions={{
         style: {
-          background: "#363636",
+          background: "#181c27 !important",
           color: "#fff",
           borderRadius: "12px",
           padding: "12px 16px",
           fontSize: "14px",
+          border: "1px solid #23262F",
+          boxShadow: "0 2px 16px 0 #000A",
         },
         success: {
           iconTheme: {
             primary: "#10B981",
-            secondary: "#fff",
+            secondary: "#181c27",
+          },
+          style: {
+            background: "#181c27 !important",
           },
         },
         error: {
           iconTheme: {
             primary: "#EF4444",
-            secondary: "#fff",
+            secondary: "#181c27",
+          },
+          style: {
+            background: "#181c27 !important",
           },
         },
+        loading: {
+          style: {
+            background: "#181c27 !important",
+          },
+        },
+      }}
+      containerStyle={{
+        background: "transparent",
+        zIndex: 9999,
       }}
     />
   );

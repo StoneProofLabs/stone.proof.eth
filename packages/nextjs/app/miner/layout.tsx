@@ -13,6 +13,7 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
+import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -238,7 +239,12 @@ export default function MinerLayout({ children }: { children: React.ReactNode })
   }, [hasMinerRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return <FullPageLoader text="Checking miner permissions..." />;
+    return  <Loading
+    title="Verifying Miner Access"
+    description="Please wait while we verify your miner access..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   if (!isConnected) {
@@ -253,7 +259,12 @@ export default function MinerLayout({ children }: { children: React.ReactNode })
   }
 
   if (isDataLoading) {
-    return <FullPageLoader text="Loading miner dashboard..." />;
+    return  <Loading
+    title="Loading Miner Dashboard"
+    description="Please wait while we load the miner dashboard..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   return (

@@ -90,7 +90,6 @@ const RoleCard = ({
 }) => {
   const router = useRouter();
   const isActive = userRole && userRole.toLowerCase() === title.toLowerCase();
-  const isDisabled = userRole && !isActive;
 
   return (
     <motion.div
@@ -99,7 +98,6 @@ const RoleCard = ({
       whileHover={isActive ? { scale: 1.04, boxShadow: "0 0 0 4px #0A77FF33" } : {}}
       className={`rounded-xl border shadow-xl flex flex-col items-center justify-between p-4 min-h-[240px] relative group transition-all duration-200
         ${isActive ? "border-[#0A77FF] bg-[#0A77FF]/5" : "border-[#23262F]"}
-        ${isDisabled ? "opacity-30 hover:opacity-40 cursor-not-allowed" : ""}
       `}
       style={{
         backdropFilter: "blur(2px)",
@@ -107,13 +105,6 @@ const RoleCard = ({
         boxShadow: isActive ? "0 0 16px 2px #0A77FF33" : undefined,
       }}
     >
-      {isDisabled && (
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
-          <div className="bg-black/80 text-white px-4 py-2 rounded-lg text-sm font-medium">
-            You don&apos;t have permission to access this role
-          </div>
-        </div>
-      )}
       <div className="flex flex-col items-center justify-center flex-1 w-full">
         <div className="flex items-center gap-2 mb-2">
           <h3 className="text-lg font-semibold text-white">{title}</h3>
@@ -137,24 +128,16 @@ const RoleCard = ({
 
       <div className="w-full flex justify-end">
         <motion.button
-          whileTap={{ scale: isDisabled ? 1 : 0.95 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => {
-            if (!isDisabled) {
-              if (onNavigate) onNavigate(title, route);
-            }
+            if (onNavigate) onNavigate(title, route);
           }}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors border ${
-            isDisabled
-              ? "bg-gray-500/10 text-gray-500 border-gray-500/20 cursor-not-allowed"
-              : "bg-[#0A77FF]/10 hover:bg-[#0A77FF]/20 text-[#0A77FF] border-[#0A77FF]/20"
-          } text-sm font-medium`}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors border bg-[#0A77FF]/10 hover:bg-[#0A77FF]/20 text-[#0A77FF] border-[#0A77FF]/20 text-sm font-medium`}
         >
-          <span>{isDisabled ? "Access Denied" : "Enter"}</span>
-          {!isDisabled && (
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-            </svg>
-          )}
+          <span>Enter</span>
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+          </svg>
         </motion.button>
       </div>
     </motion.div>
