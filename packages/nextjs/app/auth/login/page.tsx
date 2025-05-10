@@ -185,7 +185,7 @@ export default function LoginPage() {
               {/* Divider */}
               <div className="flex items-center my-4">
                 <div className="flex-grow h-px bg-[#23272F]" />
-                <span className="mx-4 text-gray-500 text-sm">Or, sign up with your email</span>
+                <span className="mx-4 text-gray-500 text-sm">Or, sign up with your wallet</span>
                 <div className="flex-grow h-px bg-[#23272F]" />
               </div>
 
@@ -193,15 +193,7 @@ export default function LoginPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button
                   type="button"
-                  className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#2B2D2F] text-white font-semibold hover:bg-[#23272F] transition-colors"
-                  onClick={() => (window.location.href = "https://stoneproofbackend.onrender.com/auth/google")}
-                >
-                  <img src="/auth/google.svg" alt="Google" className="w-6 h-6 pointer-events-none select-none" /> Sign
-                  in with Google
-                </button>
-                <button
-                  type="button"
-                  className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#202634] text-white font-semibold hover:bg-[#23272F] transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#202634] text-white font-semibold hover:bg-[#23272F] transition-colors"
                 >
                   <img src="/wallet.svg" alt="Wallet" className="w-10 h-10 pointer-events-none select-none" /> Sign in
                   with Wallet
