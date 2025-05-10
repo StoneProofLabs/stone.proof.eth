@@ -12,6 +12,7 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
+import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -235,7 +236,12 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
   }, [hasBuyerRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return <FullPageLoader text="Checking buyer permissions..." />;
+    return  <Loading
+    title="Verifying Buyer Access"
+    description="Please wait while we verify your buyer access..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   if (!isConnected) {
@@ -249,7 +255,12 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
   }
 
   if (isDataLoading) {
-    return <FullPageLoader text="Loading buyer dashboard..." />;
+    return <Loading
+    title="Loading Buyer Dashboard"
+    description="Please wait while we load the buyer dashboard..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   return (

@@ -11,6 +11,7 @@ import TopBar from "~~/components/dashboard/topBar";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
+import { Loading } from "~~/components/ui/loading";
 import { notification } from "~~/utils/scaffold-eth";
 
 const montserrat = Montserrat({
@@ -235,7 +236,12 @@ export default function RefinerLayout({ children }: { children: React.ReactNode 
   }, [hasRefinerRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return <FullPageLoader text="Checking refiner permissions..." />;
+    return <Loading
+    title="Verifying Refiner Access"
+    description="Please wait while we verify your refiner access..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   if (!isConnected) {
@@ -249,7 +255,12 @@ export default function RefinerLayout({ children }: { children: React.ReactNode 
   }
 
   if (isDataLoading) {
-    return <FullPageLoader text="Loading refiner dashboard..." />;
+    return  <Loading
+    title="Loading Refiner Dashboard"
+    description="Please wait while we load the refiner dashboard..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   return (

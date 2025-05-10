@@ -12,6 +12,7 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
+import {Loading} from '../../components/ui/loading'
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -156,7 +157,8 @@ const AccessDeniedCard = ({
             >
               {isLoadingRefresh ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
+
+                  ) : (
                 <>
                   Check Access Again
                   <ChevronRight className="w-4 h-4" />
@@ -235,7 +237,13 @@ export default function AuditorLayout({ children }: { children: React.ReactNode 
   }, [hasAuditorRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return <FullPageLoader text="Checking auditor permissions..." />;
+    return  
+    <Loading
+    title="Verifying Auditor Access"
+    description="Please wait while we verify your auditor access..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   if (!isConnected) {
