@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import StoneProof from "../../../components/landing/Header/StoneProof";
 import { FiArrowLeft, FiArrowRight, FiChevronDown, FiDownload, FiEye, FiEyeOff, FiInfo } from "react-icons/fi";
+import { useAccount, useChainId } from "wagmi";
+import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const mineralsList = ["Coltan", "Cobalt", "Gold", "Copper", "Tin", "Tungsten"];
 
@@ -35,6 +37,137 @@ export default function SignupPage() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [walletConnecting, setWalletConnecting] = useState(false);
+
+  const { address: connectedAddress, isConnected, chainId } = useAccount();
+  const currentChainId = useChainId();
+
+  const roleRedirects = {
+    admin: "/admin-portal",
+    miner: "/miner-portal",
+    refiner: "/refiner-portal",
+    transporter: "/transporter-portal",
+    inspector: "/inspector-portal",
+    auditor: "/auditor-portal",
+    buyer: "/buyer-portal",
+  };
+
+  const handleWalletConnect = async () => {
+    setWalletConnecting(true);
+    setError(null);
+    
+    try {
+      if (!isConnected) return;
+
+      const activeChainId = chainId || currentChainId;
+      
+      if (activeChainId !== 31337) {
+        setError("Please switch to the correct network");
+        return;
+      }
+
+      if (connectedAddress) {
+        await checkUserRole(connectedAddress);
+      }
+    } catch (error) {
+      console.error("Wallet connection error:", error);
+      setError("Failed to connect wallet. Please try again.");
+    } finally {
+      setWalletConnecting(false);
+    }
+  };
+
+  const checkUserRole = async (address: string) => {
+    try {
+      const { data: isAdmin } = useScaffoldReadContract({
+        contractName: "RolesManager",
+        functionName: "hasAdminRole",
+        args: [address],
+      });
+
+      if (isAdmin) {
+        router.push(roleRedirects.admin);
+        return;
+      }
+
+      const { data: isMiner } = useScaffoldReadContract({
+        contractName: "RolesManager",
+        functionName: "hasMinerRole",
+        args: [address],
+      });
+
+      if (isMiner) {
+        router.push(roleRedirects.miner);
+        return;
+      }
+
+      const { data: isRefiner } = useScaffoldReadContract({
+        contractName: "RolesManager",
+        functionName: "hasRefinerRole",
+        args: [address],
+      });
+
+      if (isRefiner) {
+        router.push(roleRedirects.refiner);
+        return;
+      }
+
+      const { data: isTransporter } = useScaffoldReadContract({
+        contractName: "RolesManager",
+        functionName: "hasTransporterRole",
+        args: [address],
+      });
+
+      if (isTransporter) {
+        router.push(roleRedirects.transporter);
+        return;
+      }
+
+      const { data: isInspector } = useScaffoldReadContract({
+        contractName: "RolesManager",
+        functionName: "hasInspectorRole",
+        args: [address],
+      });
+
+      if (isInspector) {
+        router.push(roleRedirects.inspector);
+        return;
+      }
+
+      const { data: isAuditor } = useScaffoldReadContract({
+        contractName: "RolesManager",
+        functionName: "hasAuditorRole",
+        args: [address],
+      });
+
+      if (isAuditor) {
+        router.push(roleRedirects.auditor);
+        return;
+      }
+
+      const { data: isBuyer } = useScaffoldReadContract({
+        contractName: "RolesManager",
+        functionName: "hasBuyerRole",
+        args: [address],
+      });
+
+      if (isBuyer) {
+        router.push(roleRedirects.buyer);
+        return;
+      }
+
+      setError("Connected wallet doesn't have any assigned roles");
+    } catch (error) {
+      console.error("Role check error:", error);
+      setError("Failed to check wallet roles. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    if (isConnected && connectedAddress) {
+      checkUserRole(connectedAddress);
+    }
+  }, [isConnected, connectedAddress]);
 
   const validateStep = (currentStep: number) => {
     switch (currentStep) {
@@ -176,7 +309,6 @@ export default function SignupPage() {
     }
   };
 
-  // Multi-select handler for minerals
   const handleMineralToggle = (mineral: string) => {
     setFormData(prev => {
       const exists = prev.mineralsMined.includes(mineral);
@@ -187,7 +319,6 @@ export default function SignupPage() {
     });
   };
 
-  // Add click outside handler
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -202,7 +333,6 @@ export default function SignupPage() {
   }, []);
 
   function handleLicenseFile(file: File) {
-    // Validate file type and size (max 50MB)
     const allowedTypes = ["application/pdf", "image/jpeg", "image/png", "video/mp4"];
     if (!allowedTypes.includes(file.type)) {
       alert("Invalid file type. Please upload a PDF, JPEG, PNG, or MP4 file.");
@@ -215,7 +345,6 @@ export default function SignupPage() {
     setFormData(prev => ({ ...prev, licenseFile: file }));
   }
 
-  // Redirect to /auth/login after 3 seconds when signupSuccess is true
   useEffect(() => {
     if (signupSuccess) {
       setSuccessMessage("Signup successful! Redirecting to login...");
@@ -228,9 +357,7 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen w-full bg-[#060910] flex flex-col md:flex-row items-stretch px-2 sm:px-4 md:px-8 lg:px-12 xl:px-20 py-0 gap-0">
-      {/* Left Section: Logo, tagline, and laptop image */}
       <div className="flex flex-col flex-1 justify-center items-center h-auto md:h-screen select-none bg-transparent order-1 md:order-none pt-8 md:pt-0 pb-8 md:pb-0">
-        {/* Back Button */}
         <button
           className="absolute top-2 left-2 md:top-4 md:left-4 flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg bg-[#181c27] border border-[#23272F] hover:bg-[#23272F] transition-colors z-20"
           onClick={() => router.push("/")}
@@ -238,11 +365,11 @@ export default function SignupPage() {
         >
           <FiArrowLeft className="text-white text-xl md:text-2xl" />
         </button>
-        {/* Logo and StoneProof */}
+        
         <div className="flex flex-col items-start w-full max-w-xl px-4 sm:px-6 md:px-8 pt-4 md:pt-8">
           <StoneProof size="xl" />
         </div>
-        {/* Tagline and badge */}
+        
         <div className="flex flex-col items-start w-full max-w-xl px-4 sm:px-6 md:px-8 mt-6 md:mt-8">
           <span className="inline-block bg-blue-600 text-white text-xs font-semibold px-3 sm:px-4 py-1 rounded mb-4 md:mb-6 tracking-wide">
             30% OF THE INDUSTRY
@@ -253,7 +380,7 @@ export default function SignupPage() {
           </h1>
           <span className="text-gray-400 text-base sm:text-lg md:text-xl mb-4">Let&apos;s get you started!</span>
         </div>
-        {/* Large Laptop Image */}
+        
         <div className="flex flex-col items-center w-full max-w-3xl px-2 sm:px-6 mt-4">
           <img
             src="/auth/auth.svg"
@@ -263,12 +390,7 @@ export default function SignupPage() {
         </div>
       </div>
 
-      {/* Right Section: Signup Form */}
-      <div
-        className="flex flex-col flex-1 items-center justify-center min-h-screen overflow-y-auto scrollbar-none order-2 md:order-none"
-        style={{ scrollbarWidth: "none" }}
-      >
-        {/* Title and Subtitle outside the card */}
+      <div className="flex flex-col flex-1 items-center justify-center min-h-screen overflow-y-auto scrollbar-none order-2 md:order-none">
         {!signupSuccess && (
           <div className="w-full max-w-xl mx-auto pt-8 md:pt-12 pb-2 md:pb-4 px-4 sm:px-6">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white text-center mb-2">
@@ -285,11 +407,9 @@ export default function SignupPage() {
             </p>
           </div>
         )}
-        {/* Card */}
+        
         <div className="w-full max-w-xl flex flex-col px-0 sm:px-6">
-          {/* Card Header */}
           <div className="bg-[#181c27] rounded-t-xl px-0 pt-0 pb-4">
-            {/* Progress Bar */}
             <div className="relative w-full h-2">
               <div className="absolute left-0 top-0 h-2 w-full bg-[#23272F] rounded-t-xl" />
               <div
@@ -299,9 +419,8 @@ export default function SignupPage() {
                 }}
               />
             </div>
-            {/* Steps */}
+            
             <div className="flex w-full justify-between items-center px-2 sm:px-4 md:px-8 pt-3">
-              {/* Step 1 */}
               <div className="flex flex-col items-center flex-1">
                 <div
                   className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 ${step > 0 ? "border-blue-600 bg-blue-600" : "border-blue-600 bg-blue-600"} text-white text-sm sm:text-base font-bold transition-all duration-300`}
@@ -309,14 +428,14 @@ export default function SignupPage() {
                   {step > 0 ? <span className="text-lg">&#10003;</span> : "1"}
                 </div>
               </div>
-              {/* Dotted line */}
+              
               <div className="flex-1 flex items-center justify-center">
                 <div
                   className={`w-full border-t-2 border-dotted ${step > 1 ? "border-blue-500" : "border-blue-500"}`}
                   style={{ borderStyle: "dotted" }}
                 ></div>
               </div>
-              {/* Step 2 */}
+              
               <div className="flex flex-col items-center flex-1">
                 <div
                   className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 ${step > 1 ? "border-blue-600 bg-blue-600 text-white" : "border-[#23272F] bg-[#23272F] text-gray-400"} text-sm sm:text-base font-bold transition-all duration-300`}
@@ -324,14 +443,14 @@ export default function SignupPage() {
                   {step > 1 ? <span className="text-lg">&#10003;</span> : "2"}
                 </div>
               </div>
-              {/* Dotted line */}
+              
               <div className="flex-1 flex items-center justify-center">
                 <div
                   className="w-full border-t-2 border-dotted border-[#23272F]"
                   style={{ borderStyle: "dotted" }}
                 ></div>
               </div>
-              {/* Step 3 */}
+              
               <div className="flex flex-col items-center flex-1">
                 <div
                   className={`w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border-2 ${step === 3 ? "border-blue-600 bg-blue-600 text-white" : "border-[#23272F] bg-[#23272F] text-gray-400"} text-sm sm:text-base font-bold transition-all duration-300`}
@@ -341,7 +460,7 @@ export default function SignupPage() {
               </div>
             </div>
           </div>
-          {/* Card Body */}
+          
           <div
             className={`bg-[#060910] rounded-b-xl px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-10 flex flex-col border-t-0 border border-[#23272F] transition-all duration-300 ${animating ? "opacity-0 translate-x-8" : "opacity-100 translate-x-0"}`}
           >
@@ -353,21 +472,15 @@ export default function SignupPage() {
                 <span className="block sm:inline">{error}</span>
               </div>
             )}
+            
             {signupSuccess ? (
-              // Success Page
               <div className="flex flex-col items-center justify-center min-h-[60vh] w-full">
-                {/* Stepper */}
-
-                <div className="w-full rounded-xl p-6 sm:p-8 flex flex-col items-center   max-w-full sm:max-w-lg mx-auto">
-                  {/* Success Image Placeholder */}
-                  <div className="flex items-center justify-center mb-6">
-                    {/* Replace this with your image */}
-                    <img
-                      src="/auth/success.svg"
-                      alt="Success"
-                      className="w-[200px] h-[200px] pointer-events-none select-none"
-                    />
-                  </div>
+                <div className="w-full rounded-xl p-6 sm:p-8 flex flex-col items-center max-w-full sm:max-w-lg mx-auto">
+                  <img
+                    src="/auth/success.svg"
+                    alt="Success"
+                    className="w-[200px] h-[200px] pointer-events-none select-none"
+                  />
                   <h3 className="text-2xl sm:text-3xl font-bold text-white text-center mb-2">
                     You Successfully Signed Up!
                   </h3>
@@ -591,20 +704,48 @@ export default function SignupPage() {
                     Log in 
                   </button>
                 </div>
-                {/* Divider */}
                 <div className="flex items-center my-4">
                   <div className="flex-grow h-px bg-[#23272F]" />
                   <span className="mx-4 text-gray-500 text-sm">Or, sign up with your wallet</span>
                   <div className="flex-grow h-px bg-[#23272F]" />
                 </div>
-                {/* Social Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4">
                   <button
                     type="button"
                     className="w-full flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] text-white font-semibold hover:bg-[#23272F] transition-colors"
+                    onClick={handleWalletConnect}
+                    disabled={walletConnecting}
                   >
-                    <img src="/wallet.svg" alt="Wallet" className="w-10 h-10 pointer-events-none select-none" /> Sign in
-                    with Wallet
+                    {walletConnecting ? (
+                      <>
+                        <svg
+                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          ></circle>
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          ></path>
+                        </svg>
+                        Connecting...
+                      </>
+                    ) : (
+                      <>
+                        <img src="/wallet.svg" alt="Wallet" className="w-5 h-5" />
+                        Continue with Wallet
+                      </>
+                    )}
                   </button>
                 </div>
               </form>
@@ -764,7 +905,6 @@ export default function SignupPage() {
                 </div>
               </form>
             ) : (
-              // Step 3: License Upload
               <form className="space-y-6" onSubmit={handleSignup}>
                 <div className="flex flex-col items-center justify-center w-full">
                   <div className="w-full bg-[#181c27] rounded-xl p-6 sm:p-8 flex flex-col items-center border border-[#23272F] max-w-full sm:max-w-lg mx-auto">

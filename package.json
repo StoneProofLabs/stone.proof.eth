@@ -76,6 +76,7 @@
     "node": ">=18.18.3"
   },
   "dependencies": {
+    "@coinbase/wallet-sdk": "^4.3.2",
     "@hookform/resolvers": "^5.0.1",
     "@mantine/core": "^8.0.0",
     "@mantine/hooks": "^8.0.0",

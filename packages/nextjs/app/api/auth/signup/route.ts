@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         message: "Failed to register user (proxy error)",
         error: error instanceof Error ? error.message : "Unknown error"
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
-} 
+}
