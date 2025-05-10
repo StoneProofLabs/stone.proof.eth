@@ -2,18 +2,17 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    // Get the form data from the incoming request
     const formData = await request.formData();
 
-    // Prepare a new FormData to send to the real backend
+    // Forward all fields as-is
     const backendFormData = new FormData();
     for (const [key, value] of formData.entries()) {
       backendFormData.append(key, value);
     }
 
-    const minerals = ["gold", "coltan"];
+    const minerals = ['gold', 'coltan'];
     const mineralsString = `[ "${minerals.join('", "')}" ]`; // results in [ "gold", "coltan" ]
-    backendFormData.append("mineralsMined", mineralsString);
+    backendFormData.append('mineralsMined', mineralsString);
 
     // Forward the request to the real backend
     const backendResponse = await fetch("https://stoneproofbackend.onrender.com/api/v1/auth/register", {
@@ -23,7 +22,6 @@ export async function POST(request: Request) {
     });
 
     const data = await backendResponse.json();
-
     return NextResponse.json(data, { status: backendResponse.status });
   } catch (error) {
     console.error("Signup proxy error:", error);
@@ -33,7 +31,7 @@ export async function POST(request: Request) {
         message: "Failed to register user (proxy error)",
         error: error instanceof Error ? error.message : "Unknown error"
       },
-      { status: 500 },
+      { status: 500 }
     );
   }
-}
+} 
