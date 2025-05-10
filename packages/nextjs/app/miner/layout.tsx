@@ -37,6 +37,7 @@ const FullPageLoader = ({ text = "Verifying miner permissions..." }: { text?: st
   </div>
 );
 
+
 const AccessDeniedCard = ({
   address,
   isLoadingRefresh,
