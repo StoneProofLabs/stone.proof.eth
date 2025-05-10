@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { Loading } from "../../../../components/ui/loading";
 import { toast } from "../../../lib/toast";
 
 function getQueryParams() {
@@ -37,7 +38,16 @@ const GoogleCallbackPage = () => {
     handleGoogleCallback();
   }, [router]);
 
-  return <div style={{ color: "white", textAlign: "center", marginTop: 40 }}>Processing Google login...</div>;
+  return (
+    <div className="min-h-screen bg-[#060910]">
+      <Loading
+        title="Processing Google Login"
+        description="Please wait while we complete your Google authentication..."
+        progressValue={90}
+        progressText="Almost there..."
+      />
+    </div>
+  );
 };
 
 export default GoogleCallbackPage;
