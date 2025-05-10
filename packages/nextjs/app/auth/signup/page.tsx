@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import StoneProof from "../../../components/landing/Header/StoneProof";
-import { FiArrowLeft, FiArrowRight, FiChevronDown, FiDownload, FiInfo } from "react-icons/fi";
+import { FiArrowLeft, FiArrowRight, FiChevronDown, FiDownload, FiEye, FiEyeOff, FiInfo } from "react-icons/fi";
 
 const mineralsList = ["Coltan", "Cobalt", "Gold", "Copper", "Tin", "Tungsten"];
 
@@ -33,6 +33,8 @@ export default function SignupPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const validateStep = (currentStep: number) => {
     switch (currentStep) {
@@ -482,16 +484,22 @@ export default function SignupPage() {
                       <input
                         id="password"
                         name="password"
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         placeholder="Password"
                         required
                         className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
                         value={formData.password}
                         onChange={e => setFormData({ ...formData, password: e.target.value })}
                       />
-                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
-                        <FiInfo size={16} />
-                      </span>
+                      <button
+                        type="button"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white focus:outline-none"
+                        onClick={() => setShowPassword(v => !v)}
+                        tabIndex={-1}
+                        aria-label={showPassword ? "Hide password" : "Show password"}
+                      >
+                        {showPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                      </button>
                     </div>
                     <span className="text-xs text-gray-500 ml-1">Please enter your password</span>
                   </div>
@@ -503,16 +511,22 @@ export default function SignupPage() {
                       <input
                         id="confirmPassword"
                         name="confirmPassword"
-                        type="password"
+                        type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm Password"
                         required
                         className="input input-bordered w-full bg-[#232B3E] focus:bg-[#232B3E] border-[#23272F] text-white pr-10 rounded-md focus:ring-2 focus:ring-blue-600"
                         value={formData.confirmPassword}
                         onChange={e => setFormData({ ...formData, confirmPassword: e.target.value })}
                       />
-                      <span className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white">
-                        <FiInfo size={16} />
-                      </span>
+                      <button
+                        type="button"
+                        className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex items-center justify-center text-white focus:outline-none"
+                        onClick={() => setShowConfirmPassword(v => !v)}
+                        tabIndex={-1}
+                        aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                      >
+                        {showConfirmPassword ? <FiEyeOff size={18} /> : <FiEye size={18} />}
+                      </button>
                     </div>
                     <span className="text-xs text-gray-500 ml-1">Passwords need to match</span>
                   </div>
@@ -588,9 +602,7 @@ export default function SignupPage() {
                   <button
                     type="button"
                     className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#2B2D2F] text-white font-semibold hover:bg-[#23272F] transition-colors"
-                    onClick={() =>
-                      (window.location.href = "https://stoneproofbackend.onrender.com/api/v1/auth/google")
-                    }
+                    onClick={() => (window.location.href = "https://stoneproofbackend.onrender.com/auth/google")}
                   >
                     <img src="/auth/google.svg" alt="Google" className="w-6 h-6 pointer-events-none select-none" /> Sign
                     up with Google

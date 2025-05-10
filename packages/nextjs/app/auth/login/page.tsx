@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import StoneProof from "../../../components/landing/Header/StoneProof";
 import { toast } from "../../lib/toast";
-import { FiArrowLeft, FiInfo } from "react-icons/fi";
+import { FiArrowLeft, FiEye, FiEyeOff, FiInfo } from "react-icons/fi";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -13,6 +13,7 @@ export default function LoginPage() {
     email: "",
     password: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -106,7 +107,7 @@ export default function LoginPage() {
                     type="email"
                     placeholder="Password"
                     required
-                    className="w-full py-3 px-4 bg-[#14171F] border border-[#2A2F3D] rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full py-3 px-4 bg-[#14171F] focus:bg-[#14171F] border border-[#2A2F3D] rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
                     value={formData.email}
                     onChange={e => setFormData({ ...formData, email: e.target.value })}
                   />
@@ -115,20 +116,7 @@ export default function LoginPage() {
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
                     aria-label="Show info"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <FiInfo className="w-5 h-5" />
                   </button>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">Valid email address used in registration</p>
@@ -142,32 +130,21 @@ export default function LoginPage() {
                   <input
                     id="password"
                     name="password"
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="Type Password here"
                     required
-                    className="w-full py-3 px-4 bg-[#14171F] border border-[#2A2F3D] rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full py-3 px-4 bg-[#14171F] focus:bg-[#14171F] border border-[#2A2F3D] rounded-md text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
                     value={formData.password}
                     onChange={e => setFormData({ ...formData, password: e.target.value })}
                   />
                   <button
                     type="button"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
-                    aria-label="Show password"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 focus:outline-none"
+                    onClick={() => setShowPassword(v => !v)}
+                    tabIndex={-1}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    {showPassword ? <FiEyeOff className="w-5 h-5" /> : <FiEye className="w-5 h-5" />}
                   </button>
                 </div>
                 <p className="text-xs text-gray-500 mt-1">Passwords need to match</p>
@@ -189,7 +166,7 @@ export default function LoginPage() {
                 type="submit"
                 className="w-full py-3 rounded-md bg-blue-500 hover:bg-blue-600 text-white font-medium transition-colors"
               >
-                Continue
+                Login
               </button>
 
               <div className="text-center">
@@ -217,7 +194,7 @@ export default function LoginPage() {
                 <button
                   type="button"
                   className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] bg-[#2B2D2F] text-white font-semibold hover:bg-[#23272F] transition-colors"
-                  onClick={() => (window.location.href = "https://stoneproofbackend.onrender.com/api/v1/auth/google")}
+                  onClick={() => (window.location.href = "https://stoneproofbackend.onrender.com/auth/google")}
                 >
                   <img src="/auth/google.svg" alt="Google" className="w-6 h-6 pointer-events-none select-none" /> Sign
                   in with Google

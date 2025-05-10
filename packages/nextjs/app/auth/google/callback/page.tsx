@@ -28,7 +28,7 @@ const GoogleCallbackPage = () => {
         }
         toast.success("Google login successful! Redirecting...");
         setTimeout(() => {
-          router.push("/welcome");
+          router.push("/auth/complete");
         }, 1500);
       } catch (err) {
         toast.error("Google login failed.");
