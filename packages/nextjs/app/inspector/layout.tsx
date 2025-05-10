@@ -11,6 +11,7 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
+import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -233,7 +234,12 @@ export default function InspectorLayout({ children }: { children: React.ReactNod
   }, [hasInspectorRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return <FullPageLoader text="Checking inspector permissions..." />;
+    return  <Loading
+    title="Verifying Inspector Access"
+    description="Please wait while we verify your inspector access..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   if (!isConnected) {
@@ -251,7 +257,12 @@ export default function InspectorLayout({ children }: { children: React.ReactNod
   }
 
   if (isDataLoading) {
-    return <FullPageLoader text="Loading inspector dashboard..." />;
+    return <Loading
+    title="Loading Inspector Dashboard"
+    description="Please wait while we load the inspector dashboard..."
+    progressValue={90}
+    progressText="Almost there..."
+  />;
   }
 
   return (

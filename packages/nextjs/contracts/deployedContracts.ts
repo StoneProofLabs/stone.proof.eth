@@ -1884,101 +1884,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "getAllRoleCounts",
           outputs: [
             {
@@ -2878,7 +2783,6 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
-        getAllRegisteredMineral: "contracts/core/RolesManager.sol",
         getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
@@ -4712,101 +4616,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "getAllRoleCounts",
           outputs: [
             {
@@ -5818,7 +5627,6 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
-        getAllRegisteredMineral: "contracts/core/RolesManager.sol",
         getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
@@ -7632,101 +7440,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "getAllRoleCounts",
           outputs: [
             {
@@ -8706,7 +8419,6 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
-        getAllRegisteredMineral: "contracts/core/RolesManager.sol",
         getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
@@ -10638,101 +10350,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "getAllRoleCounts",
           outputs: [
             {
@@ -11829,7 +11446,6 @@ const deployedContracts = {
         assignRefiner: "contracts/modules/MineralRegistry.sol",
         assignTransporter: "contracts/modules/MineralRegistry.sol",
         checkAuditAndInspectionStatus: "contracts/modules/MineralRegistry.sol",
-        getAllRegisteredMineral: "contracts/modules/MineralRegistry.sol",
         getAllRoleCounts: "contracts/modules/MineralRegistry.sol",
         getMineralHistory: "contracts/modules/MineralRegistry.sol",
         getRoleAdmin: "contracts/modules/MineralRegistry.sol",
@@ -13598,101 +13214,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "getAllRoleCounts",
           outputs: [
             {
@@ -14503,7 +14024,6 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
-        getAllRegisteredMineral: "contracts/core/RolesManager.sol",
         getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
@@ -16151,101 +15671,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -18729,101 +18154,6 @@ const deployedContracts = {
             },
           ],
           stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
           type: "function",
         },
         {
@@ -21673,101 +21003,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "getAllRoleCounts",
           outputs: [
             {
@@ -22972,7 +22207,6 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
-        getAllRegisteredMineral: "contracts/core/RolesManager.sol",
         getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
@@ -24692,101 +23926,6 @@ const deployedContracts = {
         },
         {
           inputs: [],
-          name: "getAllRegisteredMineral",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "string",
-                  name: "id",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "name",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "origin",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "mineralType",
-                  type: "string",
-                },
-                {
-                  internalType: "uint256",
-                  name: "weight",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "purityPercentage",
-                  type: "uint256",
-                },
-                {
-                  internalType: "string",
-                  name: "storageConditions",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "registeredBy",
-                  type: "address",
-                },
-                {
-                  internalType: "string",
-                  name: "currentStatus",
-                  type: "string",
-                },
-                {
-                  internalType: "string",
-                  name: "currentLocation",
-                  type: "string",
-                },
-                {
-                  internalType: "address",
-                  name: "currentHandler",
-                  type: "address",
-                },
-                {
-                  internalType: "bool",
-                  name: "isPurchased",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isRefined",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isAudited",
-                  type: "bool",
-                },
-                {
-                  internalType: "bool",
-                  name: "isInspected",
-                  type: "bool",
-                },
-                {
-                  internalType: "uint256",
-                  name: "timestamp",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct RolesManager.MineralDetails[]",
-              name: "mineralDetails",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
           name: "getAllRoleCounts",
           outputs: [
             {
@@ -25773,7 +24912,6 @@ const deployedContracts = {
         assignRefiner: "contracts/core/RolesManager.sol",
         assignTransporter: "contracts/core/RolesManager.sol",
         checkAuditAndInspectionStatus: "contracts/core/RolesManager.sol",
-        getAllRegisteredMineral: "contracts/core/RolesManager.sol",
         getAllRoleCounts: "contracts/core/RolesManager.sol",
         getMineralHistory: "contracts/core/RolesManager.sol",
         getRoleAdmin: "contracts/core/RolesManager.sol",
