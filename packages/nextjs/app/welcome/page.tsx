@@ -216,13 +216,18 @@ const Page = () => {
   }, [router]);
 
   const handleLogout = async () => {
+
     const email = localStorage.getItem("email");
     const password = localStorage.getItem("password");
     if (!email || !password) {
       toast.error("Missing credentials for logout.");
       return;
     }
+
+    const loadingToast = toast.loading("Logging out...");
+
     setIsLoggingOut(true);
+
     try {
       const response = await fetch("/api/auth/logout", {
         method: "POST",
@@ -230,6 +235,9 @@ const Page = () => {
         body: JSON.stringify({ email, password }),
       });
       const data = await response.json();
+
+      toast.dismiss(loadingToast);
+
       if (response.ok) {
         toast.success("Successfully logged out!");
         localStorage.removeItem("email");
@@ -240,6 +248,7 @@ const Page = () => {
         }, 1500);
       } else {
         toast.error(data.message || "Logout failed.");
+
         setIsLoggingOut(false);
       }
     } catch (err) {
@@ -512,6 +521,7 @@ const Page = () => {
           </div>
         </div>
       </div>
+
     </div>
   );
 };

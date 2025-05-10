@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Check, AlertCircle } from "lucide-react";
+import { AlertCircle, Check } from "lucide-react";
 import UnrefinedMineralsTable from "~~/components/dashboard/refiner/unrefinedMinerals";
 import { warehouseMineralData } from "~~/data/data";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
@@ -31,13 +31,13 @@ export default function Page() {
         functionName: "refineMineral",
         args: [mineralId, report],
       });
-      
+
       notification.info("Transaction submitted. Waiting for confirmation...");
       setMineralId("");
       setReport("");
     } catch (error: any) {
       console.error("Transaction error:", error);
-      
+
       if (error.message.includes("User rejected the request")) {
         notification.error("Transaction rejected by user");
       } else if (error.message.includes("RolesManager__InvalidMineralIdOrNotFound")) {
@@ -77,7 +77,7 @@ export default function Page() {
                 <input
                   type="text"
                   value={mineralId}
-                  onChange={(e) => setMineralId(e.target.value)}
+                  onChange={e => setMineralId(e.target.value)}
                   placeholder="Enter mineral ID"
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 focus:outline-none"
                 />
@@ -87,7 +87,7 @@ export default function Page() {
                 <label className="block text-sm font-medium mb-2">Refinement Report</label>
                 <textarea
                   value={report}
-                  onChange={(e) => setReport(e.target.value)}
+                  onChange={e => setReport(e.target.value)}
                   placeholder="Enter refinement details..."
                   className="w-full bg-[#252525] border border-[#323539] text-white rounded px-4 py-3 h-32 focus:outline-none"
                 />
@@ -97,20 +97,13 @@ export default function Page() {
                 type="submit"
                 disabled={isSubmitting || !mineralId || !report}
                 className={`w-full ${
-                  isSubmitting 
-                    ? "bg-gray-600 cursor-not-allowed" 
-                    : "bg-blue-600 hover:bg-blue-700"
+                  isSubmitting ? "bg-gray-600 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
                 } text-white font-medium py-3 rounded mt-4 transition-colors flex items-center justify-center`}
               >
                 {isSubmitting ? (
                   <>
                     <span className="animate-spin mr-2">
-                      <svg
-                        className="h-5 w-5"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
+                      <svg className="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                         <circle
                           className="opacity-25"
                           cx="12"

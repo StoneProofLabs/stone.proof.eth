@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useCallback } from "react";
-import { Check, ChevronDown, Minus, Plus, AlertCircle, Loader2, Copy } from "lucide-react";
+import { useCallback, useState } from "react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AlertCircle, Check, ChevronDown, Copy, Loader2, Minus, Plus, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
@@ -48,79 +48,124 @@ const AccessDeniedView = ({
   };
 
   return (
-    <div className="max-w-md w-full p-8 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="h-16 w-16 rounded-full bg-red-900/30 flex items-center justify-center">
-          <AlertCircle className="w-8 h-8 text-red-500" />
-        </div>
-        <h3 className="text-2xl font-bold text-white">Access Denied</h3>
-        <p className="text-gray-400">The connected wallet doesn't have inspector privileges to inspect minerals.</p>
-        <div className="flex items-center gap-2 p-2 px-4 mt-2 border border-gray-700 rounded-lg bg-gray-900/50 w-full">
-          <span className="font-mono text-sm text-gray-300 truncate">{address}</span>
-          <button onClick={copyAddress} className="p-1 rounded-md hover:bg-gray-700 text-gray-400">
-            <Copy className="w-4 h-4" />
-          </button>
-        </div>
+    <div className="flex items-center justify-center min-h-screen p-4">
+      <div className="w-full max-w-4xl p-4 sm:p-6 bg-gray-800 rounded-xl shadow-lg border border-gray-700">
+        <div className="text-center flex flex-col items-center gap-5">
+          <div>
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-700 rounded-full mx-auto">
+              <ShieldAlert className="w-8 h-8 text-red-300" />
+            </div>
 
-        <div className="w-full mt-4 p-4 rounded-lg border border-gray-700 bg-gray-900/30">
-          <h3 className="text-base font-medium text-white mb-4">How to get inspector access:</h3>
-          <ol className="space-y-4 text-sm text-gray-400">
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-900/50 text-emerald-400 text-xs font-medium">
-                1
-              </span>
-              <div>
-                <p>Contact system administrator at:</p>
-                <div className="mt-1 space-y-2 pl-2">
-                  <a
-                    href="mailto:admin@stone.proof?subject=Inspector%20Role%20Request"
-                    className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300"
-                  >
-                    admin@stone.proof
-                  </a>
+            <h2 className="text-xl sm:text-2xl font-bold text-red-400 mt-3">Inspector Privileges Required</h2>
+            <p className="text-sm sm:text-base text-gray-300 mt-2">
+              Your wallet doesn&apos;t have inspector access permissions to view this dashboard.
+            </p>
+          </div>
+
+          {/* Main content - switches from row to column on small screens */}
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-6 w-[100%] ">
+            {/* Left section - miner privileges */}
+            <div className="w-full lg:w-[50%] h-[100%] flex flex-col justify-between">
+              <div className="bg-gray-700 p-3 sm:p-4 rounded-lg mt-4">
+                <div className="flex justify-between items-center mb-1">
+                  <span className="text-xs sm:text-sm font-medium text-gray-400">Connected Wallet:</span>
+                  <button onClick={copyAddress} className="text-blue-400 hover:text-blue-300" title="Copy address">
+                    <Copy className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
                 </div>
+                <p className="font-mono text-xs sm:text-sm break-all text-left text-gray-200">{address}</p>
               </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-900/50 text-emerald-400 text-xs font-medium">
-                2
-              </span>
-              <div>
-                <p>Request inspector role assignment</p>
-              </div>
-            </li>
-            <li className="flex items-start gap-3">
-              <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-emerald-900/50 text-emerald-400 text-xs font-medium">
-                3
-              </span>
-              <div>
-                <p>Refresh this page after approval</p>
-                <p className="text-xs text-gray-500 mt-1">
-                  If access isn't granted immediately, wait a few minutes then refresh
-                </p>
-              </div>
-            </li>
-          </ol>
-        </div>
 
-        <button
-          onClick={onRefresh}
-          disabled={isLoadingRefresh}
-          className={`w-full mt-4 py-3 px-4 rounded-lg font-medium transition-colors ${
-            isLoadingRefresh
-              ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-              : "bg-emerald-600 hover:bg-emerald-700 text-white"
-          }`}
-        >
-          {isLoadingRefresh ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin mr-2 inline" />
-              Refreshing...
-            </>
-          ) : (
-            "Refresh Access"
-          )}
-        </button>
+              <div className="pt-4 space-y-3">
+                <h3 className="font-medium text-white">How to get inspector access:</h3>
+                <ol className="space-y-2 text-xs sm:text-sm text-gray-300 text-left">
+                  <li className="flex items-start gap-3">
+                    <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+                      1
+                    </span>
+                    Contact system administrator
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+                      2
+                    </span>
+                    Request inspector role assignment
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="inline-flex items-center justify-center h-5 w-5 rounded-full bg-blue-900 text-blue-200 text-xs font-medium">
+                      3
+                    </span>
+                    Refresh this page after approval
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            {/* Right section - contact administrators */}
+            <div className="w-full lg:w-[40%] mt-4 lg:mt-0 lg:pt-0">
+              <h3 className="font-medium text-white mb-3 sm:mb-4">Contact Administrators</h3>
+              <div className="space-y-2 sm:space-y-3">
+                {[
+                  {
+                    name: "Admin Email",
+                    value: "admin@stone.proof",
+                    icon: <Mail className="w-4 h-4 sm:w-5 sm:h-5" />,
+                    action: "mailto:admin@stone.proof?subject=Miner%20Access%20Request",
+                  },
+                  {
+                    name: "Support Phone",
+                    value: "+1 (555) 123-4567",
+                    icon: <Phone className="w-4 h-4 sm:w-5 sm:h-5" />,
+                    action: "tel:+15551234567",
+                  },
+                  {
+                    name: "Telegram Support",
+                    value: "@StoneProofSupport",
+                    icon: <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5" />,
+                    action: "https://t.me/StoneProofSupport",
+                  },
+                ].map((contact, index) => (
+                  <a
+                    key={index}
+                    href={contact.action}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1 px-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors text-xs"
+                  >
+                    <div className="flex-shrink-0">
+                      <div className="flex items-center justify-center w-5 h-5 rounded-full text-blue-300">
+                        {contact.icon}
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0 overflow-hidden">
+                      <p className="font-medium text-white truncate leading-tight text-xs sm:text-sm">{contact.name}</p>
+                      <p className="text-xs text-gray-400 truncate leading-tight">{contact.value}</p>
+                    </div>
+                    <ChevronRight className="w-3 h-3 text-gray-400 flex-shrink-0" />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Refresh button */}
+          <div className="w-full pt-2 sm:pt-4">
+            <button
+              onClick={onRefresh}
+              disabled={isLoadingRefresh}
+              className="w-full px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm sm:text-base"
+            >
+              {isLoadingRefresh ? (
+                <Loader2 className="w-4 h-4 animate-spin" />
+              ) : (
+                <>
+                  Check Access Again
+                  <ChevronRight className="w-4 h-4" />
+                </>
+              )}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -171,7 +216,7 @@ export default function InspectMinerals() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!isConnected || !hasInspectorRole || !validateForm()) return;
 
     setIsTransactionPending(true);
@@ -232,7 +277,7 @@ export default function InspectMinerals() {
         <p className="text-sm text-gray-400 text-center mb-6">
           Fill out the form below to submit your inspection report for a mineral.
         </p>
-        
+
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Mineral ID */}
           <div>
@@ -252,7 +297,7 @@ export default function InspectMinerals() {
               autoComplete="off"
             />
           </div>
-          
+
           {/* Inspection Report */}
           <div>
             <label htmlFor="report" className="block text-base text-white mb-2">
@@ -269,7 +314,7 @@ export default function InspectMinerals() {
               } text-white rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#0A77FF] transition min-h-[100px] resize-none`}
             />
           </div>
-          
+
           {/* Action Button */}
           <button
             type="submit"
@@ -290,7 +335,7 @@ export default function InspectMinerals() {
             )}
           </button>
         </form>
-        
+
         <div className="mt-6 p-4 rounded-lg border border-gray-700 bg-gray-900/30">
           <h3 className="text-sm font-medium text-white mb-3">Validation Status</h3>
           <div className="space-y-3">
@@ -316,7 +361,7 @@ export default function InspectMinerals() {
             </div>
           </div>
         </div>
-        
+
         <p className="text-gray-500 text-center mt-6">Your Transaction is secure and safe</p>
       </div>
     </div>

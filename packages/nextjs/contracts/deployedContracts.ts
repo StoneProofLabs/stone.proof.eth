@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     DisputeResolution: {
-      address: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+      address: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
       abi: [
         {
           inputs: [],
@@ -873,9 +873,9 @@ const deployedContracts = {
             },
             {
               indexed: false,
-              internalType: "uint256",
+              internalType: "string",
               name: "mineralId",
-              type: "uint256",
+              type: "string",
             },
             {
               indexed: false,
@@ -935,9 +935,9 @@ const deployedContracts = {
             },
             {
               indexed: false,
-              internalType: "uint256",
+              internalType: "string",
               name: "mineralId",
-              type: "uint256",
+              type: "string",
             },
             {
               indexed: true,
@@ -1824,9 +1824,9 @@ const deployedContracts = {
               type: "uint256",
             },
             {
-              internalType: "uint256",
+              internalType: "string",
               name: "mineralId",
-              type: "uint256",
+              type: "string",
             },
             {
               internalType: "address",
@@ -2389,9 +2389,9 @@ const deployedContracts = {
         {
           inputs: [
             {
-              internalType: "uint256",
+              internalType: "string",
               name: "mineralId",
-              type: "uint256",
+              type: "string",
             },
             {
               internalType: "address",
@@ -16461,7 +16461,7 @@ const deployedContracts = {
       },
     },
     SupplychainValidator: {
-      address: "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+      address: "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
       abi: [
         {
           inputs: [
