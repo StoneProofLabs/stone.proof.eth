@@ -807,9 +807,9 @@ function getRolesForAddress(address account) public view onlyNonZeroAddress(acco
 
     ///////////////////////////////////////////////
     //////// getting all registered minerals /////
-    //////////////////////////////////////////////
-    function getAllRegisteredMineral() public view returns(MineralDetails[] memory mineralDetails) {
-        return mineralDetails;
+    // //////////////////////////////////////////////
+    // function getAllRegisteredMineral() public view returns(MineralDetails[] memory mineralDetails) {
+    //     return mineralDetails;
 
-    }
+    // }
 }
