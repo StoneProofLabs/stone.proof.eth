@@ -156,6 +156,9 @@ All actions are tracked on-chain for accountability and traceability.
 
 ---
 
+## Enables raising and resolution og disputes under disputeResolution portal
+![Dispute resolution](./assets/disputeResolution.png)
+
 ## Demo (Coming Soon)
 
 Deployment to Base Sepolia testnet is underway. A live demo link will be added shortly. Judges and reviewers will be able to:

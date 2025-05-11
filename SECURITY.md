@@ -2,7 +2,7 @@
 
 ## Supported Versions
 
-The following versions of the **Stone.proof** project are actively supported with security updates. Please ensure you are using a supported version to receive updates and patches.
+The following versions of the **stone.proof.eth** project are actively supported with security updates. Please ensure you are using a supported version to receive updates and patches.
 
 | Version | Supported          |
 | ------- | ------------------ |
@@ -36,7 +36,7 @@ We take security issues in **stone.proof** seriously. If you discover a vulnerab
    - We follow a responsible disclosure policy. After the vulnerability is resolved, we will work with you to publish an advisory, crediting your discovery (if desired).
 
 5. **Stay Updated**  
-   - Visit our [Security Advisory Page](https://stoneprooflabs.com/security-advisories) to stay informed about vulnerabilities and their patches.
+   - Visit our [Security Advisory Page](https://StoneProofLabs.com/security-advisories) to stay informed about vulnerabilities and their patches.
 
 ---
 
@@ -48,9 +48,11 @@ We take security issues in **stone.proof** seriously. If you discover a vulnerab
   
 - **Smart Contract Validation**: Transactions are validated through robust chaincode to detect and prevent fraud or tampering.
 
-For additional security questions or concerns, contact us at **support@stoneprooflabs.com**.
+For additional security questions or concerns, contact us at `<support@stoneprooflabs.com>`. or   `<stone.prooflabs@gmail.com>`
 -------------------------------
 
 Brought to you by - _**Stone.proof Labs**_
 
 **NOTE :: THE ABOVE WAYS OF COMMUNICATION AND LINKS ARE NOT YET ESTABLISHED BUT SOON WILL BE. Thank you!!**
+
+The Universal email we are using now is, _**<stone.prooflabs@gmail.com>**_

@@ -1,86 +1,167 @@
-# Welcome to Scaffold-ETH 2 Contributing Guide
+# Contributing to StoneProof
 
-Thank you for investing your time in contributing to Scaffold-ETH 2!
+Thank you for considering contributing to StoneProof. Your involvement helps us build a transparent, secure, and decentralized future for mineral supply chain verification.
 
-This guide aims to provide an overview of the contribution workflow to help us make the contribution process effective for everyone involved.
+Please follow the guidelines below to ensure a smooth and productive collaboration.
 
-## About the Project
+---
 
-Scaffold-ETH 2 is a minimal and forkable repo providing builders with a starter kit to build decentralized applications on Ethereum.
+## Table of Contents
 
-Read the [README](README.md) to get an overview of the project.
+- [Code of Conduct](#code-of-conduct)
+- [Getting Started](#getting-started)
+- [Project Structure](#project-structure)
+- [How to Contribute](#how-to-contribute)
+- [Development Standards](#development-standards)
+- [Smart Contract Guidelines](#smart-contract-guidelines)
+- [Frontend Contribution](#frontend-contribution)
+- [Submitting a Pull Request](#submitting-a-pull-request)
+- [Security Policy](#security-policy)
+- [Thank You](#thank-you)
 
-### Vision
+---
 
-The goal of Scaffold-ETH 2 is to provide the primary building blocks for a decentralized application.
+## Code of Conduct
 
-The repo can be forked to include integrations and more features, but we want to keep the master branch simple and minimal.
+By participating in this project, you agree to follow our [Code of Conduct](./CODE_OF_CODUCT.md), which fosters a respectful, inclusive, and harassment-free environment.
 
-### Project Status
+---
 
-The project is under active development.
+## Getting Started
 
-You can view the open Issues, follow the development process and contribute to the project.
+1. **Fork** the repository  
+2. Clone your fork:
+```sh
+   git clone https://github.com/YOUR_USERNAME/stone.proof.eth.git
+   cd stone.proof.eth
+```
+3. Install dependencies:
+```sh
+   yarn install
+```
+4. Set up your .env file for environment variables  
 
-## Getting started
+5. Run the development server:
+```sh
+   yarn start
+```
+*Ensure your wallet is connected and configured for the Base L2 network.*
+---
 
-You can contribute to this repo in many ways:
+## Project Structure
 
-- Solve open issues
-- Report bugs or feature requests
-- Improve the documentation
+packages/hardhat/contracts/
+  `core/`                Access control, validation, privacy
+  `governance/`          Dispute resolution logic
+  `interfaces/`          Smart contract interface definitions
+  `logs/`                Blockchain event logging
+  `modules/`             Registry, logistics, warehouse modules
+  `tokens/`              ERC721 token minting logic
+  `utils/`               Shared data types, events, and errors
 
-Contributions are made via Issues and Pull Requests (PRs). A few general guidelines for contributions:
+packages/nextjs/
+  `app/`                 Next.js 14 app directory (App Router)
+  `components/`          UI components with Tailwind + Shadcn
+  `hooks/`               Web3 and custom Wagmi hooks
+  `config/`              Constants, networks, chains, wallet setup
 
-- Search for existing Issues and PRs before creating your own.
-- Contributions should only fix/add the functionality in the issue OR address style issues, not both.
-- If you're running into an error, please give context. Explain what you're trying to do and how to reproduce the error.
-- Please use the same formatting in the code repository. You can configure your IDE to do it by using the prettier / linting config files included in each package.
-- If applicable, please edit the README.md file to reflect the changes.
+---
 
-### Issues
+## How to Contribute
 
-Issues should be used to report problems, request a new feature, or discuss potential changes before a PR is created.
+### Good First Issues
 
-#### Solve an issue
+- Improve UI accessibility  
 
-Scan through our [existing issues](https://github.com/scaffold-eth/scaffold-eth-2/issues) to find one that interests you.
+- Refactor frontend for clarity and consistency  
 
-If a contributor is working on the issue, they will be assigned to the individual. If you find an issue to work on, you are welcome to assign it to yourself and open a PR with a fix for it.
+- Write unit tests for contracts  
 
-#### Create a new issue
+- Add documentation and comments  
 
-If a related issue doesn't exist, you can open a new issue.
+### Advanced Contributions
 
-Some tips to follow when you are creating an issue:
+- Extend modular contract logic  
 
-- Provide as much context as possible. Over-communicate to give the most details to the reader.
-- Include the steps to reproduce the issue or the reason for adding the feature.
-- Screenshots, videos etc., are highly appreciated.
+- Optimize gas usage  
 
-### Pull Requests
+- Add multisig logic or DAO governance hooks  
 
-#### Pull Request Process
+- Improve on-chain validation flow and events  
 
-We follow the ["fork-and-pull" Git workflow](https://github.com/susam/gitpr)
+---
 
-1. Fork the repo
-2. Clone the project
-3. Create a new branch with a descriptive name
-4. Commit your changes to the new branch
-5. Push changes to your fork
-6. Open a PR in our repository and tag one of the maintainers to review your PR
+## Development Standards
 
-Here are some tips for a high-quality pull request:
+- Linting: yarn lint  
 
-- Create a title for the PR that accurately defines the work done.
-- Structure the description neatly to make it easy to consume by the readers. For example, you can include bullet points and screenshots instead of having one large paragraph.
-- Add the link to the issue if applicable.
-- Have a good commit message that summarises the work done.
+- Formatting: Prettier (yarn format)  
 
-Once you submit your PR:
+- Commit messages: Use semantic commit messages:
+  feat: add warehouse inventory verification
+  fix: resolve tokenURI fetch issue
+  chore: update walletconnect version
 
-- We may ask questions, request additional information or ask for changes to be made before a PR can be merged. Please note that these are to make the PR clear for everyone involved and aims to create a frictionless interaction process.
-- As you update your PR and apply changes, mark each conversation resolved.
+- Testing: Use Hardhat and Chai:
+  yarn hardhat test
 
-Once the PR is approved, we'll "squash-and-merge" to keep the git commit history clean.
+---
+
+## Smart Contract Guidelines
+
+- Use Solidity `^0.8.20` 
+
+- Use OpenZeppelin libraries for security  
+
+- Emit events on all critical state changes  
+
+- Reuse errors from `Errors.sol`  
+
+- Define shared types in `DataTypes.sol`  
+
+- Interface-first development encouraged (interfaces/ folder)  
+
+---
+
+## Frontend Contribution
+
+- Next.js 14 with App Router  
+
+- Wagmi, Viem, WalletConnect for Web3 integration  
+
+- Tailwind CSS and Shadcn/UI for UI components  
+
+- Each portal validates role access on wallet connection  
+
+- Maintain modular, reusable, accessible UI  
+
+---
+
+## Submitting a Pull Request
+
+1. Fork the repository  
+2. Create a feature branch:
+   git checkout -b feat/your-feature-name
+
+3. Commit using conventional commits  
+4. Push to your fork and open a Pull Request  
+5. Describe the change and link related issues if any  
+
+---
+
+## Security Policy
+
+To report vulnerabilities, please use one of the following:
+
+- Open a GitHub security advisory  
+- Contact the core maintainers privately via email  
+
+---
+
+## Thank You
+
+Your contributions, whether large or small, are appreciated. Let’s build the future of supply chain verification together with StoneProof.
+
+The universal email we use currently is, `stone.prooflabs@gmail.com`
+
+_**StoneProofLabs**_
