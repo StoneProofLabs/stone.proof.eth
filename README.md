@@ -1,5 +1,6 @@
 # Stone.proof.eth: Trust. Trace. Transact.
 
+![ADMIN-PORTAL-OVERVIEW](./assets/admin-overview.png)
 Stone.proof is a modular, decentralized mineral traceability platform built on Base Layer 2. It empowers supply chain actors to register, validate, and trade mineral assets with integrity, verifiable origin, and strict access control.
 
 Built for security, scale, and enterprise reliability.
@@ -49,6 +50,8 @@ Each participant operates within a dedicated portal based on their assigned role
 
 ---
 
+![RolesManagement](./assets//Roles-manager.png)
+
 ## Role-Based Portals
 
 | Portal                | Role(s)                | Capabilities                                   |
@@ -57,6 +60,7 @@ Each participant operates within a dedicated portal based on their assigned role
 | Refinery Portal       | REFINER                | Refine, tag, and forward processed batches     |
 | Warehouse Portal      | REFINER                | Track mineral storage and prepare for sale     |
 | Buyer Portal          | BUYER                  | View and acquire validated minerals            |
+| Transporter Portal.   | TRANSPORTER.           | Transfer minerals from origin to destination.  |
 | Supervision Portal    | AUDITOR, INSPECTOR, SUPER_ADMIN | Validate minerals, resolve disputes, audit records |
 
 Only wallet addresses with valid roles may access their respective portals. All others are automatically blocked or redirected.
@@ -108,10 +112,9 @@ Access is enforced using on-chain roles through the `RolesManager` smart contrac
 | └── `Events.sol`                       | Shared event declarations                                               |
 
 
-## Project Structure
+## Getting started
 
-
-
+![Getting started](./assets/welcome-page.png)
 
 ---
 

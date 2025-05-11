@@ -7,6 +7,7 @@ import StoneProof from "../../../components/landing/Header/StoneProof";
 import { FiArrowLeft, FiArrowRight, FiChevronDown, FiDownload, FiEye, FiEyeOff, FiInfo } from "react-icons/fi";
 import { useAccount, useChainId } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const mineralsList = ["Coltan", "Cobalt", "Gold", "Copper", "Tin", "Tungsten"];
 
@@ -52,33 +53,9 @@ export default function SignupPage() {
     buyer: "/buyer-portal",
   };
 
-  const handleWalletConnect = async () => {
-    setWalletConnecting(true);
-    setError(null);
-    
-    try {
-      if (!isConnected) return;
-
-      const activeChainId = chainId || currentChainId;
-      
-      if (activeChainId !== 31337) {
-        setError("Please switch to the correct network");
-        return;
-      }
-
-      if (connectedAddress) {
-        await checkUserRole(connectedAddress);
-      }
-    } catch (error) {
-      console.error("Wallet connection error:", error);
-      setError("Failed to connect wallet. Please try again.");
-    } finally {
-      setWalletConnecting(false);
-    }
-  };
-
   const checkUserRole = async (address: string) => {
     try {
+      // Check admin role first
       const { data: isAdmin } = useScaffoldReadContract({
         contractName: "RolesManager",
         functionName: "hasAdminRole",
@@ -90,6 +67,7 @@ export default function SignupPage() {
         return;
       }
 
+      // Check miner role
       const { data: isMiner } = useScaffoldReadContract({
         contractName: "RolesManager",
         functionName: "hasMinerRole",
@@ -101,6 +79,7 @@ export default function SignupPage() {
         return;
       }
 
+      // Check refiner role
       const { data: isRefiner } = useScaffoldReadContract({
         contractName: "RolesManager",
         functionName: "hasRefinerRole",
@@ -112,6 +91,7 @@ export default function SignupPage() {
         return;
       }
 
+      // Check transporter role
       const { data: isTransporter } = useScaffoldReadContract({
         contractName: "RolesManager",
         functionName: "hasTransporterRole",
@@ -123,6 +103,7 @@ export default function SignupPage() {
         return;
       }
 
+      // Check inspector role
       const { data: isInspector } = useScaffoldReadContract({
         contractName: "RolesManager",
         functionName: "hasInspectorRole",
@@ -134,6 +115,7 @@ export default function SignupPage() {
         return;
       }
 
+      // Check auditor role
       const { data: isAuditor } = useScaffoldReadContract({
         contractName: "RolesManager",
         functionName: "hasAuditorRole",
@@ -145,6 +127,7 @@ export default function SignupPage() {
         return;
       }
 
+      // Check buyer role
       const { data: isBuyer } = useScaffoldReadContract({
         contractName: "RolesManager",
         functionName: "hasBuyerRole",
@@ -165,9 +148,19 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (isConnected && connectedAddress) {
-      checkUserRole(connectedAddress);
+      const activeChainId = chainId || currentChainId;
+      
+      if (activeChainId !== 31337) {
+        setError("Please switch to the correct network");
+        return;
+      }
+
+      setWalletConnecting(true);
+      checkUserRole(connectedAddress).finally(() => {
+        setWalletConnecting(false);
+      });
     }
-  }, [isConnected, connectedAddress]);
+  }, [isConnected, connectedAddress, chainId, currentChainId]);
 
   const validateStep = (currentStep: number) => {
     switch (currentStep) {
@@ -710,43 +703,49 @@ export default function SignupPage() {
                   <div className="flex-grow h-px bg-[#23272F]" />
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <button
-                    type="button"
-                    className="w-full flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] text-white font-semibold hover:bg-[#23272F] transition-colors"
-                    onClick={handleWalletConnect}
-                    disabled={walletConnecting}
-                  >
-                    {walletConnecting ? (
-                      <>
-                        <svg
-                          className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
+                  <ConnectButton.Custom>
+                    {({ openConnectModal, account, chain }) => {
+                      return (
+                        <button
+                          type="button"
+                          className="w-full flex items-center justify-center gap-2 py-2 rounded-md border border-[#23272F] text-white font-semibold hover:bg-[#23272F] transition-colors"
+                          onClick={openConnectModal}
+                          disabled={walletConnecting}
                         >
-                          <circle
-                            className="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            strokeWidth="4"
-                          ></circle>
-                          <path
-                            className="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                          ></path>
-                        </svg>
-                        Connecting...
-                      </>
-                    ) : (
-                      <>
-                        <img src="/wallet.svg" alt="Wallet" className="w-5 h-5" />
-                        Continue with Wallet
-                      </>
-                    )}
-                  </button>
+                          {walletConnecting ? (
+                            <>
+                              <svg
+                                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                              </svg>
+                              Connecting...
+                            </>
+                          ) : (
+                            <>
+                              <img src="/wallet.svg" alt="Wallet" className="w-5 h-5" />
+                              Sign in with Wallet
+                            </>
+                          )}
+                        </button>
+                      );
+                    }}
+                  </ConnectButton.Custom>
                 </div>
               </form>
             ) : step === 2 ? (

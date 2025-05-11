@@ -21,3 +21,13 @@ node_modules
 
 # cli
 dist
+
+# .env
+.env
+.env.local
+
+# build
+build
+out
+cache
+coverage
