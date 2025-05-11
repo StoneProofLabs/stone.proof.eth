@@ -232,6 +232,26 @@ export default function AuditMinerals() {
       price: "$6,000",
       image: "/dashboard/cobalt.png",
     },
+    {
+      id: "PLATINUM-RAW-0xe1f2a3b4",
+      name: "Platinum Ore",
+      type: "Platinum",
+      purity: 15.7,
+      weight: "75 kg",
+      origin: "Russia",
+      image: "/minerals/platinum-ore.png",
+      description: "Platinum group metals ore",
+    },
+    {
+      id: "TIN-0xe1f2a3b4",
+      name: "Tin Ore",
+      type: "Tin",
+      purity: 15.7,
+      weight: "75 kg",
+      origin: "Rwanda",
+      image: "/minerals/platinum-ore.png",
+      description: "Platinum group metals ore",
+    },
   ];
 
   if (isConnected && isRoleLoading) {

@@ -117,7 +117,7 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
             require(msg.value == mineral.saleInfo.priceETH, "Incorrect ETH amount");
             payable(mineral.refiner).transfer(msg.value);
         } else {
-            require(acceptedTokens[token], "Token not accepted");
+            // require(acceptedTokens[token], "Token not accepted");
             require(amount == mineral.saleInfo.tokenPrices[token], "Incorrect token amount");
             IERC20(token).transferFrom(msg.sender, mineral.refiner, amount);
         }
