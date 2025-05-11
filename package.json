@@ -113,6 +113,5 @@
     "chalk@4.1.2": {
       "unplugged": true
     }
-  },
-  "packageManager": "yarn@4.9.1"
+  }
 }

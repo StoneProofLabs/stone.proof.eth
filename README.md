@@ -7,6 +7,19 @@ Built for security, scale, and enterprise reliability.
 
 ---
 
+## Problem Statement
+**The mineral industry faces significant challenges with traceability, transparency, and trust across its supply chain. A lack of verifiable data and secure tracking systems has led to widespread fraud, misreporting, and illicit trade of minerals—undermining both industry integrity and national economies. These issues hinder responsible sourcing and erode confidence among stakeholders, from miners and refiners to regulators and buyers.**
+
+**Stone.proof addresses this critical gap by leveraging blockchain technology to ensure end-to-end traceability, immutable recordkeeping, and transparent transactions across the mineral supply chain. By fostering trust and accountability, stone.proof empowers industries and governments to combat mineral fraud, enhance compliance, and ultimately strengthen economic growth.**
+
+
+## Challenges we ran through
+
+**One of the main challenges we faced during development was the team's varying levels of experience with blockchain technology—only the team leader had prior expertise in Ethereum. This knowledge gap made it difficult to align on key architectural decisions early on.**
+
+**Our team consisted of four members: two frontend developers, one backend developer, and one blockchain developer who also handled UI/UX design. The most demanding part of the project was integration—ensuring seamless interaction between the smart contracts and the frontend application. Despite these obstacles, we collaborated closely, learned quickly, and pushed through the complexities. With persistence and teamwork, we overcame the hurdles and successfully delivered a fully functional and elegant solution.**
+
+
 ## Table of Contents
 
 - [Overview](#overview)
