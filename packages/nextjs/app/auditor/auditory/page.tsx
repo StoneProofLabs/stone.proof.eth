@@ -338,7 +338,7 @@ export default function AuditMinerals() {
           <div className="w-full lg:w-2/5">
             <div className="bg-gray-800 rounded-xl p-5 border border-gray-700 shadow-lg">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-xl font-semibold">Minerals to Audit</h2>
+                <h2 className="text-xl font-semibold">Minerals waiting for Auditory</h2>
                 <div className="relative">
                   <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}

@@ -22,18 +22,18 @@ const montserrat = Montserrat({
 const basepath = "/transporter";
 const sideBarItems = getSidebarItems(basepath);
 
-const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
-  <div className="flex flex-col items-center justify-center gap-2">
-    <Loader2 className={`w-${size} h-${size} animate-spin`} />
-    {text && <p className="text-sm text-muted-foreground">{text}</p>}
-  </div>
-);
+// const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
+//   <div className="flex flex-col items-center justify-center gap-2">
+//     <Loader2 className={`w-${size} h-${size} animate-spin`} />
+//     {text && <p className="text-sm text-muted-foreground">{text}</p>}
+//   </div>
+// );
 
-const FullPageLoader = ({ text = "Verifying transporter permissions..." }: { text?: string }) => (
-  <div className="flex items-center justify-center min-h-screen bg-lightBlack">
-    <LoadingSpinner size={12} text={text} />
-  </div>
-);
+// const FullPageLoader = ({ text = "Verifying transporter permissions..." }: { text?: string }) => (
+//   <div className="flex items-center justify-center min-h-screen bg-lightBlack">
+//     <LoadingSpinner size={12} text={text} />
+//   </div>
+// );
 
 const AccessDeniedCard = ({
   address,
