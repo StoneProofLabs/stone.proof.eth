@@ -1,6 +1,7 @@
 # Stone.proof.eth: Trust. Trace. Transact.
 
-![ADMIN-PORTAL-OVERVIEW](./assets/admin-overview.png)
+![Stone.proof.eth Landing Page](./assets//LANDING.png)
+
 Stone.proof is a modular, decentralized mineral traceability platform built on Base Layer 2. It empowers supply chain actors to register, validate, and trade mineral assets with integrity, verifiable origin, and strict access control.
 
 Built for security, scale, and enterprise reliability.
@@ -8,17 +9,16 @@ Built for security, scale, and enterprise reliability.
 ---
 
 ## Problem Statement
+
 **The mineral industry faces significant challenges with traceability, transparency, and trust across its supply chain. A lack of verifiable data and secure tracking systems has led to widespread fraud, misreporting, and illicit trade of minerals—undermining both industry integrity and national economies. These issues hinder responsible sourcing and erode confidence among stakeholders, from miners and refiners to regulators and buyers.**
 
 **Stone.proof addresses this critical gap by leveraging blockchain technology to ensure end-to-end traceability, immutable recordkeeping, and transparent transactions across the mineral supply chain. By fostering trust and accountability, stone.proof empowers industries and governments to combat mineral fraud, enhance compliance, and ultimately strengthen economic growth.**
-
 
 ## Challenges we ran through
 
 **One of the main challenges we faced during development was the team's varying levels of experience with blockchain technology—only the team leader had prior expertise in Ethereum. This knowledge gap made it difficult to align on key architectural decisions early on.**
 
 **Our team consisted of four members: two frontend developers, one backend developer, and one blockchain developer who also handled UI/UX design. The most demanding part of the project was integration—ensuring seamless interaction between the smart contracts and the frontend application. Despite these obstacles, we collaborated closely, learned quickly, and pushed through the complexities. With persistence and teamwork, we overcame the hurdles and successfully delivered a fully functional and elegant solution.**
-
 
 ## Table of Contents
 
@@ -44,6 +44,8 @@ Each participant operates within a dedicated portal based on their assigned role
 
 ---
 
+![ADMIN-PORTAL-OVERVIEW](./assets/admin-overview.png)
+
 ## Key Features
 
 - **Multi-Role Architecture**  
@@ -67,14 +69,14 @@ Each participant operates within a dedicated portal based on their assigned role
 
 ## Role-Based Portals
 
-| Portal                | Role(s)                | Capabilities                                   |
-|-----------------------|------------------------|------------------------------------------------|
-| Miner Portal          | MINER                  | Register minerals, view registered tokens      |
-| Refinery Portal       | REFINER                | Refine, tag, and forward processed batches     |
-| Warehouse Portal      | REFINER                | Track mineral storage and prepare for sale     |
-| Buyer Portal          | BUYER                  | View and acquire validated minerals            |
-| Transporter Portal.   | TRANSPORTER.           | Transfer minerals from origin to destination.  |
-| Supervision Portal    | AUDITOR, INSPECTOR, SUPER_ADMIN | Validate minerals, resolve disputes, audit records |
+| Portal              | Role(s)                         | Capabilities                                       |
+| ------------------- | ------------------------------- | -------------------------------------------------- |
+| Miner Portal        | MINER                           | Register minerals, view registered tokens          |
+| Refinery Portal     | REFINER                         | Refine, tag, and forward processed batches         |
+| Warehouse Portal    | REFINER                         | Track mineral storage and prepare for sale         |
+| Buyer Portal        | BUYER                           | View and acquire validated minerals                |
+| Transporter Portal. | TRANSPORTER.                    | Transfer minerals from origin to destination.      |
+| Supervision Portal  | AUDITOR, INSPECTOR, SUPER_ADMIN | Validate minerals, resolve disputes, audit records |
 
 Only wallet addresses with valid roles may access their respective portals. All others are automatically blocked or redirected.
 
@@ -95,35 +97,34 @@ Access is enforced using on-chain roles through the `RolesManager` smart contrac
 
 ### 📂 Smart Contracts Overview
 
-| Path & Contract                         | Purpose                                                                 |
-|----------------------------------------|-------------------------------------------------------------------------|
-| 📁 core                                 |                                                                         |
-| ├── `RolesManager.sol`                 | Manages role assignments and wallet-based access control                |
-| ├── `SupplychainValidator.sol`         | Handles validation workflows by auditors and inspectors                 |
-| └── `PrivacyGuard.sol`                 | Provides privacy and data masking mechanisms where required             |
-| 📁 governance                           |                                                                         |
-| └── `DisputeResolution.sol`            | Handles dispute resolution for contested validations                    |
-| 📁 interfaces                           |                                                                         |
-| ├── `ILogisticsManager.sol`            | Interface for logistics operations                                      |
-| ├── `IMineralRegistry.sol`             | Interface for mineral registration                                      |
-| ├── `IMineralWarehouse.sol`            | Interface for warehouse management                                      |
-| ├── `IRolesManager.sol`                | Interface for role control                                              |
-| ├── `ISupplychainValidator.sol`        | Interface for supply chain validation                                  |
-| ├── `ITokenization.sol`                | Interface for tokenization module                                       |
-| └── `ITransactionLog.sol`              | Interface for on-chain transaction logs                                 |
-| 📁 logs                                 |                                                                         |
-| └── `TransactionLog.sol`               | Emits/stores event logs for traceability                               |
-| 📁 modules                              |                                                                         |
-| ├── `LogisticsManager.sol`             | Orchestrates mineral shipment and routing                              |
-| ├── `MineralRegistry.sol`              | Registers and tracks raw minerals                                      |
-| └── `MineralWarehouse.sol`             | Manages storage and inventory states                                   |
-| 📁 tokens                               |                                                                         |
-| └── `Tokenization.sol`                 | ERC721-based tokenization of mineral assets                            |
-| 📁 utils                                |                                                                         |
-| ├── `DataTypes.sol`                    | Shared structs and data formats                                        |
-| ├── `Errors.sol`                       | Common error definitions                                                |
-| └── `Events.sol`                       | Shared event declarations                                               |
-
+| Path & Contract                 | Purpose                                                     |
+| ------------------------------- | ----------------------------------------------------------- |
+| 📁 core                         |                                                             |
+| ├── `RolesManager.sol`          | Manages role assignments and wallet-based access control    |
+| ├── `SupplychainValidator.sol`  | Handles validation workflows by auditors and inspectors     |
+| └── `PrivacyGuard.sol`          | Provides privacy and data masking mechanisms where required |
+| 📁 governance                   |                                                             |
+| └── `DisputeResolution.sol`     | Handles dispute resolution for contested validations        |
+| 📁 interfaces                   |                                                             |
+| ├── `ILogisticsManager.sol`     | Interface for logistics operations                          |
+| ├── `IMineralRegistry.sol`      | Interface for mineral registration                          |
+| ├── `IMineralWarehouse.sol`     | Interface for warehouse management                          |
+| ├── `IRolesManager.sol`         | Interface for role control                                  |
+| ├── `ISupplychainValidator.sol` | Interface for supply chain validation                       |
+| ├── `ITokenization.sol`         | Interface for tokenization module                           |
+| └── `ITransactionLog.sol`       | Interface for on-chain transaction logs                     |
+| 📁 logs                         |                                                             |
+| └── `TransactionLog.sol`        | Emits/stores event logs for traceability                    |
+| 📁 modules                      |                                                             |
+| ├── `LogisticsManager.sol`      | Orchestrates mineral shipment and routing                   |
+| ├── `MineralRegistry.sol`       | Registers and tracks raw minerals                           |
+| └── `MineralWarehouse.sol`      | Manages storage and inventory states                        |
+| 📁 tokens                       |                                                             |
+| └── `Tokenization.sol`          | ERC721-based tokenization of mineral assets                 |
+| 📁 utils                        |                                                             |
+| ├── `DataTypes.sol`             | Shared structs and data formats                             |
+| ├── `Errors.sol`                | Common error definitions                                    |
+| └── `Events.sol`                | Shared event declarations                                   |
 
 ## Getting started
 
@@ -134,12 +135,14 @@ Access is enforced using on-chain roles through the `RolesManager` smart contrac
 ## Tech Stack
 
 - **Blockchain & Contracts**
+
   - Solidity (OpenZeppelin-based)
   - Hardhat
   - Base Layer 2 Network
   - Hardhat Deploy
 
 - **Frontend & Wallet Integration**
+
   - Next.js 14 (App Router)
   - Wagmi + Viem
   - WalletConnect
@@ -170,6 +173,7 @@ All actions are tracked on-chain for accountability and traceability.
 ---
 
 ## Enables raising and resolution og disputes under disputeResolution portal
+
 ![Dispute resolution](./assets/disputeResolution.png)
 
 ## Demo (Coming Soon)
@@ -191,6 +195,7 @@ MIT License © 2025 StoneProofLabs Contributors
 ## Author
 
 **Built by:** _**StoneProofLabs**_
+
 - [@0xJonaseb11](https://github.com/0xJonaseb11)
 - [@NyLaurent](https://github.com/NyLaurent)
 - [@Aimable01](https://github.com/Aimable01)
@@ -198,7 +203,12 @@ MIT License © 2025 StoneProofLabs Contributors
 
 **Contact**: <stone.prooflabs@gmail.com>
 <br>
-**GitHub**: <https://github.com/StoneProofLabs>
+
+[GitHub] (https://github.com/StoneProofLabs)<br>
+[LinkedinPage] (https://www.linkedin.com/company/stone-proof-labs)
+<br>
+[Twitter] (https://x.com/StoneProofLabs)
+<br>
 
 ---
 
