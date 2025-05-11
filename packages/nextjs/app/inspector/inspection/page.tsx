@@ -25,7 +25,7 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="flex flex-col items-center justify-center min-h-screen gap-6 p-4 bg-gray-900">
     <div className="max-w-md w-full p-8 rounded-xl bg-gray-800 border border-gray-700 shadow-xl">
       <h2 className="text-2xl font-bold text-white text-center mb-4">Connect Your Wallet</h2>
-      <p className="text-gray-400 text-center mb-6">Please connect your wallet to audit minerals</p>
+      <p className="text-gray-400 text-center mb-6">Please connect your wallet to inspection minerals</p>
       <div className="flex justify-center">
         <ConnectButton />
       </div>
@@ -55,7 +55,7 @@ const AccessDeniedView = ({
           <ShieldAlert className="w-8 h-8 text-red-500" />
         </div>
         <h3 className="text-2xl font-bold text-white">Access Denied</h3>
-        <p className="text-gray-400">The connected wallet doesn't have inspector privileges to audit minerals.</p>
+        <p className="text-gray-400">The connected wallet doesn't have inspector privileges to inspection minerals.</p>
         <div className="flex items-center gap-2 p-2 px-4 mt-2 border border-gray-700 rounded-lg bg-gray-900/50 w-full">
           <span className="font-mono text-sm text-gray-300 truncate">{address}</span>
           <button onClick={copyAddress} className="p-1 rounded-md hover:bg-gray-700 text-gray-400">
@@ -127,7 +127,7 @@ const AccessDeniedView = ({
   );
 };
 
-export default function AuditMinerals() {
+export default function InspectionMinerals() {
   const { address, isConnected, isConnecting } = useAccount();
   const [form, setForm] = useState({ mineralId: "", report: "" });
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
@@ -183,14 +183,14 @@ export default function AuditMinerals() {
     setIsTransactionPending(true);
     try {
       const tx = await writeContractAsync({
-        functionName: "_auditMineral",
+        functionName: "inspectMineral",
         args: [form.mineralId.trim(), form.report.trim()],
       });
 
       notification.info("Transaction submitted. Waiting for confirmation...");
       console.log("Transaction submitted:", tx);
 
-      notification.success("Mineral audited successfully!");
+      notification.success("Mineral inspected successfully!");
       resetForm();
     } catch (err: any) {
       console.error("Transaction error:", err);
@@ -199,8 +199,8 @@ export default function AuditMinerals() {
         notification.error("Transaction rejected by user");
       } else if (err.message.includes("RolesManager__InvalidMineralIdOrNotFound")) {
         notification.error("Invalid mineral ID or mineral not found");
-      } else if (err.message.includes("RolesManager__MineralAlreadyAudited")) {
-        notification.error("This mineral has already been audited");
+      } else if (err.message.includes("RolesManager__MineralAlreadyInspected")) {
+        notification.error("This mineral has already been inspected");
       } else if (err.message.includes("caller is missing role")) {
         notification.error("No inspector privileges");
       } else {
@@ -211,25 +211,81 @@ export default function AuditMinerals() {
     }
   };
 
-  // Mock data - replace with real data from your contract
   const pendingMinerals = [
     {
       id: "GOLD-0x8e07d295",
       name: "Gold",
-      date: "15/05/2025",
+      type: "Gold",
       purity: 92,
       quantity: "150 KG",
       price: "$45,000",
+      origin: "Rwanda ",
       image: "/dashboard/gold.jpeg",
     },
     {
       id: "COBALT-0xa3f5e1d2",
       name: "Cobalt",
-      date: "15/05/2025",
+      type: "Cobalt",
       purity: 88,
       quantity: "200 KG",
       price: "$6,000",
+      origin: "South Africa",
       image: "/dashboard/cobalt.png",
+    },
+    {
+      id: "SILVER-0xa3f5e1d2",
+      name: "Silver Bullion",
+      type: "Silver",
+      purity: 99.5,
+      weight: "5 kg",
+      price: "$3,800",
+      origin: "Mexico",
+      image: "/minerals/silver-bullion.png",
+      description: "Investment-grade silver bullion with assay certificate",
+    },
+    {
+      id: "COPPER-0xb2c4e3f1",
+      name: "Copper Cathode",
+      type: "Copper",
+      purity: 99.99,
+      weight: "100 kg",
+      price: "$9,000",
+      origin: "Chile",
+      image: "/minerals/copper-cathode.png",
+      description: "High-grade copper cathode for industrial use",
+    },
+    {
+      id: "LITHIUM-0xc5d6e7f8",
+      name: "Lithium Carbonate",
+      type: "Lithium",
+      purity: 99.5,
+      weight: "500 kg",
+      price: "$12,000",
+      origin: "Australia",
+      image: "/minerals/lithium-carbonate.png",
+      description: "Battery-grade lithium carbonate for EV production",
+    },
+    {
+      id: "COBALT-0xd9e8f7a6",
+      name: "Cobalt Ingot",
+      type: "Cobalt",
+      purity: 99.8,
+      weight: "25 kg",
+      price: "$18,750",
+      origin: "DR Congo",
+      image: "/minerals/cobalt-ingot.png",
+      description: "High-purity cobalt for aerospace and battery applications",
+    },
+    {
+      id: "PLATINUM-0xe1f2a3b4",
+      name: "Platinum Bar",
+      type: "Platinum",
+      purity: 99.95,
+      weight: "100kg",
+      price: "$32,000",
+      origin: "Rwanda",
+      image: "/minerals/platinum-bar.png",
+      description: "Certified platinum bar with unique serial number",
     },
   ];
 
@@ -270,7 +326,7 @@ export default function AuditMinerals() {
           <div className="w-full lg:w-2/5">
             <div className="bg-gray-800 rounded-xl p-5 border border-gray-700 shadow-lg">
               <div className="flex items-center justify-between mb-5">
-                <h2 className="text-xl font-semibold">Minerals to Audit</h2>
+                <h2 className="text-xl font-semibold">Minerals to Inspection</h2>
                 <div className="relative">
                   <button
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -395,10 +451,10 @@ export default function AuditMinerals() {
             </div>
           </div>
 
-          {/* Right Side - Audit Form */}
+          {/* Right Side - Inspection Form */}
           <div className="w-full lg:w-3/5">
             <form onSubmit={handleSubmit} className="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg">
-              <h2 className="text-xl font-semibold mb-6">Audit Report</h2>
+              <h2 className="text-xl font-semibold mb-6">Inspection Report</h2>
 
               {inputMethod === "select" && form.mineralId && (
                 <div className="mb-5 p-3 bg-gray-700/30 rounded-lg border border-gray-600">
@@ -421,13 +477,13 @@ export default function AuditMinerals() {
 
               <div className="space-y-5">
                 <div>
-                  <label className="block text-sm font-medium mb-2">Audit Report</label>
+                  <label className="block text-sm font-medium mb-2">Inspection Report</label>
                   <textarea
                     name="report"
                     value={form.report}
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none transition-all min-h-32"
-                    placeholder="Enter your detailed audit findings..."
+                    placeholder="Enter your detailed inspection findings..."
                   />
                 </div>
               </div>
@@ -452,7 +508,7 @@ export default function AuditMinerals() {
                       Processing...
                     </>
                   ) : (
-                    "Submit Audit"
+                    "Submit Inspection"
                   )}
                 </button>
               </div>
@@ -493,7 +549,7 @@ export default function AuditMinerals() {
                     {form.report.trim() ? <Check className="w-3 h-3" /> : <Minus className="w-3 h-3" />}
                   </div>
                   <div>
-                    <p className="text-sm font-medium">Audit report provided</p>
+                    <p className="text-sm font-medium">Inspection report provided</p>
                     <p className="text-xs text-gray-400 mt-0.5">Detailed findings about the mineral</p>
                   </div>
                 </div>

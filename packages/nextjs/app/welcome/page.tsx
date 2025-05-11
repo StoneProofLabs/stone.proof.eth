@@ -216,7 +216,6 @@ const Page = () => {
   }, [router]);
 
   const handleLogout = async () => {
-
     const email = localStorage.getItem("email");
     const password = localStorage.getItem("password");
     if (!email || !password) {
@@ -521,7 +520,6 @@ const Page = () => {
           </div>
         </div>
       </div>
-
     </div>
   );
 };

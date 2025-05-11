@@ -7,11 +7,11 @@ import { ChevronRight, Copy, HardHat, Loader2, Mail, MessageSquare, Phone, Shiel
 import { useAccount } from "wagmi";
 import Sidebar from "~~/components/dashboard/Sidebar";
 import TopBar from "~~/components/dashboard/topBar";
+import { Loading } from "~~/components/ui/loading";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
-import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -179,9 +179,7 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
           <HardHat className="w-8 h-8 text-blue-300" />
         )}
       </div>
-      <h1 className="text-2xl font-bold text-white mb-2">
-        {isLoading ? "Connecting..." : "Connect Inspector Wallet"}
-      </h1>
+      <h1 className="text-2xl font-bold text-white mb-2">{isLoading ? "Connecting..." : "Connect Inspector Wallet"}</h1>
       <p className="text-gray-300 mb-6">
         {isLoading ? "Verifying wallet..." : "Please connect a wallet with inspector privileges"}
       </p>
@@ -234,12 +232,14 @@ export default function InspectorLayout({ children }: { children: React.ReactNod
   }, [hasInspectorRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return  <Loading
-    title="Verifying Inspector Access"
-    description="Please wait while we verify your inspector access..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
+    return (
+      <Loading
+        title="Verifying Inspector Access"
+        description="Please wait while we verify your inspector access..."
+        progressValue={90}
+        progressText="Almost there..."
+      />
+    );
   }
 
   if (!isConnected) {
@@ -248,21 +248,19 @@ export default function InspectorLayout({ children }: { children: React.ReactNod
 
   if (!hasInspectorRole) {
     return (
-      <AccessDeniedCard
-        address={address!}
-        isLoadingRefresh={isRefreshingAccess}
-        onRefresh={handleRefreshAccess}
-      />
+      <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
     );
   }
 
   if (isDataLoading) {
-    return <Loading
-    title="Loading Inspector Dashboard"
-    description="Please wait while we load the inspector dashboard..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
+    return (
+      <Loading
+        title="Loading Inspector Dashboard"
+        description="Please wait while we load the inspector dashboard..."
+        progressValue={90}
+        progressText="Almost there..."
+      />
+    );
   }
 
   return (

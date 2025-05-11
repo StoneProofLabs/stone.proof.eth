@@ -59,26 +59,25 @@ module.exports = {
           ".link:hover": { opacity: "80%" },
         },
       },
-      // Adding a Stone.Proof theme that matches the design
       {
         stoneproof: {
-          primary: "#2563EB", // Blue for primary buttons
+          primary: "#2563EB",
           "primary-content": "#FFFFFF",
-          secondary: "#1E293B", // Dark blue for secondary elements
+          secondary: "#1E293B",
           "secondary-content": "#FFFFFF",
-          accent: "#FFD700", // Gold color for "Blockchain" text
+          accent: "#FFD700",
           "accent-content": "#212638",
-          neutral: "#0F172A", // Dark background
+          neutral: "#0F172A",
           "neutral-content": "#FFFFFF",
-          "base-100": "#1E293B", // Dark blue base
-          "base-200": "#0F172A", // Darker blue
-          "base-300": "#020617", // Almost black
+          "base-100": "#1E293B",
+          "base-200": "#0F172A",
+          "base-300": "#020617",
           "base-content": "#FFFFFF",
           info: "#3ABFF8",
           success: "#36D399",
           warning: "#FBBD23",
           error: "#F87272",
-          "--rounded-btn": "0.375rem", // Slightly rounded buttons as in the design
+          "--rounded-btn": "0.375rem",
           ".tooltip": { "--tooltip-tail": "6px" },
           ".link": { textUnderlineOffset: "2px" },
           ".link:hover": { opacity: "80%" },
@@ -91,33 +90,32 @@ module.exports = {
       boxShadow: { center: "0 0 12px -2px rgb(0 0 0 / 0.05)" },
       animation: {
         "pulse-fast": "pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        float: "float 6s ease-in-out infinite", // For floating mineral animations
+        float: "float 6s ease-in-out infinite",
       },
       fontFamily: {
         sans: ["Montserrat", "sans-serif"],
         montserrat: ["var(--font-montserrat)", "Montserrat", "sans-serif"],
       },
       colors: {
-        // Adding Stone.Proof specific colors
         blockchain: "#FFD700",
-        darkBlack: "#060910", // the dark black for the sidebar
-        lightBlack: "#0C0F14", // the light black for the children
-        accentBlue: "#0A77FF", // that blue always poppin up
+        darkBlack: "#060910",
+        lightBlack: "#0C0F14",
+        accentBlue: "#0A77FF",
 
         crystal: {
-          100: "#E0F2FE", // Light crystal blue
+          100: "#E0F2FE",
           200: "#BAE6FD",
           300: "#7DD3FC",
           400: "#38BDF8",
-          500: "#0EA5E9", // Medium crystal blue
+          500: "#0EA5E9",
           600: "#0284C7",
           700: "#0369A1",
-          800: "#075985", // Dark crystal blue
+          800: "#075985",
           900: "#0C4A6E",
         },
         mineral: {
-          dark: "#0F172A", // Dark mineral background
-          light: "#94A3B8", // Light mineral color
+          dark: "#0F172A",
+          light: "#94A3B8",
         },
       },
       keyframes: {

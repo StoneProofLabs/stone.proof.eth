@@ -1,14 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { AlertCircle, Check, Copy, Loader2, ShieldAlert } from "lucide-react";
-import { useAccount } from "wagmi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { useScaffoldWriteContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import { notification } from "~~/utils/scaffold-eth";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AlertCircle, Check, Copy, Loader2, ShieldAlert } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useAccount } from "wagmi";
+import { z } from "zod";
+import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
+import { notification } from "~~/utils/scaffold-eth";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
@@ -257,9 +257,7 @@ export default function TransferMineralPage() {
                   placeholder="#f45f-2ds5-a445-7j97"
                   className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 />
-                {errors.mineralId && (
-                  <p className="text-sm text-red-400 mt-1">{errors.mineralId.message}</p>
-                )}
+                {errors.mineralId && <p className="text-sm text-red-400 mt-1">{errors.mineralId.message}</p>}
               </div>
 
               {/* Receiving Party Field */}
@@ -274,9 +272,7 @@ export default function TransferMineralPage() {
                   placeholder="0x..."
                   className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 />
-                {errors.receivingParty && (
-                  <p className="text-sm text-red-400 mt-1">{errors.receivingParty.message}</p>
-                )}
+                {errors.receivingParty && <p className="text-sm text-red-400 mt-1">{errors.receivingParty.message}</p>}
               </div>
 
               {/* Origin Field */}
@@ -291,9 +287,7 @@ export default function TransferMineralPage() {
                   placeholder="Origin location..."
                   className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 />
-                {errors.origin && (
-                  <p className="text-sm text-red-400 mt-1">{errors.origin.message}</p>
-                )}
+                {errors.origin && <p className="text-sm text-red-400 mt-1">{errors.origin.message}</p>}
               </div>
 
               {/* Destination Field */}
@@ -308,9 +302,7 @@ export default function TransferMineralPage() {
                   placeholder="Destination address..."
                   className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
                 />
-                {errors.destination && (
-                  <p className="text-sm text-red-400 mt-1">{errors.destination.message}</p>
-                )}
+                {errors.destination && <p className="text-sm text-red-400 mt-1">{errors.destination.message}</p>}
               </div>
 
               <div className="my-6 border-t border-gray-700"></div>
@@ -395,7 +387,8 @@ export default function TransferMineralPage() {
                 <div className="flex gap-3 text-sm bg-gray-700/50 p-4 rounded-lg">
                   <AlertCircle className="min-w-5 h-5 mt-0.5 text-amber-400" />
                   <p className="text-gray-300">
-                    Ensure all details are accurate. Once transferred, the mineral will be under the receiving party's control.
+                    Ensure all details are accurate. Once transferred, the mineral will be under the receiving party's
+                    control.
                   </p>
                 </div>
               </div>

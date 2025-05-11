@@ -1,19 +1,22 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Copy, Loader2, ShieldAlert, ChevronDown, AlertCircle, Check, Minus } from "lucide-react";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { AlertCircle, Check, ChevronDown, Copy, Loader2, Minus, ShieldAlert } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { useAccount } from "wagmi";
+import { z } from "zod";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { useState } from "react";
 
 const disputeSchema = z.object({
   mineralId: z.string().min(1, "Mineral ID is required"),
-  defendant: z.string().min(1, "Defendant address is required").regex(/^0x[a-fA-F0-9]{40}$/, "Invalid Ethereum address"),
+  defendant: z
+    .string()
+    .min(1, "Defendant address is required")
+    .regex(/^0x[a-fA-F0-9]{40}$/, "Invalid Ethereum address"),
   details: z.string().min(20, "Details must be at least 20 characters"),
   evidence: z.string().min(10, "Evidence must be at least 10 characters"),
 });
@@ -85,13 +88,13 @@ export default function RaiseDisputePage() {
       notification.success(
         <div className="flex flex-col">
           <span className="font-bold">Dispute raised successfully!</span>
-        </div>
+        </div>,
       );
       reset();
       setSelectedMineralId(null);
     } catch (error: any) {
       console.error("Error raising dispute:", error);
-      
+
       let errorMessage = "Failed to raise dispute";
       if (error.message.includes("User rejected the request")) {
         errorMessage = "Transaction rejected by user";
@@ -116,7 +119,7 @@ export default function RaiseDisputePage() {
               </div>
             )}
           </div>
-        </div>
+        </div>,
       );
     } finally {
       setIsTransactionPending(false);
@@ -184,9 +187,7 @@ export default function RaiseDisputePage() {
                     className="flex items-center gap-2 bg-gray-700 hover:bg-gray-600 rounded-lg px-4 py-2 text-sm transition-colors"
                   >
                     {inputMethod === "select" ? "Select Mineral" : "Enter ID Manually"}
-                    <ChevronDown
-                      className={`w-4 h-4 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`}
-                    />
+                    <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
                   </button>
                   {isDropdownOpen && (
                     <div className="absolute right-0 mt-2 w-48 bg-gray-700 rounded-md shadow-lg z-10 border border-gray-600">
@@ -221,7 +222,7 @@ export default function RaiseDisputePage() {
 
               {inputMethod === "select" ? (
                 <div className="space-y-4">
-                  {pendingMinerals.map((mineral) => (
+                  {pendingMinerals.map(mineral => (
                     <div
                       key={mineral.id}
                       onClick={() => handleSelectMineral(mineral.id)}
@@ -233,13 +234,7 @@ export default function RaiseDisputePage() {
                     >
                       <div className="flex items-start gap-4">
                         <div className="flex-shrink-0">
-                          <Image
-                            width={48}
-                            height={48}
-                            alt={mineral.name}
-                            src={mineral.image}
-                            className="rounded-md"
-                          />
+                          <Image width={48} height={48} alt={mineral.name} src={mineral.image} className="rounded-md" />
                         </div>
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
@@ -256,7 +251,11 @@ export default function RaiseDisputePage() {
                             <div className="h-2 bg-gray-600 rounded-full overflow-hidden">
                               <div
                                 className={`h-full ${
-                                  mineral.purity > 90 ? "bg-green-500" : mineral.purity > 85 ? "bg-blue-500" : "bg-yellow-500"
+                                  mineral.purity > 90
+                                    ? "bg-green-500"
+                                    : mineral.purity > 85
+                                      ? "bg-blue-500"
+                                      : "bg-yellow-500"
                                 }`}
                                 style={{ width: `${mineral.purity}%` }}
                               ></div>
@@ -272,9 +271,7 @@ export default function RaiseDisputePage() {
                               <div className="font-medium">{mineral.price}</div>
                             </div>
                           </div>
-                          <div className="mt-2 text-xs text-gray-400 break-all">
-                            ID: {mineral.id}
-                          </div>
+                          <div className="mt-2 text-xs text-gray-400 break-all">ID: {mineral.id}</div>
                         </div>
                       </div>
                     </div>
@@ -289,9 +286,7 @@ export default function RaiseDisputePage() {
                       className="w-full px-4 py-3 rounded-lg bg-gray-800 border border-gray-600 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 outline-none transition-all"
                       placeholder="e.g. GOLD-0x8e07d295"
                     />
-                    {errors.mineralId && (
-                      <p className="text-red-400 text-xs mt-1">{errors.mineralId.message}</p>
-                    )}
+                    {errors.mineralId && <p className="text-red-400 text-xs mt-1">{errors.mineralId.message}</p>}
                   </div>
                   <div className="bg-blue-900/10 border border-blue-800/50 rounded-lg p-4">
                     <div className="flex items-start gap-3">
@@ -299,8 +294,8 @@ export default function RaiseDisputePage() {
                       <div className="text-sm text-blue-200">
                         <p className="font-medium">Need help finding the Mineral ID?</p>
                         <p className="mt-1 opacity-80">
-                          Check the mineral's details page or transaction history for its unique identifier.
-                          Mineral IDs are typically in format "TYPE-0x...".
+                          Check the mineral's details page or transaction history for its unique identifier. Mineral IDs
+                          are typically in format "TYPE-0x...".
                         </p>
                       </div>
                     </div>
@@ -359,9 +354,7 @@ export default function RaiseDisputePage() {
                       <Copy className="w-5 h-5" />
                     </button>
                   </div>
-                  {errors.defendant && (
-                    <p className="text-red-400 text-xs mt-1">{errors.defendant.message}</p>
-                  )}
+                  {errors.defendant && <p className="text-red-400 text-xs mt-1">{errors.defendant.message}</p>}
                 </div>
 
                 <div>
@@ -377,9 +370,7 @@ export default function RaiseDisputePage() {
                     ) : (
                       <p className="text-gray-500 text-xs">Minimum 20 characters required</p>
                     )}
-                    <span className="text-xs text-gray-400">
-                      {watch("details")?.length || 0}/20
-                    </span>
+                    <span className="text-xs text-gray-400">{watch("details")?.length || 0}/20</span>
                   </div>
                 </div>
 
@@ -396,9 +387,7 @@ export default function RaiseDisputePage() {
                     ) : (
                       <p className="text-gray-500 text-xs">Minimum 10 characters required</p>
                     )}
-                    <span className="text-xs text-gray-400">
-                      {watch("evidence")?.length || 0}/10
-                    </span>
+                    <span className="text-xs text-gray-400">{watch("evidence")?.length || 0}/10</span>
                   </div>
                 </div>
               </div>
@@ -417,11 +406,7 @@ export default function RaiseDisputePage() {
                   disabled={!isValid || isTransactionPending || (!selectedMineralId && inputMethod === "select")}
                   className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center min-w-32"
                 >
-                  {isTransactionPending ? (
-                    <LoadingSpinner size={20} text="Processing..." />
-                  ) : (
-                    "Submit Dispute"
-                  )}
+                  {isTransactionPending ? <LoadingSpinner size={20} text="Processing..." /> : "Submit Dispute"}
                 </button>
               </div>
             </form>
@@ -435,12 +420,14 @@ export default function RaiseDisputePage() {
                 <div className="flex items-start gap-3">
                   <div
                     className={`h-5 w-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
-                      (inputMethod === "select" && selectedMineralId) || (inputMethod === "manual" && watch("mineralId"))
+                      (inputMethod === "select" && selectedMineralId) ||
+                      (inputMethod === "manual" && watch("mineralId"))
                         ? "bg-green-500/20 text-green-400"
                         : "bg-gray-700 text-gray-500"
                     }`}
                   >
-                    {((inputMethod === "select" && selectedMineralId) || (inputMethod === "manual" && watch("mineralId"))) ? (
+                    {(inputMethod === "select" && selectedMineralId) ||
+                    (inputMethod === "manual" && watch("mineralId")) ? (
                       <Check className="w-3 h-3" />
                     ) : (
                       <Minus className="w-3 h-3" />

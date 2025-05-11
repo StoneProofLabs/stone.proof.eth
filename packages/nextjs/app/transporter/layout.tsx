@@ -7,11 +7,11 @@ import { ChevronRight, Copy, HardHat, Loader2, Mail, MessageSquare, Phone, Shiel
 import { useAccount } from "wagmi";
 import Sidebar from "~~/components/dashboard/Sidebar";
 import TopBar from "~~/components/dashboard/topBar";
+import { Loading } from "~~/components/ui/loading";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
-import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -234,12 +234,14 @@ export default function TransporterLayout({ children }: { children: React.ReactN
   }, [hasTransporterRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return  <Loading
-    title="Verifying Transporter Access"
-    description="Please wait while we verify your transporter access..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
+    return (
+      <Loading
+        title="Verifying Transporter Access"
+        description="Please wait while we verify your transporter access..."
+        progressValue={90}
+        progressText="Almost there..."
+      />
+    );
   }
 
   if (!isConnected) {
@@ -248,21 +250,19 @@ export default function TransporterLayout({ children }: { children: React.ReactN
 
   if (!hasTransporterRole) {
     return (
-      <AccessDeniedCard
-        address={address!}
-        isLoadingRefresh={isRefreshingAccess}
-        onRefresh={handleRefreshAccess}
-      />
+      <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
     );
   }
 
   if (isDataLoading) {
-    return  <Loading
-    title="Loading Transporter Dashboard"
-    description="Please wait while we load the transporter dashboard..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
+    return (
+      <Loading
+        title="Loading Transporter Dashboard"
+        description="Please wait while we load the transporter dashboard..."
+        progressValue={90}
+        progressText="Almost there..."
+      />
+    );
   }
 
   return (
