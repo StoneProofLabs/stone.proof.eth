@@ -1,0 +1,700 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "Errors",
+  "sourceName": "contracts/utils/Errors.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "role",
+          "type": "bytes32"
+        }
+      ],
+      "name": "AddressDoesNotHaveRequiredRole",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        }
+      ],
+      "name": "DisputeResolution__AlreadyVoted",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        }
+      ],
+      "name": "DisputeResolution__DisputeEscalated_UnableToVote",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        }
+      ],
+      "name": "DisputeResolution__DisputeNotEscalated",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "disputeId",
+          "type": "uint256"
+        }
+      ],
+      "name": "DisputeResolution__DisputeStatusNotPending",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DisputeResolution__DisputeStatusNotPendingOrEscalated",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DisputeResolution__InvalidDisputeDefendantAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DisputeResolution__InvalidDisputeDetails",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DisputeResolution__InvalidDisputeEvidence",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DisputeResolution__InvalidDisputeIdOrNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DisputeResolution__InvalidMineralIdOrNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DisputeResolution__InvalidResolutionDetails",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        }
+      ],
+      "name": "DisputeResolution__NotEligibleToVote",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "DisputeResolution__VotingPeriodStillActive",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenAmount",
+          "type": "uint256"
+        }
+      ],
+      "name": "ERC20TokenTransferFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        }
+      ],
+      "name": "InsufficientPermissionsToPerformAction",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidAccountAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "InvalidMineralIdOrNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "InvalidPaymentMethods",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "currentStatus",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "attemptedStatus",
+          "type": "string"
+        }
+      ],
+      "name": "InvalidTransportStateTransition",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "MineralNotMarketReady",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "MineralNotReadyToTrade",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralDestination",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralDetails",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "MineralRegistry__InvalidMineralIdOrNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralLocation",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralName",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralOrigin",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralPurityPercentage",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralStatus",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralStorageConditions",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralType",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidMineralWeight",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__InvalidReceivingPartyAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__MineralAlreadyAudited",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__MineralAlreadyInspected",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__MineralAlreadyPurchased",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__MineralNotAudited",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralRegistry__MineralNotInspected",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "MineralRegistry__MineralNotRegistered",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralWarehouse__ETHTransferFailed",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralWarehouse__IncorrectETHAmount",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralWarehouse__InvalidMineralPrice",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralWarehouse__InvalidNumberOfPrices",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenAddress",
+          "type": "address"
+        }
+      ],
+      "name": "MineralWarehouse__InvalidTokenAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralWarehouse__InvalidTokenPrice",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "MineralWarehouse__MineralAlreadySold",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "MineralWarehouse__MineralNotFoundInWarehouse",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "MineralWarehouse__MineralNotMarketReady",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "MineralWarehouse__MineralNotRefined",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenAddress",
+          "type": "address"
+        }
+      ],
+      "name": "MineralWarehouse__UnacceptedToken",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "tokenAddresses",
+          "type": "address[]"
+        }
+      ],
+      "name": "MineralWarehouse__UnacceptedTokens",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "seller",
+          "type": "address"
+        }
+      ],
+      "name": "MineralWarehouse__UnauthorizedSeller",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        },
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        }
+      ],
+      "name": "NotAssignedTransporter",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__AccountAlreadyHasRole",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__AccountDoesNotHaveRole",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidMineralDestination",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidMineralIdOrNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidMineralName",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidMineralOrigin",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidMineralPurityPercentage",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidMineralStorageConditions",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidMineralType",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidMineralWeight",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidReceivingPartyAddress",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "RolesManager__InvalidRole",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "RolesManager__MineralAlreadyAudited",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "RolesManager__MineralAlreadyInspected",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "RolesManager__MineralAlreadyPurchased",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "RolesManager__MineralAlreadyRefined",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "RolesManager__MineralNotMarketReady",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "purityPercentage",
+          "type": "uint256"
+        }
+      ],
+      "name": "RolesManager__MineralPurityPercentageTooLowToRegister",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        }
+      ],
+      "name": "RolesManager__NotTheAssignedBuyer",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "SupplychainValidator__InvalidMineralIdOrNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SupplychainValidator__InvalidMineralOwnershipChain",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "SupplychainValidator__InvalidMineralTransactionHistory",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        }
+      ],
+      "name": "Tokenization__CallerNotMineralTokenOwner",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Tokenization__InvalidTokenId",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Tokenization__InvalidTokenIdOrNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Tokenization__TokenAlreadyExists",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "Tokenization__TokenIsAlreadyMinted",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "index",
+          "type": "uint256"
+        }
+      ],
+      "name": "TransactionLog__InvalidOperationIndex",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "TransactionLog__InvalidOperationType",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "transactionId",
+          "type": "uint256"
+        }
+      ],
+      "name": "TransactionLog__InvalidTransactionIdOrNotFound",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "string",
+          "name": "mineralId",
+          "type": "string"
+        }
+      ],
+      "name": "TransportRequestAlreadyExists",
+      "type": "error"
+    }
+  ],
+  "bytecode": "0x60808060405234601357603a908160198239f35b600080fdfe600080fdfea26469706673582212203b9cb4d0d3687881fae7302b9ba6ee745113bdb23652eb04554dd98f5f5641a364736f6c63430008140033",
+  "deployedBytecode": "0x600080fdfea26469706673582212203b9cb4d0d3687881fae7302b9ba6ee745113bdb23652eb04554dd98f5f5641a364736f6c63430008140033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

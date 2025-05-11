@@ -14,7 +14,7 @@ typechain-types
 
 # hardhat files
 cache
-artifacts
+# artifacts
 
 # zkSync files
 artifacts-zk

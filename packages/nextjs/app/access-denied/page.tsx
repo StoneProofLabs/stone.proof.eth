@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
-import { Button } from "~~/components/ui/button";
+import { Button } from "~~/components/ui/Button";
 
 export default function AccessDeniedPage() {
   const searchParams = useSearchParams();
