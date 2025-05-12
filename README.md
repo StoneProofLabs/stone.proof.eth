@@ -1,6 +1,6 @@
 # Stone.proof.eth: Trust. Trace. Transact.
 
-![Stone.proof.eth Landing Page](./assets//LANDING.png)
+![Stone.proof.eth Landing Page](./assets/LANDING.png)
 
 Stone.proof is a modular, decentralized mineral traceability platform built on Base Layer 2. It empowers supply chain actors to register, validate, and trade mineral assets with integrity, verifiable origin, and strict access control.
 
@@ -65,7 +65,7 @@ Each participant operates within a dedicated portal based on their assigned role
 
 ---
 
-![RolesManagement](./assets//Roles-manager.png)
+![RolesManagement](./assets/Roles-manager.png)
 
 ## Role-Based Portals
 
@@ -81,6 +81,7 @@ Each participant operates within a dedicated portal based on their assigned role
 Only wallet addresses with valid roles may access their respective portals. All others are automatically blocked or redirected.
 
 ---
+![Management - Admin](./assets/admin-management.png)
 
 ## Access Control
 
@@ -172,7 +173,7 @@ All actions are tracked on-chain for accountability and traceability.
 
 ---
 
-## Enables raising and resolution og disputes under disputeResolution portal
+## Enables raising and resolution of disputes under disputeResolution portal
 
 ![Dispute resolution](./assets/disputeResolution.png)
 
@@ -204,7 +205,8 @@ MIT License © 2025 StoneProofLabs Contributors
 **Contact**: <stone.prooflabs@gmail.com>
 <br>
 
-[GitHub] (https://github.com/StoneProofLabs)<br>
+[GitHub] (https://github.com/StoneProofLabs)
+<br>
 [LinkedinPage] (https://www.linkedin.com/company/stone-proof-labs)
 <br>
 [Twitter] (https://x.com/StoneProofLabs)
