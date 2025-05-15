@@ -436,13 +436,6 @@ contract RolesManager is AccessControl, Errors {
     /////// ROLEMANAGEMENT FUNCTIONS ////////////////
     ////////////////////////////////////////////////
 
-    /////////////////////////////////
-    ////// ROLE GRANTING ////////////
-    /////////////////////////////////
-
-    /*////////////////////////////////////////////////////
-                  ROLE MANAGEMENT FUNCTIONS
-    ////////////////////////////////////////////////////*/
 
     function assignMiner(address account) external onlyNonZeroAddress(account) onlyRole(DEFAULT_ADMIN_ROLE) {
         if (hasMinerRole(account)) revert RolesManager__AccountAlreadyHasRole();
