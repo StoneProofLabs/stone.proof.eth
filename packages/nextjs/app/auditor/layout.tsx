@@ -259,7 +259,7 @@ export default function AuditorLayout({ children }: { children: React.ReactNode 
   // }
 
 
-  // if (!isConnected) {
+  // if (!isConnected) {r
   //   return <ConnectWalletView isLoading={isConnecting} />;
   // }
 
