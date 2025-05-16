@@ -314,6 +314,11 @@
     },
     {
       "inputs": [],
+      "name": "MineralWarehouse__InvalidETHPrice",
+      "type": "error"
+    },
+    {
+      "inputs": [],
       "name": "MineralWarehouse__InvalidMineralPrice",
       "type": "error"
     },
@@ -380,6 +385,22 @@
         }
       ],
       "name": "MineralWarehouse__MineralNotRefined",
+      "type": "error"
+    },
+    {
+      "inputs": [],
+      "name": "MineralWarehouse__MismatchedArrays",
+      "type": "error"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "tokenAddress",
+          "type": "address"
+        }
+      ],
+      "name": "MineralWarehouse__TokenNotAccepted",
       "type": "error"
     },
     {
@@ -693,8 +714,8 @@
       "type": "error"
     }
   ],
-  "bytecode": "0x60808060405234601357603a908160198239f35b600080fdfe600080fdfea2646970667358221220c02dcc62ca4af704c7b94bf2f141337d8e676dad806d96f13f695bb0e132d1f764736f6c63430008140033",
-  "deployedBytecode": "0x600080fdfea2646970667358221220c02dcc62ca4af704c7b94bf2f141337d8e676dad806d96f13f695bb0e132d1f764736f6c63430008140033",
+  "bytecode": "0x60808060405234601357603a908160198239f35b600080fdfe600080fdfea264697066735822122051b2b95dc8e6ca61429466b44c7172943a7df4c3c6031d297e5672893048f19364736f6c63430008140033",
+  "deployedBytecode": "0x600080fdfea264697066735822122051b2b95dc8e6ca61429466b44c7172943a7df4c3c6031d297e5672893048f19364736f6c63430008140033",
   "linkReferences": {},
   "deployedLinkReferences": {}
 }
