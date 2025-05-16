@@ -1,12 +1,15 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
 import { Button } from "~~/components/ui/Button";
 
 export default function AccessDeniedPage() {
   const searchParams = useSearchParams();
+
+  const router = useRouter();
   const { address } = useAccount();
   const reason = searchParams.get("reason");
 
@@ -41,10 +44,10 @@ export default function AccessDeniedPage() {
       )}
       <p className="text-gray-500 text-center max-w-md">{action}</p>
       <div className="flex gap-4 mt-4">
-        <Button variant="outline" onClick={() => window.location.reload()}>
+        <Button variant="outline" onClick={() => router.refresh()}>
           Re-check Access
         </Button>
-        <Button onClick={() => (window.location.href = "/")}>Return to Home</Button>
+        <Button onClick={() => router.push("/")}>Return to Home</Button>
       </div>
     </div>
   );

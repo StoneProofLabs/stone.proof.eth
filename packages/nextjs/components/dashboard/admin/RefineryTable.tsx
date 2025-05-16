@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { FaRegCopy } from "react-icons/fa";
 
 interface Refinery {
@@ -26,6 +27,7 @@ interface RefineryTableProps {
 const PAGE_SIZE = 5;
 
 const RefineryTable: React.FC<RefineryTableProps> = ({ data, showActions = false, tableTitle }) => {
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const paginatedData = useMemo(() => {
     const start = (currentPage - 1) * PAGE_SIZE;
@@ -120,7 +122,7 @@ const RefineryTable: React.FC<RefineryTableProps> = ({ data, showActions = false
                   <td className="px-6 py-4 text-center">
                     <button
                       className="bg-[#0A77FF] hover:bg-blue-700 text-white rounded-lg px-4 py-2 flex items-center gap-2 mx-auto"
-                      onClick={() => window.location.assign(`/admin/refineries/approval/${refinery.id}`)}
+                      onClick={() => router.push(`/admin/refineries/approval/${refinery.id}`)}
                     >
                       View
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,7 +136,7 @@ const RefineryTable: React.FC<RefineryTableProps> = ({ data, showActions = false
                   <td className="px-2 py-4 text-right">
                     <button
                       className="hover:bg-gray-700 rounded-full p-2 transition-colors"
-                      onClick={() => window.location.assign(`/admin/refineries/${refinery.id}`)}
+                      onClick={() => router.push(`/admin/refineries/${refinery.id}`)}
                     >
                       <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
