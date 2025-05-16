@@ -16,6 +16,7 @@ interface RoleCardProps {
   isRevokeLoading?: boolean;
   onUserIdChange: (address: string) => void;
   onReasonChange: (reason: string) => void;
+  placeholder?: string;
 }
 
 const RoleCard: React.FC<RoleCardProps> = ({
@@ -31,22 +32,32 @@ const RoleCard: React.FC<RoleCardProps> = ({
   isRevokeLoading = false,
   onUserIdChange,
   onReasonChange,
+  placeholder = "Wallet address or name.base.eth",
 }) => {
   const [localReason, setLocalReason] = useState("");
   const [displayAddress, setDisplayAddress] = useState("");
+  const [isValidInput, setIsValidInput] = useState(false);
+  const [isBaseName, setIsBaseName] = useState(false);
 
-  // Validate address
-  const isValidAddress = isAddress(userId);
+  // Validate input (either address or Base name)
+  useEffect(() => {
+    const trimmedInput = userId.trim();
+    const isBase = /^[a-zA-Z0-9-]+\.base\.eth$/.test(trimmedInput);
+    setIsBaseName(isBase);
+
+    const isValid = trimmedInput !== "" && (isAddress(trimmedInput) || isBase);
+    setIsValidInput(isValid);
+  }, [userId]);
 
   // Format address for display
   useEffect(() => {
-    if (isValidAddress) {
+    if (isAddress(userId)) {
       const formatted = `${userId.substring(0, 6)}...${userId.substring(38)}`;
       setDisplayAddress(formatted);
     } else {
       setDisplayAddress(userId);
     }
-  }, [userId, isValidAddress]);
+  }, [userId]);
 
   const handleReasonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -82,19 +93,19 @@ const RoleCard: React.FC<RoleCardProps> = ({
 
       <div className="px-3">
         <div className="mb-4">
-          <p className="text-[#979AA0] text-xs mb-1">ETHEREUM ADDRESS</p>
+          <p className="text-[#979AA0] text-xs mb-1">ETHEREUM ADDRESS OR BASE NAME</p>
           <div className="relative">
             <input
               type="text"
               value={userId}
               onChange={e => onUserIdChange(e.target.value)}
               className={`w-full bg-[#060B17] border ${
-                userId && !isValidAddress ? "border-red-500" : "border-[#323539]"
+                userId && !isValidInput ? "border-red-500" : "border-[#323539]"
               } rounded-[8px] px-3 py-2 text-white focus:outline-none`}
-              placeholder="0x..."
+              placeholder={placeholder}
               disabled={disabled}
             />
-            {isValidAddress && (
+            {userId && (
               <button
                 className="absolute right-2 top-1/2 transform -translate-y-1/2 focus:outline-none"
                 disabled={disabled}
@@ -104,10 +115,14 @@ const RoleCard: React.FC<RoleCardProps> = ({
               </button>
             )}
           </div>
-          {userId && !isValidAddress && (
-            <p className="text-red-500 text-xs mt-1">Please enter a valid Ethereum address</p>
+          {userId && !isValidInput && (
+            <p className="text-red-500 text-xs mt-1">Please enter a valid Ethereum address or name.base.eth</p>
           )}
-          {isValidAddress && <p className="text-green-500 text-xs mt-1">Valid address: {displayAddress}</p>}
+          {isValidInput && (
+            <p className={`text-xs mt-1 ${isAddress(userId) ? "text-green-500" : "text-blue-400"}`}>
+              {isAddress(userId) ? `Valid address: ${displayAddress}` : `Base name: ${userId}`}
+            </p>
+          )}
         </div>
 
         <div className="mb-4">
@@ -125,9 +140,9 @@ const RoleCard: React.FC<RoleCardProps> = ({
         <div className="flex flex-col sm:flex-row gap-2 mt-6 mb-3">
           <button
             onClick={onRevoke}
-            disabled={disabled || !isValidAddress || !localReason.trim() || isRevokeLoading}
+            disabled={disabled || !isValidInput || !localReason.trim() || isRevokeLoading}
             className={`w-full sm:flex-1 text-white py-2.5 rounded-[8px] font-semibold focus:outline-none mb-2 sm:mb-0 ${
-              disabled || !isValidAddress || !localReason.trim() || isRevokeLoading
+              disabled || !isValidInput || !localReason.trim() || isRevokeLoading
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-[#E33B32] hover:bg-[#c03129]"
             }`}
@@ -136,9 +151,9 @@ const RoleCard: React.FC<RoleCardProps> = ({
           </button>
           <button
             onClick={onAssign}
-            disabled={disabled || !isValidAddress || isAssignLoading}
+            disabled={disabled || !isValidInput || isAssignLoading}
             className={`w-full sm:flex-1 text-white py-2.5 rounded-[8px] font-semibold focus:outline-none ${
-              disabled || !isValidAddress || isAssignLoading
+              disabled || !isValidInput || isAssignLoading
                 ? "bg-gray-600 cursor-not-allowed"
                 : "bg-[#0A77FF] hover:bg-[#0965d9]"
             }`}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BiSolidErrorCircle } from "react-icons/bi";
 import { HiLightningBolt } from "react-icons/hi";
+import { isAddress } from "viem";
 import Icon from "~~/components/dashboard/Icon";
 
 interface RoleCheckProps {
@@ -9,6 +10,8 @@ interface RoleCheckProps {
   foundRole?: string;
   hasRole?: boolean;
   onUserIdChange?: (userId: string) => void;
+  isLoading?: boolean;
+  placeholder?: string;
 }
 
 const RoleCheck: React.FC<RoleCheckProps> = ({
@@ -17,10 +20,13 @@ const RoleCheck: React.FC<RoleCheckProps> = ({
   foundRole = "",
   hasRole = false,
   onUserIdChange,
+  isLoading = false,
+  placeholder = "Wallet address or name.base.eth",
 }) => {
   const [inputUserId, setInputUserId] = useState(userId);
   const [isChecked, setIsChecked] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isValidInput, setIsValidInput] = useState(false);
 
   useEffect(() => {
     setInputUserId(userId);
@@ -38,7 +44,18 @@ const RoleCheck: React.FC<RoleCheckProps> = ({
     return () => clearTimeout(timer);
   }, []);
 
+  useEffect(() => {
+    // Check if input is valid (either address or Base name)
+    const isValid =
+      inputUserId.trim() !== "" &&
+      (isAddress(inputUserId.trim()) ||
+        (inputUserId.endsWith(".base.eth") && inputUserId.length > 5 && !inputUserId.includes(" ")));
+    setIsValidInput(isValid);
+  }, [inputUserId]);
+
   const handleCheckRole = () => {
+    if (!isValidInput) return;
+
     setIsChecked(true);
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 2000);
@@ -47,7 +64,9 @@ const RoleCheck: React.FC<RoleCheckProps> = ({
   };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(inputUserId);
+    if (inputUserId) {
+      navigator.clipboard.writeText(inputUserId);
+    }
   };
 
   return (
@@ -73,16 +92,23 @@ const RoleCheck: React.FC<RoleCheckProps> = ({
               type="text"
               value={inputUserId}
               onChange={e => setInputUserId(e.target.value)}
-              className="w-full bg-[#060B17] border border-[#323539] rounded-[8px] px-3 py-2 text-white focus:border-[#007AFF] transition-colors"
-              placeholder="0x..."
+              className={`w-full bg-[#060B17] border ${
+                inputUserId && !isValidInput ? "border-red-500" : "border-[#323539]"
+              } rounded-[8px] px-3 py-2 text-white focus:border-[#007AFF] transition-colors`}
+              placeholder={placeholder}
             />
-            <button
-              onClick={handleCopy}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:scale-110 transition-transform"
-            >
-              <Icon path="/dashboard/icon_set/copy.svg" alt="copy" />
-            </button>
+            {inputUserId && (
+              <button
+                onClick={handleCopy}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:scale-110 transition-transform"
+              >
+                <Icon path="/dashboard/icon_set/copy.svg" alt="copy" />
+              </button>
+            )}
           </div>
+          {inputUserId && !isValidInput && (
+            <p className="text-red-500 text-xs mt-1">Please enter a valid Ethereum address or Base name</p>
+          )}
         </div>
 
         {isChecked && (
@@ -117,9 +143,12 @@ const RoleCheck: React.FC<RoleCheckProps> = ({
 
         <button
           onClick={handleCheckRole}
-          className="w-full bg-gradient-to-r from-[#007AFF] to-[#0A97FF] mt-5 text-white py-3.5 rounded-[10px] font-semibold text-lg shadow-lg shadow-[#007AFF]/20 hover:shadow-xl hover:shadow-[#007AFF]/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+          disabled={!isValidInput || isLoading}
+          className={`w-full bg-gradient-to-r from-[#007AFF] to-[#0A97FF] mt-5 text-white py-3.5 rounded-[10px] font-semibold text-lg shadow-lg shadow-[#007AFF]/20 hover:shadow-xl hover:shadow-[#007AFF]/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 ${
+            !isValidInput || isLoading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
-          Check Role
+          {isLoading ? "Checking..." : "Check Role"}
         </button>
       </div>
     </div>
