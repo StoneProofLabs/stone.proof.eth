@@ -5,7 +5,7 @@ import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { AlertCircle, Check, ChevronDown, Copy, Loader2, Minus } from "lucide-react";
-import { useForm } from "react-hook-fo∑rm";
+import { useForm } from "react-hook-form";
 import { useAccount } from "wagmi";
 import { z } from "zod";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
