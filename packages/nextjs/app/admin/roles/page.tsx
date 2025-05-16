@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable prettier/prettier */
 "use client";
 
@@ -13,28 +15,31 @@ import RoleCheck from "~~/components/dashboard/admin/RoleCheck";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { notification } from "~~/utils/scaffold-eth";
 
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable prettier/prettier */
+
 // BNS (Base Name Service) contract address and ABI
 const BNS_REGISTRY_ADDRESS = "0x3f8Fb8141e0F989F70f8a4c8B0cE3b8D81a0Ea21";
 const BNS_REGISTRY_ABI = [
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      }
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
     ],
-    "name": "getAddress",
-    "outputs": [
+    name: "getAddress",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
+    stateMutability: "view",
+    type: "function",
+  },
 ] as const;
 
 const LoadingSpinner = ({
@@ -75,9 +80,7 @@ const AccessDeniedCard = ({
       <div className="flex flex-col items-center gap-4 text-center">
         <ShieldAlert className="w-12 h-12 text-red-500" />
         <h3 className="text-2xl font-bold">Access Denied</h3>
-        <p className="text-muted-foreground">
-          The connected wallet doesn't have admin privileges for this dashboard.
-        </p>
+        <p className="text-muted-foreground">The connected wallet doesn't have admin privileges for this dashboard.</p>
         <div className="flex items-center gap-2 p-2 px-4 mt-2 border rounded-lg">
           <span className="font-mono text-sm">{address}</span>
           <button onClick={copyAddress} className="p-1 rounded-md hover:bg-accent">
@@ -127,11 +130,11 @@ const getSilentRoleBytes = (roleName: string): Uint8Array => {
     const view = new DataView(buffer);
     const encoder = new TextEncoder();
     const encoded = encoder.encode(roleName);
-    
+
     for (let i = 0; i < Math.min(encoded.length, 32); i++) {
       view.setUint8(i, encoded[i]);
     }
-    
+
     return new Uint8Array(buffer);
   } catch (error) {
     console.warn("Silent role bytes conversion failed:", error);
@@ -159,7 +162,7 @@ const ROLE_TO_FUNCTION_MAP = {
 
 // Utility function to check if input is a Base name
 const isBaseName = (input: string): boolean => {
-  return input.endsWith('.base') && input.length > 5 && !input.includes(' ');
+  return input.endsWith(".base") && input.length > 5 && !input.includes(" ");
 };
 
 const Page = () => {
@@ -183,7 +186,11 @@ const Page = () => {
   const [isRevokeLoading, setIsRevokeLoading] = useState(false);
   const [isResolvingName, setIsResolvingName] = useState(false);
 
-  const { data: isAdmin, isLoading: isLoadingRoleCheck, refetch: refetchRoleCheck } = useScaffoldReadContract({
+  const {
+    data: isAdmin,
+    isLoading: isLoadingRoleCheck,
+    refetch: refetchRoleCheck,
+  } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasAdminRole",
     args: [address],
@@ -217,11 +224,11 @@ const Page = () => {
         functionName: "getAddress",
         args: [name],
       });
-      
+
       if (!result || result === "0x0000000000000000000000000000000000000000") {
         throw new Error("Base name not found or not registered");
       }
-      
+
       return result;
     } catch (error) {
       console.error("Error resolving Base name:", error);
@@ -243,7 +250,7 @@ const Page = () => {
             console.warn(`Error fetching count for ${role}:`, error);
             return roleStats[role as RoleType];
           }
-        })
+        }),
       );
 
       setRoleStats({
@@ -301,7 +308,7 @@ const Page = () => {
       setActiveRole(role);
 
       let resolvedAddress = trimmedInput;
-      
+
       if (isBaseName(trimmedInput)) {
         setIsResolvingName(true);
         try {
@@ -368,7 +375,7 @@ const Page = () => {
       setActiveRole(role);
 
       let resolvedAddress = trimmedInput;
-      
+
       if (isBaseName(trimmedInput)) {
         setIsResolvingName(true);
         try {
@@ -426,7 +433,7 @@ const Page = () => {
     }
 
     let resolvedAddress = trimmedInput;
-    
+
     if (isBaseName(trimmedInput)) {
       setIsResolvingName(true);
       try {
@@ -487,7 +494,7 @@ const Page = () => {
 
             <div className="flex flex-wrap gap-2 md:gap-3">
               <button className="bg-[#252525] border border-[#323539] flex items-center justify-center gap-2 font-semibold px-4 py-1.5 pb-2.5 rounded-[8px]">
-               View Revoked Users
+                View Revoked Users
               </button>
             </div>
           </div>
@@ -506,7 +513,7 @@ const Page = () => {
                 disabled={!isConnected || !isAdmin}
                 isAssignLoading={(isAssignLoading && activeRole === "MINER") || isResolvingName}
                 isRevokeLoading={(isRevokeLoading && activeRole === "MINER") || isResolvingName}
-                onUserIdChange={(address) => handleRoleAddressChange("MINER", address)}
+                onUserIdChange={address => handleRoleAddressChange("MINER", address)}
                 onReasonChange={setRevokeReason}
                 placeholder="Wallet address or name.base.eth"
               />
@@ -522,7 +529,7 @@ const Page = () => {
                 disabled={!isConnected || !isAdmin}
                 isAssignLoading={(isAssignLoading && activeRole === "REFINER") || isResolvingName}
                 isRevokeLoading={(isRevokeLoading && activeRole === "REFINER") || isResolvingName}
-                onUserIdChange={(address) => handleRoleAddressChange("REFINER", address)}
+                onUserIdChange={address => handleRoleAddressChange("REFINER", address)}
                 onReasonChange={setRevokeReason}
                 placeholder="Wallet address or name.base.eth"
               />
@@ -538,7 +545,7 @@ const Page = () => {
                 disabled={!isConnected || !isAdmin}
                 isAssignLoading={(isAssignLoading && activeRole === "TRANSPORTER") || isResolvingName}
                 isRevokeLoading={(isRevokeLoading && activeRole === "TRANSPORTER") || isResolvingName}
-                onUserIdChange={(address) => handleRoleAddressChange("TRANSPORTER", address)}
+                onUserIdChange={address => handleRoleAddressChange("TRANSPORTER", address)}
                 onReasonChange={setRevokeReason}
                 placeholder="Wallet address or name.base.eth"
               />
@@ -569,7 +576,7 @@ const Page = () => {
                 disabled={!isConnected || !isAdmin}
                 isAssignLoading={(isAssignLoading && activeRole === "AUDITOR") || isResolvingName}
                 isRevokeLoading={(isRevokeLoading && activeRole === "AUDITOR") || isResolvingName}
-                onUserIdChange={(address) => handleRoleAddressChange("AUDITOR", address)}
+                onUserIdChange={address => handleRoleAddressChange("AUDITOR", address)}
                 onReasonChange={setRevokeReason}
                 placeholder="Wallet address or name.base.eth"
               />
@@ -585,7 +592,7 @@ const Page = () => {
                 disabled={!isConnected || !isAdmin}
                 isAssignLoading={(isAssignLoading && activeRole === "INSPECTOR") || isResolvingName}
                 isRevokeLoading={(isRevokeLoading && activeRole === "INSPECTOR") || isResolvingName}
-                onUserIdChange={(address) => handleRoleAddressChange("INSPECTOR", address)}
+                onUserIdChange={address => handleRoleAddressChange("INSPECTOR", address)}
                 onReasonChange={setRevokeReason}
                 placeholder="Wallet address or name.base"
               />
@@ -601,7 +608,7 @@ const Page = () => {
                 disabled={!isConnected || !isAdmin}
                 isAssignLoading={(isAssignLoading && activeRole === "BUYER") || isResolvingName}
                 isRevokeLoading={(isRevokeLoading && activeRole === "BUYER") || isResolvingName}
-                onUserIdChange={(address) => handleRoleAddressChange("BUYER", address)}
+                onUserIdChange={address => handleRoleAddressChange("BUYER", address)}
                 onReasonChange={setRevokeReason}
                 placeholder="Wallet address or name.base.eth"
               />

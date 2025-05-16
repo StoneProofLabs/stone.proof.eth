@@ -12,7 +12,7 @@ import { MineralRegistry } from "../modules/MineralRegistry.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { AccessControl } from "@openzeppelin/contracts/access/AccessControl.sol";
 
-contract MineralWarehouse is RolesManager, MineralRegistry {
+contract MineralWarehouse is RolesManager /*,MineralRegistry*/ {
     MineralRegistry private mineralRegistry;
     RolesManager private rolesManager;
 
@@ -48,9 +48,9 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
     event MineralListedForSale(string mineralId, string price, address indexed lister);
     event MineralSold(string mineralId, address indexed buyer, address seller, uint256 soldAt);
 
-    constructor(address rolesManagerAddress, address mineralRegistryAddress) MineralRegistry(rolesManagerAddress) {
+    constructor(address rolesManagerAddress/*, address mineralRegistryAddress*/) /*MineralRegistry(rolesManagerAddress) */{
         rolesManager = RolesManager(rolesManagerAddress);
-        mineralRegistry = MineralRegistry(mineralRegistryAddress);
+        // mineralRegistry = MineralRegistry(mineralRegistryAddress);
     }
 
     function addAcceptedToken(address _token) external restrictedToRole(DEFAULT_ADMIN_ROLE) {
@@ -64,7 +64,19 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
         address[] memory tokens,
         uint256[] memory prices
     ) public restrictedToRole(REFINER_ROLE) {
-        require(getMineralDetails(_mineralId).isRefined, "Mineral not refined");
+
+        if (mineralDetails[_mineralId].isRefined == false) {
+            revert MineralWarehouse__MineralNotRefined(_mineralId);
+        }
+
+        if (tokens.length != prices.length) {
+            revert MineralWarehouse__MismatchedArrays();
+        }
+
+        if (_priceETH <= 0) {
+            revert MineralWarehouse__InvalidETHPrice();
+        }
+        require(mineralDetails[_mineralId].isRefined, "Mineral not refined");
         require(tokens.length == prices.length, "Mismatched arrays");
         require(_priceETH > 0, "Invalid ETH price");
 
@@ -118,6 +130,7 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
             payable(mineral.refiner).transfer(msg.value);
         } else {
             // require(acceptedTokens[token], "Token not accepted");
+            
             require(amount == mineral.saleInfo.tokenPrices[token], "Incorrect token amount");
             IERC20(token).transferFrom(msg.sender, mineral.refiner, amount);
         }
@@ -131,7 +144,9 @@ contract MineralWarehouse is RolesManager, MineralRegistry {
     }
 
     function getMineralPriceInToken(string memory _mineralId, address token) public view returns (uint256) {
-        require(acceptedTokens[token], "Token not accepted");
+        if (acceptedTokens[token] == false) {
+            revert MineralWarehouse__TokenNotAccepted(token);
+        }
         return warehouse[_mineralId].saleInfo.tokenPrices[token];
     }
 

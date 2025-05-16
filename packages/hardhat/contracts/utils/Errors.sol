@@ -93,6 +93,10 @@ contract Errors {
     error MineralWarehouse__ETHTransferFailed();
     error MineralWarehouse__InvalidTokenPrice();
 
+    error MineralWarehouse__MismatchedArrays();
+    error MineralWarehouse__InvalidETHPrice();
+    error MineralWarehouse__TokenNotAccepted(address tokenAddress);
+
     error MineralWarehouse__MineralNotFoundInWarehouse(string mineralId);
 
     /*//////////////////////////////////////////////////////////////

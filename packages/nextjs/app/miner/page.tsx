@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "../lib/toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { ChevronRight, Copy, HardHat, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
+import { ChevronRight, Copy, HardHat, Loader2, Lock, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
@@ -171,7 +171,7 @@ const MinerAccessGranted = () => {
           {isRedirecting ? (
             <Loader2 className="w-8 h-8 text-green-600 dark:text-green-300 animate-spin" />
           ) : (
-            <HardHat className="w-8 h-8 text-green-600 dark:text-green-300" />
+            <HardHat className="w-8 h-8 text-blue-600 dark:text-green-300" />
           )}
         </div>
 
@@ -181,7 +181,7 @@ const MinerAccessGranted = () => {
         <button
           onClick={handleEnterPortal}
           disabled={isRedirecting}
-          className="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2"
+          className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center justify-center gap-2"
         >
           {isRedirecting ? (
             <>

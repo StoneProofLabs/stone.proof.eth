@@ -22,41 +22,41 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
   });
   await logGasUsed("RolesManager", rolesManager);
 
-  console.log("Deploying TransactionLog...");
-  const transactionLog = await deploy("TransactionLog", {
-    from: deployer,
-    log: true,
-    autoMine: true,
-    gasLimit: 8000000,
-  });
-  await logGasUsed("TransactionLog", transactionLog);
+  // console.log("Deploying TransactionLog...");
+  // const transactionLog = await deploy("TransactionLog", {
+  //   from: deployer,
+  //   log: true,
+  //   autoMine: true,
+  //   gasLimit: 8000000,
+  // });
+  // await logGasUsed("TransactionLog", transactionLog);
 
-  console.log("Deploying MineralRegistry...");
-  const mineralRegistry = await deploy("MineralRegistry", {
-    from: deployer,
-    args: [rolesManager.address],
-    log: true,
-    autoMine: true,
-    gasLimit: 8000000,
-  });
-  await logGasUsed("MineralRegistry", mineralRegistry);
+  // console.log("Deploying MineralRegistry...");
+  // const mineralRegistry = await deploy("MineralRegistry", {
+  //   from: deployer,
+  //   args: [rolesManager.address],
+  //   log: true,
+  //   autoMine: true,
+  //   gasLimit: 8000000,
+  // });
+  // await logGasUsed("MineralRegistry", mineralRegistry);
 
-  console.log("Deploying PrivacyGuard...");
-  const privacyGuard = await deploy("PrivacyGuard", {
-    from: deployer,
-    log: true,
-    autoMine: true,
-    gasLimit: 8000000,
-  });
-  await logGasUsed("PrivacyGuard", privacyGuard);
+  // console.log("Deploying PrivacyGuard...");
+  // const privacyGuard = await deploy("PrivacyGuard", {
+  //   from: deployer,
+  //   log: true,
+  //   autoMine: true,
+  //   gasLimit: 8000000,
+  // });
+  // await logGasUsed("PrivacyGuard", privacyGuard);
 
-  console.log("Deploying Tokenization...");
-  const tokenization = await deploy("Tokenization", {
-    from: deployer,
-    log: true,
-    autoMine: true,
-  });
-  await logGasUsed("Tokenization", tokenization);
+  // console.log("Deploying Tokenization...");
+  // const tokenization = await deploy("Tokenization", {
+  //   from: deployer,
+  //   log: true,
+  //   autoMine: true,
+  // });
+  // await logGasUsed("Tokenization", tokenization);
 
   console.log("Deploying DisputeResolution...");
   const disputeResolution = await deploy("DisputeResolution", {
@@ -68,45 +68,45 @@ const deployMineralSystem: DeployFunction = async function (hre: HardhatRuntimeE
   });
   await logGasUsed("DisputeResolution", disputeResolution);
 
-  console.log("Deploying LogisticsManager...");
-  const logisticsManager = await deploy("LogisticsManager", {
-    from: deployer,
-    args: [
-      /*rolesManager.address,
-      mineralRegistry.address,
-      transactionLog.address,
-      tokenization.address,*/
-    ],
-    log: true,
-    autoMine: true,
-    gasLimit: 8000000,
-  });
-  await logGasUsed("LogisticsManager", logisticsManager);
+  // console.log("Deploying LogisticsManager...");
+  // const logisticsManager = await deploy("LogisticsManager", {
+  //   from: deployer,
+  //   args: [
+  //     /*rolesManager.address,
+  //     mineralRegistry.address,
+  //     transactionLog.address,
+  //     tokenization.address,*/
+  //   ],
+  //   log: true,
+  //   autoMine: true,
+  //   gasLimit: 8000000,
+  // });
+  // await logGasUsed("LogisticsManager", logisticsManager);
 
-  console.log("Deploying SupplychainValidator...");
-  const supplychainValidator = await deploy("SupplychainValidator", {
-    from: deployer,
-    args: [
-      rolesManager.address,
-      mineralRegistry.address,
-      privacyGuard.address,
-      tokenization.address,
-      transactionLog.address,
-      /*mineralTransporter.address,*/
-      disputeResolution.address,
-    ],
-    log: true,
-    autoMine: true,
-    gasLimit: 8000000,
-  });
-  await logGasUsed("SupplychainValidator", supplychainValidator);
+  // console.log("Deploying SupplychainValidator...");
+  // const supplychainValidator = await deploy("SupplychainValidator", {
+  //   from: deployer,
+  //   args: [
+  //     rolesManager.address,
+  //     mineralRegistry.address,
+  //     privacyGuard.address,
+  //     tokenization.address,
+  //     transactionLog.address,
+  //     /*mineralTransporter.address,*/
+  //     disputeResolution.address,
+  //   ],
+  //   log: true,
+  //   autoMine: true,
+  //   gasLimit: 8000000,
+  // });
+  // await logGasUsed("SupplychainValidator", supplychainValidator);
 
   console.log("Deploying MineralWarehouse...");
   const mineralWarehouse = await deploy("MineralWarehouse", {
     from: deployer,
     args: [
       rolesManager.address,
-      mineralRegistry.address,
+      // mineralRegistry.address,
       // privacyGuard.address,
       // tokenization.address,
       // transactionLog.address,

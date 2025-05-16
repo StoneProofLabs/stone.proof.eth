@@ -104,11 +104,11 @@ const scaffoldConfig = {
 
   contracts: {
     RolesManager: {
-      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+      address: "0x878515267D1C60928F7F48247bf52286B9Dd2b0b",
       abi: RolesManager.abi,
     },
     MineralWarehouse: {
-      address: "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+      address: "0x2A9A36260938E63205f7eD088A80f5b4f34C3D7c",
       abi: MineralWarehouse.abi,
     },
     LogisticsManager: {
@@ -128,7 +128,7 @@ const scaffoldConfig = {
       abi: TransactionLog.abi,
     },
     DisputeResolution: {
-      address: "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707",
+      address: "0x5c1A05644246d38D3fe8b687c07Daf47982B32c5",
       abi: DisputeResolution.abi,
     },
     PrivacyGuard: {
