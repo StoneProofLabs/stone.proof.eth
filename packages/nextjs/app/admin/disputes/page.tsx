@@ -195,7 +195,7 @@ export default function AdminDisputesPage() {
     contractName: "RolesManager",
     functionName: "hasAdminRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

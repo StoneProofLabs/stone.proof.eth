@@ -195,7 +195,7 @@ export default function NotificationsPage() {
     contractName: "RolesManager",
     functionName: "hasMinerRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

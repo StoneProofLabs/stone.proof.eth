@@ -220,7 +220,7 @@ export default function TransferMineralPage() {
     contractName: "RolesManager",
     functionName: "hasTransporterRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const {

@@ -208,7 +208,7 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
     contractName: "RolesManager",
     functionName: "hasBuyerRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

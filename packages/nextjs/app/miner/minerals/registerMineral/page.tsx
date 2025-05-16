@@ -190,7 +190,7 @@ export default function MineralRegistrationPage() {
     contractName: "RolesManager",
     functionName: "hasMinerRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const storageConditions = `${selectedCondition.storage} | ${selectedCondition.temperature} | ${selectedCondition.humidity}`;

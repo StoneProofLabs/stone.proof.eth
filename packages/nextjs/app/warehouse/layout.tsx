@@ -209,7 +209,7 @@ export default function WarehouseLayout({ children }: { children: React.ReactNod
     contractName: "RolesManager",
     functionName: "hasRefinerRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

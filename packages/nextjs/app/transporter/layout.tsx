@@ -206,7 +206,7 @@ export default function TransporterLayout({ children }: { children: React.ReactN
     contractName: "RolesManager",
     functionName: "hasTransporterRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

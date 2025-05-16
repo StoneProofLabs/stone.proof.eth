@@ -204,7 +204,7 @@ export default function InspectorLayout({ children }: { children: React.ReactNod
     contractName: "RolesManager",
     functionName: "hasInspectorRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

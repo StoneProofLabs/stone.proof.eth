@@ -144,7 +144,7 @@ export default function AuditMinerals() {
     contractName: "RolesManager",
     functionName: "hasAuditorRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const validateForm = useCallback(() => {

@@ -2,18 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { Montserrat } from "next/font/google";
-import { Inter } from "next/font/google";
 import { toast } from "../lib/toast";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { ChevronRight, Copy, Loader2, Lock, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
+import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
 import Sidebar from "~~/components/dashboard/Sidebar";
 import TopBar from "~~/components/dashboard/topBar";
+import { Loading } from "~~/components/ui/loading";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
-import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -207,7 +206,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     contractName: "RolesManager",
     functionName: "hasRole",
     args: ["0x0000000000000000000000000000000000000000000000000000000000000000", address], // DEFAULT_ADMIN_ROLE
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

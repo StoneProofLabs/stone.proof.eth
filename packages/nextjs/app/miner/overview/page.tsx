@@ -34,7 +34,7 @@ export default function MinerOverviewPage() {
     contractName: "RolesManager",
     functionName: "hasMinerRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   // Refresh access check

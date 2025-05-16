@@ -196,7 +196,7 @@ const InspectorsPage = () => {
     contractName: "RolesManager",
     functionName: "hasAdminRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

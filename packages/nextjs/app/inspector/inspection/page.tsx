@@ -143,7 +143,7 @@ export default function InspectionMinerals() {
     contractName: "RolesManager",
     functionName: "hasInspectorRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const validateForm = useCallback(() => {

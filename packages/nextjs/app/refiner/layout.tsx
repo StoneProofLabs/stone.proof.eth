@@ -208,7 +208,7 @@ export default function RefinerLayout({ children }: { children: React.ReactNode 
     contractName: "RolesManager",
     functionName: "hasRefinerRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

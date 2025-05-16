@@ -205,7 +205,7 @@ export default function Page() {
     contractName: "RolesManager",
     functionName: "hasMinerRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   // Loading state while checking roles

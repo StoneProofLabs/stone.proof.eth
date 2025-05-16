@@ -209,7 +209,7 @@ export default function AuditorLayout({ children }: { children: React.ReactNode 
     contractName: "RolesManager",
     functionName: "hasAuditorRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {

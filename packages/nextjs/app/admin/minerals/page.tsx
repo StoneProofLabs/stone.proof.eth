@@ -191,14 +191,14 @@ export default function Page() {
     contractName: "RolesManager",
     functionName: "hasMinerRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const { data: isAdmin, isLoading: isLoadingAdminCheck } = useScaffoldReadContract({
     contractName: "RolesManager",
     functionName: "hasAdminRole",
     args: [address],
-    enabled: isConnected,
+    /*enabled: isConnected*/
   });
 
   const handleRefreshAccess = async () => {
