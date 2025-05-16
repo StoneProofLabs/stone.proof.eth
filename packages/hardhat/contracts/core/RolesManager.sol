@@ -109,29 +109,29 @@ contract RolesManager is AccessControl, Errors {
         roleMemberCount[DEFAULT_ADMIN_ROLE] = 1;
         emit AdminRoleAssigned(msg.sender, block.timestamp);
 
-        // _setupRole(MINER_ROLE, msg.sender);
-        // roleMemberCount[MINER_ROLE] = 1;
-        // emit MinerRoleAssigned(msg.sender, block.timestamp);
+        _setupRole(MINER_ROLE, msg.sender);
+        roleMemberCount[MINER_ROLE] = 1;
+        emit MinerRoleAssigned(msg.sender, block.timestamp);
 
-        // _setupRole(AUDITOR_ROLE, msg.sender);
-        // roleMemberCount[AUDITOR_ROLE] = 1;
-        // emit AuditorRoleAssigned(msg.sender, block.timestamp);
+        _setupRole(AUDITOR_ROLE, msg.sender);
+        roleMemberCount[AUDITOR_ROLE] = 1;
+        emit AuditorRoleAssigned(msg.sender, block.timestamp);
 
-        // _setupRole(INSPECTOR_ROLE, msg.sender);
-        // roleMemberCount[INSPECTOR_ROLE] = 1;
-        // emit InspectorRoleAssigned(msg.sender, block.timestamp);
+        _setupRole(INSPECTOR_ROLE, msg.sender);
+        roleMemberCount[INSPECTOR_ROLE] = 1;
+        emit InspectorRoleAssigned(msg.sender, block.timestamp);
 
-        // _setupRole(BUYER_ROLE, msg.sender);
-        // roleMemberCount[BUYER_ROLE] = 1;
-        // emit BuyerRoleAssigned(msg.sender, block.timestamp);
+        _setupRole(BUYER_ROLE, msg.sender);
+        roleMemberCount[BUYER_ROLE] = 1;
+        emit BuyerRoleAssigned(msg.sender, block.timestamp);
 
-        // _setupRole(REFINER_ROLE, msg.sender);
-        // roleMemberCount[REFINER_ROLE] = 1;
-        // emit RefinerRoleAssigned(msg.sender, block.timestamp);
+        _setupRole(REFINER_ROLE, msg.sender);
+        roleMemberCount[REFINER_ROLE] = 1;
+        emit RefinerRoleAssigned(msg.sender, block.timestamp);
 
-        // _setupRole(TRANSPORTER_ROLE, msg.sender);
-        // roleMemberCount[TRANSPORTER_ROLE] = 1;
-        // emit TransporterRoleAssigned(msg.sender, block.timestamp);
+        _setupRole(TRANSPORTER_ROLE, msg.sender);
+        roleMemberCount[TRANSPORTER_ROLE] = 1;
+        emit TransporterRoleAssigned(msg.sender, block.timestamp);
     }
 
     /**

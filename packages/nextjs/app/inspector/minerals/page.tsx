@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useState } from "react";
+import Link from "next/link";
 import Icon from "~~/components/dashboard/Icon";
 import MineralActivity from "~~/components/dashboard/minerals/mineralActivity";
 import MineralListTable from "~~/components/dashboard/minerals/mineralListTable/mineralList";
@@ -69,7 +69,7 @@ export default function Page() {
 
       {/* the history table */}
       <div className="flex flex-col gap-5">
-      <div className="bg-[#252525] rounded-2xl flex flex-col sm:flex-row items-center">
+        <div className="bg-[#252525] rounded-2xl flex flex-col sm:flex-row items-center">
           <button
             onClick={() => setActiveTab("pending")}
             className={`w-full sm:flex-1 py-2 sm:py-3 px-3 sm:px-6 text-base sm:text-lg transition-colors ${

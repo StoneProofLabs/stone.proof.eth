@@ -117,7 +117,7 @@ const config: HardhatUserConfig = {
       accounts: [deployerPrivateKey],
     },
     base: {
-      url: "https://mainnet.base.org",
+      url: "https://base-mainnet.g.alchemy.com/v2/nL3zBuyRX-3kqPThilAXrTHwsWo2Jj3Z",
       accounts: [deployerPrivateKey],
       verify: {
         etherscan: {

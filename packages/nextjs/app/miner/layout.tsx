@@ -1,5 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-
 
 import { useEffect, useState } from "react";
 import { Montserrat } from "next/font/google";
@@ -9,11 +9,11 @@ import { ChevronRight, Copy, HardHat, Loader2, Mail, MessageSquare, Phone, Shiel
 import { useAccount } from "wagmi";
 import Sidebar from "~~/components/dashboard/Sidebar";
 import TopBar from "~~/components/dashboard/topBar";
+import { Loading } from "~~/components/ui/loading";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
-import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -36,7 +36,6 @@ const FullPageLoader = ({ text = "Verifying miner permissions..." }: { text?: st
     <LoadingSpinner size={12} text={text} />
   </div>
 );
-
 
 const AccessDeniedCard = ({
   address,
@@ -239,12 +238,14 @@ export default function MinerLayout({ children }: { children: React.ReactNode })
   }, [hasMinerRole]);
 
   if (isConnected && isLoadingRoleCheck) {
-    return  <Loading
-    title="Verifying Miner Access"
-    description="Please wait while we verify your miner access..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
+    return (
+      <Loading
+        title="Verifying Miner Access"
+        description="Please wait while we verify your miner access..."
+        progressValue={90}
+        progressText="Almost there..."
+      />
+    );
   }
 
   if (!isConnected) {
@@ -259,12 +260,14 @@ export default function MinerLayout({ children }: { children: React.ReactNode })
   }
 
   if (isDataLoading) {
-    return  <Loading
-    title="Loading Miner Dashboard"
-    description="Please wait while we load the miner dashboard..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
+    return (
+      <Loading
+        title="Loading Miner Dashboard"
+        description="Please wait while we load the miner dashboard..."
+        progressValue={90}
+        progressText="Almost there..."
+      />
+    );
   }
 
   return (
