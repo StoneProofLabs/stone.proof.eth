@@ -1,6 +1,9 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import {
   AlertCircle,
@@ -15,11 +18,8 @@ import {
   Phone,
   ShieldAlert,
 } from "lucide-react";
-import { useAccount } from "wagmi";
-import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
-import Link from "next/link";
 import toast from "react-hot-toast";
-
+import { useAccount } from "wagmi";
 import Icon from "~~/components/dashboard/Icon";
 import MineralDisputesGraph from "~~/components/dashboard/disputes/mineralDisputesVariationGraph";
 import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
@@ -29,6 +29,7 @@ import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
 import Search from "~~/components/dashboard/search";
 import { demands, mineralDisputesData, mockDisputes, myNotifications, reports, shipments } from "~~/data/data";
+import { useScaffoldContract, useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 
 const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
   <div className="flex flex-col items-center justify-center gap-2">
@@ -222,13 +223,7 @@ export default function Page() {
   }
 
   if (!hasMinerRole) {
-    return (
-      <AccessDeniedView
-        address={address || ""}
-        isLoadingRefresh={isLoadingRefresh}
-        onRefresh={onRefresh}
-      />
-    );
+    return <AccessDeniedView address={address || ""} isLoadingRefresh={isLoadingRefresh} onRefresh={onRefresh} />;
   }
 
   return (

@@ -1,12 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import { Clock, Copy, FileText, Minus, Plus } from "lucide-react";
 import Icon from "~~/components/dashboard/Icon";
-import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
 import MineralDisputesGraphCard from "~~/components/dashboard/admin/MineralDisputesGraphCard";
+import { NotificationList } from "~~/components/dashboard/disputes/recentActivities";
 import MineralReports from "~~/components/dashboard/overview/mineralReports";
 import RecentShipments from "~~/components/dashboard/overview/recentShipments";
 import TopDemands from "~~/components/dashboard/overview/topDemands";
@@ -89,8 +89,6 @@ export default function DisputeResolutionsPortal() {
             </button>
           </div>
         </div>
-
-        
 
         {/* the table */}
         <NotificationList baseUrl="inspector" notifications={mockDisputes} />
