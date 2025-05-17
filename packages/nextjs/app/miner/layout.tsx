@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
@@ -14,6 +15,8 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
+
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -37,6 +40,7 @@ const FullPageLoader = ({ text = "Verifying miner permissions..." }: { text?: st
   </div>
 );
 
+// Commented out but kept for reference - Access Denied component
 const AccessDeniedCard = ({
   address,
   isLoadingRefresh,
@@ -175,6 +179,7 @@ const AccessDeniedCard = ({
   );
 };
 
+// Commented out but kept for reference
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="flex items-center justify-center min-h-screen p-4 bg-lightBlack">
     <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-700">
@@ -202,62 +207,61 @@ export default function MinerLayout({ children }: { children: React.ReactNode })
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const {
-    data: hasMinerRole,
-    isLoading: isLoadingRoleCheck,
-    refetch: refetchRoleCheck,
-  } = useScaffoldReadContract({
-    contractName: "RolesManager",
-    functionName: "hasMinerRole",
-    args: [address],
-    /*enabled: isConnected*/
-  });
+  // Commented out the miner role check but kept for reference
+  // const {
+  //   data: hasMinerRole,
+  //   isLoading: isLoadingRoleCheck,
+  //   refetch: refetchRoleCheck,
+  // } = useScaffoldReadContract({
+  //   contractName: "RolesManager",
+  //   functionName: "hasMinerRole",
+  //   args: [address],
+  //   /*enabled: isConnected*/
+  // });
 
-  const handleRefreshAccess = async () => {
-    setIsRefreshingAccess(true);
-    try {
-      const { data } = await refetchRoleCheck();
-      if (!data) {
-        notification.error("Still no miner access. Contact administrator.");
-      }
-    } catch (e) {
-      console.error("Error refreshing access:", e);
-      notification.error("Error checking access");
-    } finally {
-      setIsRefreshingAccess(false);
-    }
-  };
+  // Commented out but kept for reference
+  // const handleRefreshAccess = async () => {
+  //   setIsRefreshingAccess(true);
+  //   try {
+  //     const { data } = await refetchRoleCheck();
+  //     if (!data) {
+  //       notification.error("Still no miner access. Contact administrator.");
+  //     }
+  //   } catch (e) {
+  //     console.error("Error refreshing access:", e);
+  //     notification.error("Error checking access");
+  //   } finally {
+  //     setIsRefreshingAccess(false);
+  //   }
+  // };
 
   useEffect(() => {
-    if (hasMinerRole) {
-      const timer = setTimeout(() => {
-        setIsDataLoading(false);
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [hasMinerRole]);
+    // Skip the miner check and just set loading to false after delay
+    const timer = setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
-  if (isConnected && isLoadingRoleCheck) {
-    return (
-      <Loading
-        title="Verifying Miner Access"
-        description="Please wait while we verify your miner access..."
-        progressValue={90}
-        progressText="Almost there..."
-      />
-    );
-  }
+  // Commented out the original access control logic but kept for reference
+  // if (isConnected && isLoadingRoleCheck) {
+  //   return  <Loading
+  //   title="Verifying Miner Access"
+  //   description="Please wait while we verify your miner access..."
+  //   progressValue={90}
+  //   progressText="Almost there..."
+  // />;
+  // }
 
-  if (!isConnected) {
-    return <ConnectWalletView isLoading={isConnecting} />;
-  }
+  // if (!isConnected) {
+  //   return <ConnectWalletView isLoading={isConnecting} />;
+  // }
 
-  if (!hasMinerRole) {
-    return (
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
-    );
-  }
+  // if (!hasMinerRole) {
+  //   return (
+  //     <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
+  //   );
+  // }
 
   if (isDataLoading) {
     return (

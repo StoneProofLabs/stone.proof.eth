@@ -22,19 +22,6 @@ const montserrat = Montserrat({
 const basepath = "/transporter";
 const sideBarItems = getSidebarItems(basepath);
 
-// const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
-//   <div className="flex flex-col items-center justify-center gap-2">
-//     <Loader2 className={`w-${size} h-${size} animate-spin`} />
-//     {text && <p className="text-sm text-muted-foreground">{text}</p>}
-//   </div>
-// );
-
-// const FullPageLoader = ({ text = "Verifying transporter permissions..." }: { text?: string }) => (
-//   <div className="flex items-center justify-center min-h-screen bg-lightBlack">
-//     <LoadingSpinner size={12} text={text} />
-//   </div>
-// );
-
 const AccessDeniedCard = ({
   address,
   isLoadingRefresh,
@@ -198,7 +185,8 @@ export default function TransporterLayout({ children }: { children: React.ReactN
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const {
+  // Commented out the role check but kept for reference
+  /* const {
     data: hasTransporterRole,
     isLoading: isLoadingRoleCheck,
     refetch: refetchRoleCheck,
@@ -206,16 +194,16 @@ export default function TransporterLayout({ children }: { children: React.ReactN
     contractName: "RolesManager",
     functionName: "hasTransporterRole",
     args: [address],
-    /*enabled: isConnected*/
-  });
+  }); */
+
+  const hasTransporterRole = true; // Bypassing role check
+  const isLoadingRoleCheck = false; // No loading needed
 
   const handleRefreshAccess = async () => {
     setIsRefreshingAccess(true);
     try {
-      const { data } = await refetchRoleCheck();
-      if (!data) {
-        notification.error("Still no transporter access. Contact administrator.");
-      }
+      // await refetchRoleCheck();
+      notification.info("Access refreshed");
     } catch (e) {
       console.error("Error refreshing access:", e);
       notification.error("Error checking access");
@@ -225,13 +213,11 @@ export default function TransporterLayout({ children }: { children: React.ReactN
   };
 
   useEffect(() => {
-    if (hasTransporterRole) {
-      const timer = setTimeout(() => {
-        setIsDataLoading(false);
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [hasTransporterRole]);
+    const timer = setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (isConnected && isLoadingRoleCheck) {
     return (
@@ -248,9 +234,28 @@ export default function TransporterLayout({ children }: { children: React.ReactN
     return <ConnectWalletView isLoading={isConnecting} />;
   }
 
+  // Show warning but don't restrict access
   if (!hasTransporterRole) {
     return (
-      <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
+      <div className={`${montserrat.variable} font-montserrat bg-lightBlack flex text-white h-screen`}>
+        <Sidebar basePath={basepath} />
+        <div
+          className={`flex flex-col flex-1 overflow-hidden transition-all duration-300 ${
+            !isCollapsed ? "md:ml-[250px]" : ""
+          }`}
+        >
+          <TopBar sidebarItems={sideBarItems} basePath={basepath} />
+          <main className="flex-1 overflow-y-auto px-6 py-4">
+            <div className="mb-4 p-4 rounded-lg bg-red-900/20 border border-red-900/50">
+              <div className="flex items-center gap-2 text-red-300">
+                <ShieldAlert className="w-5 h-5" />
+                <span>Your wallet doesn't have transporter privileges</span>
+              </div>
+            </div>
+            {children}
+          </main>
+        </div>
+      </div>
     );
   }
 

@@ -22,19 +22,7 @@ const montserrat = Montserrat({
 const basepath = "/inspector";
 const sideBarItems = getSidebarItems(basepath);
 
-// const LoadingSpinner = ({ size = 8, text = "Loading..." }: { size?: number; text?: string }) => (
-//   <div className="flex flex-col items-center justify-center gap-2">
-//     <Loader2 className={`w-${size} h-${size} animate-spin`} />
-//     {text && <p className="text-sm text-muted-foreground">{text}</p>}
-//   </div>
-// );
-
-// const FullPageLoader = ({ text = "Verifying inspector permissions..." }: { text?: string }) => (
-//   <div className="flex items-center justify-center min-h-screen bg-lightBlack">
-//     <LoadingSpinner size={12} text={text} />
-//   </div>
-// );
-
+// Commented out but kept for reference - Access Denied component
 const AccessDeniedCard = ({
   address,
   isLoadingRefresh,
@@ -169,6 +157,7 @@ const AccessDeniedCard = ({
   );
 };
 
+// Commented out but kept for reference
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="flex items-center justify-center min-h-screen p-4 bg-lightBlack">
     <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-700">
@@ -196,61 +185,63 @@ export default function InspectorLayout({ children }: { children: React.ReactNod
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const {
-    data: hasInspectorRole,
-    isLoading: isLoadingRoleCheck,
-    refetch: refetchRoleCheck,
-  } = useScaffoldReadContract({
-    contractName: "RolesManager",
-    functionName: "hasInspectorRole",
-    args: [address],
-    /*enabled: isConnected*/
-  });
+  // Commented out the inspector role check but kept for reference
+  // const {
+  //   data: hasInspectorRole,
+  //   isLoading: isLoadingRoleCheck,
+  //   refetch: refetchRoleCheck,
+  // } = useScaffoldReadContract({
+  //   contractName: "RolesManager",
+  //   functionName: "hasInspectorRole",
+  //   args: [address],
+  //   /*enabled: isConnected*/
+  // });
 
-  const handleRefreshAccess = async () => {
-    setIsRefreshingAccess(true);
-    try {
-      const { data } = await refetchRoleCheck();
-      if (!data) {
-        notification.error("Still no inspector access. Contact administrator.");
-      }
-    } catch (e) {
-      console.error("Error refreshing access:", e);
-      notification.error("Error checking access");
-    } finally {
-      setIsRefreshingAccess(false);
-    }
-  };
+  // Commented out but kept for reference
+  // const handleRefreshAccess = async () => {
+  //   setIsRefreshingAccess(true);
+  //   try {
+  //     const { data } = await refetchRoleCheck();
+  //     if (!data) {
+  //       notification.error("Still no inspector access. Contact administrator.");
+  //     }
+  //   } catch (e) {
+  //     console.error("Error refreshing access:", e);
+  //     notification.error("Error checking access");
+  //   } finally {
+  //     setIsRefreshingAccess(false);
+  //   }
+  // };
 
   useEffect(() => {
-    if (hasInspectorRole) {
-      const timer = setTimeout(() => {
-        setIsDataLoading(false);
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [hasInspectorRole]);
+    // Skip the inspector check and just set loading to false after delay
+    const timer = setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
-  if (isConnected && isLoadingRoleCheck) {
-    return (
-      <Loading
-        title="Verifying Inspector Access"
-        description="Please wait while we verify your inspector access..."
-        progressValue={90}
-        progressText="Almost there..."
-      />
-    );
-  }
+  // Commented out the original access control logic but kept for reference
+  // if (isConnected && isLoadingRoleCheck) {
+  //   return (
+  //     <Loading
+  //       title="Verifying Inspector Access"
+  //       description="Please wait while we verify your inspector access..."
+  //       progressValue={90}
+  //       progressText="Almost there..."
+  //     />
+  //   );
+  // }
 
-  if (!isConnected) {
-    return <ConnectWalletView isLoading={isConnecting} />;
-  }
+  // if (!isConnected) {
+  //   return <ConnectWalletView isLoading={isConnecting} />;
+  // }
 
-  if (!hasInspectorRole) {
-    return (
-      <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
-    );
-  }
+  // if (!hasInspectorRole) {
+  //   return (
+  //     <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
+  //   );
+  // }
 
   if (isDataLoading) {
     return (

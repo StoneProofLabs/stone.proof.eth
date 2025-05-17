@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Montserrat } from "next/font/google";
 import { ToastProvider } from "./lib/toast";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -36,12 +37,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning className={`${montserrat.variable} min-h-screen`}>
       <body>
-        <ScaffoldEthAppWithProviders>
-          <ThemeProvider enableSystem>
-            {children}
-            <ToastProvider />
-          </ThemeProvider>
-        </ScaffoldEthAppWithProviders>
+        <Suspense fallback={<div>loading...</div>}>
+          <ScaffoldEthAppWithProviders>
+            <ThemeProvider enableSystem>
+              {children}
+              <ToastProvider />
+            </ThemeProvider>
+          </ScaffoldEthAppWithProviders>
+        </Suspense>
       </body>
     </html>
   );

@@ -2,17 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { Montserrat } from "next/font/google";
-import { Inter } from "next/font/google";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { ChevronRight, Copy, Loader2, Mail, MessageSquare, Phone, ShieldAlert } from "lucide-react";
 import { useAccount } from "wagmi";
 import Sidebar from "~~/components/dashboard/Sidebar";
 import TopBar from "~~/components/dashboard/topBar";
+import { Loading } from "~~/components/ui/loading";
 import { useScaffoldReadContract } from "~~/hooks/scaffold-eth";
 import { useSidebarStore } from "~~/stores/useSidebarStore";
 import { getSidebarItems } from "~~/types/dashboard/sidebarItems";
 import { notification } from "~~/utils/scaffold-eth";
-import { Loading } from "~~/components/ui/loading";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -33,6 +32,7 @@ const FullPageLoader = ({ text = "Verifying buyer permissions..." }: { text?: st
   </div>
 );
 
+// Commented out but kept for reference - Access Denied component
 const AccessDeniedCard = ({
   address,
   isLoadingRefresh,
@@ -64,7 +64,7 @@ const AccessDeniedCard = ({
 
           {/* Main content - switches from row to column on small screens */}
           <div className="flex flex-col lg:flex-row justify-between items-start gap-6 w-[100%] ">
-            {/* Left section - miner privileges */}
+            {/* Left section - buyer privileges */}
             <div className="w-full lg:w-[50%] h-[100%] flex flex-col justify-between">
               <div className="bg-gray-700 p-3 sm:p-4 rounded-lg mt-4">
                 <div className="flex justify-between items-center mb-1">
@@ -110,7 +110,7 @@ const AccessDeniedCard = ({
                     name: "Admin Email",
                     value: "admin@stone.proof",
                     icon: <Mail className="w-4 h-4 sm:w-5 sm:h-5" />,
-                    action: "mailto:admin@stone.proof?subject=Miner%20Access%20Request",
+                    action: "mailto:admin@stone.proof?subject=Buyer%20Access%20Request",
                   },
                   {
                     name: "Support Phone",
@@ -171,6 +171,7 @@ const AccessDeniedCard = ({
   );
 };
 
+// Commented out but kept for reference
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="flex items-center justify-center min-h-screen p-4 bg-lightBlack">
     <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-700">
@@ -200,67 +201,71 @@ export default function BuyerLayout({ children }: { children: React.ReactNode })
 
   const sidebarItems = getSidebarItems("/buyer");
 
-  const {
-    data: hasBuyerRole,
-    isLoading: isLoadingRoleCheck,
-    refetch: refetchRoleCheck,
-  } = useScaffoldReadContract({
-    contractName: "RolesManager",
-    functionName: "hasBuyerRole",
-    args: [address],
-    /*enabled: isConnected*/
-  });
+  // Commented out the buyer role check but kept for reference
+  // const {
+  //   data: hasBuyerRole,
+  //   isLoading: isLoadingRoleCheck,
+  //   refetch: refetchRoleCheck,
+  // } = useScaffoldReadContract({
+  //   contractName: "RolesManager",
+  //   functionName: "hasBuyerRole",
+  //   args: [address],
+  //   /*enabled: isConnected*/
+  // });
 
-  const handleRefreshAccess = async () => {
-    setIsRefreshingAccess(true);
-    try {
-      const { data } = await refetchRoleCheck();
-      if (!data) {
-        notification.error("Still no buyer access. Contact administrator.");
-      }
-    } catch (e) {
-      console.error("Error refreshing access:", e);
-      notification.error("Error checking access");
-    } finally {
-      setIsRefreshingAccess(false);
-    }
-  };
+  // Commented out but kept for reference
+  // const handleRefreshAccess = async () => {
+  //   setIsRefreshingAccess(true);
+  //   try {
+  //     const { data } = await refetchRoleCheck();
+  //     if (!data) {
+  //       notification.error("Still no buyer access. Contact administrator.");
+  //     }
+  //   } catch (e) {
+  //     console.error("Error refreshing access:", e);
+  //     notification.error("Error checking access");
+  //   } finally {
+  //     setIsRefreshingAccess(false);
+  //   }
+  // };
 
   useEffect(() => {
-    if (hasBuyerRole) {
-      const timer = setTimeout(() => {
-        setIsDataLoading(false);
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [hasBuyerRole]);
+    // Skip the buyer check and just set loading to false after delay
+    const timer = setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
-  if (isConnected && isLoadingRoleCheck) {
-    return  <Loading
-    title="Verifying Buyer Access"
-    description="Please wait while we verify your buyer access..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
-  }
+  // Commented out the original access control logic but kept for reference
+  // if (isConnected && isLoadingRoleCheck) {
+  //   return  <Loading
+  //   title="Verifying Buyer Access"
+  //   description="Please wait while we verify your buyer access..."
+  //   progressValue={90}
+  //   progressText="Almost there..."
+  // />;
+  // }
 
-  if (!isConnected) {
-    return <ConnectWalletView isLoading={isConnecting} />;
-  }
+  // if (!isConnected) {
+  //   return <ConnectWalletView isLoading={isConnecting} />;
+  // }
 
-  if (!hasBuyerRole) {
-    return (
-      <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
-    );
-  }
+  // if (!hasBuyerRole) {
+  //   return (
+  //     <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
+  //   );
+  // }
 
   if (isDataLoading) {
-    return <Loading
-    title="Loading Buyer Dashboard"
-    description="Please wait while we load the buyer dashboard..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
+    return (
+      <Loading
+        title="Loading Buyer Dashboard"
+        description="Please wait while we load the buyer dashboard..."
+        progressValue={90}
+        progressText="Almost there..."
+      />
+    );
   }
 
   return (

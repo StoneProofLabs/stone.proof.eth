@@ -4,15 +4,15 @@
   "private": true,
   "workspaces": {
     "packages": [
-      "packages/*"
+      "packages/hardhat",
+      "packages/nextjs"
     ]
   },
   "scripts": {
-    "start": "yarn workspace @se-2/nextjs dev",
-    "test": "yarn hardhat:test",
     "account": "yarn hardhat:account",
-    "account:generate": "yarn workspace @se-2/hardhat account:generate",
     "account:import": "yarn workspace @se-2/hardhat account:import",
+    "account:generate": "yarn workspace @se-2/hardhat account:generate",
+    "account:reveal-pk": "yarn workspace @se-2/hardhat account:reveal-pk",
     "chain": "yarn hardhat:chain",
     "compile": "yarn hardhat:compile",
     "deploy": "yarn hardhat:deploy",
@@ -34,84 +34,31 @@
     "hardhat:lint-staged": "yarn workspace @se-2/hardhat lint-staged",
     "hardhat:test": "yarn workspace @se-2/hardhat test",
     "hardhat:verify": "yarn workspace @se-2/hardhat verify",
-    "ipfs": "yarn workspace @se-2/nextjs ipfs",
     "lint": "yarn next:lint && yarn hardhat:lint",
     "next:build": "yarn workspace @se-2/nextjs build",
     "next:check-types": "yarn workspace @se-2/nextjs check-types",
     "next:format": "yarn workspace @se-2/nextjs format",
     "next:lint": "yarn workspace @se-2/nextjs lint",
     "next:serve": "yarn workspace @se-2/nextjs serve",
-    "vercel": "yarn workspace @se-2/nextjs vercel",
-    "vercel:login": "yarn workspace @se-2/nextjs vercel:login",
-    "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
-    "verify": "yarn hardhat:verify",
+    "postinstall": "husky",
     "precommit": "lint-staged",
-    "postinstall": "husky install"
+    "start": "yarn workspace @se-2/nextjs dev",
+    "test": "yarn hardhat:test",
+    "vercel": "yarn workspace @se-2/nextjs vercel",
+    "vercel:yolo": "yarn workspace @se-2/nextjs vercel:yolo",
+    "ipfs": "yarn workspace @se-2/nextjs ipfs",
+    "vercel:login": "yarn workspace @se-2/nextjs vercel:login",
+    "verify": "yarn hardhat:verify"
   },
-  "lint-staged": {
-    "*.sol": [
-      "prettier --write"
-    ],
-    "*.js": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.ts": [
-      "prettier --write",
-      "eslint --fix"
-    ]
-  },
+  "packageManager": "yarn@3.2.3",
   "devDependencies": {
-    "@nomicfoundation/hardhat-ignition": "^0.15.11",
-    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "@types/geojson": "^7946.0.16",
-    "@types/react-simple-maps": "^3.0.6",
-    "eslint": "^9.22.0",
-    "husky": "~9.1.6",
-    "lint-staged": "~13.2.2",
-    "prettier": "^3.5.3",
-    "prettier-plugin-solidity": "^2.0.0"
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10"
   },
   "engines": {
-    "node": ">=18.18.3"
+    "node": ">=20.18.3"
   },
   "dependencies": {
-    "@coinbase/wallet-sdk": "^4.3.2",
-    "@hookform/resolvers": "^5.0.1",
-    "@mantine/core": "^8.0.0",
-    "@mantine/hooks": "^8.0.0",
-    "@openzeppelin/contracts": "^5.2.0",
-    "@radix-ui/react-progress": "^1.1.6",
-    "@reown/appkit": "^1.7.3",
-    "@reown/appkit-adapter-wagmi": "^1.7.3",
-    "@tanstack/react-query": "^5.74.8",
-    "@vis.gl/react-google-maps": "^1.5.2",
-    "chalk": "4.1.2",
-    "clsx": "^2.1.1",
-    "dotenv": "^16.5.0",
-    "ethers": "^5.7.2",
-    "framer-motion": "^12.6.2",
-    "lucide-react": "^0.509.0",
-    "next": "^14.2.28",
-    "postcss": "^8.5.3",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-hook-form": "^7.56.2",
-    "react-hot-toast": "^2.5.2",
-    "react-icons": "^5.5.0",
-    "react-simple-maps": "^3.0.0",
-    "react-spinners": "^0.17.0",
-    "recharts": "^2.15.3",
-    "tailwind-merge": "^3.2.0",
-    "vercel": "^41.6.2",
-    "viem": "^2.28.1",
-    "wagmi": "^2.15.0",
-    "zod": "^3.24.4",
-    "zustand": "^5.0.3"
-  },
-  "dependenciesMeta": {
-    "chalk@4.1.2": {
-      "unplugged": true
-    }
+    "dotenv": "^16.5.0"
   }
 }

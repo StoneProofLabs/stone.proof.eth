@@ -32,6 +32,7 @@ const FullPageLoader = ({ text = "Verifying auditor permissions..." }: { text?: 
   </div>
 );
 
+// Commented out but kept for reference - Access Denied component
 const AccessDeniedCard = ({
   address,
   isLoadingRefresh,
@@ -170,6 +171,7 @@ const AccessDeniedCard = ({
   );
 };
 
+// Commented out but kept for reference
 const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   <div className="flex items-center justify-center min-h-screen p-4 bg-lightBlack">
     <div className="max-w-md w-full bg-gray-800 rounded-xl shadow-lg p-8 text-center border border-gray-700">
@@ -199,40 +201,41 @@ export default function AuditorLayout({ children }: { children: React.ReactNode 
 
   const sidebarItems = getSidebarItems("/auditor");
 
-  const {
-    data: hasAuditorRole,
-    isLoading: isLoadingRoleCheck,
-    refetch: refetchRoleCheck,
-  } = useScaffoldReadContract({
-    contractName: "RolesManager",
-    functionName: "hasAuditorRole",
-    args: [address],
-    /*enabled: isConnected*/
-  });
+  // Commented out the auditor role check but kept for reference
+  // const {
+  //   data: hasAuditorRole,
+  //   isLoading: isLoadingRoleCheck,
+  //   refetch: refetchRoleCheck,
+  // } = useScaffoldReadContract({
+  //   contractName: "RolesManager",
+  //   functionName: "hasAuditorRole",
+  //   args: [address],
+  //   /*enabled: isConnected*/
+  // });
 
-  const handleRefreshAccess = async () => {
-    setIsRefreshingAccess(true);
-    try {
-      const { data } = await refetchRoleCheck();
-      if (!data) {
-        notification.error("Still no auditor access. Contact administrator.");
-      }
-    } catch (e) {
-      console.error("Error refreshing access:", e);
-      notification.error("Error checking access");
-    } finally {
-      setIsRefreshingAccess(false);
-    }
-  };
+  // Commented out but kept for reference
+  // const handleRefreshAccess = async () => {
+  //   setIsRefreshingAccess(true);
+  //   try {
+  //     const { data } = await refetchRoleCheck();
+  //     if (!data) {
+  //       notification.error("Still no auditor access. Contact administrator.");
+  //     }
+  //   } catch (e) {
+  //     console.error("Error refreshing access:", e);
+  //     notification.error("Error checking access");
+  //   } finally {
+  //     setIsRefreshingAccess(false);
+  //   }
+  // };
 
   useEffect(() => {
-    if (hasAuditorRole) {
-      const timer = setTimeout(() => {
-        setIsDataLoading(false);
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [hasAuditorRole]);
+    // Skip the auditor check and just set loading to false after delay
+    const timer = setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
   if (isConnected && isLoadingRoleCheck) {
     return;
@@ -244,15 +247,27 @@ export default function AuditorLayout({ children }: { children: React.ReactNode 
     />;
   }
 
-  if (!isConnected) {
-    return <ConnectWalletView isLoading={isConnecting} />;
-  }
+  // Commented out the original access control logic but kept for reference
+  // if (isConnected && isLoadingRoleCheck) {
+  //   return
+  //   <Loading
+  //   title="Verifying Auditor Access"
+  //   description="Please wait while we verify your auditor access..."
+  //   progressValue={90}
+  //   progressText="Almost there..."
+  // />;
+  // }
 
-  if (!hasAuditorRole) {
-    return (
-      <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
-    );
-  }
+
+  // if (!isConnected) {
+  //   return <ConnectWalletView isLoading={isConnecting} />;
+  // }
+
+  // if (!hasAuditorRole) {
+  //   return (
+  //     <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
+  //   );
+  // }
 
   if (isDataLoading) {
     return <FullPageLoader text="Loading auditor dashboard..." />;
