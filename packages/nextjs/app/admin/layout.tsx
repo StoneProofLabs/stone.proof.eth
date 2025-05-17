@@ -54,6 +54,7 @@ const ConnectWalletView = ({ isLoading }: { isLoading: boolean }) => (
   </div>
 );
 
+// Commented out but kept for reference - Access Denied component
 const AccessDeniedCard = ({
   address,
   isLoadingRefresh,
@@ -198,59 +199,61 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [isRefreshingAccess, setIsRefreshingAccess] = useState(false);
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  const {
-    data: hasAdminRole,
-    isLoading: isRoleLoading,
-    refetch: refetchRoleCheck,
-  } = useScaffoldReadContract({
-    contractName: "RolesManager",
-    functionName: "hasRole",
-    args: ["0x0000000000000000000000000000000000000000000000000000000000000000", address], // DEFAULT_ADMIN_ROLE
-    /*enabled: isConnected*/
-  });
+  // Commented out the admin role check but kept for reference
+  // const {
+  //   data: hasAdminRole,
+  //   isLoading: isRoleLoading,
+  //   refetch: refetchRoleCheck,
+  // } = useScaffoldReadContract({
+  //   contractName: "RolesManager",
+  //   functionName: "hasRole",
+  //   args: ["0x0000000000000000000000000000000000000000000000000000000000000000", address], // DEFAULT_ADMIN_ROLE
+  //   /*enabled: isConnected*/
+  // });
 
-  const handleRefreshAccess = async () => {
-    setIsRefreshingAccess(true);
-    try {
-      const { data } = await refetchRoleCheck();
-      if (!data) {
-        toast.error("Still no admin access. Contact system owner.");
-      }
-    } catch (e) {
-      console.error("Error refreshing access:", e);
-      toast.error("Error checking access");
-    } finally {
-      setIsRefreshingAccess(false);
-    }
-  };
+  // Commented out but kept for reference
+  // const handleRefreshAccess = async () => {
+  //   setIsRefreshingAccess(true);
+  //   try {
+  //     const { data } = await refetchRoleCheck();
+  //     if (!data) {
+  //       toast.error("Still no admin access. Contact system owner.");
+  //     }
+  //   } catch (e) {
+  //     console.error("Error refreshing access:", e);
+  //     toast.error("Error checking access");
+  //   } finally {
+  //     setIsRefreshingAccess(false);
+  //   }
+  // };
 
   useEffect(() => {
-    if (hasAdminRole) {
-      const timer = setTimeout(() => {
-        setIsDataLoading(false);
-      }, 1500);
-      return () => clearTimeout(timer);
-    }
-  }, [hasAdminRole]);
+    // Skip the admin check and just set loading to false after delay
+    const timer = setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1500);
+    return () => clearTimeout(timer);
+  }, []);
 
-  if (isConnected && isRoleLoading) {
-    return  <Loading
-    title="Verifying Admin Access"
-    description="Please wait while we verify your admin access..."
-    progressValue={90}
-    progressText="Almost there..."
-  />;
-  }
+  // Commented out the original access control logic but kept for reference
+  // if (isConnected && isRoleLoading) {
+  //   return  <Loading
+  //   title="Verifying Admin Access"
+  //   description="Please wait while we verify your admin access..."
+  //   progressValue={90}
+  //   progressText="Almost there..."
+  // />;
+  // }
 
-  if (!isConnected) {
-    return <ConnectWalletView isLoading={isConnecting} />;
-  }
+  // if (!isConnected) {
+  //   return <ConnectWalletView isLoading={isConnecting} />;
+  // }
 
-  if (!hasAdminRole) {
-    return (
-      <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
-    );
-  }
+  // if (!hasAdminRole) {
+  //   return (
+  //     <AccessDeniedCard address={address!} isLoadingRefresh={isRefreshingAccess} onRefresh={handleRefreshAccess} />
+  //   );
+  // }
 
   if (isDataLoading) {
     return  <Loading

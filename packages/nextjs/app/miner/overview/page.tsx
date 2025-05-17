@@ -25,61 +25,37 @@ export default function MinerOverviewPage() {
   const { address, isConnected } = useAccount();
   const [isDataLoading, setIsDataLoading] = useState(true);
 
-  // Check miner role
-  const {
-    data: hasMinerRole,
-    isLoading: isLoadingRoleCheck,
-    refetch: refetchRoleCheck,
-  } = useScaffoldReadContract({
-    contractName: "RolesManager",
-    functionName: "hasMinerRole",
-    args: [address],
-    /*enabled: isConnected*/
-  });
+  // COMMENTED OUT: Original role check (kept for reference)
+  // const {
+  //   data: hasMinerRole,
+  //   isLoading: isLoadingRoleCheck,
+  //   refetch: refetchRoleCheck,
+  // } = useScaffoldReadContract({
+  //   contractName: "RolesManager",
+  //   functionName: "hasMinerRole",
+  //   args: [address],
+  //   /*enabled: isConnected*/
+  // });
 
-  // Refresh access check
-  const handleRefreshAccess = async () => {
-    try {
-      await refetchRoleCheck();
-    } catch (e) {
-      console.error("Error refreshing access:", e);
-      notification.error("Error checking miner permissions");
-    }
-  };
+  // COMMENTED OUT: Original refresh access logic (kept for reference)
+  // const handleRefreshAccess = async () => {
+  //   try {
+  //     await refetchRoleCheck();
+  //   } catch (e) {
+  //     console.error("Error refreshing access:", e);
+  //     notification.error("Error checking miner permissions");
+  //   }
+  // };
 
   // Simulate data loading
   useEffect(() => {
-    if (hasMinerRole) {
-      const timer = setTimeout(() => {
-        setIsDataLoading(false);
-      }, 2000); // Longer delay for dashboard data
-      return () => clearTimeout(timer);
-    }
-  }, [hasMinerRole]);
+    const timer = setTimeout(() => {
+      setIsDataLoading(false);
+    }, 1500); // Reduced loading time
+    return () => clearTimeout(timer);
+  }, []);
 
-  // Loading states
-  if (!isConnected || isLoadingRoleCheck) {
-    return <LoadingSpinner text="Verifying miner permissions..." />;
-  }
-
-  if (!hasMinerRole) {
-    return (
-      <div className="flex items-center justify-center min-h-[70vh]">
-        <div className="max-w-md p-6 text-center bg-gray-800 rounded-lg border border-gray-700">
-          <h2 className="text-2xl font-bold mb-4">Miner Access Required</h2>
-          <p className="mb-6">Your wallet doesn&apos;t have miner privileges to view this dashboard.</p>
-          <button
-            onClick={handleRefreshAccess}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg flex items-center justify-center gap-2 mx-auto"
-          >
-            <Loader2 className={`w-4 h-4 ${isLoadingRoleCheck ? "animate-spin" : "hidden"}`} />
-            Check Access Again
-          </button>
-        </div>
-      </div>
-    );
-  }
-
+  // MODIFIED: Simplified loading state
   if (isDataLoading) {
     return <LoadingSpinner text="Loading miner dashboard..." />;
   }
