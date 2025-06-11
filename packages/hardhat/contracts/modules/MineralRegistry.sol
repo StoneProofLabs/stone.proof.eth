@@ -15,6 +15,8 @@ contract MineralRegistry is RolesManager {
     RolesManager private rolesManager;
     // uint256 private nextMineralId = 1;
 
+    
+
     // Events for transparency
     event MineralUpdated(
         string mineralId,
@@ -196,7 +198,7 @@ contract MineralRegistry is RolesManager {
 
     /*///////////////////////////////////////////////////////
                           INSPECTOR
-        ///////////////////////////////////////////////////////*/
+    ///////////////////////////////////////////////////////*/
 
     /**
      * @dev enables only the inspector to audit a mineralDetails
